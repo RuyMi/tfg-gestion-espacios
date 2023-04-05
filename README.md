@@ -51,6 +51,11 @@ Este proyecto ha sido desarrollado por:
 - [Mireya Sánchez Pinzón](https://github.com/Mireyasanche)
 - [Rubén García-Redondo Marín](https://github.com/RuyMi)
 
+## 📚 Documentación
+
+- [Anteproyecto]()
+- [Documentación del proyecto]()
+
 
 ## 📄 Licencia
 
