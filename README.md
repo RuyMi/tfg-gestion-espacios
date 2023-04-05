@@ -47,9 +47,9 @@ La aplicación cuenta con los siguientes roles de usuario:
 
 Este proyecto ha sido desarrollado por:
 
-- [Alejandro Sánchez Monzón](https://github.com/alejandro-sm)
-- [Mireya Sánchez Pinzón](https://github.com/mireyasanchez)
-- [Rubén García-Redondo Marín](https://github.com/rgarciaredondo)
+- [Alejandro Sánchez Monzón](https://github.com/AlejandroSanchezMonzon)
+- [Mireya Sánchez Pinzón](https://github.com/Mireyasanchz)
+- [Rubén García-Redondo Marín](https://github.com/RuyMi)
 
 
 ## Licencia
