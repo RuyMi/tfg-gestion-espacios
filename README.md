@@ -48,7 +48,7 @@ La aplicación cuenta con los siguientes roles de usuario:
 Este proyecto ha sido desarrollado por:
 
 - [Alejandro Sánchez Monzón](https://github.com/AlejandroSanchezMonzon)
-- [Mireya Sánchez Pinzón](https://github.com/Mireyasanchz)
+- [Mireya Sánchez Pinzón](https://github.com/Mireyasanche)
 - [Rubén García-Redondo Marín](https://github.com/RuyMi)
 
 
