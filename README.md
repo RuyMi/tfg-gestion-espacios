@@ -1,22 +1,22 @@
 [![Logo del IES Luis Vives](https://iesluisvives.es/Design/Themes/IESluisvivies/Images/logo.png)](https://iesluisvives.es/)
 
-# TFG Desarrollo de Aplicaciones Multiplataforma
+# 📱 TFG Desarrollo de Aplicaciones Multiplataforma
 
-## Introducción
+## 🚀 Introducción
 
 Aplicación que permite la gestión y administración de reservas de espacios comunes en el instituto IES Luis Vives mediante una app móvil para Android como trabajo de fin de grado para el Ciclo Formativo de Grado Superior en Desarrollo de Aplicaciones Multiplataforma.
 
-## Funcionalidades
+## 📋 Funcionalidades
 
 La aplicación cuenta con las siguientes funcionalidades:
 
-### Para usuarios finales (*Alumno/a* y *Profesor/a*)
+### 🔒 Para usuarios finales (*Alumno/a* y *Profesor/a*)
 
 - Crear/Anular/Modificar/Solicitar reservas.
 - Visualizar las reservas propias.
 - Visualizar la disponibilidad de espacios.
 
-### Para el usuario con rol *Administrador/a*
+### 🔑 Para el usuario con rol *Administrador/a*
 
 - Crear/Anular/Modificar/Aceptar reservas de cualquier usuario.
 - Visualizar todas las reservas.
@@ -24,7 +24,7 @@ La aplicación cuenta con las siguientes funcionalidades:
 - Crear/Eliminar/Modificar espacios.
 - Asignar roles.
 
-## Roles de Usuario
+## 🧑‍🤝‍🧑 Roles de Usuario
 
 La aplicación cuenta con los siguientes roles de usuario:
 
@@ -32,7 +32,7 @@ La aplicación cuenta con los siguientes roles de usuario:
 - *Profesor/a*
 - *Administrador/a*
 
-## Espacios
+## 🏢 Espacios
 
 | Característica | Valor |
 | --- | --- |
@@ -43,7 +43,7 @@ La aplicación cuenta con los siguientes roles de usuario:
 | Requiere autorización | Sí/No |
 | Confirmación o ejecución de la reserva mediante QR o NFC | Opcional |
 
-## Autoría
+## 👨‍💻 Autoría
 
 Este proyecto ha sido desarrollado por:
 
@@ -52,6 +52,6 @@ Este proyecto ha sido desarrollado por:
 - [Rubén García-Redondo Marín](https://github.com/RuyMi)
 
 
-## Licencia
+## 📄 Licencia
 
 Este proyecto está licenciado bajo la Licencia MIT. Consulte el archivo [LICENSE](LICENSE) para obtener más información.
