@@ -3,8 +3,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "3.0.5"
     id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.7.22"
-    kotlin("plugin.spring") version "1.7.22"
+    kotlin("jvm") version "1.8.10"
+    kotlin("plugin.spring") version "1.8.10"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
 }
 
 group = "es.dam"
@@ -16,13 +17,16 @@ repositories {
 }
 
 dependencies {
+    // MongoDB
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+
+    // Validation
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
-    //Serialización
+    // Serialización
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
-    //Kotlin
+    // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -36,7 +40,7 @@ dependencies {
     // Mockk
     testImplementation("com.ninja-squad:springmockk:4.0.2")
 
-    //Spring security
+    // Spring security
     //implementation("org.springframework.boot:spring-boot-starter-security")
 
     // JWT
