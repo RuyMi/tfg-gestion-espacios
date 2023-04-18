@@ -17,11 +17,16 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter")
+
     // MongoDB
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 
     // Validation
     implementation("org.springframework.boot:spring-boot-starter-validation")
+
+    //Spring WebSocket
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
 
     // Serialización
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
