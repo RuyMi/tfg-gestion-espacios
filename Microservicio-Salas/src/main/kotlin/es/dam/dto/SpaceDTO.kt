@@ -1,5 +1,6 @@
 package es.dam.dto
 
+import es.dam.models.Space
 import kotlinx.serialization.Serializable
 import kotlin.time.Duration
 
@@ -11,7 +12,7 @@ data class SpaceDTO(
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,
     val maxBookings: Int?,
-    val authorizedRoles: Set<String>,
+    val authorizedRoles: Set<Space.UserRole>,
     val bookingWindow: Duration
 )
 
