@@ -31,13 +31,13 @@ fun Application.spaceRoutes() {
         get("/spaces/reservables/{isReservable}") {
             val isReservable = call.parameters["isReservable"]
             isReservable?.let { spaceService.getAllSpacesReservables(it.toBoolean()).let { it1 -> call.respond(it1) } }
-            call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con ese id")
+            call.respond(HttpStatusCode.NotFound, "No se ha encontrado ningun espacio reservable = $isReservable")
         }
 
         get("/spaces/nombre/{name}") {
             val name = call.parameters["name"]
             name?.let { spaceService.getSpaceByName(it).let { it1 -> call.respond(it1!!) } }
-            call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con ese id")
+            call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con el nombre: $name")
         }
 
         post("/spaces") {
