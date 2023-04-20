@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 import kotlin.time.Duration
 
 @Serializable
-data class SpaceDTO(
+data class SpaceDto(
     val id: String,
     val uuid: String,
     val name: String,
@@ -17,7 +17,7 @@ data class SpaceDTO(
 )
 
 @Serializable
-data class SpaceDTOCreate(
+data class SpaceDtoCreate(
     val name: String,
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,
@@ -27,7 +27,7 @@ data class SpaceDTOCreate(
 )
 
 @Serializable
-data class SpaceDTOUpdate(
+data class SpaceDtoUpdate(
     val id: String,
     val uuid: String,
     val name: String,
@@ -39,6 +39,6 @@ data class SpaceDTOUpdate(
 )
 
 @Serializable
-data class SpaceAllDTO(
-    val data: List<SpaceDTO>
+data class SpaceAllDto(
+    val data: List<SpaceDto>
 )

@@ -1,11 +1,11 @@
 package es.dam.mappers
 
-import es.dam.dto.SpaceDTO
+import es.dam.dto.SpaceDto
 import es.dam.models.Space
 import org.litote.kmongo.toId
 import java.util.*
 
-fun Space.toSpaceDto() = SpaceDTO(
+fun Space.toSpaceDto() = SpaceDto(
     id = this.id.toString(),
     uuid = this.uuid.toString(),
     name = this.name,
@@ -16,7 +16,7 @@ fun Space.toSpaceDto() = SpaceDTO(
     bookingWindow = this.bookingWindow
 )
 
-fun SpaceDTO.toModel() = Space(
+fun SpaceDto.toModel() = Space(
     id = this.id.toId(),
     uuid = UUID.fromString(this.uuid),
     name = this.name,
