@@ -11,6 +11,7 @@ import es.dam.microserviciousuarios.utils.JWTUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -62,6 +63,7 @@ class UsersController @Autowired constructor(
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("")
     suspend fun findAll(@AuthenticationPrincipal user: User): ResponseEntity<UserDataDTO> {
         val res = userService.findAll().toList().map { it.toDTO() }
@@ -69,6 +71,7 @@ class UsersController @Autowired constructor(
         return ResponseEntity.ok(res2)
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/{id}")
     suspend fun findById(@PathVariable id: String): ResponseEntity<UserResponseDTO> {
         try {
@@ -99,6 +102,7 @@ class UsersController @Autowired constructor(
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     suspend fun delete(@PathVariable id: String): ResponseEntity<UserDTO> {
         try {
