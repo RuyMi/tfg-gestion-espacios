@@ -46,10 +46,10 @@ dependencies {
     testImplementation("com.ninja-squad:springmockk:4.0.2")
 
     // Spring security
-    //implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-security")
 
     // JWT
-    //implementation("com.auth0:java-jwt:4.2.1")
+    implementation("com.auth0:java-jwt:4.2.1")
 }
 
 tasks.withType<KotlinCompile> {

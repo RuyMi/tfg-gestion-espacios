@@ -33,7 +33,7 @@ data class UserRegisterDTO(
     val email: String,
     val password: String,
     val avatar: String?,
-    val userRole: Set<User.UserRole>
+    val userRole: Set<String>
 )
 
 @Serializable
@@ -43,7 +43,7 @@ data class UserUpdateDTO(
     val email: String,
     val password: String,
     val avatar: String?,
-    val userRole: Set<User.UserRole>
+    val userRole: Set<String>
 )
 
 @Serializable
@@ -53,15 +53,21 @@ data class UserLoginDTO(
 )
 
 @Serializable
+data class UserTokenDTO(
+    val user: UserResponseDTO,
+    val token: String
+)
+
+@Serializable
 data class UserResponseDTO(
-    val id: Long,
+    val id: Long?,
     val uuid: String,
     val name: String,
     val username: String,
     val email: String,
     val password: String,
     val avatar: String?,
-    val userRole: Set<User.UserRole>
+    val userRole: Set<String>
 )
 
 @Serializable

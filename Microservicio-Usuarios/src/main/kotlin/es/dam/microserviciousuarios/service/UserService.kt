@@ -5,8 +5,12 @@ import es.dam.microserviciousuarios.exceptions.UserNotFoundException
 import es.dam.microserviciousuarios.models.User
 import es.dam.microserviciousuarios.repositories.UsersRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -14,15 +18,13 @@ import java.time.LocalDateTime
 class UserService
 @Autowired constructor(
     private val usersRepository: UsersRepository,
-    //private val passwordEncoder: PasswordEncoder
-)
-//: UserDetailsService
-{
+    private val passwordEncoder: PasswordEncoder
+) : UserDetailsService {
 
-//    override fun loadUserByUsername(username: String?): UserDetails = runBlocking {
-//        return@runBlocking usersRepository.findUserByUsername(username!!).firstOrNull()
-//            ?: throw UserNotFoundException("User doesn't found with username: $username")
-//    }
+    override fun loadUserByUsername(username: String?): UserDetails = runBlocking {
+        return@runBlocking usersRepository.findUserByUsername(username!!).firstOrNull()
+            ?: throw UserNotFoundException("User doesn't found with username: $username")
+    }
 
     suspend fun findAll() = withContext(Dispatchers.IO) {
         return@withContext usersRepository.findAll()
@@ -49,7 +51,7 @@ class UserService
         }
 
         val saved = user.copy(
-//            password = passwordEncoder.encode(user.password),
+            password = passwordEncoder.encode(user.password),
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
         )
