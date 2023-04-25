@@ -37,7 +37,7 @@ class SpaceRepositoryImpl: SpaceRepository {
         return null
     }
 
-    override suspend fun delete(entity: Space): Boolean {
-        return db.getCollection<Space>().deleteOneById(entity.id).wasAcknowledged()
+    override suspend fun delete(id: Id<Space>): Boolean {
+        return db.getCollection<Space>().deleteOneById(id).wasAcknowledged()
     }
 }

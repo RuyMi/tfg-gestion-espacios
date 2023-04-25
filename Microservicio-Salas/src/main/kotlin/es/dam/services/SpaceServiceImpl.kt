@@ -15,8 +15,8 @@ class SpaceServiceImpl: SpaceService {
         return repo.update(space)
     }
 
-    override suspend fun deleteSpace(space: Space): Boolean {
-        return repo.delete(space)
+    override suspend fun deleteSpace(id: String): Boolean {
+        return repo.delete(id.toId())
     }
 
     override suspend fun getSpaceById(id: String): Space? {

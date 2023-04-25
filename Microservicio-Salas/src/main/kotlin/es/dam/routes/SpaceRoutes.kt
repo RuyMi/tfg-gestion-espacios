@@ -31,7 +31,7 @@ fun Application.spaceRoutes() {
         get("/spaces/reservables/{isReservable}") {
             val isReservable = call.parameters["isReservable"]
             isReservable?.let { spaceService.getAllSpacesReservables(it.toBoolean()).let { it1 -> call.respond(it1) } }
-            call.respond(HttpStatusCode.NotFound, "No se ha encontrado ningun espacio reservable = $isReservable")
+            call.respond(HttpStatusCode.NotFound, "No se ha encontrado ningún espacio reservable = $isReservable")
         }
 
         get("/spaces/nombre/{name}") {
@@ -53,14 +53,9 @@ fun Application.spaceRoutes() {
         }
 
         delete("/spaces") {
-            val space = call.receive<Space>()
-            spaceService.deleteSpace(space).let { call.respond(it) }
+            val id = call.parameters["id"]
+            id?.let { spaceService.deleteSpace(it).let { it1 -> call.respond(it1) } }
             call.respond(HttpStatusCode.BadRequest, "No se ha podido borrar el espacio")
         }
-
-
-
-
-
     }
 }
