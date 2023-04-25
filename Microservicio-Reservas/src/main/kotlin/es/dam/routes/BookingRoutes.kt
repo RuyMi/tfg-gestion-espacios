@@ -13,6 +13,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.bson.types.ObjectId
 import org.litote.kmongo.id.toId
+import java.time.LocalDateTime
 
 fun Application.bookingRoutes(){
     //TODO Inyeccion de dependencias
@@ -79,14 +80,15 @@ fun Application.bookingRoutes(){
             }
         }
 
-        put("/bookings") {
+        put("/bookings/{id}") {
+            val id = call.parameters["id"]
             val booking = call.receive<BookingDtoUpdate>()
             try{
-                bookingService.update(booking.toModel()).let { call.respond(it) }
+                bookingService.update(booking.toModel(), id!!).let { call.respond(it) }
             } catch (e: BookingException){
-                call.respond(HttpStatusCode.BadRequest, "No se ha podido actualizar la reserva")
+                call.respond(HttpStatusCode.BadRequest, "No se ha podido actualizar la reserva con id: $id")
             } catch (e: Exception){
-                call.respond(HttpStatusCode.BadRequest, "No se ha podido actualizar la reserva")
+                call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
             }
         }
 

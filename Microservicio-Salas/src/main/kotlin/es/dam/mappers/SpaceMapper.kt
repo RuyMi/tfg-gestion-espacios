@@ -6,6 +6,7 @@ import es.dam.dto.SpaceUpdateDTO
 import es.dam.models.Space
 import org.litote.kmongo.toId
 import java.util.*
+import kotlin.time.Duration
 
 fun Space.toSpaceDto() = SpaceDTO(
     id = this.id.toString(),
@@ -34,8 +35,8 @@ fun SpaceCreateDTO.toModel() = Space(
     isReservable = this.isReservable,
     requiresAuthorization = this.requiresAuthorization,
     maxBookings = this.maxBookings,
-    authorizedRoles = this.authorizedRoles,
-    bookingWindow = this.bookingWindow
+    authorizedRoles = this.authorizedRoles.map { Space.UserRole.valueOf(it) }.toSet(),
+    bookingWindow = Duration.parse(this.bookingWindow)
 )
 
 fun SpaceUpdateDTO.toModel() = Space(
@@ -45,7 +46,7 @@ fun SpaceUpdateDTO.toModel() = Space(
     isReservable = this.isReservable,
     requiresAuthorization = this.requiresAuthorization,
     maxBookings = this.maxBookings,
-    authorizedRoles = this.authorizedRoles,
-    bookingWindow = this.bookingWindow
+    authorizedRoles = this.authorizedRoles.map { Space.UserRole.valueOf(it) }.toSet(),
+    bookingWindow = Duration.parse(this.bookingWindow)
 )
 

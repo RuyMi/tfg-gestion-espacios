@@ -34,8 +34,8 @@ data class SpaceUpdateDTO(
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,
     val maxBookings: Int?,
-    val authorizedRoles: Set<String>?,
-    val bookingWindow: Duration?
+    val authorizedRoles: Set<String> = setOf(Space.UserRole.USER.toString()),
+    val bookingWindow: String
 )
 
 @Serializable

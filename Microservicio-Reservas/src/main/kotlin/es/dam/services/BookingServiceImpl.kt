@@ -3,6 +3,8 @@ package es.dam.services
 import es.dam.models.Booking
 import es.dam.repositories.BookingRepositoryImpl
 import org.litote.kmongo.Id
+import org.litote.kmongo.toId
+import java.time.LocalDateTime
 
 class BookingServiceImpl: BookingService{
 //TODO Inyeccion de dependencias
@@ -31,12 +33,20 @@ class BookingServiceImpl: BookingService{
         return repo.save(booking)
     }
 
-    override suspend fun update(booking: Booking): Booking {
-        return repo.update(booking)
+    override suspend fun update(booking: Booking, id: String): Booking {
+        val bookingOriginal = findById(id.toId())
+        val bookingUpdated = bookingOriginal.copy(
+            userId = booking.userId,
+            spaceId = booking.spaceId,
+            startTime = booking.startTime,
+            endTime = booking.startTime,
+            phone = booking.phone,
+            status = booking.status
+        )
+        return repo.update(bookingUpdated)
     }
 
     override suspend fun delete(id: Id<Booking>): Boolean {
         return repo.delete(id)
     }
-
 }

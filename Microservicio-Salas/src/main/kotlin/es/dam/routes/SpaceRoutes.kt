@@ -43,7 +43,7 @@ fun Application.spaceRoutes() {
             }catch (e: SpaceException){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado ningun espacio reservable = $isReservable")
             }catch (e: Exception){
-                call.respond(HttpStatusCode.NotFound, "El parametro reservable debe ser true o false")
+                call.respond(HttpStatusCode.BadRequest, "El parametro reservable debe ser true o false")
             }
         }
 
