@@ -2,24 +2,25 @@ package es.dam.services
 
 import es.dam.models.Space
 import es.dam.repositories.SpaceRepositoryImpl
+import org.litote.kmongo.Id
 import org.litote.kmongo.toId
 
 class SpaceServiceImpl: SpaceService {
     //TODO Cambiar a Koin
     val repo = SpaceRepositoryImpl()
-    override suspend fun createSpace(space: Space): Space? {
+    override suspend fun createSpace(space: Space): Space {
         return repo.save(space)
     }
 
-    override suspend fun updateSpace(space: Space): Space? {
+    override suspend fun updateSpace(space: Space): Space {
         return repo.update(space)
     }
 
-    override suspend fun deleteSpace(space: Space): Boolean {
-        return repo.delete(space)
+    override suspend fun deleteSpace(spaceId: Id<Space>): Boolean {
+        return repo.delete(spaceId)
     }
 
-    override suspend fun getSpaceById(id: String): Space? {
+    override suspend fun getSpaceById(id: String): Space {
         return repo.findById(id.toId())
     }
 
@@ -27,7 +28,7 @@ class SpaceServiceImpl: SpaceService {
         return repo.findAll()
     }
 
-    override suspend fun getSpaceByName(name: String): Space? {
+    override suspend fun getSpaceByName(name: String): Space {
         return repo.findByName(name)
     }
 
