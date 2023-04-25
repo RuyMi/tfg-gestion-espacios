@@ -21,7 +21,7 @@ fun Space.toSpaceDto() = SpaceDTO(
 
 fun SpaceDTO.toModel() = Space(
     id = this.id.toId(),
-    uuid = UUID.fromString(this.uuid),
+    uuid = this.uuid,
     name = this.name,
     isReservable = this.isReservable,
     requiresAuthorization = this.requiresAuthorization,
@@ -36,12 +36,12 @@ fun SpaceCreateDTO.toModel() = Space(
     requiresAuthorization = this.requiresAuthorization,
     maxBookings = this.maxBookings,
     authorizedRoles = this.authorizedRoles.map { Space.UserRole.valueOf(it) }.toSet(),
-    bookingWindow = Duration.parse(this.bookingWindow)
+    bookingWindow = Duration.ZERO
 )
 
 fun SpaceUpdateDTO.toModel() = Space(
     id = this.id.toId(),
-    uuid = UUID.fromString(this.uuid),
+    uuid = this.uuid,
     name = this.name,
     isReservable = this.isReservable,
     requiresAuthorization = this.requiresAuthorization,

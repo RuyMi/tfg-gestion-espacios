@@ -12,4 +12,5 @@ fun Application.module() {
     configureKoin()
     configureSerialization()
     configureRouting()
+    configureValidation()
 }

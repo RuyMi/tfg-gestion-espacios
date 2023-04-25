@@ -4,6 +4,7 @@ import es.dam.dto.SpaceCreateDTO
 import es.dam.dto.SpaceUpdateDTO
 import es.dam.exceptions.SpaceException
 import es.dam.mappers.toModel
+import es.dam.mappers.toSpaceDto
 import es.dam.models.Space
 import es.dam.services.SpaceServiceImpl
 import io.ktor.http.*
@@ -11,13 +12,14 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.core.qualifier.named
 import org.koin.ktor.ext.inject
 import org.litote.kmongo.toId
 
 
 fun Application.spaceRoutes() {
 
-    val spaceService: SpaceServiceImpl by inject()
+    val spaceService: SpaceServiceImpl by inject(named("SpaceServiceImpl"))
 
     routing {
         get("/") {
@@ -25,7 +27,7 @@ fun Application.spaceRoutes() {
         }
 
         get("/spaces") {
-            call.respond(spaceService.getAllSpaces())
+            call.respond(spaceService.getAllSpaces().map { it.toSpaceDto() })
         }
 
         get("/spaces/{id}") {
