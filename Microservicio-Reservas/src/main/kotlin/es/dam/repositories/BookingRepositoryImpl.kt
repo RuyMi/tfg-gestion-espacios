@@ -1,6 +1,7 @@
 package es.dam.repositories
 
 import es.dam.db.MongoDbManager
+import es.dam.exceptions.BookingException
 import es.dam.models.Booking
 import org.litote.kmongo.Id
 import org.litote.kmongo.eq
@@ -23,25 +24,25 @@ class BookingRepositoryImpl: BookingRepository{
         return db.getCollection<Booking>().find().toList()
     }
 
-    override suspend fun findById(id: Id<Booking>): Booking? {
-           return db.getCollection<Booking>().findOneById(id)
+    override suspend fun findById(id: Id<Booking>): Booking {
+           return db.getCollection<Booking>().findOneById(id)?: throw BookingException("No se ha encontrado la reserva con id $id")
     }
 
-    override suspend fun save(entity: Booking): Booking? {
+    override suspend fun save(entity: Booking): Booking {
         db.getCollection<Booking>().save(entity)?.let {
             return entity
         }
-        return null
+        throw BookingException("Error al guardar la reserva")
     }
 
-    override suspend fun update(entity: Booking): Booking? {
+    override suspend fun update(entity: Booking): Booking {
         db.getCollection<Booking>().save(entity)?.let {
             return entity
         }
-        return null
+        throw BookingException("Error al actualizar la reserva con id ${entity.id}")
     }
 
-    override suspend fun delete(entity: Booking): Boolean {
-        return db.getCollection<Booking>().deleteOneById(entity.id).wasAcknowledged()
+    override suspend fun delete(id: Id<Booking>): Boolean {
+        return db.getCollection<Booking>().deleteOneById(id).wasAcknowledged()
     }
 }
