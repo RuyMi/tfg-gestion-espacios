@@ -43,7 +43,7 @@ data class User(
     val lastPasswordChangeAt: LocalDateTime = LocalDateTime.now()
 ) : UserDetails {
     enum class UserRole {
-        USER, TEACHER, ADMINISTRADOR
+        USER, TEACHER, ADMINISTRATOR
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
