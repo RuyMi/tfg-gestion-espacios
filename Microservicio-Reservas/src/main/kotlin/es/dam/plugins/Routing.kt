@@ -1,5 +1,6 @@
 package es.dam.plugins
 
+import es.dam.routes.bookingRoutes
 import io.ktor.server.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.application.*
@@ -10,4 +11,5 @@ fun Application.configureRouting() {
             call.respondText("Hello World!")
         }
     }
+    bookingRoutes()
 }
