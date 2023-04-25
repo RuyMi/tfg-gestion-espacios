@@ -56,6 +56,9 @@ dependencies {
     implementation("org.litote.kmongo:kmongo-async:4.8.0")
     implementation("org.litote.kmongo:kmongo-coroutine:4.8.0")
 
+    // Content validation
+    implementation("io.ktor:ktor-server-request-validation:$ktor_version")
+
     // Serializar KMongo
     implementation("org.litote.kmongo:kmongo-id-serialization:4.8.0")
 
