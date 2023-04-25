@@ -6,7 +6,7 @@ import es.dam.microserviciousuarios.models.User
 
 fun User.toDTO(): UserResponseDTO {
     return UserResponseDTO(
-        id = id,
+        id = id.toString(),
         uuid = uuid.toString(),
         avatar = avatar,
         userRole = userRole.split(",").map { it.trim() }.toSet(),

@@ -4,6 +4,7 @@ import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients
+import org.bson.UuidRepresentation
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration
 
@@ -18,6 +19,7 @@ class MongoConfig : AbstractMongoClientConfiguration() {
             ConnectionString("mongodb+srv://pedidos:admin@biquesdam.el7mnzz.mongodb.net/reservas-luisvives?retryWrites=true&w=majority")
         val mongoClientSettings = MongoClientSettings.builder()
             .applyConnectionString(connectionString)
+            .uuidRepresentation(UuidRepresentation.STANDARD)
             .build()
         return MongoClients.create(mongoClientSettings)
     }

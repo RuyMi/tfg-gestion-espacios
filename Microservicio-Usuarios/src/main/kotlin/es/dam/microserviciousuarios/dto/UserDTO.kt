@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 
 @Serializable
 data class UserDTO(
-    val id: Long,
+    val id: String? = null,
     val uuid: String,
     val name: String,
     val username: String,
@@ -60,7 +60,7 @@ data class UserTokenDTO(
 
 @Serializable
 data class UserResponseDTO(
-    val id: Long? = null,
+    val id: String? = null,
     val uuid: String,
     val name: String,
     val username: String,

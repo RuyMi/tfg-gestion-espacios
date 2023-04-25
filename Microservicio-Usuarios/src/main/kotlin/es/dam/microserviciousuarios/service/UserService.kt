@@ -7,6 +7,7 @@ import es.dam.microserviciousuarios.repositories.UsersRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -30,15 +31,15 @@ class UserService
         return@withContext usersRepository.findAll()
     }
 
-    suspend fun findUserById(id: Long) = withContext(Dispatchers.IO) {
-        if (usersRepository.findById(id).isPresent) {
-            return@withContext usersRepository.findById(id).get()
+    suspend fun findUserById(id: String) = withContext(Dispatchers.IO) {
+        if (usersRepository.findById(ObjectId(id)).isPresent) {
+            return@withContext usersRepository.findById(ObjectId(id)).get()
         } else {
             throw UserNotFoundException("User with id $id not found.")
         }
     }
 
-    suspend fun save(user: User, isAdmin: Boolean = false): User = withContext(Dispatchers.IO) {
+    suspend fun save(user: User): User = withContext(Dispatchers.IO) {
         if (usersRepository.findUserByUsername(user.username)
                 .firstOrNull() != null
         ) {
@@ -51,6 +52,7 @@ class UserService
         }
 
         val saved = user.copy(
+            id = ObjectId.get(),
             password = passwordEncoder.encode(user.password),
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
@@ -71,9 +73,9 @@ class UserService
         }
     }
 
-    suspend fun deleteById(id: Long) = withContext(Dispatchers.IO) {
-        if (usersRepository.findById(id).isPresent) {
-            usersRepository.deleteById(id)
+    suspend fun deleteById(id: String) = withContext(Dispatchers.IO) {
+        if (usersRepository.findById(ObjectId(id)).isPresent) {
+            usersRepository.deleteById(ObjectId(id))
         } else {
             throw UserNotFoundException("User with id $id not found.")
         }
