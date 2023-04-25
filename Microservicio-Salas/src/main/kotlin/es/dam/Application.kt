@@ -11,4 +11,5 @@ fun main(args: Array<String>): Unit =
 fun Application.module() {
     configureSerialization()
     configureRouting()
+    configureValidation()
 }
