@@ -59,36 +59,40 @@ class UsersController @Autowired constructor(
 
             return ResponseEntity.ok(UserTokenDTO(userInsert.toDTO(), jwtToken))
         } catch (e: UserBadRequestException) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+            println(e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
     @GetMapping("")
     suspend fun findAll(@AuthenticationPrincipal user: User): ResponseEntity<UserDataDTO> {
-        val res = userService.findAll().toList().map { it.toDTO() }
-        val res2 = UserDataDTO(res)
-        return ResponseEntity.ok(res2)
+        try {
+            val res = userService.findAll().toList().map { it.toDTO() }
+            val res2 = UserDataDTO(res)
+            return ResponseEntity.ok(res2)
+        } catch (e: UserNotFoundException) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
+        }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
     @GetMapping("/{id}")
     suspend fun findById(@PathVariable id: String): ResponseEntity<UserResponseDTO> {
         try {
-            val res = userService.findUserById(id.toLong()).toDTO()
+            val res = userService.findUserById(id).toDTO()
             return ResponseEntity.ok(res)
         } catch (e: UserNotFoundException) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.message)
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/me")
     suspend fun update(
         @AuthenticationPrincipal user: User,
-        @PathVariable id: String, @RequestBody userDTO: UserUpdateDTO
+        @RequestBody userDTO: UserUpdateDTO
     ): ResponseEntity<UserResponseDTO> {
         try {
-            val rep = userDTO
             val updated = user.copy(
                 avatar = userDTO.avatar
             )
@@ -96,22 +100,22 @@ class UsersController @Autowired constructor(
 
             return ResponseEntity.status(HttpStatus.OK).body(res?.toDTO())
         } catch (e: UserNotFoundException) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.message)
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
         } catch (e: UserBadRequestException) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
     @DeleteMapping("/{id}")
     suspend fun delete(@PathVariable id: String): ResponseEntity<UserDTO> {
         try {
-            userService.deleteById(id.toLong())
+            userService.deleteById(id)
             return ResponseEntity.noContent().build()
         } catch (e: UserNotFoundException) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.message)
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
         } catch (e: UserBadRequestException) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
         }
     }
 }

@@ -3,6 +3,7 @@ package es.dam.utils
 import java.io.FileNotFoundException
 import java.util.*
 
+
 class PropertiesReader(private val fileName: String) {
     private val properties = Properties()
 

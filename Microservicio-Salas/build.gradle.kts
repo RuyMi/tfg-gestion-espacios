@@ -42,27 +42,20 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
     testImplementation("io.mockk:mockk:1.13.4")
 
-    // Koin - Core
-    implementation("io.insert-koin:koin-core:3.3.3")
-
-    // Koin Anotaciones
-    implementation("io.insert-koin:koin-annotations:1.1.1")
-    implementation("io.ktor:ktor-client-content-negotiation:2.2.4")
-    implementation("io.ktor:ktor-serialization-gson:2.2.3")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
-    ksp("io.insert-koin:koin-ksp-compiler:1.1.1")
+    // Koin
+    implementation("io.insert-koin:koin-ktor:$koin_ktor_version")
+    implementation("io.insert-koin:koin-annotations:$koin_ksp_version")
+    ksp("io.insert-koin:koin-ksp-compiler:$koin_ksp_version")
 
     // Mongo Reactivo
     implementation("org.litote.kmongo:kmongo-async:4.8.0")
     implementation("org.litote.kmongo:kmongo-coroutine:4.8.0")
 
+    // Content validation
+    implementation("io.ktor:ktor-server-request-validation:$ktor_version")
+
     // Serializar KMongo
     implementation("org.litote.kmongo:kmongo-id-serialization:4.8.0")
-
-    // Koin
-    implementation("io.insert-koin:koin-ktor:$koin_ktor_version")
-    implementation("io.insert-koin:koin-logger-slf4j:$koin_ktor_version")
-    implementation("io.insert-koin:koin-annotations:$koin_ksp_version")
 }
 
 sourceSets.main {

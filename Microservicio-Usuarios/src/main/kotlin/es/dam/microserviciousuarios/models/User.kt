@@ -3,7 +3,9 @@ package es.dam.microserviciousuarios.models
 import es.dam.microserviciousuarios.serializers.LocalDateTimeSerializer
 import es.dam.microserviciousuarios.serializers.UUIDSerializer
 import jakarta.validation.constraints.*
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -13,23 +15,29 @@ import java.util.*
 
 @Serializable
 data class User(
-    @Id
-    val id: Long? = null,
+    @Id @Contextual
+    val id: ObjectId? = ObjectId.get(),
     @Serializable(with = UUIDSerializer::class)
     val uuid: UUID = UUID.randomUUID(),
+
     @NotNull @NotBlank(message = "El nombre no puede estar vacío.") @NotEmpty(message = "El nombre no puede estar vacío.")
     val name: String,
+
     @NotNull @NotBlank(message = "El nombre de usuario no puede estar vacío.") @NotEmpty(message = "El nombre de usuario no puede estar vacío.")
+    @get:JvmName("userName")
     val username: String,
+
     @NotNull @NotBlank(message = "El email no puede estar vacío.") @NotEmpty(message = "El email no puede estar vacío.") @Email(
         regexp = "^[A-Za-z0-9+_.-]+@(.+)\$",
         message = "Email no válido."
     )
     val email: String,
+
     @NotNull @NotBlank(message = "La contraseña no puede estar vacía.") @NotEmpty(message = "La contraseña no puede estar vacía.") @Min(
         8,
         message = "La contraseña debe tener al menos 8 caracteres."
     )
+    @get:JvmName("userPassword")
     val password: String,
     val avatar: String? = null,
     val userRole: String = UserRole.USER.name,
@@ -43,7 +51,7 @@ data class User(
     val lastPasswordChangeAt: LocalDateTime = LocalDateTime.now()
 ) : UserDetails {
     enum class UserRole {
-        USER, TEACHER, ADMINISTRADOR
+        USER, TEACHER, ADMINISTRATOR
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {

@@ -1,6 +1,8 @@
 package es.dam.models
 
+import es.dam.serializers.IdSerializer
 import es.dam.serializers.UUIDSerializer
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
@@ -13,9 +15,9 @@ import kotlin.time.Duration
 @Serializable
 data class Space(
     @BsonId
+    @Serializable(with = IdSerializer::class)
     val id: Id<Space> = newId(),
-    @Serializable(with = UUIDSerializer::class)
-    val uuid: UUID = UUID.randomUUID(),
+    val uuid: String = UUID.randomUUID().toString(),
     val name: String,
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,

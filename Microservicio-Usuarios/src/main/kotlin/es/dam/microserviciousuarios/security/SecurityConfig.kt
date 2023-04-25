@@ -52,7 +52,7 @@ class SecurityConfig
             .requestMatchers("/error/**").permitAll()
             .requestMatchers("/users/login", "/users/register").permitAll()
             .requestMatchers("/**").permitAll()
-            .requestMatchers("/users", "/users{id}").hasAnyRole("ADMIN")
+            .requestMatchers("/users", "/users{id}").hasAnyRole("ADMINISTRATOR")
             .anyRequest().authenticated()
 
             .and()

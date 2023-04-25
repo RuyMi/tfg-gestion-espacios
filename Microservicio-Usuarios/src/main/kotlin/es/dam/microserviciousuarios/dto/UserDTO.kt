@@ -7,13 +7,13 @@ import java.time.LocalDateTime
 
 @Serializable
 data class UserDTO(
-    val id: Long,
+    val id: String? = null,
     val uuid: String,
     val name: String,
     val username: String,
     val email: String,
     val password: String,
-    val avatar: String?,
+    val avatar: String? = null,
     val userRole: Set<User.UserRole>,
     val metadata: Metadata
 ) {
@@ -32,7 +32,7 @@ data class UserRegisterDTO(
     val username: String,
     val email: String,
     val password: String,
-    val avatar: String?,
+    val avatar: String? = null,
     val userRole: Set<String>
 )
 
@@ -42,7 +42,7 @@ data class UserUpdateDTO(
     val username: String,
     val email: String,
     val password: String,
-    val avatar: String?,
+    val avatar: String? = null,
     val userRole: Set<String>
 )
 
@@ -60,13 +60,13 @@ data class UserTokenDTO(
 
 @Serializable
 data class UserResponseDTO(
-    val id: Long?,
+    val id: String? = null,
     val uuid: String,
     val name: String,
     val username: String,
     val email: String,
     val password: String,
-    val avatar: String?,
+    val avatar: String? = null,
     val userRole: Set<String>
 )
 
