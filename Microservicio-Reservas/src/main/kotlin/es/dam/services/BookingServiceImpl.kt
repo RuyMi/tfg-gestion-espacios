@@ -2,13 +2,17 @@ package es.dam.services
 
 import es.dam.models.Booking
 import es.dam.repositories.BookingRepositoryImpl
+import org.koin.core.annotation.Named
+import org.koin.core.annotation.Single
 import org.litote.kmongo.Id
 import org.litote.kmongo.toId
 import java.time.LocalDateTime
 
-class BookingServiceImpl: BookingService{
-//TODO Inyeccion de dependencias
-    private val repo = BookingRepositoryImpl()
+@Single
+class BookingServiceImpl(
+    @Named("BookingRepositoryImpl")
+    private val repo: BookingRepositoryImpl
+): BookingService{
     override suspend fun findAll(): List<Booking> {
         return repo.findAll()
     }

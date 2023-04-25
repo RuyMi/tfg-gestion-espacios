@@ -11,12 +11,13 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 import org.litote.kmongo.toId
 
 
 fun Application.spaceRoutes() {
 
-    val spaceService = SpaceServiceImpl()
+    val spaceService: SpaceServiceImpl by inject()
 
     routing {
         get("/") {

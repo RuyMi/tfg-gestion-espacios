@@ -2,12 +2,16 @@ package es.dam.services
 
 import es.dam.models.Space
 import es.dam.repositories.SpaceRepositoryImpl
+import org.koin.core.annotation.Named
+import org.koin.core.annotation.Single
 import org.litote.kmongo.Id
 import org.litote.kmongo.toId
 
-class SpaceServiceImpl: SpaceService {
-    //TODO Cambiar a Koin
-    val repo = SpaceRepositoryImpl()
+@Single
+class SpaceServiceImpl(
+    @Named("SpaceRepositoryImpl")
+    private val repo: SpaceRepositoryImpl
+): SpaceService {
     override suspend fun createSpace(space: Space): Space {
         return repo.save(space)
     }
@@ -35,6 +39,4 @@ class SpaceServiceImpl: SpaceService {
     override suspend fun getAllSpacesReservables(isReservable: Boolean): List<Space> {
         return repo.findAllReservables(isReservable)
     }
-
-
 }

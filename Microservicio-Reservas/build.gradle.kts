@@ -42,15 +42,10 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junit_version")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
 
-    // Koin - Core
-    implementation("io.insert-koin:koin-core:3.3.3")
-
-    // Koin Anotaciones
-    implementation("io.insert-koin:koin-annotations:1.1.1")
-    implementation("io.ktor:ktor-client-content-negotiation:2.2.4")
-    implementation("io.ktor:ktor-serialization-gson:2.2.4")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
-    ksp("io.insert-koin:koin-ksp-compiler:1.1.1")
+    // Koin
+    implementation("io.insert-koin:koin-ktor:$koin_ktor_version")
+    implementation("io.insert-koin:koin-annotations:$koin_ksp_version")
+    ksp("io.insert-koin:koin-ksp-compiler:$koin_ksp_version")
 
     // Mongo Reactivo
     implementation("org.litote.kmongo:kmongo-async:4.8.0")

@@ -5,7 +5,6 @@ import es.dam.dto.SpaceCreateDTO
 import es.dam.dto.SpaceDTO
 import io.ktor.server.plugins.requestvalidation.*
 
-
 fun RequestValidationConfig.bookingValidation(){
     validate<SpaceCreateDTO> {
         if(it.name.isEmpty()){
