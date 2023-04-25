@@ -17,19 +17,25 @@ data class User(
     val id: Long? = null,
     @Serializable(with = UUIDSerializer::class)
     val uuid: UUID = UUID.randomUUID(),
+
     @NotNull @NotBlank(message = "El nombre no puede estar vacío.") @NotEmpty(message = "El nombre no puede estar vacío.")
     val name: String,
+
     @NotNull @NotBlank(message = "El nombre de usuario no puede estar vacío.") @NotEmpty(message = "El nombre de usuario no puede estar vacío.")
+    @get:JvmName("userName")
     val username: String,
+
     @NotNull @NotBlank(message = "El email no puede estar vacío.") @NotEmpty(message = "El email no puede estar vacío.") @Email(
         regexp = "^[A-Za-z0-9+_.-]+@(.+)\$",
         message = "Email no válido."
     )
     val email: String,
+
     @NotNull @NotBlank(message = "La contraseña no puede estar vacía.") @NotEmpty(message = "La contraseña no puede estar vacía.") @Min(
         8,
         message = "La contraseña debe tener al menos 8 caracteres."
     )
+    @get:JvmName("userPassword")
     val password: String,
     val avatar: String? = null,
     val userRole: String = UserRole.USER.name,
