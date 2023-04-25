@@ -3,7 +3,9 @@ package es.dam.microserviciousuarios.models
 import es.dam.microserviciousuarios.serializers.LocalDateTimeSerializer
 import es.dam.microserviciousuarios.serializers.UUIDSerializer
 import jakarta.validation.constraints.*
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -13,8 +15,8 @@ import java.util.*
 
 @Serializable
 data class User(
-    @Id
-    val id: Long? = null,
+    @Id @Contextual
+    val id: ObjectId? = ObjectId.get(),
     @Serializable(with = UUIDSerializer::class)
     val uuid: UUID = UUID.randomUUID(),
 

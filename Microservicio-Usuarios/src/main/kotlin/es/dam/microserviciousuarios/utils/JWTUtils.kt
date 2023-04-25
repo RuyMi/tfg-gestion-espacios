@@ -15,13 +15,13 @@ class JWTUtils {
             .withIssuer("luisvives")
             .withExpiresAt(Date(System.currentTimeMillis() + (60 * 60 * 1000)))
             .withClaim("username", user.username)
-            .withClaim("rol", user.userRole.split(",").toSet().toString())
-            .sign(Algorithm.HMAC512("BiquesDAM"))
+            .withClaim("role", user.userRole.split(",").toSet().toString())
+            .sign(Algorithm.HMAC512("reservas-luisvives"))
     }
 
     fun verify(authToken: String): DecodedJWT? {
         return try {
-            JWT.require(Algorithm.HMAC512("BiquesDAM")).build().verify(authToken)
+            JWT.require(Algorithm.HMAC512("reservas-luisvives")).build().verify(authToken)
         } catch (e: Exception) {
             null
         }
