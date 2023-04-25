@@ -12,12 +12,12 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.bson.types.ObjectId
+import org.koin.ktor.ext.inject
 import org.litote.kmongo.id.toId
 import java.time.LocalDateTime
 
 fun Application.bookingRoutes(){
-    //TODO Inyeccion de dependencias
-    val bookingService = BookingServiceImpl()
+    val bookingService: BookingServiceImpl by inject()
 
     routing {
         get("/bookings") {
