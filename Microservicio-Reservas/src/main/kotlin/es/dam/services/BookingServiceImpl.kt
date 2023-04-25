@@ -15,7 +15,7 @@ class BookingServiceImpl: BookingService{
         return repo.findAllStatus(status)
     }
 
-    override suspend fun findById(id: Id<Booking>): Booking? {
+    override suspend fun findById(id: Id<Booking>): Booking {
         return repo.findById(id)
     }
 
@@ -27,11 +27,11 @@ class BookingServiceImpl: BookingService{
         return repo.findByUserId(id)
     }
 
-    override suspend fun save(booking: Booking): Booking? {
+    override suspend fun save(booking: Booking): Booking {
         return repo.save(booking)
     }
 
-    override suspend fun update(booking: Booking): Booking? {
+    override suspend fun update(booking: Booking): Booking {
         return repo.update(booking)
     }
 
