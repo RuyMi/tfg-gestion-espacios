@@ -26,8 +26,6 @@ data class BookingDtoCreate(
 
 @Serializable
 data class BookingDtoUpdate(
-    val id: String,
-    val uuid:String,
     val userId: String,
     val spaceId: String,
     val startTime: String,

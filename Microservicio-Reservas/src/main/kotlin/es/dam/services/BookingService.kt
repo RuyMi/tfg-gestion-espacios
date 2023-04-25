@@ -10,6 +10,6 @@ interface BookingService {
     suspend fun findBySpaceId(id: String): List<Booking>
     suspend fun findByUserId(id: String): List<Booking>
     suspend fun save(booking: Booking): Booking
-    suspend fun update(booking: Booking): Booking
+    suspend fun update(booking: Booking, id: String): Booking
     suspend fun delete(id: Id<Booking>): Boolean
 }
