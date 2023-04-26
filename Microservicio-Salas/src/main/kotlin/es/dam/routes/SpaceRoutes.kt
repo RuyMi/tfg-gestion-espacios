@@ -1,6 +1,7 @@
 package es.dam.routes
 
 import es.dam.dto.SpaceCreateDTO
+import es.dam.dto.SpaceDataDTO
 import es.dam.dto.SpaceUpdateDTO
 import es.dam.exceptions.SpaceException
 import es.dam.mappers.toModel
@@ -18,7 +19,6 @@ import org.litote.kmongo.toId
 
 
 fun Application.spaceRoutes() {
-
     val spaceService: SpaceServiceImpl by inject(named("SpaceServiceImpl"))
 
     routing {
@@ -27,7 +27,10 @@ fun Application.spaceRoutes() {
         }
 
         get("/spaces") {
-            call.respond(spaceService.getAllSpaces().map { it.toSpaceDto() })
+            val response = SpaceDataDTO(
+                data = spaceService.getAllSpaces().map { it.toSpaceDto() },
+            )
+            call.respond(response)
         }
 
         get("/spaces/{id}") {
@@ -36,6 +39,8 @@ fun Application.spaceRoutes() {
                 id?.let { spaceService.getSpaceById(it).let { it1 -> call.respond(it1) } }
             }catch(e: SpaceException){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con ese id")
+            } catch(e: Exception){
+                call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
             }
         }
 
@@ -57,7 +62,7 @@ fun Application.spaceRoutes() {
             } catch (e: SpaceException){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con el nombre: $name")
             } catch (e: Exception){
-                call.respond(HttpStatusCode.NotFound, "El parametro name debe ser una cadena de caracteres")
+                call.respond(HttpStatusCode.BadRequest, "El parametro name debe ser una cadena de caracteres")
             }
         }
 
@@ -65,26 +70,29 @@ fun Application.spaceRoutes() {
             val space = call.receive<SpaceCreateDTO>()
             try {
                 spaceService.createSpace(space.toModel()).let { call.respond(it) }
-            } catch (e: SpaceException) {
+            } catch (e: Exception) {
                 call.respond(HttpStatusCode.BadRequest, "No se ha podido crear el espacio")
             }
         }
 
-        put("/spaces") {
+        put("/spaces/{id}") {
+            val id = call.parameters["id"]
             val space = call.receive<SpaceUpdateDTO>()
             try {
-                spaceService.updateSpace(space.toModel()).let { call.respond(it) }
+                spaceService.updateSpace(space.toModel(), id!!).let { call.respond(it) }
             } catch (e: SpaceException) {
-                call.respond(HttpStatusCode.BadRequest, "No se ha podido actualizar el espacio")
+                call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con el id: $id")
+            } catch (e: Exception){
+                call.respond(HttpStatusCode.BadRequest, "El parametro id debe ser un id valido")
             }
         }
 
         delete("/spaces/{id}") {
             val spaceId = call.parameters["id"]
             try{
-                spaceId!!.let { spaceService.deleteSpace(it.toId()).let { it1 -> call.respond(it1) } }
+                spaceId!!.let { spaceService.deleteSpace(it).let { call.respond(HttpStatusCode.NoContent) } }
             }catch (e: SpaceException){
-                call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con el id: $spaceId")
+                call.respond(HttpStatusCode.NotFound, "No se ha borrar el espacio con el id: $spaceId")
             } catch (e: Exception){
                 call.respond(HttpStatusCode.NotFound, "El parametro id debe ser un id valido")
             }
