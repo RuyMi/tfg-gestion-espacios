@@ -23,7 +23,7 @@ data class Space(
     val requiresAuthorization: Boolean,
     val maxBookings: Int?,
     val authorizedRoles: Set<UserRole>,
-    val bookingWindow: Duration
+    val bookingWindow: String
 ) {
     enum class UserRole {
         ADMINISTRATOR, TEACHER, USER
