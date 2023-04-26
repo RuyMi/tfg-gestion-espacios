@@ -210,45 +210,6 @@
 			"response": []
 		},
 		{
-			"name": "404 DELETE",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlNjc2YmQwYy03MTczLTRkNGYtYjI1NC05NmYwMTYyYzQ1NDgiLCJpc3MiOiJCaXF1ZXNVc3VhcmlvcyIsImV4cCI6MTY3Nzk1NjI0OCwicm9sIjoiW1NVUEVSQURNSU4sICBBRE1JTl0iLCJ1c2VybmFtZSI6Im1pcmV5YSJ9.SFFxzfPowVBeMD0ajzyzTiQXUx1RU1MWXno72_4uA5tJORGoI2Oce0Ez3dDRpXyy4V5D2oIkl4-JKPPECXc0Sg",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"image\": \"https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png\",\r\n    \"rol\": [\r\n        \"SUPERADMIN\",\r\n        \"ADMIN\"\r\n    ],\r\n    \"email\": \"mireya@correo.com\",\r\n    \"username\": \"mireya\",\r\n    \"password\": \"mireya1234\",\r\n    \"address\": \"Ugena\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8383/users/5",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8383",
-					"path": [
-						"users",
-						"5"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "403 FIND ALL",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -332,7 +293,7 @@
 			"response": []
 		},
 		{
-			"name": "UPDATE",
+			"name": "UPDATE ME",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -365,6 +326,123 @@
 					"path": [
 						"users",
 						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE ANY USER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4MDY1MjRlNi1lYzEwLTQ4YjMtOWU5ZC0wNGQ3N2RlZDE0MGQiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgyNTM2MTc1LCJ1c2VybmFtZSI6Im1pcmV5YSJ9.n4T7zTcSDTY6F8iCu-sISB0Tt46y1xK5PzbKdHnVxymwh8qSoNChV4Qy1IoWOXu3cu4AUyu0fG05gUgMhH_NdQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mireya\",\r\n    \"username\": \"mireya\",\r\n    \"email\": \"mireya@correo.com\",\r\n    \"password\": \"mireya1234\",\r\n    \"avatar\": \"\",\r\n    \"userRole\": [\r\n        \"ADMINISTRATOR\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/644968de4eaf6040d7482f69",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"644968de4eaf6040d7482f69"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 UPDATE ANY USER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mireya\",\r\n    \"username\": \"mireya\",\r\n    \"email\": \"mireya@correo.com\",\r\n    \"password\": \"mireya1234\",\r\n    \"avatar\": \"\",\r\n    \"userRole\": [\r\n        \"ADMINISTRATOR\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/644968de4eaf6040d7482f69",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"644968de4eaf6040d7482f69"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 UPDATE ANY USER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4MDY1MjRlNi1lYzEwLTQ4YjMtOWU5ZC0wNGQ3N2RlZDE0MGQiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgyNTM2MTc1LCJ1c2VybmFtZSI6Im1pcmV5YSJ9.n4T7zTcSDTY6F8iCu-sISB0Tt46y1xK5PzbKdHnVxymwh8qSoNChV4Qy1IoWOXu3cu4AUyu0fG05gUgMhH_NdQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mireya\",\r\n    \"username\": \"mireya\",\r\n    \"email\": \"mireya@correo.com\",\r\n    \"password\": \"mireya1234\",\r\n    \"avatar\": \"UPDATED\",\r\n    \"userRole\": [\r\n        \"ADMINISTRATOR\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/64482c9670f1fb59d1b489fe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"64482c9670f1fb59d1b489fe"
 					]
 				}
 			},
@@ -404,6 +482,45 @@
 					"path": [
 						"users",
 						"64482c9670f1fb59d1b489fe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 DELETE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlNjc2YmQwYy03MTczLTRkNGYtYjI1NC05NmYwMTYyYzQ1NDgiLCJpc3MiOiJCaXF1ZXNVc3VhcmlvcyIsImV4cCI6MTY3Nzk1NjI0OCwicm9sIjoiW1NVUEVSQURNSU4sICBBRE1JTl0iLCJ1c2VybmFtZSI6Im1pcmV5YSJ9.SFFxzfPowVBeMD0ajzyzTiQXUx1RU1MWXno72_4uA5tJORGoI2Oce0Ez3dDRpXyy4V5D2oIkl4-JKPPECXc0Sg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"image\": \"https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png\",\r\n    \"rol\": [\r\n        \"SUPERADMIN\",\r\n        \"ADMIN\"\r\n    ],\r\n    \"email\": \"mireya@correo.com\",\r\n    \"username\": \"mireya\",\r\n    \"password\": \"mireya1234\",\r\n    \"address\": \"Ugena\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"5"
 					]
 				}
 			},
