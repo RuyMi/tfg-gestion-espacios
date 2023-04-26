@@ -9,7 +9,7 @@ import io.ktor.http.*
 import io.ktor.serialization.gson.*
 
 object KtorFitClientSpaces {
-    private const val API_URL = "http://api-spaces:6969/"
+    private const val API_URL = "http://localhost:8282/"
 
     private val ktorfit by lazy {
         Ktorfit.Builder()

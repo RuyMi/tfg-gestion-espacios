@@ -6,6 +6,7 @@ val logback_version: String by project
 val koin_ksp_version: String by project
 val koin_ktor_version: String by project
 val junit_version: String by project
+val ktor_swagger_ui_version: String by project
 
 plugins {
     kotlin("jvm") version "1.8.10"
@@ -25,15 +26,20 @@ application {
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
-    //TODO: Cambiar las versiones a otro archivo con variables
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("io.ktor:ktor-server-swagger:$ktor_version")
+    implementation("io.github.smiley4:ktor-swagger-ui:$ktor_swagger_ui_version")
+    implementation("io.ktor:ktor-server-openapi:$ktor_version")
+    implementation("io.ktor:ktor-server-websockets-jvm:$ktor_version")
+    implementation("io.ktor:ktor-network-tls-jvm:$ktor_version")
 
     //Tests
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
@@ -43,15 +49,10 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junit_version")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
 
-    // Koin - Core
-    implementation("io.insert-koin:koin-core:3.3.3")
-
-    // Koin Anotaciones
-    implementation("io.insert-koin:koin-annotations:1.1.1")
-    implementation("io.ktor:ktor-client-content-negotiation:2.2.4")
-    implementation("io.ktor:ktor-serialization-gson:2.2.4")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
-    ksp("io.insert-koin:koin-ksp-compiler:1.1.1")
+    // Koin
+    implementation("io.insert-koin:koin-ktor:$koin_ktor_version")
+    implementation("io.insert-koin:koin-annotations:$koin_ksp_version")
+    ksp("io.insert-koin:koin-ksp-compiler:$koin_ksp_version")
 
     // Mongo Reactivo
     implementation("org.litote.kmongo:kmongo-async:4.8.0")
@@ -60,14 +61,13 @@ dependencies {
     // Serializar KMongo
     implementation("org.litote.kmongo:kmongo-id-serialization:4.8.0")
 
-    // Koin
-    implementation("io.insert-koin:koin-ktor:$koin_ktor_version")
-    implementation("io.insert-koin:koin-logger-slf4j:$koin_ktor_version")
-    implementation("io.insert-koin:koin-annotations:$koin_ksp_version")
-
     //Ktorfit
-    ksp("de.jensklingenberg.ktorfit:ktorfit-ksp:1.0.0-beta16")
-    implementation("de.jensklingenberg.ktorfit:ktorfit-lib:1.0.0-beta16")
+    ksp("de.jensklingenberg.ktorfit:ktorfit-ksp:1.0.0")
+    implementation("de.jensklingenberg.ktorfit:ktorfit-lib:1.0.0")
+
+    //Auth
+    implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktor_version")
 }
 
 sourceSets.main {

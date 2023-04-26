@@ -52,7 +52,7 @@ class KtorFitUsersRepository: IUsersRepository {
         try {
             return@withContext call.await()
         } catch (e: Exception) {
-            throw Exception("Error finding user with id $id: ${e.message}")
+            throw Exception("Error updating user with id $id: ${e.message}")
         }
     }
 
