@@ -114,6 +114,10 @@ class UsersController @Autowired constructor(
     ): ResponseEntity<UserResponseDTO> {
         try {
             val updated = userService.findUserById(id).copy(
+                name = userDTO.name,
+                username = userDTO.username,
+                password = userDTO.password,
+                email = userDTO.email,
                 avatar = userDTO.avatar
             )
             val res = userService.update(updated)

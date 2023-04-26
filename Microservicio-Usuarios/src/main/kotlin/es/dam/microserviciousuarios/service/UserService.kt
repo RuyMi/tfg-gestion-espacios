@@ -27,11 +27,11 @@ class UserService
             ?: throw UserNotFoundException("User doesn't found with username: $username")
     }
 
-    suspend fun findAll() = withContext(Dispatchers.IO) {
+    suspend fun findAll(): List<User> = withContext(Dispatchers.IO) {
         return@withContext usersRepository.findAll()
     }
 
-    suspend fun findUserById(id: String) = withContext(Dispatchers.IO) {
+    suspend fun findUserById(id: String): User = withContext(Dispatchers.IO) {
         if (usersRepository.findById(ObjectId(id)).isPresent) {
             return@withContext usersRepository.findById(ObjectId(id)).get()
         } else {
@@ -66,8 +66,12 @@ class UserService
     }
 
     suspend fun update(user: User): User? = withContext(Dispatchers.IO) {
+        val saved = user.copy(
+            updatedAt = LocalDateTime.now()
+        )
+
         try {
-            return@withContext usersRepository.save(user)
+            return@withContext usersRepository.save(saved)
         } catch (e: UserBadRequestException) {
             throw UserBadRequestException("Error updating the user.")
         }
