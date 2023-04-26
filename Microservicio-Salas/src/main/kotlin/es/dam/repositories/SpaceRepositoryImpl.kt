@@ -5,16 +5,17 @@ import es.dam.exceptions.SpaceException
 import es.dam.models.Space
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.InjectedParam
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 import org.litote.kmongo.Id
+import org.litote.kmongo.coroutine.updateOne
 import org.litote.kmongo.eq
 
 @Single
 @Named("SpaceRepositoryImpl")
-class SpaceRepositoryImpl(
-    private val db: MongoDbManager
-): SpaceRepository {
+class SpaceRepositoryImpl(): SpaceRepository {
+    private val db = MongoDbManager
     override suspend fun findAll(): List<Space> = withContext(Dispatchers.IO){
         return@withContext db.database.getCollection<Space>().find().toList()
     }
@@ -27,7 +28,7 @@ class SpaceRepositoryImpl(
     }
 
     override suspend fun findById(id: Id<Space>): Space = withContext(Dispatchers.IO){
-        return@withContext db.database.getCollection<Space>().findOneById(id)?: throw SpaceException("No se ha encontrado el espacio con id $id")
+        return@withContext db.database.getCollection<Space>().find(Space::id eq id).first()?: throw SpaceException("No se ha encontrado el espacio Find con id $id")
     }
 
     override suspend fun save(entity: Space): Space = withContext(Dispatchers.IO){
@@ -39,12 +40,13 @@ class SpaceRepositoryImpl(
 
     override suspend fun update(entity: Space): Space = withContext(Dispatchers.IO){
         db.database.getCollection<Space>().save(entity)?.let {
+
             return@withContext entity
         }
         throw SpaceException("No se ha encontrado el espacio con id ${entity.id}")
     }
 
     override suspend fun delete(id: Id<Space>): Boolean = withContext(Dispatchers.IO){
-        return@withContext db.database.getCollection<Space>().deleteOneById(id).wasAcknowledged()
+        return@withContext db.database.getCollection<Space>().deleteMany(Space::id eq id).wasAcknowledged()
     }
 }

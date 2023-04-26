@@ -1,5 +1,6 @@
 package es.dam.plugins
 
+import es.dam.db.MongoDbManager
 import es.dam.repositories.SpaceRepositoryImpl
 import es.dam.services.SpaceServiceImpl
 import io.ktor.server.application.*
@@ -11,7 +12,7 @@ fun Application.configureKoin() {
     install(Koin) {
         modules(
             module {
-                single(named("SpaceRepositoryImpl")) { SpaceRepositoryImpl(get()) }
+                single { SpaceRepositoryImpl() }
                 single(named("SpaceServiceImpl")) { SpaceServiceImpl(get())}
             }
         )

@@ -107,6 +107,30 @@ class UsersController @Autowired constructor(
     }
 
     @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
+    @PutMapping("/{id}")
+    suspend fun update(
+        @PathVariable id: String,
+        @RequestBody userDTO: UserUpdateDTO
+    ): ResponseEntity<UserResponseDTO> {
+        try {
+            val updated = userService.findUserById(id).copy(
+                name = userDTO.name,
+                username = userDTO.username,
+                password = userDTO.password,
+                email = userDTO.email,
+                avatar = userDTO.avatar
+            )
+            val res = userService.update(updated)
+
+            return ResponseEntity.status(HttpStatus.OK).body(res?.toDTO())
+        } catch (e: UserNotFoundException) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
+        } catch (e: UserBadRequestException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
+        }
+    }
+
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
     @DeleteMapping("/{id}")
     suspend fun delete(@PathVariable id: String): ResponseEntity<UserDTO> {
         try {

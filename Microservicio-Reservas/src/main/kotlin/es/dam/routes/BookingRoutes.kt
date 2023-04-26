@@ -1,8 +1,10 @@
 package es.dam.routes
 
+import es.dam.dto.BookingAllDto
 import es.dam.dto.BookingDtoCreate
 import es.dam.dto.BookingDtoUpdate
 import es.dam.exceptions.BookingException
+import es.dam.mappers.toDTO
 import es.dam.mappers.toModel
 import es.dam.models.Booking
 import es.dam.services.BookingServiceImpl
@@ -12,6 +14,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.bson.types.ObjectId
+import org.koin.core.qualifier.named
 import org.koin.ktor.ext.inject
 import org.litote.kmongo.id.toId
 import java.time.LocalDateTime
@@ -21,7 +24,10 @@ fun Application.bookingRoutes(){
 
     routing {
         get("/bookings") {
-            call.respond(bookingService.findAll())
+            val response = BookingAllDto(
+                data = bookingService.findAll().map { it.toDTO() },
+            )
+            call.respond(response)
         }
 
         get("/bookings/{id}") {
@@ -32,7 +38,7 @@ fun Application.bookingRoutes(){
             } catch (e: BookingException) {
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado la reserva con el id: $id")
             } catch (e: Exception) {
-                call.respond(HttpStatusCode.NotFound, "El id debe ser un id válido")
+                call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
             }
         }
 
@@ -43,7 +49,7 @@ fun Application.bookingRoutes(){
             } catch (e: BookingException){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el estado: $status")
             } catch (e: Exception){
-                call.respond(HttpStatusCode.NotFound, "El estado debe ser un estado válido")
+                call.respond(HttpStatusCode.BadRequest, "El estado debe ser un estado válido")
             }
         }
 
@@ -54,7 +60,7 @@ fun Application.bookingRoutes(){
             } catch (e: BookingException){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el id de espacio: $id")
             } catch (e: Exception){
-                call.respond(HttpStatusCode.NotFound, "El id debe ser un id válido")
+                call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
             }
         }
 
@@ -65,18 +71,16 @@ fun Application.bookingRoutes(){
             } catch (e: BookingException){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el id de usuario: $id")
             } catch (e: Exception){
-                call.respond(HttpStatusCode.NotFound, "El id debe ser un id válido")
+                call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
             }
         }
 
         post("/bookings") {
             val booking = call.receive<BookingDtoCreate>()
             try{
-                bookingService.save(booking.toModel()).let { call.respond(it) }
-            } catch (e: BookingException){
-                call.respond(HttpStatusCode.BadRequest, "No se ha podido crear la reserva")
+                bookingService.save(booking.toModel()).let { call.respond(it.toDTO()) }
             } catch (e: Exception){
-                call.respond(HttpStatusCode.BadRequest, "No se ha podido crear la reserva")
+                call.respond(HttpStatusCode.BadRequest, "Deben de estar todos los campos rellenos correctamente")
             }
         }
 
@@ -86,7 +90,7 @@ fun Application.bookingRoutes(){
             try{
                 bookingService.update(booking.toModel(), id!!).let { call.respond(it) }
             } catch (e: BookingException){
-                call.respond(HttpStatusCode.BadRequest, "No se ha podido actualizar la reserva con id: $id")
+                call.respond(HttpStatusCode.NotFound, "No se ha podido actualizar la reserva con id: $id")
             } catch (e: Exception){
                 call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
             }
@@ -96,13 +100,12 @@ fun Application.bookingRoutes(){
             val id = call.parameters["id"]
             try {
                 val idBooking = ObjectId(id).toId<Booking>()
-                bookingService.delete(idBooking).let { call.respond(it) }
+                bookingService.delete(idBooking).let { call.respond(HttpStatusCode.NoContent) }
             } catch (e: BookingException) {
-                call.respond(HttpStatusCode.BadRequest, "No se ha podido borrar la reserva con id: $id")
+                call.respond(HttpStatusCode.NotFound, "No se ha podido borrar la reserva con id: $id")
             } catch (e: Exception) {
                 call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
             }
         }
-
     }
 }
