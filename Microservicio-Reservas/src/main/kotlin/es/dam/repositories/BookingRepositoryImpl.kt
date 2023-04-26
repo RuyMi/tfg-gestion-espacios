@@ -11,10 +11,8 @@ import org.litote.kmongo.Id
 import org.litote.kmongo.eq
 
 @Single
-@Named("BookingRepositoryImpl")
-class BookingRepositoryImpl(
-    private val db: MongoDbManager
-): BookingRepository{
+class BookingRepositoryImpl(): BookingRepository{
+    private val db = MongoDbManager
     override suspend fun findByUserId(id: String): List<Booking> = withContext(Dispatchers.IO) {
         return@withContext db.database.getCollection<Booking>().find(Booking::userId eq id).toList()
     }
@@ -37,14 +35,14 @@ class BookingRepositoryImpl(
 
     override suspend fun save(entity: Booking): Booking = withContext(Dispatchers.IO){
         db.database.getCollection<Booking>().save(entity)?.let {
-            return@let entity
+            return@withContext entity
         }
         throw BookingException("Error al guardar la reserva")
     }
 
     override suspend fun update(entity: Booking): Booking = withContext(Dispatchers.IO){
         db.database.getCollection<Booking>().save(entity)?.let {
-            return@let entity
+            return@withContext entity
         }
         throw BookingException("Error al actualizar la reserva con id ${entity.id}")
     }

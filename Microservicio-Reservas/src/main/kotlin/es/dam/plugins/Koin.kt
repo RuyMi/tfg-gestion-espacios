@@ -11,8 +11,8 @@ fun Application.configureKoin() {
     install(Koin) {
         modules(
             module {
-                single(named("BookingRepositoryImpl")) { BookingRepositoryImpl(get()) }
-                single(named("BookingServiceImpl")) { BookingServiceImpl(get())}
+                single { BookingRepositoryImpl() }
+                single { BookingServiceImpl(get())}
             }
         )
     }

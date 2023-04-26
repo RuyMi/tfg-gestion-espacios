@@ -13,7 +13,7 @@ data class SpaceDTO(
     val requiresAuthorization: Boolean,
     val maxBookings: Int?,
     val authorizedRoles: Set<Space.UserRole>,
-    val bookingWindow: Duration
+    val bookingWindow: String
 )
 
 @Serializable
@@ -28,8 +28,6 @@ data class SpaceCreateDTO(
 
 @Serializable
 data class SpaceUpdateDTO(
-    val id: String,
-    val uuid: String,
     val name: String,
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,

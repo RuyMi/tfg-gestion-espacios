@@ -2,6 +2,7 @@ package es.dam.services
 
 import es.dam.models.Booking
 import es.dam.repositories.BookingRepositoryImpl
+import org.koin.core.annotation.InjectedParam
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 import org.litote.kmongo.Id
@@ -10,7 +11,7 @@ import java.time.LocalDateTime
 
 @Single
 class BookingServiceImpl(
-    @Named("BookingRepositoryImpl")
+    @InjectedParam
     private val repo: BookingRepositoryImpl
 ): BookingService{
     override suspend fun findAll(): List<Booking> {
@@ -38,7 +39,7 @@ class BookingServiceImpl(
     }
 
     override suspend fun update(booking: Booking, id: String): Booking {
-        val bookingOriginal = findById(id.toId())
+        val bookingOriginal = findAll().first{ it.id.toString() == id }
         val bookingUpdated = bookingOriginal.copy(
             userId = booking.userId,
             spaceId = booking.spaceId,
