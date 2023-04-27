@@ -10,12 +10,12 @@ import kotlin.time.Duration
 
 fun Space.toSpaceDto() = SpaceDTO(
     id = this.id.toString(),
-    uuid = this.uuid.toString(),
+    uuid = this.uuid,
     name = this.name,
     isReservable = this.isReservable,
     requiresAuthorization = this.requiresAuthorization,
     maxBookings = this.maxBookings,
-    authorizedRoles = this.authorizedRoles,
+    authorizedRoles = this.authorizedRoles.map { it.toString() }.toSet(),
     bookingWindow = this.bookingWindow
 )
 
@@ -26,7 +26,7 @@ fun SpaceDTO.toModel() = Space(
     isReservable = this.isReservable,
     requiresAuthorization = this.requiresAuthorization,
     maxBookings = this.maxBookings,
-    authorizedRoles = this.authorizedRoles,
+    authorizedRoles = this.authorizedRoles.map { Space.UserRole.valueOf(it) }.toSet(),
     bookingWindow = this.bookingWindow
 )
 

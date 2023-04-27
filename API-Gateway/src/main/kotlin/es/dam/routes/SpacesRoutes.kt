@@ -34,7 +34,7 @@ fun Application.spacesRoutes() {
                         call.respond(HttpStatusCode.OK, spaces)
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al obtener las salas")
+                        call.respond(HttpStatusCode.NotFound, "Error al obtener las salas: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -45,13 +45,13 @@ fun Application.spacesRoutes() {
                         val id = call.parameters["id"]
 
                         val space = async {
-                            spacesRepository.findById("Bearer $token", id!!.toLong())
+                            spacesRepository.findById("Bearer $token", id!!)
                         }
 
                         call.respond(HttpStatusCode.OK, space.await())
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound,"La sala con ese id no ha sido encontrada")
+                        call.respond(HttpStatusCode.NotFound,"La sala con ese id no ha sido encontrada: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -68,7 +68,7 @@ fun Application.spacesRoutes() {
                         call.respond(HttpStatusCode.OK, spaces)
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al obtener salas reservables")
+                        call.respond(HttpStatusCode.NotFound, "Error al obtener salas reservables: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -84,7 +84,7 @@ fun Application.spacesRoutes() {
                         call.respond(HttpStatusCode.OK, space.await())
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound,"La sala con ese id no ha sido encontrada")
+                        call.respond(HttpStatusCode.NotFound,"La sala con ese id no ha sido encontrada: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -100,7 +100,7 @@ fun Application.spacesRoutes() {
                         call.respond(HttpStatusCode.Created, space.await())
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "Esta sala ya ha sido creada")
+                        call.respond(HttpStatusCode.BadRequest, "Esta sala ya ha sido creada: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -111,15 +111,15 @@ fun Application.spacesRoutes() {
                         val space = call.receive<SpaceUpdateDTO>()
 
                         val updatedspace = async {
-                            spacesRepository.update("Bearer $token", id!!.toLong(), space)
+                            spacesRepository.update("Bearer $token", id!!, space)
                         }
 
                         call.respond(HttpStatusCode.OK, updatedspace.await())
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al actualizar la sala")
+                        call.respond(HttpStatusCode.NotFound, "Error al actualizar la sala: ${e.stackTraceToString()}")
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "EError al actualizar la sala")
+                        call.respond(HttpStatusCode.BadRequest, "EError al actualizar la sala: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -128,12 +128,12 @@ fun Application.spacesRoutes() {
                         val token = tokenService.generateToken(call.principal()!!)
                         val id = call.parameters["id"]
 
-                        spacesRepository.delete("Bearer $token", id!!.toLong())
+                        spacesRepository.delete("Bearer $token", id!!)
 
                         call.respond(HttpStatusCode.NoContent)
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "La sala con ese id no ha sido encontrada")
+                        call.respond(HttpStatusCode.NotFound, "La sala con ese id no ha sido encontrada: ${e.stackTraceToString()}")
                     }
                 }
             }

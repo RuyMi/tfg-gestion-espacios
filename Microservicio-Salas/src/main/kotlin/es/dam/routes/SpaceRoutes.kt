@@ -79,7 +79,7 @@ fun Application.spaceRoutes() {
             val id = call.parameters["id"]
             val space = call.receive<SpaceUpdateDTO>()
             try {
-                spaceService.updateSpace(space.toModel(), id!!).let { call.respond(it) }
+                spaceService.updateSpace(space.toModel(), id!!).let { call.respond(it.toSpaceDto()) }
             } catch (e: SpaceException) {
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con el id: $id")
             } catch (e: Exception){

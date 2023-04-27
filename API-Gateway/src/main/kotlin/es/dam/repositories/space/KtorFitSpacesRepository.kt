@@ -12,11 +12,10 @@ import org.koin.core.annotation.Single
 
 @Single
 class KtorFitSpacesRepository: ISpacesRepository {
-
     private val client by lazy { KtorFitClientSpaces.instance }
 
     override suspend fun findAll(token: String): SpaceDataDTO = withContext(Dispatchers.IO) {
-        val call = async { client.findAll() }
+        val call = async { client.findAll(token) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -24,8 +23,8 @@ class KtorFitSpacesRepository: ISpacesRepository {
         }
     }
 
-    override suspend fun findById(token: String, id: Long): SpaceResponseDTO = withContext(Dispatchers.IO) {
-        val call = async { client.findById(id) }
+    override suspend fun findById(token: String, id: String): SpaceResponseDTO = withContext(Dispatchers.IO) {
+        val call = async { client.findById(token, id) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -34,7 +33,7 @@ class KtorFitSpacesRepository: ISpacesRepository {
     }
 
     override suspend fun findAllReservables(token: String, isReservable: Boolean): SpaceDataDTO = withContext(Dispatchers.IO) {
-        val call = async { client.findAllReservables(isReservable) }
+        val call = async { client.findAllReservables(token, isReservable) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -43,7 +42,7 @@ class KtorFitSpacesRepository: ISpacesRepository {
     }
 
     override suspend fun findByName(token: String, name: String): SpaceResponseDTO = withContext(Dispatchers.IO) {
-        val call = async { client.findByName(name) }
+        val call = async { client.findByName(token, name) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -52,7 +51,7 @@ class KtorFitSpacesRepository: ISpacesRepository {
     }
 
     override suspend fun create(token: String, entity: SpaceCreateDTO): SpaceResponseDTO = withContext(Dispatchers.IO) {
-        val call = async { client.create(entity) }
+        val call = async { client.create(token, entity) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -60,8 +59,8 @@ class KtorFitSpacesRepository: ISpacesRepository {
         }
     }
 
-    override suspend fun update(token: String, id: Long, entity: SpaceUpdateDTO): SpaceResponseDTO = withContext(Dispatchers.IO) {
-        val call = async { client.update(id, entity) }
+    override suspend fun update(token: String, id: String, entity: SpaceUpdateDTO): SpaceResponseDTO = withContext(Dispatchers.IO) {
+        val call = async { client.update(token, id, entity) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -69,8 +68,8 @@ class KtorFitSpacesRepository: ISpacesRepository {
         }
     }
 
-    override suspend fun delete(token: String, id: Long) = withContext(Dispatchers.IO) {
-        val call = async { client.delete(id) }
+    override suspend fun delete(token: String, id: String) = withContext(Dispatchers.IO) {
+        val call = async { client.delete(token, id) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {

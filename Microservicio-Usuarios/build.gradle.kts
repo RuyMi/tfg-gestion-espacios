@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.8.10"
     kotlin("plugin.spring") version "1.8.10"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+    id("de.jensklingenberg.ktorfit") version "1.0.0"
 }
 
 group = "es.dam"

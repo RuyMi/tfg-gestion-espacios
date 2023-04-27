@@ -59,7 +59,6 @@ class UsersController @Autowired constructor(
 
             return ResponseEntity.ok(UserTokenDTO(userInsert.toDTO(), jwtToken))
         } catch (e: UserBadRequestException) {
-            println(e.stackTraceToString())
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
         }
     }

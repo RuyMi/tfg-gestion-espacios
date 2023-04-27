@@ -14,15 +14,13 @@ data class UserDTO(
     val email: String,
     val password: String,
     val avatar: String? = null,
-    val userRole: Set<User.UserRole>,
+    val userRole: Set<String>,
     val metadata: Metadata
 ) {
     @Serializable
     data class Metadata(
-        @Serializable(with = LocalDateTimeSerializer::class)
-        val createdAt: LocalDateTime? = LocalDateTime.now(),
-        @Serializable(with = LocalDateTimeSerializer::class)
-        val updatedAt: LocalDateTime? = LocalDateTime.now()
+        val createdAt: String? = LocalDateTime.now().toString(),
+        val updatedAt: String? = LocalDateTime.now().toString()
     )
 }
 

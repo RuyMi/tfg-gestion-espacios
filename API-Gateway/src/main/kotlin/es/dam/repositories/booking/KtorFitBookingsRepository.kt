@@ -12,11 +12,10 @@ import org.koin.core.annotation.Single
 
 @Single
 class KtorFitBookingsRepository: IBookingsRepository {
-
     private val client by lazy { KtorFitClientBookings.instance }
 
     override suspend fun findAll(token: String): BookingDataDTO = withContext(Dispatchers.IO) {
-        val call = async { client.findAll() }
+        val call = async { client.findAll(token) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -24,8 +23,8 @@ class KtorFitBookingsRepository: IBookingsRepository {
         }
     }
 
-    override suspend fun findById(token: String, id: Long): BookingResponseDTO = withContext(Dispatchers.IO) {
-        val call = async { client.findById(id) }
+    override suspend fun findById(token: String, id: String): BookingResponseDTO = withContext(Dispatchers.IO) {
+        val call = async { client.findById(token, id) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -33,8 +32,8 @@ class KtorFitBookingsRepository: IBookingsRepository {
         }
     }
 
-    override suspend fun findBySpace(token: String, id: Long): BookingDataDTO = withContext(Dispatchers.IO) {
-        val call = async { client.findBySpace(id) }
+    override suspend fun findBySpace(token: String, id: String): BookingDataDTO = withContext(Dispatchers.IO) {
+        val call = async { client.findBySpace(token, id) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -42,8 +41,8 @@ class KtorFitBookingsRepository: IBookingsRepository {
         }
     }
 
-    override suspend fun findByUser(token: String, id: Long): BookingDataDTO = withContext(Dispatchers.IO) {
-        val call = async { client.findByUser(id) }
+    override suspend fun findByUser(token: String, id: String): BookingDataDTO = withContext(Dispatchers.IO) {
+        val call = async { client.findByUser(token, id) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -52,7 +51,7 @@ class KtorFitBookingsRepository: IBookingsRepository {
     }
 
     override suspend fun findByStatus(token: String, status: String): BookingDataDTO = withContext(Dispatchers.IO) {
-        val call = async { client.findByStatus(status) }
+        val call = async { client.findByStatus(token, status) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -61,7 +60,7 @@ class KtorFitBookingsRepository: IBookingsRepository {
     }
 
     override suspend fun create(token: String, entity: BookingCreateDTO): BookingResponseDTO = withContext(Dispatchers.IO) {
-        val call = async { client.create(entity) }
+        val call = async { client.create(token, entity) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -69,8 +68,8 @@ class KtorFitBookingsRepository: IBookingsRepository {
         }
     }
 
-    override suspend fun update(token: String, id: Long, entity: BookingUpdateDTO): BookingResponseDTO = withContext(Dispatchers.IO) {
-        val call = async { client.update(id, entity) }
+    override suspend fun update(token: String, id: String, entity: BookingUpdateDTO): BookingResponseDTO = withContext(Dispatchers.IO) {
+        val call = async { client.update(token, id, entity) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -78,8 +77,8 @@ class KtorFitBookingsRepository: IBookingsRepository {
         }
     }
 
-    override suspend fun delete(token: String, id: Long) = withContext(Dispatchers.IO) {
-        val call = async { client.delete(id) }
+    override suspend fun delete(token: String, id: String) = withContext(Dispatchers.IO) {
+        val call = async { client.delete(token, id) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {

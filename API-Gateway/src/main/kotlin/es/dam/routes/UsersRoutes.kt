@@ -35,7 +35,7 @@ fun Application.usersRoutes() {
                     call.respond(HttpStatusCode.OK, user.await())
 
                 } catch (e: Exception) {
-                    call.respond(HttpStatusCode.BadRequest, "Usuario o contraseña inválidos.")
+                    call.respond(HttpStatusCode.BadRequest, "Usuario o contraseña inválidos: ${e.stackTraceToString()}")
                 }
             }
 
@@ -50,7 +50,7 @@ fun Application.usersRoutes() {
                     call.respond(HttpStatusCode.Created, user.await())
 
                 } catch (e: Exception) {
-                    call.respond(HttpStatusCode.BadRequest, "El usuario ya esta registrado")
+                    call.respond(HttpStatusCode.BadRequest, "El usuario ya esta registrado: ${e.stackTraceToString()}")
                 }
             }
 
@@ -67,7 +67,7 @@ fun Application.usersRoutes() {
                         call.respond(HttpStatusCode.OK, users)
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al obtener los usuarios")
+                        call.respond(HttpStatusCode.NotFound, "Error al obtener los usuarios: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -78,13 +78,13 @@ fun Application.usersRoutes() {
                         val id = call.parameters["id"]
 
                         val user = async {
-                            userRepository.findById("Bearer $token", id!!.toLong())
+                            userRepository.findById("Bearer $token", id!!)
                         }
 
                         call.respond(HttpStatusCode.OK, user.await())
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound,"El usuario con ese id no ha sido encontrado")
+                        call.respond(HttpStatusCode.NotFound,"El usuario con ese id no ha sido encontrado: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -95,15 +95,15 @@ fun Application.usersRoutes() {
                         val user = call.receive<UserUpdateDTO>()
 
                         val updatedUser = async {
-                            userRepository.update("Bearer $token", id!!.toLong(), user)
+                            userRepository.update("Bearer $token", id!!, user)
                         }
 
                         call.respond(HttpStatusCode.OK, updatedUser.await())
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al actualizar el usuario")
+                        call.respond(HttpStatusCode.NotFound, "Error al actualizar el usuario: ${e.stackTraceToString()}")
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "Error al actualizar el usuario")
+                        call.respond(HttpStatusCode.BadRequest, "Error al actualizar el usuario: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -112,12 +112,12 @@ fun Application.usersRoutes() {
                         val token = tokenService.generateToken(call.principal()!!)
                         val id = call.parameters["id"]
 
-                        userRepository.delete("Bearer $token", id!!.toLong())
+                        userRepository.delete("Bearer $token", id!!)
 
                         call.respond(HttpStatusCode.NoContent)
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "El usuario con ese id no ha sido encontrado")
+                        call.respond(HttpStatusCode.NotFound, "El usuario con ese id no ha sido encontrado: ${e.stackTraceToString()}")
                     }
                 }
             }

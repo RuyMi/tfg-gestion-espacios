@@ -34,7 +34,7 @@ fun Application.bookingsRoutes() {
                         call.respond(HttpStatusCode.OK, bookings)
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al obtener las reservas")
+                        call.respond(HttpStatusCode.NotFound, "Error al obtener las reservas: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -45,13 +45,13 @@ fun Application.bookingsRoutes() {
                         val id = call.parameters["id"]
 
                         val booking = async {
-                            bookingsRepository.findById("Bearer $token", id!!.toLong())
+                            bookingsRepository.findById("Bearer $token", id!!)
                         }
 
                         call.respond(HttpStatusCode.OK, booking.await())
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "La reserva con ese id no ha sido encontrada")
+                        call.respond(HttpStatusCode.NotFound, "La reserva con ese id no ha sido encontrada: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -61,14 +61,14 @@ fun Application.bookingsRoutes() {
                         val id = call.parameters["id"]
 
                         val res = async {
-                            bookingsRepository.findBySpace("Bearer $token", id!!.toLong())
+                            bookingsRepository.findBySpace("Bearer $token", id!!)
                         }
                         val bookings = res.await()
 
                         call.respond(HttpStatusCode.OK, bookings)
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al encontrar las reservas para ese id de sala")
+                        call.respond(HttpStatusCode.NotFound, "Error al encontrar las reservas para ese id de sala: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -78,14 +78,14 @@ fun Application.bookingsRoutes() {
                         val id = call.parameters["id"]
 
                         val res = async {
-                            bookingsRepository.findByUser("Bearer $token", id!!.toLong())
+                            bookingsRepository.findByUser("Bearer $token", id!!)
                         }
                         val bookings = res.await()
 
                         call.respond(HttpStatusCode.OK, bookings)
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al encontrar las reservas para ese id de sala")
+                        call.respond(HttpStatusCode.NotFound, "Error al encontrar las reservas para ese id de sala: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -102,7 +102,7 @@ fun Application.bookingsRoutes() {
                         call.respond(HttpStatusCode.OK, bookings)
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al encontrar la reserva con ese estado")
+                        call.respond(HttpStatusCode.NotFound, "Error al encontrar la reserva con ese estado: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -119,7 +119,7 @@ fun Application.bookingsRoutes() {
                         call.respond(HttpStatusCode.Created, booking.await())
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "La reserva ya ha sido creada")
+                        call.respond(HttpStatusCode.BadRequest, "La reserva ya ha sido creada: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -130,15 +130,15 @@ fun Application.bookingsRoutes() {
                         val booking = call.receive<BookingUpdateDTO>()
 
                         val updatedbooking = async {
-                            bookingsRepository.update("Bearer $token", id!!.toLong(), booking)
+                            bookingsRepository.update("Bearer $token", id!!, booking)
                         }
 
                         call.respond(HttpStatusCode.OK, updatedbooking.await())
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al actualizar la reserva")
+                        call.respond(HttpStatusCode.NotFound, "Error al actualizar la reserva: ${e.stackTraceToString()}")
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "Error al actualizar la reserva")
+                        call.respond(HttpStatusCode.BadRequest, "Error al actualizar la reserva: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -147,12 +147,12 @@ fun Application.bookingsRoutes() {
                         val token = tokenService.generateToken(call.principal()!!)
                         val id = call.parameters["id"]
 
-                        bookingsRepository.delete("Bearer $token", id!!.toLong())
+                        bookingsRepository.delete("Bearer $token", id!!)
 
                         call.respond(HttpStatusCode.NoContent)
 
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "La reserva con ese id no ha sido encontrada")
+                        call.respond(HttpStatusCode.NotFound, "La reserva con ese id no ha sido encontrada: ${e.stackTraceToString()}")
                     }
                 }
             }
