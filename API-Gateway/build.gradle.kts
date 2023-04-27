@@ -77,6 +77,15 @@ sourceSets.main {
     java.srcDirs("build/generated/ksp/main/kotlin")
 }
 
+tasks.withType<Jar> {
+    manifest {
+        attributes(
+            "Main-Class" to "io.ktor.server.netty.EngineMain",
+            "Class-Path" to configurations.runtimeClasspath.get().files.joinToString(" ") { "lib/${it.name}" }
+        )
+    }
+}
+
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
     jvmTarget = "1.8"
