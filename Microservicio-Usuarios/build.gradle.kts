@@ -52,6 +52,14 @@ dependencies {
     implementation("com.auth0:java-jwt:4.2.1")
 }
 
+tasks.withType<Jar> {
+    manifest {
+        attributes(
+            "Main-Class" to "es.dam.microserviciousuarios.MicroservicioUsuariosApplication"
+        )
+    }
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
