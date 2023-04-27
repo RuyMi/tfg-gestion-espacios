@@ -4,7 +4,7 @@ WORKDIR /home/gradle/src
 
 RUN gradle buildFatJar --no-daemon
 FROM openjdk:17-jdk-slim-buster
-EXPOSE 8282:8282
+EXPOSE 8282
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/Microservicio-Salas-0.0.1.jar /app/microservicios-salas.jar
 ENTRYPOINT ["java","-jar","/app/microservicios-salas.jar"]
