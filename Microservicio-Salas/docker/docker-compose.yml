@@ -1,0 +1,8 @@
+services:
+  api-spaces:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    container_name: api-spaces
+    ports:
+      - "8282:8282"
