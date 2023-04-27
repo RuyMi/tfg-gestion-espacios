@@ -30,16 +30,16 @@ interface KtorFitRestSpaces {
     @PUT("spaces")
     suspend fun create(
         //@Header("Authorization") token: String,
-        @Path("id") id: Long, @Body space: SpaceUpdateDTO
+        @Body space: SpaceCreateDTO
     ): SpaceResponseDTO
 
-    @PUT("spaces")
+    @PUT("spaces/{id}")
     suspend fun update(
         //@Header("Authorization") token: String,
         @Path("id") id: Long, @Body space: SpaceUpdateDTO
     ): SpaceResponseDTO
 
-    @DELETE("spaces")
+    @DELETE("spaces/{id}")
     suspend fun delete(
         //@Header("Authorization") token: String,
         @Path("id") id: Long

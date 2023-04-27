@@ -1,5 +1,6 @@
 package es.dam.repositories.space
 
+import es.dam.dto.SpaceCreateDTO
 import es.dam.dto.SpaceDataDTO
 import es.dam.dto.SpaceResponseDTO
 import es.dam.dto.SpaceUpdateDTO
@@ -7,7 +8,9 @@ import es.dam.services.space.KtorFitClientSpaces
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Single
 
+@Single
 class KtorFitSpacesRepository: ISpacesRepository {
 
     private val client by lazy { KtorFitClientSpaces.instance }
@@ -48,8 +51,8 @@ class KtorFitSpacesRepository: ISpacesRepository {
         }
     }
 
-    override suspend fun create(token: String, id: Long, entity: SpaceUpdateDTO): SpaceResponseDTO = withContext(Dispatchers.IO) {
-        val call = async { client.create(id, entity) }
+    override suspend fun create(token: String, entity: SpaceCreateDTO): SpaceResponseDTO = withContext(Dispatchers.IO) {
+        val call = async { client.create(entity) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {

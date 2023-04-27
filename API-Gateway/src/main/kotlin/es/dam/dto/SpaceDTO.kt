@@ -19,6 +19,17 @@ data class SpaceDataDTO(
 )
 
 @Serializable
+data class SpaceCreateDTO(
+    val name: String,
+    val isReservable: Boolean = false,
+    val requiresAuthorization: Boolean,
+    val maxBookings: Int?,
+    val authorizedRoles: Set<String>,
+    val bookingWindow: String
+)
+
+
+@Serializable
 data class SpaceUpdateDTO(
     val name: String?,
     val isReservable: Boolean?,

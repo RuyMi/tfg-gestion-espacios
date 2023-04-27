@@ -5,8 +5,9 @@ import es.dam.services.user.KtorFitClientUsers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Single
 
-
+@Single
 class KtorFitUsersRepository: IUsersRepository {
 
     private val client by lazy { KtorFitClientUsers.instance }

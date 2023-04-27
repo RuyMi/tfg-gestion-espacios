@@ -1,5 +1,6 @@
 package es.dam.routes
 
+import es.dam.dto.BookingCreateDTO
 import es.dam.services.token.TokensService
 import es.dam.dto.BookingUpdateDTO
 import es.dam.repositories.booking.KtorFitBookingsRepository
@@ -10,12 +11,13 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.async
+import org.koin.ktor.ext.inject
 
 private const val ENDPOINT = "bookings"
 
 fun Application.bookingsRoutes() {
-    val bookingsRepository = KtorFitBookingsRepository()
-    val tokenService = TokensService()
+    val bookingsRepository : KtorFitBookingsRepository by inject()
+    val tokenService : TokensService by inject()
 
     routing {
         route("/$ENDPOINT") {
@@ -108,11 +110,10 @@ fun Application.bookingsRoutes() {
 
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
-                        val id = call.parameters["id"]
-                        val entity = call.receive<BookingUpdateDTO>()
+                        val entity = call.receive<BookingCreateDTO>()
 
                         val booking = async {
-                            bookingsRepository.create(token, id!!.toLong(), entity)
+                            bookingsRepository.create(token, entity)
                         }
 
                         call.respond(HttpStatusCode.Created, booking.await())

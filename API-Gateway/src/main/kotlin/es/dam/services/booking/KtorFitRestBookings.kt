@@ -36,16 +36,16 @@ interface KtorFitRestBookings {
     @PUT("bookings")
     suspend fun create(
         //@Header("Authorization") token: String,
-        @Path("id") id: Long, @Body booking: BookingUpdateDTO
+        @Body booking: BookingCreateDTO
     ): BookingResponseDTO
 
-    @PUT("bookings")
+    @PUT("bookings/{id}")
     suspend fun update(
         //@Header("Authorization") token: String,
         @Path("id") id: Long, @Body booking: BookingUpdateDTO
     ): BookingResponseDTO
 
-    @DELETE("bookings")
+    @DELETE("bookings/{id}")
     suspend fun delete(
         //@Header("Authorization") token: String,
         @Path("id") id: Long

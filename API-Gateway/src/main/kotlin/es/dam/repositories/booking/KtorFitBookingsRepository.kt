@@ -1,5 +1,6 @@
 package es.dam.repositories.booking
 
+import es.dam.dto.BookingCreateDTO
 import es.dam.dto.BookingDataDTO
 import es.dam.dto.BookingResponseDTO
 import es.dam.dto.BookingUpdateDTO
@@ -7,7 +8,9 @@ import es.dam.services.booking.KtorFitClientBookings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Single
 
+@Single
 class KtorFitBookingsRepository: IBookingsRepository {
 
     private val client by lazy { KtorFitClientBookings.instance }
@@ -57,8 +60,8 @@ class KtorFitBookingsRepository: IBookingsRepository {
         }
     }
 
-    override suspend fun create(token: String, id: Long, entity: BookingUpdateDTO): BookingResponseDTO = withContext(Dispatchers.IO) {
-        val call = async { client.create(id, entity) }
+    override suspend fun create(token: String, entity: BookingCreateDTO): BookingResponseDTO = withContext(Dispatchers.IO) {
+        val call = async { client.create(entity) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {

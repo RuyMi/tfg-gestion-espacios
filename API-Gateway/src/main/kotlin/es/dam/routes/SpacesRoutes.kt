@@ -1,5 +1,6 @@
 package es.dam.routes
 
+import es.dam.dto.SpaceCreateDTO
 import es.dam.dto.SpaceUpdateDTO
 import es.dam.services.token.TokensService
 import es.dam.repositories.space.KtorFitSpacesRepository
@@ -10,12 +11,13 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.async
+import org.koin.ktor.ext.inject
 
 private const val ENDPOINT = "spaces"
 
 fun Application.spacesRoutes() {
-    val spacesRepository = KtorFitSpacesRepository()
-    val tokenService = TokensService()
+    val spacesRepository : KtorFitSpacesRepository by inject()
+    val tokenService : TokensService by inject()
 
     routing {
         route("/$ENDPOINT") {
@@ -87,14 +89,12 @@ fun Application.spacesRoutes() {
                 }
 
                 post() {
-
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
-                        val id = call.parameters["id"]
-                        val entity = call.receive<SpaceUpdateDTO>()
+                        val entity = call.receive<SpaceCreateDTO>()
 
                         val space = async {
-                            spacesRepository.create(token, id!!.toLong(), entity)
+                            spacesRepository.create(token,  entity)
                         }
 
                         call.respond(HttpStatusCode.Created, space.await())

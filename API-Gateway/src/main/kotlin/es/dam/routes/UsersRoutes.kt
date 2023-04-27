@@ -12,12 +12,13 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.async
+import org.koin.ktor.ext.inject
 
 private const val ENDPOINT = "users"
 
 fun Application.usersRoutes() {
-    val userRepository = KtorFitUsersRepository()
-    val tokenService = TokensService()
+    val userRepository : KtorFitUsersRepository by inject()
+    val tokenService : TokensService by inject()
 
     routing {
 

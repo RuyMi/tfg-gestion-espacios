@@ -14,6 +14,16 @@ data class BookingResponseDTO(
 )
 
 @Serializable
+data class BookingCreateDTO(
+    val userId: String,
+    val spaceId: String,
+    val startTime: String,
+    val endTime: String,
+    val phone: String?,
+    val status: String = "PENDING"
+)
+
+@Serializable
 data class BookingDataDTO(
     val data: List<BookingResponseDTO>
 )

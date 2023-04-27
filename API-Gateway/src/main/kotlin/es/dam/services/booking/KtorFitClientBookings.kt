@@ -1,11 +1,10 @@
 package es.dam.services.booking
 
 import de.jensklingenberg.ktorfit.Ktorfit
-import de.jensklingenberg.ktorfit.create
 import io.ktor.client.plugins.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.gson.*
 
 object KtorFitClientBookings {

@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+# USUARIOS
+  api-users:
+    build:
+      context: ../../Microservicio-Usuarios
+      dockerfile: ./docker/Dockerfile
+    container_name: api-users
+    ports:
+      - "8383:8383"
+
+# SALAS
+  api-spaces:
+    build:
+      context: ../../Microservicio-Salas
+      dockerfile: ./docker/Dockerfile
+    container_name: api-spaces
+    ports:
+      - "8282:8282"
+
+# RESERVAS
+  api-bookings:
+    build:
+      context: ../../Microservicio-Reservas
+      dockerfile: ./docker/Dockerfile
+    container_name: api-bookings
+    ports:
+      - "8181:8181"
+
+
+# GENERAL
+  gateway:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - api-spaces
+      - api-users
+      - api-bookings

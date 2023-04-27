@@ -64,6 +64,9 @@ dependencies {
     //Ktorfit
     ksp("de.jensklingenberg.ktorfit:ktorfit-ksp:1.0.0")
     implementation("de.jensklingenberg.ktorfit:ktorfit-lib:1.0.0")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-client-serialization:$ktor_version")
+    implementation("io.ktor:ktor-serialization-gson:2.2.4")
 
     //Auth
     implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
