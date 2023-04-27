@@ -70,8 +70,8 @@ sourceSets.main {
 tasks.withType<Jar> {
     manifest {
         attributes(
-            "Main-Class" to "io.ktor.server.netty.EngineMain",
-            "Class-Path" to configurations.runtimeClasspath.get().files.joinToString(" ") { "lib/${it.name}" }
+            "Main-Class" to "es.dam.ApplicationKt",
+            "Class-Path" to configurations.runtimeClasspath.get().files.joinToString(" ")
         )
     }
 }
