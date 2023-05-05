@@ -36,7 +36,7 @@ fun Application.spaceRoutes() {
         get("/spaces/{id}") {
             try{
                 val id = call.parameters["id"]
-                id?.let { spaceService.getSpaceById(it).let { it1 -> call.respond(it1) } }
+                id?.let { spaceService.getSpaceById(it).let { it1 -> call.respond(it1.toSpaceDto()) } }
             }catch(e: SpaceException){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con ese id")
             } catch(e: Exception){
@@ -47,7 +47,11 @@ fun Application.spaceRoutes() {
         get("/spaces/reservables/{isReservable}") {
             val isReservable = call.parameters["isReservable"]
             try{
-                isReservable?.let { spaceService.getAllSpacesReservables(it.toBoolean()).let { it1 -> call.respond(it1) } }
+                val res = isReservable?.let { spaceService.getAllSpacesReservables(it.toBoolean())}?.map { it.toSpaceDto() }
+                val response = SpaceDataDTO(
+                    data = res!!
+                )
+                call.respond(response)
             }catch (e: SpaceException){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado ningun espacio reservable = $isReservable")
             }catch (e: Exception){
@@ -58,7 +62,7 @@ fun Application.spaceRoutes() {
         get("/spaces/nombre/{name}") {
             val name = call.parameters["name"]
             try{
-                name?.let { spaceService.getSpaceByName(it).let { it1 -> call.respond(it1) } }
+                name?.let { spaceService.getSpaceByName(it).let { it1 -> call.respond(it1.toSpaceDto()) } }
             } catch (e: SpaceException){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con el nombre: $name")
             } catch (e: Exception){
@@ -69,7 +73,7 @@ fun Application.spaceRoutes() {
         post("/spaces") {
             val space = call.receive<SpaceCreateDTO>()
             try {
-                spaceService.createSpace(space.toModel()).let { call.respond(it) }
+                spaceService.createSpace(space.toModel()).let { call.respond(it.toSpaceDto()) }
             } catch (e: Exception) {
                 call.respond(HttpStatusCode.BadRequest, "No se ha podido crear el espacio")
             }

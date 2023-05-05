@@ -27,7 +27,7 @@ interface KtorFitRestSpaces {
         @Path("name") name: String
     ): SpaceResponseDTO
 
-    @PUT("spaces")
+    @POST("spaces")
     suspend fun create(
         @Header("Authorization") token: String,
         @Body space: SpaceCreateDTO

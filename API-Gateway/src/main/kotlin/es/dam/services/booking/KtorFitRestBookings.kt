@@ -33,7 +33,7 @@ interface KtorFitRestBookings {
         @Path("status") status: String
     ): BookingDataDTO
 
-    @PUT("bookings")
+    @POST("bookings")
     suspend fun create(
         @Header("Authorization") token: String,
         @Body booking: BookingCreateDTO
