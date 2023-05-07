@@ -38,9 +38,9 @@ fun Application.spaceRoutes() {
                 val id = call.parameters["id"]
                 id?.let { spaceService.getSpaceById(it).let { it1 -> call.respond(it1.toSpaceDto()) } }
             }catch(e: SpaceException){
-                call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con ese id")
+                call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con ese uuid")
             } catch(e: Exception){
-                call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
+                call.respond(HttpStatusCode.BadRequest, "El uuid debe ser un uuid válido")
             }
         }
 
@@ -85,9 +85,9 @@ fun Application.spaceRoutes() {
             try {
                 spaceService.updateSpace(space.toModel(), id!!).let { call.respond(it.toSpaceDto()) }
             } catch (e: SpaceException) {
-                call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con el id: $id")
+                call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con el uuid: $id")
             } catch (e: Exception){
-                call.respond(HttpStatusCode.BadRequest, "El parametro id debe ser un id valido")
+                call.respond(HttpStatusCode.BadRequest, "El parametro uuid debe ser un uuid valido")
             }
         }
 
@@ -96,9 +96,9 @@ fun Application.spaceRoutes() {
             try{
                 spaceId!!.let { spaceService.deleteSpace(it).let { call.respond(HttpStatusCode.NoContent) } }
             }catch (e: SpaceException){
-                call.respond(HttpStatusCode.NotFound, "No se ha borrar el espacio con el id: $spaceId")
+                call.respond(HttpStatusCode.NotFound, "No se ha borrar el espacio con el uuid: $spaceId")
             } catch (e: Exception){
-                call.respond(HttpStatusCode.NotFound, "El parametro id debe ser un id valido")
+                call.respond(HttpStatusCode.NotFound, "El parametro uuid debe ser un uuid valido")
             }
         }
     }

@@ -11,6 +11,7 @@ import org.koin.core.annotation.Single
 import org.litote.kmongo.Id
 import org.litote.kmongo.coroutine.updateOne
 import org.litote.kmongo.eq
+import java.util.*
 
 @Single
 @Named("SpaceRepositoryImpl")
@@ -27,15 +28,15 @@ class SpaceRepositoryImpl(): SpaceRepository {
         return@withContext db.database.getCollection<Space>().find(Space::isReservable eq isReservable).toList()
     }
 
-    override suspend fun findById(id: Id<Space>): Space = withContext(Dispatchers.IO){
-        return@withContext db.database.getCollection<Space>().find(Space::id eq id).first()?: throw SpaceException("No se ha encontrado el espacio Find con id $id")
+    override suspend fun findById(id: UUID): Space = withContext(Dispatchers.IO){
+        return@withContext db.database.getCollection<Space>().find(Space::uuid eq id.toString()).first()?: throw SpaceException("No se ha encontrado el espacio con uuid $id")
     }
 
     override suspend fun save(entity: Space): Space = withContext(Dispatchers.IO){
         db.database.getCollection<Space>().save(entity)?.let {
             return@withContext entity
         }
-        throw SpaceException("Error al guardar el espacio con id ${entity.id}")
+        throw SpaceException("Error al guardar el espacio con uuid ${entity.id}")
     }
 
     override suspend fun update(entity: Space): Space = withContext(Dispatchers.IO){
@@ -43,10 +44,10 @@ class SpaceRepositoryImpl(): SpaceRepository {
 
             return@withContext entity
         }
-        throw SpaceException("No se ha encontrado el espacio con id ${entity.id}")
+        throw SpaceException("No se ha encontrado el espacio con uuid ${entity.id}")
     }
 
-    override suspend fun delete(id: Id<Space>): Boolean = withContext(Dispatchers.IO){
-        return@withContext db.database.getCollection<Space>().deleteMany(Space::id eq id).wasAcknowledged()
+    override suspend fun delete(id: UUID): Boolean = withContext(Dispatchers.IO){
+        return@withContext db.database.getCollection<Space>().deleteMany(Space::uuid eq id.toString()).wasAcknowledged()
     }
 }

@@ -7,6 +7,7 @@ import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 import org.litote.kmongo.Id
 import org.litote.kmongo.toId
+import java.util.*
 
 @Single
 class SpaceServiceImpl(
@@ -31,11 +32,11 @@ class SpaceServiceImpl(
     }
 
     override suspend fun deleteSpace(spaceId: String): Boolean {
-        return repo.delete(spaceId.toId())
+        return repo.delete(UUID.fromString(spaceId))
     }
 
     override suspend fun getSpaceById(id: String): Space {
-        return repo.findById(id.toId())
+        return repo.findById(UUID.fromString(id))
     }
 
     override suspend fun getAllSpaces(): List<Space> {
