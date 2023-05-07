@@ -11,6 +11,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import jdk.jshell.spi.ExecutionControl.UserException
 import kotlinx.coroutines.async
 import org.koin.ktor.ext.inject
 
@@ -34,8 +35,10 @@ fun Application.usersRoutes() {
 
                     call.respond(HttpStatusCode.OK, user.await())
 
-                } catch (e: Exception) {
+                } catch (e: UserException) {
                     call.respond(HttpStatusCode.BadRequest, "Usuario o contraseña inválidos: ${e.stackTraceToString()}")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.BadRequest, "Error al hacer login: ${e.stackTraceToString()}")
                 }
             }
 
@@ -49,8 +52,10 @@ fun Application.usersRoutes() {
 
                     call.respond(HttpStatusCode.Created, user.await())
 
-                } catch (e: Exception) {
+                } catch (e: UserException) {
                     call.respond(HttpStatusCode.BadRequest, "El usuario ya esta registrado: ${e.stackTraceToString()}")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.BadRequest, "Error al registrar el usuario: ${e.stackTraceToString()}")
                 }
             }
 
@@ -66,8 +71,11 @@ fun Application.usersRoutes() {
 
                         call.respond(HttpStatusCode.OK, users)
 
-                    } catch (e: Exception) {
+                    } catch (e: UserException) {
                         call.respond(HttpStatusCode.NotFound, "Error al obtener los usuarios: ${e.stackTraceToString()}")
+                    } catch (e: Exception) {
+                        call.respond(HttpStatusCode.NotFound, "Error al obtener los usuarios: ${e.stackTraceToString()}"
+                        )
                     }
                 }
 
@@ -83,8 +91,10 @@ fun Application.usersRoutes() {
 
                         call.respond(HttpStatusCode.OK, user.await())
 
-                    } catch (e: Exception) {
+                    } catch (e: UserException) {
                         call.respond(HttpStatusCode.NotFound,"El usuario con ese id no ha sido encontrado: ${e.stackTraceToString()}")
+                    } catch (e: Exception) {
+                        call.respond(HttpStatusCode.BadRequest, "Error al obtener el usuario: ${e.stackTraceToString()}")
                     }
                 }
 
@@ -100,7 +110,25 @@ fun Application.usersRoutes() {
 
                         call.respond(HttpStatusCode.OK, updatedUser.await())
 
+                    } catch (e: UserException) {
+                        call.respond(HttpStatusCode.NotFound, "Error al actualizar el usuario: ${e.stackTraceToString()}")
                     } catch (e: Exception) {
+                        call.respond(HttpStatusCode.BadRequest, "Error al actualizar el usuario: ${e.stackTraceToString()}")
+                    }
+                }
+
+                put("/me") {
+                    try {
+                        val token = tokenService.generateToken(call.principal()!!)
+                        val user = call.receive<UserUpdateDTO>()
+
+                        val updatedUser = async {
+                            userRepository.me("Bearer $token", user)
+                        }
+
+                        call.respond(HttpStatusCode.OK, updatedUser.await())
+
+                    } catch (e: UserException) {
                         call.respond(HttpStatusCode.NotFound, "Error al actualizar el usuario: ${e.stackTraceToString()}")
                     } catch (e: Exception) {
                         call.respond(HttpStatusCode.BadRequest, "Error al actualizar el usuario: ${e.stackTraceToString()}")
@@ -116,8 +144,10 @@ fun Application.usersRoutes() {
 
                         call.respond(HttpStatusCode.NoContent)
 
-                    } catch (e: Exception) {
+                    } catch (e: UserException) {
                         call.respond(HttpStatusCode.NotFound, "El usuario con ese id no ha sido encontrado: ${e.stackTraceToString()}")
+                    } catch (e: Exception) {
+                        call.respond(HttpStatusCode.BadRequest, "Error al eliminar el usuario: ${e.stackTraceToString()}")
                     }
                 }
             }

@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.util.*
 
 @Service
 class UserService
@@ -36,6 +37,14 @@ class UserService
             return@withContext usersRepository.findById(ObjectId(id)).get()
         } else {
             throw UserNotFoundException("User with id $id not found.")
+        }
+    }
+
+    suspend fun findByUuid(uuid: String): User = withContext(Dispatchers.IO) {
+        if (usersRepository.findUserByUuid(UUID.fromString(uuid)).isNotEmpty()) {
+            return@withContext usersRepository.findUserByUuid(UUID.fromString(uuid)).first()
+        } else {
+            throw UserNotFoundException("User with uuid $uuid not found.")
         }
     }
 
@@ -77,11 +86,11 @@ class UserService
         }
     }
 
-    suspend fun deleteById(id: String) = withContext(Dispatchers.IO) {
-        if (usersRepository.findById(ObjectId(id)).isPresent) {
-            usersRepository.deleteById(ObjectId(id))
+    suspend fun deleteByUuid(uuid: String) = withContext(Dispatchers.IO) {
+        if (usersRepository.findUserByUuid(UUID.fromString(uuid)).isNotEmpty()) {
+            usersRepository.deleteByUuid(UUID.fromString(uuid))
         } else {
-            throw UserNotFoundException("User with id $id not found.")
+            throw UserNotFoundException("User with uuid $uuid not found.")
         }
     }
 }

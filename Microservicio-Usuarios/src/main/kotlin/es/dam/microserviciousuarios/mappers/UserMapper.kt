@@ -14,6 +14,7 @@ fun User.toDTO(): UserResponseDTO {
         username = username,
         password = password,
         name = name,
+        credits = credits,
     )
 }
 

@@ -41,6 +41,7 @@ data class User(
     val password: String,
     val avatar: String? = null,
     val userRole: String = UserRole.USER.name,
+    val credits: Int = 20,
 
     // Históricos.
     @Serializable(with = LocalDateTimeSerializer::class)

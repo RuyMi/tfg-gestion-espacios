@@ -31,6 +31,12 @@ interface KtorFitRestUsers {
         @Path("id") id: String, @Body user: UserUpdateDTO
     ): UserResponseDTO
 
+    @PUT("users/me")
+    suspend fun me(
+        @Header("Authorization") token: String,
+        @Body user: UserUpdateDTO
+    ): UserResponseDTO
+
     @DELETE("users/{id}")
     suspend fun delete(
         @Header("Authorization") token: String,

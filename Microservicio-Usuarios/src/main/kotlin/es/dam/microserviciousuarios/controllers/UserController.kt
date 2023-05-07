@@ -133,7 +133,7 @@ class UsersController @Autowired constructor(
     @DeleteMapping("/{id}")
     suspend fun delete(@PathVariable id: String): ResponseEntity<UserDTO> {
         try {
-            userService.deleteById(id)
+            userService.deleteByUuid(id)
             return ResponseEntity.noContent().build()
         } catch (e: UserNotFoundException) {
             throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
