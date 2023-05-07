@@ -8,9 +8,10 @@ data class SpaceDTO(
     val id: String,
     val uuid: String,
     val name: String,
+    val image: String,
+    val price: Int,
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,
-    val maxBookings: Int? = null,
     val authorizedRoles: Set<String>,
     val bookingWindow: String
 )
@@ -18,9 +19,10 @@ data class SpaceDTO(
 @Serializable
 data class SpaceCreateDTO(
     val name: String,
+    val image: String,
+    val price: Int,
     val isReservable: Boolean = false,
     val requiresAuthorization: Boolean,
-    val maxBookings: Int? = null,
     val authorizedRoles: Set<String>,
     val bookingWindow: String
 )
@@ -28,9 +30,10 @@ data class SpaceCreateDTO(
 @Serializable
 data class SpaceUpdateDTO(
     val name: String,
+    val image: String,
+    val price: Int,
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,
-    val maxBookings: Int? = null,
     val authorizedRoles: Set<String>,
     val bookingWindow: String
 )
@@ -45,9 +48,10 @@ data class SpaceResponseDTO(
     val id: String,
     val uuid: String,
     val name: String,
+    val image: String,
+    val price: Int,
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,
-    val maxBookings: Int?,
     val authorizedRoles: Set<String>,
     val bookingWindow: String
 )
