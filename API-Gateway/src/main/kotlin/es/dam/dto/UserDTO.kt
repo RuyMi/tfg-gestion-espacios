@@ -13,6 +13,7 @@ data class UserDTO(
     val password: String,
     val avatar: String? = null,
     val userRole: Set<String>,
+    val credits: Int,
     val metadata: Metadata
 ) {
     @Serializable
@@ -39,7 +40,8 @@ data class UserUpdateDTO(
     val email: String,
     val password: String,
     val avatar: String? = null,
-    val userRole: Set<String>
+    val userRole: Set<String>,
+    val credits: Int
 )
 
 @Serializable
@@ -63,7 +65,8 @@ data class UserResponseDTO(
     val email: String,
     val password: String,
     val avatar: String? = null,
-    val userRole: Set<String>
+    val userRole: Set<String>,
+    val credits: Int
 )
 
 @Serializable

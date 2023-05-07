@@ -65,4 +65,13 @@ class KtorFitUsersRepository: IUsersRepository {
             throw Exception("Error deleting user with id $id: ${e.message}")
         }
     }
+
+    override suspend fun me(token: String, entity: UserUpdateDTO): UserResponseDTO = withContext(Dispatchers.IO) {
+        val call = async { client.me(token, entity) }
+        try{
+            return@withContext call.await()
+        } catch (e: Exception) {
+            throw Exception("Error updating user: ${e.message}")
+        }
+    }
 }
