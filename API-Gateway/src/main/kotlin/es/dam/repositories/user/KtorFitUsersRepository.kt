@@ -31,7 +31,7 @@ class KtorFitUsersRepository: IUsersRepository {
     }
 
     override suspend fun findAll(token: String): UserDataDTO = withContext(Dispatchers.IO)  {
-        val call = async { client.findAll() }
+        val call = async { client.findAll(token) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -39,8 +39,8 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
-    override suspend fun findById(token: String, id: Long): UserResponseDTO = withContext(Dispatchers.IO)  {
-        val call = async { client.findById(id) }
+    override suspend fun findById(token: String, id: String): UserResponseDTO = withContext(Dispatchers.IO)  {
+        val call = async { client.findById(token, id) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -48,8 +48,8 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
-    override suspend fun update(token: String, id: Long, entity: UserUpdateDTO): UserResponseDTO = withContext(Dispatchers.IO)  {
-        val call = async { client.update(id, entity) }
+    override suspend fun update(token: String, id: String, entity: UserUpdateDTO): UserResponseDTO = withContext(Dispatchers.IO)  {
+        val call = async { client.update(token, id, entity) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
@@ -57,8 +57,8 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
-    override suspend fun delete(token: String, id: Long) = withContext(Dispatchers.IO)  {
-        val call = async { client.delete(id) }
+    override suspend fun delete(token: String, id: String) = withContext(Dispatchers.IO)  {
+        val call = async { client.delete(token, id) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {

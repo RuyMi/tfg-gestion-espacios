@@ -6,13 +6,13 @@ import es.dam.dto.*
 interface KtorFitRestUsers {
     @GET("users")
     suspend fun findAll(
-        //@Header("Authorization") token: String
+        @Header("Authorization") token: String
     ): UserDataDTO
 
     @GET("users/{id}")
     suspend fun findById(
-        //@Header("Authorization") token: String,
-        @Path("id") id: Long
+        @Header("Authorization") token: String,
+        @Path("id") id: String
     ): UserResponseDTO
 
     @POST("users/login")
@@ -27,13 +27,13 @@ interface KtorFitRestUsers {
 
     @PUT("users/{id}")
     suspend fun update(
-        //@Header("Authorization") token: String,
-        @Path("id") id: Long, @Body user: UserUpdateDTO
+        @Header("Authorization") token: String,
+        @Path("id") id: String, @Body user: UserUpdateDTO
     ): UserResponseDTO
 
     @DELETE("users/{id}")
     suspend fun delete(
-        //@Header("Authorization") token: String,
-        @Path("id") id: Long
+        @Header("Authorization") token: String,
+        @Path("id") id: String
     )
 }

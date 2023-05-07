@@ -34,7 +34,7 @@ fun Application.bookingRoutes(){
             val id = call.parameters["id"]
             try {
                 val idBooking = ObjectId(id).toId<Booking>()
-                idBooking.let { bookingService.findById(it).let { it1 -> call.respond(it1) } }
+                idBooking.let { bookingService.findById(it).let { it1 -> call.respond(it1.toDTO()) } }
             } catch (e: BookingException) {
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado la reserva con el id: $id")
             } catch (e: Exception) {
@@ -45,7 +45,11 @@ fun Application.bookingRoutes(){
         get("/bookings/status/{status}") {
             val status = call.parameters["status"]
             try{
-                status?.let { bookingService.findAllStatus(Booking.Status.valueOf(it)).let { it1 -> call.respond(it1) } }
+                val data = status?.let { bookingService.findAllStatus(Booking.Status.valueOf(it))}
+                val res = BookingAllDto(
+                    data = data!!.map { it.toDTO() }
+                )
+                call.respond(res)
             } catch (e: BookingException){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el estado: $status")
             } catch (e: Exception){
@@ -56,7 +60,11 @@ fun Application.bookingRoutes(){
         get("/bookings/space/{id}") {
             val id = call.parameters["id"]
             try{
-                id?.let { bookingService.findBySpaceId(it).let { it1 -> call.respond(it1) } }
+                val data= id?.let { bookingService.findBySpaceId(it) }
+                val res = BookingAllDto(
+                    data = data!!.map { it.toDTO() }
+                )
+                call.respond(res)
             } catch (e: BookingException){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el id de espacio: $id")
             } catch (e: Exception){
@@ -67,7 +75,11 @@ fun Application.bookingRoutes(){
         get("/bookings/user/{id}") {
             val id = call.parameters["id"]
             try {
-                id?.let { bookingService.findByUserId(it).let { it1 -> call.respond(it1) } }
+                val data = id?.let { bookingService.findByUserId(it) }
+                val res = BookingAllDto(
+                    data = data!!.map { it.toDTO() }
+                )
+                call.respond(res)
             } catch (e: BookingException){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el id de usuario: $id")
             } catch (e: Exception){
@@ -88,7 +100,7 @@ fun Application.bookingRoutes(){
             val id = call.parameters["id"]
             val booking = call.receive<BookingDtoUpdate>()
             try{
-                bookingService.update(booking.toModel(), id!!).let { call.respond(it) }
+                bookingService.update(booking.toModel(), id!!).let { call.respond(it.toDTO()) }
             } catch (e: BookingException){
                 call.respond(HttpStatusCode.NotFound, "No se ha podido actualizar la reserva con id: $id")
             } catch (e: Exception){

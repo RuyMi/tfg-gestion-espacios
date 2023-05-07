@@ -13,6 +13,7 @@ plugins {
     id("io.ktor.plugin") version "2.2.4"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
     id("com.google.devtools.ksp") version "1.8.0-1.0.8"
+    id("de.jensklingenberg.ktorfit") version "1.0.0"
 }
 
 group = "es.dam"
@@ -80,8 +81,8 @@ sourceSets.main {
 tasks.withType<Jar> {
     manifest {
         attributes(
-            "Main-Class" to "es.dam.ApplicationKt",
-            "Class-Path" to configurations.runtimeClasspath.get().files.joinToString(" ")
+            "Main-Class" to "io.ktor.server.netty.EngineMain",
+            "Class-Path" to configurations.runtimeClasspath.get().files.joinToString(" ") { "lib/{it.name}" }
         )
     }
 }

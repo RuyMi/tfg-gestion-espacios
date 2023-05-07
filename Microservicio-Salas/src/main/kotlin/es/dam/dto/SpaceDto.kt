@@ -12,7 +12,7 @@ data class SpaceDTO(
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,
     val maxBookings: Int?,
-    val authorizedRoles: Set<Space.UserRole>,
+    val authorizedRoles: Set<String>,
     val bookingWindow: String
 )
 
@@ -49,6 +49,6 @@ data class SpaceResponseDTO(
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,
     val maxBookings: Int?,
-    val authorizedRoles: Set<Space.UserRole>,
+    val authorizedRoles: Set<String>,
     val bookingWindow: Duration
 )
