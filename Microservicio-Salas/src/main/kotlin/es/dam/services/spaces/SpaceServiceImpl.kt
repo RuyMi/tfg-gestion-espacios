@@ -1,12 +1,9 @@
-package es.dam.services
+package es.dam.services.spaces
 
 import es.dam.models.Space
 import es.dam.repositories.SpaceRepositoryImpl
 import org.koin.core.annotation.InjectedParam
-import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
-import org.litote.kmongo.Id
-import org.litote.kmongo.toId
 import java.util.*
 
 @Single
