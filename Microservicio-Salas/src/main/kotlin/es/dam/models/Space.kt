@@ -19,7 +19,7 @@ data class Space(
     val id: Id<Space> = newId(),
     val uuid: String = UUID.randomUUID().toString(),
     val name: String,
-    val image: String,
+    val image: String? = null,
     val price: Int,
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,

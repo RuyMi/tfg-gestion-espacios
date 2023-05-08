@@ -79,10 +79,12 @@ class UsersController @Autowired constructor(
     @GetMapping("/{id}")
     suspend fun findById(@PathVariable id: String): ResponseEntity<UserResponseDTO> {
         try {
-            val res = userService.findUserById(id).toDTO()
+            val res = userService.findByUuid(id).toDTO()
             return ResponseEntity.ok(res)
         } catch (e: UserNotFoundException) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with uuid: $id")
+        } catch (e: IllegalArgumentException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID string: $id")
         }
     }
 
@@ -112,7 +114,7 @@ class UsersController @Autowired constructor(
         @RequestBody userDTO: UserUpdateDTO
     ): ResponseEntity<UserResponseDTO> {
         try {
-            val updated = userService.findUserById(id).copy(
+            val updated = userService.findByUuid(id).copy(
                 name = userDTO.name,
                 username = userDTO.username,
                 password = userDTO.password,

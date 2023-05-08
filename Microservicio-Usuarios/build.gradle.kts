@@ -53,9 +53,10 @@ dependencies {
     implementation("com.auth0:java-jwt:4.2.1")
 }
 
-tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+/*tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
     mainClassName = "es.dam.microserviciousuarios.MicroserviciosUsuariosApplication"
 }
+ */
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
