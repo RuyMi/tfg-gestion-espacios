@@ -17,8 +17,7 @@ import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/users/storage")
-class StorageController
-@Autowired constructor(
+class StorageController @Autowired constructor(
     private val storageService: StorageService
 ) {
     @GetMapping(value = ["{filename:.+}"])
@@ -35,7 +34,7 @@ class StorageController
         contentType = try {
             request.servletContext.getMimeType(file.file.absolutePath)
         } catch (ex: IOException) {
-            throw StorageBadRequestException("No se puede determinar el tipo del fichero -> ${ex.message}")
+            throw StorageBadRequestException("No se puede determinar el tipo del fichero. -> ${ex.message}")
         }
         if (contentType == null) {
             contentType = "application/octet-stream"
@@ -61,7 +60,7 @@ class StorageController
                     mapOf("url" to urlStored, "name" to fileStored, "created_at" to LocalDateTime.now().toString())
                 ResponseEntity.status(HttpStatus.CREATED).body(response)
             } else {
-                throw StorageBadRequestException("No se puede subir un fichero vacío")
+                throw StorageBadRequestException("No se puede subir un fichero vacío.")
             }
         } catch (e: StorageException) {
             throw StorageBadRequestException(e.message.toString())

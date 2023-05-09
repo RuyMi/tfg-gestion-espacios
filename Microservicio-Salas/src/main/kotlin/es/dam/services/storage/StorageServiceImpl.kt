@@ -6,6 +6,7 @@ import io.ktor.util.cio.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.InjectedParam
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 import java.io.File
@@ -14,8 +15,7 @@ import java.time.LocalDateTime
 @Single
 @Named("StorageServiceImpl")
 class StorageServiceImpl(
-
-    private val storageConfig: StorageConfig
+    @InjectedParam private val storageConfig: StorageConfig
 ) : StorageService {
     override fun getConfig(): StorageConfig {
         return storageConfig

@@ -7,10 +7,8 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import javafx.application.Application
 import org.koin.core.qualifier.named
-import org.koin.java.KoinJavaComponent.inject
-import java.time.LocalDateTime
+import org.koin.ktor.ext.inject
 import java.util.*
 
 fun Application.storageRoutes() {
@@ -18,7 +16,6 @@ fun Application.storageRoutes() {
 
     routing {
         route("/spaces/storage") {
-
             post {
                 val readChannel = call.receiveChannel()
                 val fileName = UUID.randomUUID().toString()
