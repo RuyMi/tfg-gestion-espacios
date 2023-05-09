@@ -36,7 +36,7 @@ class BookingServiceImpl(
     }
 
     override suspend fun update(entity: Booking, id: String): Booking {
-        val bookingOriginal = repository.findAll().first { it.id.toString() == id }
+        val bookingOriginal = repository.findAll().first { it.uuid == id }
         val bookingUpdated = bookingOriginal.copy(
             userId = entity.userId,
             spaceId = entity.spaceId,

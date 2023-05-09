@@ -227,7 +227,7 @@ class BookingServiceImplTest {
 
     @Test
     fun delete() = runTest {
-        coEvery { bookingRepository.delete(any()) } returns true
+        coEvery { bookingRepository.delete(UUID.fromString(booking.uuid)) } returns true
 
         val result = bookingService.delete(booking.uuid)
 
@@ -236,7 +236,7 @@ class BookingServiceImplTest {
 
     @Test
     fun failDelete() = runTest {
-        coEvery { bookingRepository.delete(any()) } returns false
+        coEvery { bookingRepository.delete(UUID.fromString(booking.uuid))} returns false
 
         val result = bookingService.delete(booking.uuid)
 
