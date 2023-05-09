@@ -12,7 +12,7 @@ import org.koin.ktor.ext.inject
 import java.util.*
 
 fun Application.storageRoutes() {
-    val storageService: StorageServiceImpl by inject(named("StorageServiceImpl"))
+    val storageService: StorageServiceImpl by inject()
 
     routing {
         route("/spaces/storage") {

@@ -21,7 +21,6 @@ class SpaceServiceImpl(
             name = space.name,
             isReservable = space.isReservable,
             requiresAuthorization = space.requiresAuthorization,
-            maxBookings = space.maxBookings,
             authorizedRoles = space.authorizedRoles,
             bookingWindow = space.bookingWindow
         )

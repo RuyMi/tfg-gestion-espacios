@@ -13,7 +13,6 @@ import java.io.File
 import java.time.LocalDateTime
 
 @Single
-@Named("StorageServiceImpl")
 class StorageServiceImpl(
     @InjectedParam private val storageConfig: StorageConfig
 ) : StorageService {
