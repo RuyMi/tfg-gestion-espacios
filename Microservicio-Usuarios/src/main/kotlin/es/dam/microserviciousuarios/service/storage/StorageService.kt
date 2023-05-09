@@ -1,12 +1,18 @@
 package es.dam.microserviciousuarios.service.storage
 
+import es.dam.microserviciousuarios.controllers.StorageController
 import es.dam.microserviciousuarios.exceptions.StorageBadRequestException
 import es.dam.microserviciousuarios.exceptions.StorageNotFoundException
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.io.Resource
+import org.springframework.core.io.UrlResource
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder
 import java.io.IOException
+import java.lang.System.load
+import java.net.MalformedURLException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -34,6 +40,12 @@ class StorageService(
         }
     }
 
+    override fun getUrl(filename: String): String {
+        return MvcUriComponentsBuilder
+            .fromMethodName(StorageController::class.java, "serveFile", filename, null)
+            .build().toUriString()
+    }
+
     override fun loadAll(): Stream<Path> {
         return try {
             Files.walk(ruta, 1)
@@ -46,6 +58,22 @@ class StorageService(
 
     override fun loadFile(fileName: String): Path {
         return ruta.resolve(fileName)
+    }
+
+    override fun loadAsResource(filename: String): Resource {
+        return try {
+            val file = loadFile(filename)
+            val resource = UrlResource(file.toUri())
+            if (resource.exists() || resource.isReadable) {
+                resource
+            } else {
+                throw StorageNotFoundException(
+                    "No se puede leer fichero: $filename"
+                )
+            }
+        } catch (e: MalformedURLException) {
+            throw StorageNotFoundException("No se puede leer fichero: $filename -> ${e.message}")
+        }
     }
 
     override fun storeFile(file: MultipartFile): String {

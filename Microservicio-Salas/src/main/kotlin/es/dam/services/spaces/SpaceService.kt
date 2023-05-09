@@ -1,4 +1,4 @@
-package es.dam.services
+package es.dam.services.spaces
 
 import es.dam.models.Space
 import org.litote.kmongo.Id
