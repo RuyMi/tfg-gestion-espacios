@@ -18,6 +18,6 @@ fun Application.configureStorage() {
     )
 
     val storageConfig: StorageConfig = get { parametersOf(storageConfigParams) }
-    val storageService: StorageServiceImpl by inject(named("StorageServiceImpl"))
+    val storageService: StorageServiceImpl by inject()
     storageService.initStorageDirectory()
 }
