@@ -11,32 +11,44 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 1;
+  bool _isDarkMode = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
+  static final List<Widget> _widgetOptions = <Widget>[
+    const Text(
       'Index 0: Home',
     ),
-    Text(
+    const Text(
       'Index 1: Espacios',
     ),
-    Text(
+    const Text(
       'Index 2: Tablón de anuncios',
     ),
-    Text(
-      'Index 3: Perfil',
-    ),
+    Container(color: MyColors.whiteApp)
   ];
 
   void _onItemTapped(int index) {
+    if (index == 3) {
+      _scaffoldKey.currentState?.openDrawer();
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+
     setState(() {
       _selectedIndex = index;
     });
+    if (index == 3) {
+      _scaffoldKey.currentState?.openDrawer();
+    }
   }
 
   // ignore: library_private_types_in_public_api
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -49,9 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         leading: IconButton(
           onPressed: () {},
-          hoverColor: Colors.transparent,
           icon: Image.asset('assets/images/logo.png'),
-          color: MyColors.blackApp,
           iconSize: 25,
         ),
         actions: [
@@ -63,6 +73,78 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         backgroundColor: MyColors.whiteApp,
+      ),
+      drawer: Drawer(
+        backgroundColor: MyColors.lightBlueApp,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: MyColors.lightBlueApp,
+              ),
+              accountName: Text('Nombre',
+                  style: TextStyle(
+                      fontFamily: 'KoHo',
+                      color: MyColors.whiteApp,
+                      fontWeight: FontWeight.bold)),
+              accountEmail: Text('nombre_usuario',
+                  style: TextStyle(
+                    fontFamily: 'KoHo',
+                    color: MyColors.whiteApp,
+                  )),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage('assets/images/logo.png'),
+                backgroundColor: MyColors.whiteApp,
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              iconColor: MyColors.whiteApp,
+              title: const Text('Perfil',
+                  style:
+                      TextStyle(fontFamily: 'KoHo', color: MyColors.whiteApp)),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.bookmark_added),
+              iconColor: MyColors.whiteApp,
+              title: const Text('Mis reservas',
+                  style:
+                      TextStyle(fontFamily: 'KoHo', color: MyColors.whiteApp)),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              iconColor: MyColors.whiteApp,
+              title: const Text('Ajustes',
+                  style:
+                      TextStyle(fontFamily: 'KoHo', color: MyColors.whiteApp)),
+              onTap: () {},
+            ),
+            const Divider(),
+            ListTile(
+              iconColor: MyColors.whiteApp,
+              leading: _isDarkMode
+                  ? const Icon(Icons.wb_sunny)
+                  : const Icon(Icons.nightlight_round),
+              title: _isDarkMode
+                  ? const Text('Cambiar a tema claro',
+                      style: TextStyle(
+                          fontFamily: 'KoHo', color: MyColors.whiteApp))
+                  : const Text('Cambiar a tema oscuro',
+                      style: TextStyle(
+                          fontFamily: 'KoHo', color: MyColors.whiteApp)),
+              onTap: () {
+                setState(() {
+                  _isDarkMode = !_isDarkMode;
+                  if (_isDarkMode) {
+                  } else {}
+                });
+              },
+            ),
+          ],
+        ),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
