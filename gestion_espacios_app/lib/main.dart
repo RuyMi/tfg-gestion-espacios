@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/screens/home_screen.dart';
 import 'package:gestion_espacios_app/screens/login_screen.dart';
 import 'package:gestion_espacios_app/screens/splash_screen.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Gestión de Espacios - IES Luis Vives',
       theme: ThemeData(
           useMaterial3: true,
-          colorSchemeSeed: MyColors.lightBlueApp,
+          colorSchemeSeed: MyColors.whiteApp,
           brightness: Brightness.light),
       darkTheme: ThemeData(
           useMaterial3: true,
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
-        '/login': (context) => const LoginScreen(),
+        'login':(context) => const LoginScreen(),
+        '/home': (context) => const HomeScreen(),
       },
     );
   }

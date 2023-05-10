@@ -17,13 +17,13 @@ class LoginScreen extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(30),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: MyColors.darkBlueApp),
+                  borderRadius: BorderRadius.circular(30),
                 ),
                 labelText: 'Nombre de usuario',
+                labelStyle: const TextStyle(fontFamily: 'KoHo'),
                 prefixIcon: const Icon(Icons.person),
               ),
             ),
@@ -32,32 +32,40 @@ class LoginScreen extends StatelessWidget {
               obscureText: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(30),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: MyColors.darkBlueApp),
+                  borderRadius: BorderRadius.circular(30),
                 ),
                 labelText: 'Contraseña',
+                labelStyle: const TextStyle(fontFamily: 'KoHo'),
                 prefixIcon: const Icon(Icons.lock),
               ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/home');
+              },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(30),
                 ),
                 backgroundColor: MyColors.pinkApp,
               ),
               child: const Text('Validar',
-                  style: TextStyle(color: MyColors.whiteApp)),
+                  style:
+                      TextStyle(color: MyColors.whiteApp, fontFamily: 'KoHo')),
             ),
             const SizedBox(height: 10),
             TextButton(
               onPressed: () {},
-              child: const Text('¿Has olvidado tu contraseña?'),
+              child: const Text(
+                '¿Has olvidado tu contraseña?',
+                style: TextStyle(
+                  fontFamily: 'KoHo',
+                ),
+              ),
             ),
           ],
         ),
