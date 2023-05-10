@@ -16,7 +16,7 @@ class SpaceServiceImpl(
     }
 
     override suspend fun updateSpace(space: Space, id: String): Space {
-        val spaceOriginal = getAllSpaces().first{ it.id.toString() == id }
+        val spaceOriginal = repo.findById(UUID.fromString(space.uuid))
         val spaceUpdated = spaceOriginal.copy(
             name = space.name,
             isReservable = space.isReservable,
