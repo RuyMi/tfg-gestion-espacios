@@ -51,4 +51,8 @@ class BookingRepositoryImpl : BookingRepository {
         return@withContext manager.database.getCollection<Booking>().deleteOne(Booking::uuid eq uuid.toString())
             .wasAcknowledged()
     }
+
+    override suspend fun deleteAll(): Boolean = withContext(Dispatchers.IO) {
+        return@withContext manager.database.getCollection<Booking>().deleteMany().wasAcknowledged()
+    }
 }

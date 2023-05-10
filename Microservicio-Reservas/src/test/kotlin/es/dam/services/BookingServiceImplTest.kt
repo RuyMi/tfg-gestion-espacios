@@ -197,8 +197,9 @@ class BookingServiceImplTest {
     }
     @Test
     fun update() = runTest {
-        coEvery { bookingRepository.findAll() } returns listOf(booking)
         coEvery { bookingRepository.update(booking) } returns booking
+        coEvery { bookingRepository.findById(UUID.fromString(booking.uuid)) } returns booking
+
 
         val result = bookingService.update(booking, booking.uuid)
 
@@ -216,7 +217,7 @@ class BookingServiceImplTest {
 
     @Test
     fun failUpdate() = runTest {
-        coEvery { bookingRepository.findAll() } returns listOf(booking)
+        coEvery { bookingRepository.findById(UUID.fromString(booking.uuid)) } returns booking
         coEvery { bookingRepository.update(booking) } throws BookingException("Failed to update booking with uuid ${booking.uuid}")
 
         val exception = assertFailsWith(BookingException::class) {
