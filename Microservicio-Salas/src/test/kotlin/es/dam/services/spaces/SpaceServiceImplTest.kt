@@ -132,7 +132,6 @@ class SpaceServiceImplTest {
     }
     @Test
     fun update() = runTest {
-        coEvery { spaceRepository.findAll() } returns listOf(space)
         coEvery { spaceRepository.update(space) } returns space
         coEvery { spaceRepository.findById(UUID.fromString(space.uuid)) } returns space
 
