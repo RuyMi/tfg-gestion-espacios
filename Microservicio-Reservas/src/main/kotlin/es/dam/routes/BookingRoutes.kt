@@ -33,8 +33,7 @@ fun Application.bookingRoutes(){
         get("/bookings/{id}") {
             val id = call.parameters["id"]
             try {
-                val idBooking = ObjectId(id).toId<Booking>()
-                idBooking.let { bookingService.findById(it).let { it1 -> call.respond(it1.toDTO()) } }
+                id.let { bookingService.findById(it!!).let { it1 -> call.respond(it1.toDTO()) } }
             } catch (e: BookingException) {
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado la reserva con el id: $id")
             } catch (e: Exception) {
@@ -111,8 +110,7 @@ fun Application.bookingRoutes(){
         delete("/bookings/{id}") {
             val id = call.parameters["id"]
             try {
-                val idBooking = ObjectId(id).toId<Booking>()
-                bookingService.delete(idBooking).let { call.respond(HttpStatusCode.NoContent) }
+                bookingService.delete(id!!).let { call.respond(HttpStatusCode.NoContent) }
             } catch (e: BookingException) {
                 call.respond(HttpStatusCode.NotFound, "No se ha podido borrar la reserva con id: $id")
             } catch (e: Exception) {

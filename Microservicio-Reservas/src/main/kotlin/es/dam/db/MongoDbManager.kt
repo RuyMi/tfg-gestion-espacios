@@ -21,7 +21,7 @@ object MongoDbManager {
             .applyConnectionString(ConnectionString(STRING_CONNECTION))
             .uuidRepresentation(UuidRepresentation.JAVA_LEGACY).build()
         mongoDbClient = KMongo.createClient(clientSettings).coroutine
-        database = mongoDbClient.getDatabase("reservas-luisvives")
+        database = mongoDbClient.getDatabase("reservas-luisvives-test")
     }
 
 }
