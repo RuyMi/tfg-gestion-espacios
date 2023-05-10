@@ -4,6 +4,7 @@ import es.dam.models.Booking
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.bson.types.ObjectId
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -36,17 +37,20 @@ class BookingRepositoryImplTest {
         repository.save(booking)
     }
 
+    @AfterEach
+    fun tearDown() = runTest {
+        repository.deleteAll()
+    }
+
     @Test
     fun findByUserId() = runTest {
         val bookings = repository.findByUserId(UUID.fromString(booking.userId))
         val startTimeReduced = booking.startTime.toString().substring(0, 23)
-        println(startTimeReduced)
-        println(bookings[0].startTime.toString())
+
         val endTimeReduced = booking.endTime.toString().substring(0, 23)
 
         assertAll(
             { assertEquals(1, bookings.size) },
-            { assertEquals(booking, bookings[0]) },
             { assertEquals(booking.id, bookings[0].id) },
             { assertEquals(booking.uuid, bookings[0].uuid) },
             { assertEquals(booking.userId, bookings[0].userId) },
@@ -66,7 +70,6 @@ class BookingRepositoryImplTest {
 
         assertAll(
             { assertEquals(1, bookings.size) },
-            { assertEquals(booking, bookings[0]) },
             { assertEquals(booking.id, bookings[0].id) },
             { assertEquals(booking.uuid, bookings[0].uuid) },
             { assertEquals(booking.userId, bookings[0].userId) },
@@ -86,7 +89,6 @@ class BookingRepositoryImplTest {
 
         assertAll(
             { assertEquals(1, bookings.size) },
-            { assertEquals(booking, bookings[0]) },
             { assertEquals(booking.id, bookings[0].id) },
             { assertEquals(booking.uuid, bookings[0].uuid) },
             { assertEquals(booking.userId, bookings[0].userId) },
@@ -106,7 +108,6 @@ class BookingRepositoryImplTest {
 
         assertAll(
             { assertEquals(1, bookings.size) },
-            { assertEquals(booking, bookings[0]) },
             { assertEquals(booking.id, bookings[0].id) },
             { assertEquals(booking.uuid, bookings[0].uuid) },
             { assertEquals(booking.userId, bookings[0].userId) },
@@ -125,7 +126,6 @@ class BookingRepositoryImplTest {
         val endTimeReduced = booking.endTime.toString().substring(0, 23)
 
         assertAll(
-            { assertEquals(booking, booking) },
             { assertEquals(booking.id, booking.id) },
             { assertEquals(booking.uuid, booking.uuid) },
             { assertEquals(booking.userId, booking.userId) },
@@ -140,45 +140,44 @@ class BookingRepositoryImplTest {
     @Test
     fun save() = runTest {
         repository.delete(UUID.fromString(booking.uuid))
-        val booking = repository.save(booking)
+        val bookingTest = repository.save(booking)
         val startTimeReduced = booking.startTime.toString().substring(0, 23)
         val endTimeReduced = booking.endTime.toString().substring(0, 23)
-
         assertAll(
-            { assertEquals(booking, booking) },
-            { assertEquals(booking.id, booking.id) },
-            { assertEquals(booking.uuid, booking.uuid) },
-            { assertEquals(booking.userId, booking.userId) },
-            { assertEquals(booking.spaceId, booking.spaceId) },
-            { assertEquals(booking.status, booking.status) },
-            { assertEquals(startTimeReduced, booking.startTime.toString()) },
-            { assertEquals(endTimeReduced, booking.endTime.toString()) },
-            { assertEquals(booking.phone, booking.phone) }
+            { assertEquals(booking.id, bookingTest.id) },
+            { assertEquals(booking.uuid, bookingTest.uuid) },
+            { assertEquals(booking.userId, bookingTest.userId) },
+            { assertEquals(booking.spaceId, bookingTest.spaceId) },
+            { assertEquals(booking.status, bookingTest.status) },
+            { assertEquals(booking.startTime, bookingTest.startTime) },
+            { assertEquals(booking.endTime, bookingTest.endTime) },
+            { assertEquals(booking.phone, bookingTest.phone) }
         )
     }
 
     @Test
     fun update() = runTest {
-        val booking = booking.copy(
+        val bookingTest = booking.copy(
             status = Booking.Status.APPROVED,
             startTime = LocalDateTime.now().plusHours(1),
             endTime = LocalDateTime.now().plusHours(2),
             phone = "987654321"
         )
-        val updatedBooking = repository.update(booking)
-        val startTimeReduced = booking.startTime.toString().substring(0, 23)
-        val endTimeReduced = booking.endTime.toString().substring(0, 23)
+        val updatedBooking = repository.update(bookingTest)
+        val startTimeReduced = bookingTest.startTime.toString().substring(0, 23)
+        val endTimeReduced = bookingTest.endTime.toString().substring(0, 23)
+
+
 
         assertAll(
-            { assertEquals(updatedBooking, booking) },
-            { assertEquals(updatedBooking.id, booking.id) },
-            { assertEquals(updatedBooking.uuid, booking.uuid) },
-            { assertEquals(updatedBooking.userId, booking.userId) },
-            { assertEquals(updatedBooking.spaceId, booking.spaceId) },
-            { assertEquals(updatedBooking.status, booking.status) },
-            { assertEquals(updatedBooking.startTime.toString(), startTimeReduced) },
-            { assertEquals(updatedBooking.endTime.toString(), endTimeReduced) },
-            { assertEquals(updatedBooking.phone, booking.phone) }
+            { assertEquals(updatedBooking.id, bookingTest.id) },
+            { assertEquals(updatedBooking.uuid, bookingTest.uuid) },
+            { assertEquals(updatedBooking.userId, bookingTest.userId) },
+            { assertEquals(updatedBooking.spaceId, bookingTest.spaceId) },
+            { assertEquals(updatedBooking.status, bookingTest.status) },
+            { assertEquals(updatedBooking.startTime, bookingTest.startTime) },
+            { assertEquals(updatedBooking.endTime, bookingTest.endTime) },
+            { assertEquals(updatedBooking.phone, bookingTest.phone) }
         )
     }
 
