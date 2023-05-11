@@ -89,7 +89,7 @@ fun Application.bookingRoutes(){
         post("/bookings") {
             val booking = call.receive<BookingDtoCreate>()
             try{
-                bookingService.save(booking.toModel()).let { call.respond(it.toDTO()) }
+                bookingService.save(booking.toModel()).let { call.respond(HttpStatusCode.Created, it.toDTO()) }
             } catch (e: Exception){
                 call.respond(HttpStatusCode.BadRequest, "Deben de estar todos los campos rellenos correctamente")
             }
@@ -99,7 +99,7 @@ fun Application.bookingRoutes(){
             val id = call.parameters["id"]
             val booking = call.receive<BookingDtoUpdate>()
             try{
-                bookingService.update(booking.toModel(), id!!).let { call.respond(it.toDTO()) }
+                bookingService.update(booking.toModel(), id!!).let { call.respond( it.toDTO()) }
             } catch (e: BookingException){
                 call.respond(HttpStatusCode.NotFound, "No se ha podido actualizar la reserva con id: $id")
             } catch (e: Exception){
