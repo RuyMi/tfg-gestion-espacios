@@ -57,16 +57,16 @@ class LoginScreen extends StatelessWidget {
                   style:
                       TextStyle(color: MyColors.whiteApp, fontFamily: 'KoHo')),
             ),
-            const SizedBox(height: 10),
-            TextButton(
-              onPressed: () {},
-              child: const Text(
-                '¿Has olvidado tu contraseña?',
-                style: TextStyle(
-                  fontFamily: 'KoHo',
-                ),
-              ),
-            ),
+            // const SizedBox(height: 10),
+            // TextButton(
+            //   onPressed: () {},
+            //   child: const Text(
+            //     '¿Has olvidado tu contraseña?',
+            //     style: TextStyle(
+            //       fontFamily: 'KoHo',
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

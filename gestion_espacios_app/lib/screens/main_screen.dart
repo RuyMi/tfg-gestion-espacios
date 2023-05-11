@@ -77,7 +77,9 @@ class _MainScreenState extends State<MainScreen> {
               title: const Text('Perfil',
                   style:
                       TextStyle(fontFamily: 'KoHo', color: MyColors.whiteApp)),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/perfil');
+              },
             ),
             ListTile(
               leading: const Icon(Icons.bookmark_added),
@@ -85,7 +87,9 @@ class _MainScreenState extends State<MainScreen> {
               title: const Text('Mis reservas',
                   style:
                       TextStyle(fontFamily: 'KoHo', color: MyColors.whiteApp)),
-              onTap: () {},
+              onTap: () {
+                
+              },
             ),
             ListTile(
               leading: const Icon(Icons.settings),
