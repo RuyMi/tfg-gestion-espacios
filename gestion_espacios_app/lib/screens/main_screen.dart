@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/screens/inicio_screen.dart';
+import 'package:gestion_espacios_app/screens/perfil_screen.dart';
 import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _HomeScreenState createState() => _HomeScreenState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 1;
   bool _isDarkMode = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   static final List<Widget> _widgetOptions = <Widget>[
-    const Text(
-      'Index 0: Home',
-    ),
+    const InicioScreen(),
     const Text(
       'Index 1: Espacios',
     ),
     const Text(
       'Index 2: Tablón de anuncios',
     ),
-    Container(color: MyColors.whiteApp)
+    const PerfilScreen()
   ];
 
   void _onItemTapped(int index) {
@@ -50,37 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: const Text('IES Luis Vives'),
-        titleTextStyle: const TextStyle(
-          fontFamily: 'KoHo',
-          color: MyColors.blackApp,
-          fontWeight: FontWeight.bold,
-          fontSize: 25,
-        ),
-        leading: IconButton(
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return const AcercaDeWidget();
-                });
-          },
-          icon: Image.asset('assets/images/logo.png'),
-          iconSize: 25,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-            color: MyColors.blackApp,
-            iconSize: 25,
-          ),
-        ],
-        backgroundColor: MyColors.whiteApp,
-      ),
+      
       drawer: Drawer(
         backgroundColor: MyColors.lightBlueApp,
         child: ListView(

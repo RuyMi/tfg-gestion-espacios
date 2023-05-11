@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
-import 'package:gestion_espacios_app/screens/home_screen.dart';
+import 'package:gestion_espacios_app/screens/main_screen.dart';
 import 'package:gestion_espacios_app/screens/login_screen.dart';
 import 'package:gestion_espacios_app/screens/splash_screen.dart';
 
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const SplashScreen(),
         'login':(context) => const LoginScreen(),
-        '/home': (context) => const HomeScreen(),
+        '/home': (context) => const MainScreen(),
       },
     );
   }
