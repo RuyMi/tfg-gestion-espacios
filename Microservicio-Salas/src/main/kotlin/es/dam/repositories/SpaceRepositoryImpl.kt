@@ -36,7 +36,7 @@ class SpaceRepositoryImpl(): SpaceRepository {
         db.database.getCollection<Space>().save(entity)?.let {
             return@withContext entity
         }
-        throw SpaceException("Error al guardar el espacio con uuid ${entity.id}")
+        throw SpaceException("Error al guardar el espacio con uuid ${entity.uuid}")
     }
 
     override suspend fun update(entity: Space): Space = withContext(Dispatchers.IO){
@@ -44,10 +44,14 @@ class SpaceRepositoryImpl(): SpaceRepository {
 
             return@withContext entity
         }
-        throw SpaceException("No se ha encontrado el espacio con uuid ${entity.id}")
+        throw SpaceException("No se ha encontrado el espacio con uuid ${entity.uuid}")
     }
 
     override suspend fun delete(id: UUID): Boolean = withContext(Dispatchers.IO){
         return@withContext db.database.getCollection<Space>().deleteMany(Space::uuid eq id.toString()).wasAcknowledged()
+    }
+
+    override suspend fun deleteAll(): Boolean = withContext(Dispatchers.IO) {
+        return@withContext db.database.getCollection<Space>().deleteMany().wasAcknowledged()
     }
 }
