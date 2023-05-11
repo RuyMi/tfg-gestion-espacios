@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Gestión de Espacios - IES Luis Vives',
       theme: ThemeData(
           useMaterial3: true,
           colorSchemeSeed: MyColors.whiteApp,

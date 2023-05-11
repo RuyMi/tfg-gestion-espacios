@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -60,7 +61,13 @@ class _HomeScreenState extends State<HomeScreen> {
           fontSize: 25,
         ),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const AcercaDeWidget();
+                });
+          },
           icon: Image.asset('assets/images/logo.png'),
           iconSize: 25,
         ),
