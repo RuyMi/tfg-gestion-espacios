@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/screens/buzon_screen.dart';
+import 'package:gestion_espacios_app/screens/espacios_screen.dart';
 import 'package:gestion_espacios_app/screens/inicio_screen.dart';
 import 'package:gestion_espacios_app/screens/perfil_screen.dart';
-import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -19,12 +20,8 @@ class _MainScreenState extends State<MainScreen> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     const InicioScreen(),
-    const Text(
-      'Index 1: Espacios',
-    ),
-    const Text(
-      'Index 2: Tablón de anuncios',
-    ),
+    const EspaciosScreen(),
+    const BuzonScreen(),
     const PerfilScreen()
   ];
 
@@ -50,7 +47,6 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      
       drawer: Drawer(
         backgroundColor: MyColors.lightBlueApp,
         child: ListView(
@@ -141,6 +137,7 @@ class _MainScreenState extends State<MainScreen> {
         selectedItemColor: MyColors.blackApp,
         selectedIconTheme: const IconThemeData(
           size: 30,
+          color: MyColors.lightBlueApp,
         ),
         unselectedItemColor: MyColors.blackApp,
         showSelectedLabels: false,

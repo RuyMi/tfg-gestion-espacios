@@ -3,22 +3,22 @@ import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 
 import '../models/colors.dart';
 
-class InicioScreen extends StatefulWidget {
-  const InicioScreen({Key? key}) : super(key: key);
+class BuzonScreen extends StatefulWidget {
+  const BuzonScreen({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _InicioScreenState createState() => _InicioScreenState();
+  _BuzonScreenState createState() => _BuzonScreenState();
 }
 
-class _InicioScreenState extends State<InicioScreen> {
+class _BuzonScreenState extends State<BuzonScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: const Text('Inicio'),
+        title: const Text('Tablón de anuncios'),
         titleTextStyle: const TextStyle(
           fontFamily: 'KoHo',
           color: MyColors.blackApp,
