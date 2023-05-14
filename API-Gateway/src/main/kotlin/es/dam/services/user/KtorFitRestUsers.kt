@@ -20,6 +20,13 @@ interface KtorFitRestUsers {
         @Body user: UserLoginDTO
     ): UserTokenDTO
 
+    @PUT("users/credits/{id}/{creditsAmount}")
+    suspend fun updateCredits(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+        @Path("creditsAmount") creditsAmount: Int
+    ): UserResponseDTO
+
     @POST("users/register")
     suspend fun register(
         @Body user: UserRegisterDTO

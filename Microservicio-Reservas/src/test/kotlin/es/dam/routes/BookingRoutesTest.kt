@@ -66,7 +66,7 @@ class BookingRoutesTest {
         val startTimeReduced = responseData[0].startTime.substring(0, 23)
         val endTimeReduced = responseData[0].endTime.substring(0, 23)
         assertAll(
-            {assertEquals(HttpStatusCode.OK, response.status)},
+            { assertEquals(HttpStatusCode.OK, response.status)},
             { assertEquals(1, responseData.size) },
             { assertEquals(responseData[0].id, responseData[0].id) },
             { assertEquals(responseData[0].uuid, responseData[0].uuid) },
@@ -230,7 +230,7 @@ class BookingRoutesTest {
 
     @Test
     @Order(7)
-    fun deleteNotFound() = testApplication {
+    fun deleteBadRequest() = testApplication {
         environment { config }
         val response = client.delete("/bookings/2")
         assertAll(
