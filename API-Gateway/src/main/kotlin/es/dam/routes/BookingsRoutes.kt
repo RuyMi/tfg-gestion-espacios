@@ -12,6 +12,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.async
 import org.koin.ktor.ext.inject
+import java.lang.IllegalArgumentException
+import java.util.*
 
 private const val ENDPOINT = "bookings"
 
@@ -146,11 +148,16 @@ fun Application.bookingsRoutes() {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
                         val id = call.parameters["id"]
-
+                        val uuid = UUID.fromString(id)!!
                         bookingsRepository.delete("Bearer $token", id!!)
 
                         call.respond(HttpStatusCode.NoContent)
 
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(
+                            HttpStatusCode.BadRequest,
+                            "El id introducido no es válido: ${e.stackTraceToString()}"
+                        )
                     } catch (e: Exception) {
                         call.respond(HttpStatusCode.NotFound, "La reserva con ese id no ha sido encontrada: ${e.stackTraceToString()}")
                     }

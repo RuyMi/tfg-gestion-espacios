@@ -1,0 +1,184 @@
+{
+	"info": {
+		"_postman_id": "f618fc9b-f2f0-444a-8e89-5a506b42e695",
+		"name": "Microservicio-Reservas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "FIND ALL",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyYzc3YmJkMy0wMGQ4LTQwZmQtYTY4OS1jYWNmMTA5NTg0YzYiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjg0MDc2ODY3LCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.SFjZOLcJImK8p_GRr7GcVbVmRmpXx13NeCDok8GjQPDWbYeo-ap9fUXjG2Iip_ZdLN_0DinSjIQ3miqVx6F3Sw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/bookings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND BY ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyYzc3YmJkMy0wMGQ4LTQwZmQtYTY4OS1jYWNmMTA5NTg0YzYiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjg0MDc2ODY3LCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.SFjZOLcJImK8p_GRr7GcVbVmRmpXx13NeCDok8GjQPDWbYeo-ap9fUXjG2Iip_ZdLN_0DinSjIQ3miqVx6F3Sw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/bookings/c060c959-8462-4a0f-9265-9af4f54d166c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bookings",
+						"c060c959-8462-4a0f-9265-9af4f54d166c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyYzc3YmJkMy0wMGQ4LTQwZmQtYTY4OS1jYWNmMTA5NTg0YzYiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjg0MDc2ODY3LCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.SFjZOLcJImK8p_GRr7GcVbVmRmpXx13NeCDok8GjQPDWbYeo-ap9fUXjG2Iip_ZdLN_0DinSjIQ3miqVx6F3Sw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"4484ea54-18aa-48a7-b5ed-a46bdbf45a47\",\r\n    \"spaceId\": \"b4443487-b2cc-48b6-af53-0820be683b23\",\r\n    \"startTime\": \"2023-05-10T22:23:23.542\",\r\n    \"endTime\": \"2023-05-10T22:23:23.542\",\r\n    \"phone\": \"123456788\",\r\n    \"status\": \"PENDING\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/bookings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyYzc3YmJkMy0wMGQ4LTQwZmQtYTY4OS1jYWNmMTA5NTg0YzYiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjg0MDc2ODY3LCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.SFjZOLcJImK8p_GRr7GcVbVmRmpXx13NeCDok8GjQPDWbYeo-ap9fUXjG2Iip_ZdLN_0DinSjIQ3miqVx6F3Sw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"4484ea54-18aa-48a7-b5ed-a46bdbf45a23\",\r\n    \"spaceId\": \"b4443487-b2cc-48b6-af53-0820be683b23\",\r\n    \"startTime\": \"2023-05-10T22:23:23.542\",\r\n    \"endTime\": \"2023-05-10T22:23:23.542\",\r\n    \"phone\": \"123456788\",\r\n    \"status\": \"PENDING\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/bookings/691dae65-95ce-4b40-ab36-c5c35233fbe0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bookings",
+						"691dae65-95ce-4b40-ab36-c5c35233fbe0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyYzc3YmJkMy0wMGQ4LTQwZmQtYTY4OS1jYWNmMTA5NTg0YzYiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjg0MDc2ODY3LCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.SFjZOLcJImK8p_GRr7GcVbVmRmpXx13NeCDok8GjQPDWbYeo-ap9fUXjG2Iip_ZdLN_0DinSjIQ3miqVx6F3Sw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"4484ea54-18aa-48a7-b5ed-a46bdbf45a23\",\r\n    \"spaceId\": \"b4443487-b2cc-48b6-af53-0820be683b23\",\r\n    \"startTime\": \"2023-05-10T22:23:23.542\",\r\n    \"endTime\": \"2023-05-10T22:23:23.542\",\r\n    \"phone\": \"123456788\",\r\n    \"status\": \"PENDING\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/bookings/691dae65-95ce-4b40-ab36-c5c35233fbe0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bookings",
+						"691dae65-95ce-4b40-ab36-c5c35233fbe0"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
