@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
-import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 
 class ReservasScreen extends StatefulWidget {
   const ReservasScreen({Key? key}) : super(key: key);
@@ -56,8 +55,17 @@ class _ReservasScreenState extends State<ReservasScreen> {
                   children: [
                     Row(
                       children: [
-                        Image.asset('assets/images/logo.png',
-                            width: 100, height: 100, fit: BoxFit.cover),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: MyColors.pinkApp,
+                              width: 2,
+                            ),
+                          ),
+                          child: Image.asset('assets/images/logo.png',
+                              width: 100, height: 100, fit: BoxFit.cover),
+                        ),
                         const SizedBox(
                           width: 10,
                         ),

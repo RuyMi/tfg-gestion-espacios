@@ -13,10 +13,17 @@ class AcercaDeWidget extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage('assets/images/logo.png'),
-              backgroundColor: MyColors.whiteApp,
+            Container(
+              decoration: BoxDecoration(
+                color: MyColors.whiteApp,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: MyColors.darkBlueApp,
+                  width: 2,
+                ),
+              ),
+              child: Image.asset('assets/images/logo.png',
+                  width: 100, height: 100, fit: BoxFit.cover),
             ),
             const SizedBox(height: 16),
             const Row(
@@ -101,7 +108,11 @@ class AcercaDeWidget extends StatelessWidget {
       contentPadding: const EdgeInsets.all(16),
       backgroundColor: MyColors.lightBlueApp,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
+        side: const BorderSide(
+          color: MyColors.whiteApp,
+          width: 2,
+        ),
       ),
     );
   }

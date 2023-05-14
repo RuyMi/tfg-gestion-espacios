@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/screens/public/reservar_espacios.dart';
 import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 
 class EspaciosScreen extends StatefulWidget {
@@ -17,7 +18,30 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           centerTitle: true,
-          title: const Text('IES Luis Vives'),
+          title: const Column(
+            children: [
+              Text('IES Luis Vives'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '100',
+                    style: TextStyle(
+                      fontFamily: 'KoHo',
+                      color: MyColors.pinkApp,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Icon(
+                    Icons.monetization_on_outlined,
+                    color: MyColors.pinkApp,
+                    size: 20,
+                  ),
+                ],
+              )
+            ],
+          ),
           titleTextStyle: const TextStyle(
             fontFamily: 'KoHo',
             color: MyColors.blackApp,
@@ -48,7 +72,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
         body: ListView(
           children: [
             Card(
-              color: MyColors.whiteApp,
+              color: MyColors.lightBlueApp.shade50,
               margin: const EdgeInsets.all(16),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -56,8 +80,23 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                   children: [
                     Row(
                       children: [
-                        Image.asset('assets/images/logo.png',
-                            width: 100, height: 100, fit: BoxFit.cover),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: MyColors.pinkApp,
+                              width: 2,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                                'assets/images/image_placeholder.png',
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover),
+                          ),
+                        ),
                         const SizedBox(
                           width: 10,
                         ),
@@ -97,7 +136,14 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                     IconButton(
                                       icon: const Icon(Icons.bookmark_outline,
                                           color: MyColors.lightBlueApp),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const ReservaSala(),
+                                          ),
+                                        );
+                                      },
                                     ),
                                     IconButton(
                                       icon: const Icon(Icons.share,

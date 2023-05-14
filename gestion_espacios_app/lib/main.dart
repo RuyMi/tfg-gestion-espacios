@@ -28,12 +28,16 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
+
+        // Public
         '/login': (context) => const LoginScreen(),
         '/home': (context) => const MainScreen(),
         '/espacios': (context) => const EspaciosScreen(),
         '/reservas': (context) => const ReservasScreen(),
         '/buzon': (context) => const BuzonScreen(),
         '/perfil': (context) => const PerfilScreen(),
+
+        // Private
         '/login-bo': (context) => const BOLoginScreen(),
         '/home-bo': (context) => const BOMainScreen(),
       },

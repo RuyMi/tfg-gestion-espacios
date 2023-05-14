@@ -15,6 +15,7 @@ dependencies:
   url_launcher: ^6.0.3
   http: ^0.13.6
   cupertino_icons: ^1.0.2
+  table_calendar: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -29,6 +30,8 @@ flutter:
 
   assets:
     - assets/images/logo.png
+    - assets/images/profile_pic.png
+    - assets/images/image_placeholder.png
 
   fonts:
     - family: KoHo

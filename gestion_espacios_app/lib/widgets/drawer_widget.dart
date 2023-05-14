@@ -22,13 +22,14 @@ class MyDrawer extends StatelessWidget {
                     fontFamily: 'KoHo',
                     color: MyColors.whiteApp,
                     fontWeight: FontWeight.bold)),
-            accountEmail: Text('nombre_usuario',
+            accountEmail: Text('@nombre_usuario',
                 style: TextStyle(
+                  fontStyle: FontStyle.italic,
                   fontFamily: 'KoHo',
                   color: MyColors.whiteApp,
                 )),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/logo.png'),
+              backgroundImage: AssetImage('assets/images/profile_pic.png'),
               backgroundColor: MyColors.whiteApp,
             ),
           ),

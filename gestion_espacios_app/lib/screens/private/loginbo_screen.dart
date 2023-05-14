@@ -70,6 +70,18 @@ class BOLoginScreen extends StatelessWidget {
                   style:
                       TextStyle(color: MyColors.whiteApp, fontFamily: 'KoHo')),
             ),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/login');
+              },
+              child: const Text(
+                'Acceso al servicio público.',
+                style: TextStyle(
+                  fontFamily: 'KoHo',
+                ),
+              ),
+            ),
           ],
         ),
       ),
