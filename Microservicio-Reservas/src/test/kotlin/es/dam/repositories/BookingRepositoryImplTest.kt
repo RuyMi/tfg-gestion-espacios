@@ -121,19 +121,19 @@ class BookingRepositoryImplTest {
 
     @Test
     fun findById() = runTest {
-        val booking = repository.findById(UUID.fromString(booking.uuid))
+        val bookingTest = repository.findById(UUID.fromString(booking.uuid))
         val startTimeReduced = booking.startTime.toString().substring(0, 23)
         val endTimeReduced = booking.endTime.toString().substring(0, 23)
 
         assertAll(
-            { assertEquals(booking.id, booking.id) },
-            { assertEquals(booking.uuid, booking.uuid) },
-            { assertEquals(booking.userId, booking.userId) },
-            { assertEquals(booking.spaceId, booking.spaceId) },
-            { assertEquals(booking.status, booking.status) },
-            { assertEquals(startTimeReduced, booking.startTime.toString()) },
-            { assertEquals(endTimeReduced, booking.endTime.toString()) },
-            { assertEquals(booking.phone, booking.phone) }
+            { assertEquals(booking.id, bookingTest.id) },
+            { assertEquals(booking.uuid, bookingTest.uuid) },
+            { assertEquals(booking.userId, bookingTest.userId) },
+            { assertEquals(booking.spaceId, bookingTest.spaceId) },
+            { assertEquals(booking.status, bookingTest.status) },
+            { assertEquals(startTimeReduced, bookingTest.startTime.toString()) },
+            { assertEquals(endTimeReduced, bookingTest.endTime.toString()) },
+            { assertEquals(booking.phone, bookingTest.phone) }
         )
     }
 
@@ -141,8 +141,6 @@ class BookingRepositoryImplTest {
     fun save() = runTest {
         repository.delete(UUID.fromString(booking.uuid))
         val bookingTest = repository.save(booking)
-        val startTimeReduced = booking.startTime.toString().substring(0, 23)
-        val endTimeReduced = booking.endTime.toString().substring(0, 23)
         assertAll(
             { assertEquals(booking.id, bookingTest.id) },
             { assertEquals(booking.uuid, bookingTest.uuid) },
@@ -164,10 +162,6 @@ class BookingRepositoryImplTest {
             phone = "987654321"
         )
         val updatedBooking = repository.update(bookingTest)
-        val startTimeReduced = bookingTest.startTime.toString().substring(0, 23)
-        val endTimeReduced = bookingTest.endTime.toString().substring(0, 23)
-
-
 
         assertAll(
             { assertEquals(updatedBooking.id, bookingTest.id) },
