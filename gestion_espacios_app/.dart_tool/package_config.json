@@ -110,6 +110,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "nested",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/nested-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "path",
       "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/path-1.8.3",
       "packageUri": "lib/",
@@ -120,6 +126,12 @@
       "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/plugin_platform_interface-2.1.4",
       "packageUri": "lib/",
       "languageVersion": "2.17"
+    },
+    {
+      "name": "provider",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/provider-6.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "sky_engine",
@@ -230,7 +242,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2023-05-11T19:03:59.866322Z",
+  "generated": "2023-05-14T10:04:10.441147Z",
   "generator": "pub",
   "generatorVersion": "3.0.0"
 }

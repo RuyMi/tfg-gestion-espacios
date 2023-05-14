@@ -15,7 +15,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         centerTitle: true,
         title: const Text('Perfil'),
         titleTextStyle: const TextStyle(
@@ -24,17 +24,17 @@ class _PerfilScreenState extends State<PerfilScreen> {
           fontWeight: FontWeight.bold,
           fontSize: 25,
         ),
-        leading: IconButton(
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return const AcercaDeWidget();
-                });
-          },
-          icon: Image.asset('assets/images/logo.png'),
-          iconSize: 25,
-        ),
+        // leading: IconButton(
+        //   onPressed: () {
+        //     showDialog(
+        //         context: context,
+        //         builder: (BuildContext context) {
+        //           return const AcercaDeWidget();
+        //         });
+        //   },
+        //   icon: Image.asset('assets/images/logo.png'),
+        //   iconSize: 25,
+        // ),
         backgroundColor: MyColors.whiteApp,
       ),
       body: Center(

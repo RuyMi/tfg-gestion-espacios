@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
 
 class AppTheme {
-  static const seedColor = MyColors.whiteApp;
+  static const seedColor = MyColors.lightBlueApp;
   final _colorScheme = ColorScheme.fromSeed(seedColor: seedColor);
   final _darkColorScheme = ColorScheme.fromSwatch(
       primarySwatch: seedColor, brightness: Brightness.dark);
@@ -18,4 +18,8 @@ class AppTheme {
         useMaterial3: true,
         colorScheme: _darkColorScheme,
       );
+
+  ThemeData getTheme(bool isDarkMode) {
+    return isDarkMode ? darkTheme : lightTheme;
+  }
 }
