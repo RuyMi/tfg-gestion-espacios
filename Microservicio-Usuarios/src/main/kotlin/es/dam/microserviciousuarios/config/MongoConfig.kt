@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration
 @Configuration
 class MongoConfig : AbstractMongoClientConfiguration() {
     override fun getDatabaseName(): String {
-        return "reservas-luisvives"
+        return "reservas-luisvives-test"
     }
 
     override fun mongoClient(): MongoClient {

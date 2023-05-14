@@ -25,7 +25,7 @@ class UserService
 
     override fun loadUserByUsername(username: String?): UserDetails = runBlocking {
         return@runBlocking usersRepository.findUserByUsername(username!!).firstOrNull()
-            ?: throw UserNotFoundException("User doesn't found with username: $username")
+            ?: throw UserNotFoundException("User not found with username: $username")
     }
 
     suspend fun findAll(): List<User> = withContext(Dispatchers.IO) {
@@ -41,6 +41,11 @@ class UserService
     }
 
     suspend fun findByUuid(uuid: String): User = withContext(Dispatchers.IO) {
+        try {
+            UUID.fromString(uuid)
+        }catch(e: Exception){
+            throw UserBadRequestException("Invalid UUID string: $uuid")
+        }
         if (usersRepository.findUserByUuid(UUID.fromString(uuid)).isNotEmpty()) {
             return@withContext usersRepository.findUserByUuid(UUID.fromString(uuid)).first()
         } else {
@@ -86,9 +91,14 @@ class UserService
         }
     }
 
-    suspend fun deleteByUuid(uuid: String) = withContext(Dispatchers.IO) {
-        if (usersRepository.findUserByUuid(UUID.fromString(uuid)).isNotEmpty()) {
-            usersRepository.deleteByUuid(UUID.fromString(uuid))
+    suspend fun deleteByUuid(uuid: String): Boolean = withContext(Dispatchers.IO) {
+        try {
+            UUID.fromString(uuid)
+        }catch(e: Exception){
+            throw UserBadRequestException("Invalid UUID string: $uuid")
+        }
+         if (usersRepository.findUserByUuid(UUID.fromString(uuid)).isNotEmpty()) {
+             return@withContext usersRepository.deleteByUuid(UUID.fromString(uuid))
         } else {
             throw UserNotFoundException("User with uuid $uuid not found.")
         }
