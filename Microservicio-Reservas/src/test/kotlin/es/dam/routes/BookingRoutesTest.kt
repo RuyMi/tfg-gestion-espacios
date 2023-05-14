@@ -103,16 +103,28 @@ class BookingRoutesTest {
 
     @OptIn(InternalAPI::class)
     @Test
+    fun findIdNotFound() = testApplication {
+        environment { config }
+        val response = client.get("/bookings/1cca337f-9dbc-4e53-8904-58961235b7da")
+        val body =  response.content.readUTF8Line()!!
+        assertAll(
+                {assertEquals(HttpStatusCode.NotFound, response.status)},
+                { assertEquals("No se ha encontrado la reserva con el id: 1cca337f-9dbc-4e53-8904-58961235b7da", body) }
+        )
+    }
+
+    @OptIn(InternalAPI::class)
+    @Test
     @Order(3)
     fun failWithId() = testApplication {
         environment { config }
         val response = client.get("/bookings/123")
         val body =  response.content.readUTF8Line()!!
-    assertAll(
-            {assertEquals(HttpStatusCode.BadRequest, response.status)},
-            { assertEquals("El id debe ser un id válido", body) }
+        assertAll(
+                {assertEquals(HttpStatusCode.BadRequest, response.status)},
+                { assertEquals("El id debe ser un id válido", body) }
         )
-        }
+    }
 
     @OptIn(InternalAPI::class)
     @Test
@@ -185,6 +197,23 @@ class BookingRoutesTest {
         }
         assertAll(
             {assertEquals(HttpStatusCode.NotFound, response.status)},
+        )
+    }
+
+    @Test
+    fun updateBadRequest() = testApplication {
+        environment { config }
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+        val response = client.put("/bookings/234") {
+            contentType(ContentType.Application.Json)
+            setBody(bookingDtoCreate)
+        }
+        assertAll(
+            {assertEquals(HttpStatusCode.BadRequest, response.status)},
         )
     }
 
