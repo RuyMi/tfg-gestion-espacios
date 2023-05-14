@@ -101,6 +101,7 @@ class SpaceServiceImplTest {
         }
         assertEquals("No se ha encontrado el espacio con uuid ${space.uuid}", exception.message)
     }
+
     @Test
     fun save() = runTest {
         coEvery { spaceRepository.save(any()) } returns space
