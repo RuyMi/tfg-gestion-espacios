@@ -197,7 +197,7 @@ class BookingServiceImplTest {
     }
     @Test
     fun update() = runTest {
-        coEvery { bookingRepository.update(booking) } returns booking
+        coEvery { bookingRepository.update(any()) } returns booking
         coEvery { bookingRepository.findById(UUID.fromString(booking.uuid)) } returns booking
 
 
@@ -218,7 +218,7 @@ class BookingServiceImplTest {
     @Test
     fun failUpdate() = runTest {
         coEvery { bookingRepository.findById(UUID.fromString(booking.uuid)) } returns booking
-        coEvery { bookingRepository.update(booking) } throws BookingException("Failed to update booking with uuid ${booking.uuid}")
+        coEvery { bookingRepository.update(any()) } throws BookingException("Failed to update booking with uuid ${booking.uuid}")
 
         val exception = assertFailsWith(BookingException::class) {
             bookingService.update(booking, booking.uuid)
