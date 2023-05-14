@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
-
-import '../models/colors.dart';
 
 class InicioScreen extends StatefulWidget {
   const InicioScreen({Key? key}) : super(key: key);

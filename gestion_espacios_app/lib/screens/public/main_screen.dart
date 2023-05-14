@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/screens/buzon_screen.dart';
-import 'package:gestion_espacios_app/screens/espacios_screen.dart';
-import 'package:gestion_espacios_app/screens/inicio_screen.dart';
-import 'package:gestion_espacios_app/screens/perfil_screen.dart';
+import 'package:gestion_espacios_app/screens/public/buzon_screen.dart';
+import 'package:gestion_espacios_app/screens/public/espacios_screen.dart';
+import 'package:gestion_espacios_app/screens/public/inicio_screen.dart';
+import 'package:gestion_espacios_app/screens/public/perfil_screen.dart';
 import 'package:gestion_espacios_app/widgets/bottomnav_widget.dart';
 import 'package:gestion_espacios_app/widgets/drawer_widget.dart';
 
@@ -42,7 +42,6 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  // ignore: library_private_types_in_public_api
   @override
   Widget build(BuildContext context) {
     return Scaffold(

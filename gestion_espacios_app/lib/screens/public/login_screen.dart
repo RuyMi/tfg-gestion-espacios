@@ -23,8 +23,10 @@ class LoginScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 labelText: 'Nombre de usuario',
-                labelStyle: const TextStyle(fontFamily: 'KoHo'),
-                prefixIcon: const Icon(Icons.person),
+                labelStyle: const TextStyle(
+                    fontFamily: 'KoHo', color: MyColors.blackApp),
+                prefixIcon:
+                    const Icon(Icons.person, color: MyColors.lightBlueApp),
               ),
             ),
             const SizedBox(height: 10),
@@ -38,8 +40,10 @@ class LoginScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 labelText: 'Contraseña',
-                labelStyle: const TextStyle(fontFamily: 'KoHo'),
-                prefixIcon: const Icon(Icons.lock),
+                labelStyle: const TextStyle(
+                    fontFamily: 'KoHo', color: MyColors.blackApp),
+                prefixIcon:
+                    const Icon(Icons.lock, color: MyColors.lightBlueApp),
               ),
             ),
             const SizedBox(height: 20),
@@ -57,16 +61,18 @@ class LoginScreen extends StatelessWidget {
                   style:
                       TextStyle(color: MyColors.whiteApp, fontFamily: 'KoHo')),
             ),
-            // const SizedBox(height: 10),
-            // TextButton(
-            //   onPressed: () {},
-            //   child: const Text(
-            //     '¿Has olvidado tu contraseña?',
-            //     style: TextStyle(
-            //       fontFamily: 'KoHo',
-            //     ),
-            //   ),
-            // ),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/login-bo');
+              },
+              child: const Text(
+                'Acceso al área privada del centro.',
+                style: TextStyle(
+                  fontFamily: 'KoHo',
+                ),
+              ),
+            ),
           ],
         ),
       ),

@@ -38,6 +38,7 @@ class MyDrawer extends StatelessWidget {
             title: const Text('Perfil',
                 style: TextStyle(fontFamily: 'KoHo', color: MyColors.whiteApp)),
             onTap: () {
+              Navigator.pop(context);
               Navigator.pushNamed(context, '/perfil');
             },
           ),
@@ -46,7 +47,10 @@ class MyDrawer extends StatelessWidget {
             iconColor: MyColors.whiteApp,
             title: const Text('Mis reservas',
                 style: TextStyle(fontFamily: 'KoHo', color: MyColors.whiteApp)),
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/reservas');
+            },
           ),
           ListTile(
             leading: const Icon(Icons.settings),

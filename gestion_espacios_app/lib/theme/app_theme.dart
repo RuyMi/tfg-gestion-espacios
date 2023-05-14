@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
 
 class AppTheme {
-  static const seedColor = MyColors.lightBlueApp;
+  static const seedColor = MyColors.whiteApp;
   final _colorScheme = ColorScheme.fromSeed(seedColor: seedColor);
   final _darkColorScheme = ColorScheme.fromSwatch(
       primarySwatch: seedColor, brightness: Brightness.dark);
