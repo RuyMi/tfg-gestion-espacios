@@ -83,7 +83,7 @@ class UsersController @Autowired constructor(
             return ResponseEntity.ok(res)
         } catch (e: UserNotFoundException) {
             throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with uuid: $id")
-        } catch (e: IllegalArgumentException) {
+        } catch (e: UserBadRequestException) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID string: $id")
         }
     }
