@@ -3,8 +3,6 @@ package es.dam.routes
 import es.dam.dto.*
 import es.dam.mappers.toSpaceDto
 import es.dam.models.Space
-import es.dam.plugins.configureKoin
-import es.dam.plugins.configureRouting
 import es.dam.repositories.SpaceRepositoryImpl
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
@@ -18,12 +16,10 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.bson.types.ObjectId
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.litote.kmongo.id.toId
-import java.time.LocalDateTime
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -54,6 +50,17 @@ class SpaceRoutesTest {
         authorizedRoles = setOf(Space.UserRole.USER.toString()),
         bookingWindow = Duration.parse("PT1H").toString()
     )
+
+    val spaceDtoCreateWrong = SpaceCreateDTO(
+        name = "",
+        image = "",
+        price = -1,
+        isReservable = true,
+        requiresAuthorization = true,
+        authorizedRoles = setOf(Space.UserRole.USER.toString()),
+        bookingWindow = Duration.parse("PT1H").toString()
+    )
+
     val spaceDtoUpdate = SpaceUpdateDTO(
         name = "name",
         isReservable = true,
@@ -119,6 +126,30 @@ class SpaceRoutesTest {
 
     @OptIn(InternalAPI::class)
     @Test
+    fun findIdNotFound() = testApplication {
+        environment { config }
+        val response = client.get("/spaces/1cca337f-9dbc-4e53-8904-58961235b7da")
+        val responseData = response.content.readUTF8Line()!!
+        assertAll(
+            {assertEquals(HttpStatusCode.NotFound, response.status)},
+            { assertEquals("No se ha encontrado el espacio con el uuid: 1cca337f-9dbc-4e53-8904-58961235b7da", responseData) }
+        )
+    }
+
+    @OptIn(InternalAPI::class)
+    @Test
+    fun failWithId() = testApplication {
+        environment { config }
+        val response = client.get("/spaces/123")
+        val body =  response.content.readUTF8Line()!!
+        assertAll(
+            {assertEquals(HttpStatusCode.BadRequest, response.status)},
+            { assertEquals("El uuid debe ser un uuid válido", body) }
+        )
+    }
+
+    @OptIn(InternalAPI::class)
+    @Test
     fun create() = testApplication {
         environment {
             config
@@ -140,6 +171,28 @@ class SpaceRoutesTest {
             { assertNotNull(responseData.uuid) }
         )
     }
+
+    /*@OptIn(InternalAPI::class)
+    @Test
+    fun failCreate() = testApplication {
+        environment { config }
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+        val response = client.post("/spaces") {
+            contentType(ContentType.Application.Json)
+            setBody(spaceDtoCreateWrong)
+        }
+        val body =  response.content.readUTF8Line()!!
+        assertAll(
+            {assertEquals(HttpStatusCode.BadRequest, response.status)},
+            { assertEquals("No se ha podido crear el espacio", body) }
+        )
+    }
+
+     */
 
     @OptIn(InternalAPI::class)
     @Test
@@ -173,6 +226,40 @@ class SpaceRoutesTest {
         )
     }
 
+    @Test
+    fun updateNotFound() = testApplication {
+        environment { config }
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+        val response = client.put("/spaces/${UUID.randomUUID()}") {
+            contentType(ContentType.Application.Json)
+            setBody(spaceDtoUpdate)
+        }
+        assertAll(
+            {assertEquals(HttpStatusCode.NotFound, response.status)},
+        )
+    }
+
+    @Test
+    fun updateBadRequest() = testApplication {
+        environment { config }
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+        val response = client.put("/spaces/234") {
+            contentType(ContentType.Application.Json)
+            setBody(spaceDtoUpdate)
+        }
+        assertAll(
+            {assertEquals(HttpStatusCode.BadRequest, response.status)},
+        )
+    }
+
 
     @Test
     fun delete() = testApplication {
@@ -185,6 +272,29 @@ class SpaceRoutesTest {
             { assertEquals(HttpStatusCode.NoContent, response.status) },
         )
 
+    }
+
+    @Test
+    fun deleteBadRequest() = testApplication {
+        environment { config }
+        val response = client.delete("/spaces/2")
+        assertAll(
+            {assertEquals(HttpStatusCode.BadRequest, response.status)},
+        )
+    }
+
+    @Test
+    fun deleteNotfound() = testApplication {
+        environment { config }
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+        val response = client.delete("/spaces/1cca337f-9dbc-4e53-8904-58961235b7da")
+        assertAll(
+            {assertEquals(HttpStatusCode.NotFound, response.status)},
+        )
     }
 
     @OptIn(InternalAPI::class)
@@ -212,6 +322,40 @@ class SpaceRoutesTest {
         )
     }
 
+    @Test
+    fun getIsReservedNotFound() = testApplication {
+        environment { config }
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+        val response = client.get("/spaces/reservables/false") {
+            contentType(ContentType.Application.Json)
+            setBody(spaceDtoUpdate)
+        }
+        assertAll(
+            {assertEquals(HttpStatusCode.NotFound, response.status)},
+        )
+    }
+
+    @Test
+    fun getIsReservedBadRequest() = testApplication {
+        environment { config }
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+        val response = client.get("/spaces/reservables/test") {
+            contentType(ContentType.Application.Json)
+            setBody(spaceDtoUpdate)
+        }
+        assertAll(
+            {assertEquals(HttpStatusCode.BadRequest, response.status)},
+        )
+    }
+
     @OptIn(InternalAPI::class)
     @Test
     fun getByName() = testApplication {
@@ -236,6 +380,22 @@ class SpaceRoutesTest {
         )
     }
 
+    @Test
+    fun getByNameNotFound() = testApplication {
+        environment { config }
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+        val response = client.get("/spaces/nombre/test") {
+            contentType(ContentType.Application.Json)
+            setBody(spaceDtoUpdate)
+        }
+        assertAll(
+            {assertEquals(HttpStatusCode.NotFound, response.status)},
+        )
+    }
 
     companion object {
         @JvmStatic
