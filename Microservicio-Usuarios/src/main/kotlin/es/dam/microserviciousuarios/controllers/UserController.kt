@@ -107,6 +107,24 @@ class UsersController @Autowired constructor(
         }
     }
 
+    @PutMapping("/credits/{id}/{creditsAmount}")
+    suspend fun updateCredits(
+        @AuthenticationPrincipal user: User,
+        @PathVariable id: String,
+        @PathVariable creditsAmount: Int
+    ): ResponseEntity<UserResponseDTO> {
+        try {
+            val updated = userService.findByUuid(id)
+            val updatedCredits = updated.credits - creditsAmount
+            val res = userService.update(updated.copy(credits = updatedCredits))
+            return ResponseEntity.status(HttpStatus.OK).body(res?.toDTO())
+        } catch (e: UserNotFoundException) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
+        } catch (e: UserBadRequestException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
+        }
+    }
+
     @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
     @PutMapping("/{id}")
     suspend fun update(
