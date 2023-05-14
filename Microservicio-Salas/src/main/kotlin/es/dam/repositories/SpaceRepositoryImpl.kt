@@ -15,7 +15,7 @@ import java.util.*
 
 @Single
 @Named("SpaceRepositoryImpl")
-class SpaceRepositoryImpl(): SpaceRepository {
+class SpaceRepositoryImpl: SpaceRepository {
     private val db = MongoDbManager
     override suspend fun findAll(): List<Space> = withContext(Dispatchers.IO){
         return@withContext db.database.getCollection<Space>().find().toList()
@@ -48,7 +48,10 @@ class SpaceRepositoryImpl(): SpaceRepository {
     }
 
     override suspend fun delete(id: UUID): Boolean = withContext(Dispatchers.IO){
-        return@withContext db.database.getCollection<Space>().deleteMany(Space::uuid eq id.toString()).wasAcknowledged()
+        return@withContext db.database.getCollection<Space>().deleteMany(Space::uuid eq id.toString()).let {
+            if(it.deletedCount >= 1L) return@let it.wasAcknowledged()
+            throw SpaceException("No se ha encontrado el espacio con uuid $id")
+        }
     }
 
     override suspend fun deleteAll(): Boolean = withContext(Dispatchers.IO) {

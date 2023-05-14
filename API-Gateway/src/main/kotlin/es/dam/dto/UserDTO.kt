@@ -71,6 +71,6 @@ data class UserResponseDTO(
 
 @Serializable
 data class UserDataDTO(
-    val data: List<UserResponseDTO>
+    val data: List<UserResponseDTO>?
 )
 

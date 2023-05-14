@@ -71,11 +71,8 @@ fun Application.usersRoutes() {
 
                         call.respond(HttpStatusCode.OK, users)
 
-                    } catch (e: UserException) {
-                        call.respond(HttpStatusCode.NotFound, "Error al obtener los usuarios: ${e.stackTraceToString()}")
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al obtener los usuarios: ${e.stackTraceToString()}"
-                        )
+                        call.respond(HttpStatusCode.NotFound, "Error getting users")
                     }
                 }
 

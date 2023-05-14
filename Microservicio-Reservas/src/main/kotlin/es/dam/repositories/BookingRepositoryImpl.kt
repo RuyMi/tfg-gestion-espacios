@@ -48,8 +48,10 @@ class BookingRepositoryImpl : BookingRepository {
     }
 
     override suspend fun delete(uuid: UUID): Boolean = withContext(Dispatchers.IO) {
-        return@withContext manager.database.getCollection<Booking>().deleteOne(Booking::uuid eq uuid.toString())
-            .wasAcknowledged()
+        return@withContext manager.database.getCollection<Booking>().deleteOne(Booking::uuid eq uuid.toString()).let {
+            if(it.deletedCount == 1L) return@let it.wasAcknowledged()
+            throw BookingException("Failed to delete booking with uuid $uuid")
+        }
     }
 
     override suspend fun deleteAll(): Boolean = withContext(Dispatchers.IO) {

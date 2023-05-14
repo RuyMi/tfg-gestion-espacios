@@ -17,7 +17,7 @@ import org.koin.ktor.ext.inject
 
 
 fun Application.spaceRoutes() {
-    val spaceService: SpaceServiceImpl by inject(named("SpaceServiceImpl"))
+    val spaceService: SpaceServiceImpl by inject()
 
     routing {
         get("/spaces") {
