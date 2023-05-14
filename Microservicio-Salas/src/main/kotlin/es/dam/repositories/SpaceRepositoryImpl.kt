@@ -15,7 +15,7 @@ import java.util.*
 
 @Single
 @Named("SpaceRepositoryImpl")
-class SpaceRepositoryImpl(): SpaceRepository {
+class SpaceRepositoryImpl: SpaceRepository {
     private val db = MongoDbManager
     override suspend fun findAll(): List<Space> = withContext(Dispatchers.IO){
         return@withContext db.database.getCollection<Space>().find().toList()
