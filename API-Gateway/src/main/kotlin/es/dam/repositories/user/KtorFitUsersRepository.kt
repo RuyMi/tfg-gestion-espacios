@@ -57,6 +57,15 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    override suspend fun updateCredits(token: String, id: String, creditsAmount: Int): UserResponseDTO = withContext(Dispatchers.IO)  {
+        val call = async { client.updateCredits(token, id, creditsAmount) }
+        try {
+            return@withContext call.await()
+        } catch (e: Exception) {
+            throw Exception("Error updating user with id $id: ${e.message}")
+        }
+    }
+
     override suspend fun delete(token: String, id: String) = withContext(Dispatchers.IO)  {
         val call = async { client.delete(token, id) }
         try {

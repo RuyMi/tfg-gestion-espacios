@@ -6,6 +6,7 @@ interface IUsersRepository {
     suspend fun findAll(token: String): UserDataDTO
     suspend fun findById(token: String, id: String): UserResponseDTO
     suspend fun update(token: String, id: String, entity: UserUpdateDTO): UserResponseDTO
+    suspend fun updateCredits(token: String, id: String, creditsAmount: Int): UserResponseDTO
     suspend fun delete(token: String, id: String)
     suspend fun me(token: String, entity: UserUpdateDTO): UserResponseDTO
     suspend fun login(entity: UserLoginDTO): UserTokenDTO
