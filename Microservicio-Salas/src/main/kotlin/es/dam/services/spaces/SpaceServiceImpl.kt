@@ -1,5 +1,6 @@
 package es.dam.services.spaces
 
+import es.dam.dto.SpaceUpdateDTO
 import es.dam.models.Space
 import es.dam.repositories.SpaceRepositoryImpl
 import org.koin.core.annotation.InjectedParam
@@ -17,7 +18,7 @@ class SpaceServiceImpl(
     }
 
     override suspend fun updateSpace(space: Space, id: String): Space {
-        val spaceOriginal = repo.findById(UUID.fromString(space.uuid))
+        val spaceOriginal = repo.findById(UUID.fromString(id))
         val spaceUpdated = spaceOriginal.copy(
             name = space.name,
             isReservable = space.isReservable,

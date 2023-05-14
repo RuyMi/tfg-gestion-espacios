@@ -142,6 +142,7 @@ class SpaceRoutesTest {
     }
 
     @OptIn(InternalAPI::class)
+    @Test
     //TODO mirar este test
     fun update() = testApplication {
         environment {
@@ -152,27 +153,26 @@ class SpaceRoutesTest {
                 json()
             }
         }
-        val prueba = client.post("/spaces") {
-            contentType(ContentType.Application.Json)
-            setBody(spaceDtoCreate)
-        }
-        val prueba2 = jsonPerso.decodeFromString<SpaceDTO>(prueba.content.readUTF8Line()!!)
-        val response = client.put("/spaces/${prueba2.uuid}") {
+        val response = client.put("/spaces/${space.uuid}") {
             contentType(ContentType.Application.Json)
             setBody(spaceDtoUpdate)
         }
 
         val responseData = jsonPerso.decodeFromString<SpaceDTO>(response.content.readUTF8Line()!!)
         assertAll(
-            { assertEquals(spaceDtoUpdate.name, responseData.name) },
-            { assertEquals(spaceDtoUpdate.image, responseData.image) },
-            { assertEquals(spaceDtoUpdate.price, responseData.price) },
-            { assertEquals(spaceDtoUpdate.isReservable, responseData.isReservable) },
-            { assertEquals(spaceDtoUpdate.requiresAuthorization, responseData.requiresAuthorization) },
-            { assertEquals(spaceDtoUpdate.authorizedRoles, responseData.authorizedRoles) },
-            { assertEquals(spaceDtoUpdate.bookingWindow, responseData.bookingWindow) }
+            { assertEquals(spaceDto, responseData) },
+            { assertEquals(spaceDto.id, responseData.id) },
+            { assertEquals(spaceDto.uuid, responseData.uuid) },
+            { assertEquals(spaceDto.name, responseData.name) },
+            { assertEquals(spaceDto.image, responseData.image) },
+            { assertEquals(spaceDto.price, responseData.price) },
+            { assertEquals(spaceDto.isReservable, responseData.isReservable) },
+            { assertEquals(spaceDto.requiresAuthorization, responseData.requiresAuthorization) },
+            { assertEquals(spaceDto.authorizedRoles, responseData.authorizedRoles) },
+            { assertEquals(spaceDto.bookingWindow, responseData.bookingWindow) }
         )
     }
+
 
     @Test
     fun delete() = testApplication {
