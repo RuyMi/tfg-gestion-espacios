@@ -12,6 +12,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.async
 import org.koin.ktor.ext.inject
+import java.lang.IllegalArgumentException
+import java.util.UUID
 
 private const val ENDPOINT = "spaces"
 
@@ -127,13 +129,22 @@ fun Application.spacesRoutes() {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
                         val id = call.parameters["id"]
+                        val uuid = UUID.fromString(id)
 
                         spacesRepository.delete("Bearer $token", id!!)
 
                         call.respond(HttpStatusCode.NoContent)
 
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(
+                            HttpStatusCode.BadRequest,
+                            "El id introducido no es válido: ${e.stackTraceToString()}"
+                        )
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "La sala con ese id no ha sido encontrada: ${e.stackTraceToString()}")
+                        call.respond(
+                            HttpStatusCode.NotFound,
+                            "La sala con ese id no ha sido encontrada: ${e.stackTraceToString()}"
+                        )
                     }
                 }
             }
