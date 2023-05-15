@@ -30,6 +30,7 @@ import kotlin.test.assertNotNull
 class BookingRoutesTest {
 
     val jsonPerso = Json { ignoreUnknownKeys = true }
+    
     val booking = Booking(
         id = ObjectId("645bfcb4021a8675e05afdb2").toId(),
         uuid = UUID.fromString("c060c959-8462-4a0f-9265-9af4f54d166c").toString(),
@@ -41,6 +42,7 @@ class BookingRoutesTest {
         phone = "123456789",
     )
     val bookingDto = booking.toDTO()
+
     val bookingDtoCreate = BookingDtoCreate(
         userId = UUID.fromString("4484ea54-18aa-48a7-b5ed-a46bdbf45a50").toString(),
         spaceId = UUID.fromString("b4443487-b2cc-48b6-af53-0820be683b24").toString(),
