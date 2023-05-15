@@ -88,6 +88,16 @@ class UsersController @Autowired constructor(
         }
     }
 
+    @GetMapping("/{username}")
+    suspend fun isActive(@PathVariable username: String): ResponseEntity<Boolean> {
+        try {
+            val res = userService.isActive(username)
+            return ResponseEntity.ok(res)
+        } catch (e: UserNotFoundException) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with username: $username")
+        }
+    }
+
     @PutMapping("/active/{id}/{active}")
     @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
     suspend fun updateActive(

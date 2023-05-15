@@ -7,6 +7,7 @@ import es.dam.dto.UserUpdateDTO
 import es.dam.exceptions.UserBadRequestException
 import es.dam.exceptions.UserInternalErrorException
 import es.dam.exceptions.UserNotFoundException
+import es.dam.repositories.booking.KtorFitBookingsRepository
 import es.dam.repositories.user.KtorFitUsersRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -22,6 +23,7 @@ import java.time.LocalDateTime
 private const val ENDPOINT = "users"
 
 fun Application.usersRoutes() {
+    val bookingsRepository : KtorFitBookingsRepository by inject()
     val userRepository : KtorFitUsersRepository by inject()
     val tokenService : TokensService by inject()
 
@@ -33,6 +35,7 @@ fun Application.usersRoutes() {
                 try {
                     val login = call.receive<UserLoginDTO>()
 
+                    require(userRepository.isActive(login.username)){"No se ha podido iniciar sesión ya que este usuario está dado de baja."}
                     val user = async {
                         userRepository.login(login)
                     }
@@ -194,6 +197,8 @@ fun Application.usersRoutes() {
                         val token = tokenService.generateToken(call.principal()!!)
                         val id = call.parameters["id"]
 
+                        require(bookingsRepository.findByUser(token, id!!).data.isNotEmpty())
+                        {"Se deben actualizar o eliminar las reservas asociadas a este usuario antes de continuar con la operación."}
                         userRepository.delete("Bearer $token", id!!)
 
                         call.respond(HttpStatusCode.NoContent)
