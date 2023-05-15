@@ -132,6 +132,25 @@ fun Application.usersRoutes() {
                     }
                 }
 
+                put("/credits/{id}/{creditsAmount}") {
+                    try {
+                        val token = tokenService.generateToken(call.principal()!!)
+                        val id = call.parameters["id"]
+                        val creditsAmount = call.parameters["creditsAmount"]
+
+                        val updatedUser = async {
+                            userRepository.updateCredits("Bearer $token", id!!, creditsAmount!!.toInt())
+                        }
+
+                        call.respond(HttpStatusCode.OK, updatedUser.await())
+
+                    } catch (e: UserException) {
+                        call.respond(HttpStatusCode.NotFound, "El usuario con ese id no ha sido encontrado: ${e.stackTraceToString()}")
+                    } catch (e: Exception) {
+                        call.respond(HttpStatusCode.BadRequest, "Error al actualizar el usuario: ${e.stackTraceToString()}")
+                    }
+                }
+
                 delete("/{id}") {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)

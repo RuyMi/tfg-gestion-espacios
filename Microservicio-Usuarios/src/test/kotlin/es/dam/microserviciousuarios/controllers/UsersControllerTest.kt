@@ -117,6 +117,19 @@ class UsersControllerTest {
     }
 
     //TODO: fallo login
+    @Test
+    fun loginFailedUnauthorized() = runTest {
+        coEvery { authenticationManager.authenticate(UsernamePasswordAuthenticationToken(userLogin.username, userLogin.password)) } throws UserNotFoundException("User not found.")
+        coEvery { authentication.principal } returns user
+        coEvery{jwtUtils.generateToken(user)} returns "token"
+
+        val exception = assertThrows<ResponseStatusException> {
+            usersController.login(userLogin)
+        }
+
+        assertEquals("401 UNAUTHORIZED", exception.message)
+    }
+
 
     @Test
     fun register() = runTest {

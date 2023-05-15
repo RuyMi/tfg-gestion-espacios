@@ -21,7 +21,7 @@ class BookingRepositoryImpl : BookingRepository {
     }
 
     override suspend fun findAllStatus(status: Booking.Status): List<Booking> = withContext(Dispatchers.IO) {
-        return@withContext manager.database.getCollection<Booking>().find(Booking::status eq status).toList()
+        return@withContext manager.database.getCollection<Booking>().find(Booking::status eq status).toList().ifEmpty { throw BookingException("The booking with spaceId $uuid does not exist") }
     }
 
     override suspend fun findAll(): List<Booking> = withContext(Dispatchers.IO) {

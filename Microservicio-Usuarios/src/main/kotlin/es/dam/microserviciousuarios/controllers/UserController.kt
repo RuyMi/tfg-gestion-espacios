@@ -108,8 +108,8 @@ class UsersController @Autowired constructor(
     }
 
     @PutMapping("/credits/{id}/{creditsAmount}")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
     suspend fun updateCredits(
-        @AuthenticationPrincipal user: User,
         @PathVariable id: String,
         @PathVariable creditsAmount: Int
     ): ResponseEntity<UserResponseDTO> {

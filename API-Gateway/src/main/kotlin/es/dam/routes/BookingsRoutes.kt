@@ -3,7 +3,10 @@ package es.dam.routes
 import es.dam.dto.BookingCreateDTO
 import es.dam.services.token.TokensService
 import es.dam.dto.BookingUpdateDTO
+import es.dam.exceptions.BookingExceptions
 import es.dam.repositories.booking.KtorFitBookingsRepository
+import es.dam.repositories.space.KtorFitSpacesRepository
+import es.dam.repositories.user.KtorFitUsersRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -19,6 +22,8 @@ private const val ENDPOINT = "bookings"
 
 fun Application.bookingsRoutes() {
     val bookingsRepository : KtorFitBookingsRepository by inject()
+    val userRepository : KtorFitUsersRepository by inject()
+    val spaceRepository : KtorFitSpacesRepository by inject()
     val tokenService : TokensService by inject()
 
     routing {
@@ -109,19 +114,23 @@ fun Application.bookingsRoutes() {
                 }
 
                 post() {
-
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
                         val entity = call.receive<BookingCreateDTO>()
-
+                        val user = userRepository.findById(token, entity.userId)
+                        val space = spaceRepository.findById(token, entity.spaceId)
+                        if (user.credits < space.price) {
+                            call.respond(HttpStatusCode.BadRequest, "No tienes créditos suficientes para realizar la reserva")
+                        }
+                        userRepository.updateCredits(token, user.uuid, space.price)
                         val booking = async {
                             bookingsRepository.create(token, entity)
                         }
-
                         call.respond(HttpStatusCode.Created, booking.await())
-
-                    } catch (e: Exception) {
+                    } catch (e: BookingExceptions) {
                         call.respond(HttpStatusCode.BadRequest, "La reserva ya ha sido creada: ${e.stackTraceToString()}")
+                    } catch (e: Exception) {
+                        call.respond(HttpStatusCode.BadRequest, "Error al crear la reserva: ${e.stackTraceToString()}")
                     }
                 }
 

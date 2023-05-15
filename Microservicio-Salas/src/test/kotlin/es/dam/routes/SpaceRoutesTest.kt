@@ -196,7 +196,6 @@ class SpaceRoutesTest {
 
     @OptIn(InternalAPI::class)
     @Test
-    //TODO mirar este test
     fun update() = testApplication {
         environment {
             config
