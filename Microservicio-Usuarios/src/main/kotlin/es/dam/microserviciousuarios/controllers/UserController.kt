@@ -79,10 +79,29 @@ class UsersController @Autowired constructor(
     @GetMapping("/{id}")
     suspend fun findById(@PathVariable id: String): ResponseEntity<UserResponseDTO> {
         try {
-            val res = userService.findUserById(id).toDTO()
+            val res = userService.findByUuid(id).toDTO()
             return ResponseEntity.ok(res)
         } catch (e: UserNotFoundException) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with uuid: $id")
+        } catch (e: UserBadRequestException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID string: $id")
+        }
+    }
+
+    @PutMapping("/active/{id}/{active}")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
+    suspend fun updateActive(
+        @PathVariable id: String,
+        @PathVariable active: Boolean
+    ): ResponseEntity<UserResponseDTO> {
+        try {
+            val updated = userService.findByUuid(id)
+            val res = userService.update(updated.copy(isActive = active))
+            return ResponseEntity.status(HttpStatus.OK).body(res?.toDTO())
+        } catch (e: UserNotFoundException) {
             throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
+        } catch (e: UserBadRequestException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
         }
     }
 
@@ -105,6 +124,24 @@ class UsersController @Autowired constructor(
         }
     }
 
+    @PutMapping("/credits/{id}/{creditsAmount}")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
+    suspend fun updateCredits(
+        @PathVariable id: String,
+        @PathVariable creditsAmount: Int
+    ): ResponseEntity<UserResponseDTO> {
+        try {
+            val updated = userService.findByUuid(id)
+            val updatedCredits = updated.credits - creditsAmount
+            val res = userService.update(updated.copy(credits = updatedCredits))
+            return ResponseEntity.status(HttpStatus.OK).body(res?.toDTO())
+        } catch (e: UserNotFoundException) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
+        } catch (e: UserBadRequestException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
+        }
+    }
+
     @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
     @PutMapping("/{id}")
     suspend fun update(
@@ -112,7 +149,7 @@ class UsersController @Autowired constructor(
         @RequestBody userDTO: UserUpdateDTO
     ): ResponseEntity<UserResponseDTO> {
         try {
-            val updated = userService.findUserById(id).copy(
+            val updated = userService.findByUuid(id).copy(
                 name = userDTO.name,
                 username = userDTO.username,
                 password = userDTO.password,

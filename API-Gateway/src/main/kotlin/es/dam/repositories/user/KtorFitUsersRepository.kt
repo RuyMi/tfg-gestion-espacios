@@ -7,6 +7,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Single
 
+//TODO Quitar mensajes excepciones kotlin
 @Single
 class KtorFitUsersRepository: IUsersRepository {
 
@@ -50,6 +51,24 @@ class KtorFitUsersRepository: IUsersRepository {
 
     override suspend fun update(token: String, id: String, entity: UserUpdateDTO): UserResponseDTO = withContext(Dispatchers.IO)  {
         val call = async { client.update(token, id, entity) }
+        try {
+            return@withContext call.await()
+        } catch (e: Exception) {
+            throw Exception("Error updating user with id $id: ${e.message}")
+        }
+    }
+
+    override suspend fun updateCredits(token: String, id: String, creditsAmount: Int): UserResponseDTO = withContext(Dispatchers.IO)  {
+        val call = async { client.updateCredits(token, id, creditsAmount) }
+        try {
+            return@withContext call.await()
+        } catch (e: Exception) {
+            throw Exception("Error updating user with id $id: ${e.message}")
+        }
+    }
+
+    override suspend fun updateActive(token: String, id: String, active: Boolean): UserResponseDTO = withContext(Dispatchers.IO)  {
+        val call = async { client.updateActive(token, id, active) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {

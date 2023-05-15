@@ -4,6 +4,8 @@ import es.dam.dto.BookingCreateDTO
 import es.dam.dto.BookingDataDTO
 import es.dam.dto.BookingResponseDTO
 import es.dam.dto.BookingUpdateDTO
+import es.dam.exceptions.BookingBadRequestException
+import es.dam.exceptions.BookingExceptions
 import es.dam.services.booking.KtorFitClientBookings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -55,7 +57,16 @@ class KtorFitBookingsRepository: IBookingsRepository {
         try {
             return@withContext call.await()
         } catch (e: Exception) {
-            throw Exception("Error getting booking with status $status ${e.message}")
+            throw BookingBadRequestException("Error getting booking with status $status ${e.message}")
+        }
+    }
+
+    override suspend fun findByTime(token: String, id: String, date: String): BookingDataDTO = withContext(Dispatchers.IO){
+        val call = async { client.findByTime(token, id, date) }
+        try {
+            return@withContext call.await()
+        } catch (e: Exception) {
+            throw BookingBadRequestException("Error getting booking with space's id $id and date $date ${e.message}")
         }
     }
 

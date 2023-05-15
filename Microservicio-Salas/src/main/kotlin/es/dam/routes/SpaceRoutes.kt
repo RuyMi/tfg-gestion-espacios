@@ -17,7 +17,7 @@ import org.koin.ktor.ext.inject
 
 
 fun Application.spaceRoutes() {
-    val spaceService: SpaceServiceImpl by inject(named("SpaceServiceImpl"))
+    val spaceService: SpaceServiceImpl by inject()
 
     routing {
         get("/spaces") {
@@ -28,11 +28,11 @@ fun Application.spaceRoutes() {
         }
 
         get("/spaces/{id}") {
+            val id = call.parameters["id"]
             try{
-                val id = call.parameters["id"]
                 id?.let { spaceService.getSpaceById(it).let { it1 -> call.respond(it1.toSpaceDto()) } }
             }catch(e: SpaceException){
-                call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con ese uuid")
+                call.respond(HttpStatusCode.NotFound, "No se ha encontrado el espacio con el uuid: $id")
             } catch(e: Exception){
                 call.respond(HttpStatusCode.BadRequest, "El uuid debe ser un uuid válido")
             }
@@ -41,13 +41,15 @@ fun Application.spaceRoutes() {
         get("/spaces/reservables/{isReservable}") {
             val isReservable = call.parameters["isReservable"]
             try{
-                val res = isReservable?.let { spaceService.getAllSpacesReservables(it.toBoolean())}?.map { it.toSpaceDto() }
+                val res = isReservable?.let { spaceService.getAllSpacesReservables(it.toBooleanStrict())}?.map { it.toSpaceDto() }
+                if (res != null) {
+                    if(res.isEmpty())
+                        call.respond(HttpStatusCode.NotFound, "No se ha encontrado ningun espacio reservable = $isReservable")
+                }
                 val response = SpaceDataDTO(
                     data = res!!
                 )
                 call.respond(response)
-            }catch (e: SpaceException){
-                call.respond(HttpStatusCode.NotFound, "No se ha encontrado ningun espacio reservable = $isReservable")
             }catch (e: Exception){
                 call.respond(HttpStatusCode.BadRequest, "El parametro reservable debe ser true o false")
             }
@@ -92,7 +94,7 @@ fun Application.spaceRoutes() {
             }catch (e: SpaceException){
                 call.respond(HttpStatusCode.NotFound, "No se ha borrar el espacio con el uuid: $spaceId")
             } catch (e: Exception){
-                call.respond(HttpStatusCode.NotFound, "El parametro uuid debe ser un uuid valido")
+                call.respond(HttpStatusCode.BadRequest, "El parametro uuid debe ser un uuid valido")
             }
         }
     }

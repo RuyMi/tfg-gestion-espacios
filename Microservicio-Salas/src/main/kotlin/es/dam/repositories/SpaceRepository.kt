@@ -7,4 +7,5 @@ import java.util.UUID
 interface SpaceRepository: CrudRepository<Space, UUID>{
     suspend fun findByName(name: String): Space
     suspend fun findAllReservables(isReservable: Boolean): List<Space>
+    suspend fun deleteAll(): Boolean
 }

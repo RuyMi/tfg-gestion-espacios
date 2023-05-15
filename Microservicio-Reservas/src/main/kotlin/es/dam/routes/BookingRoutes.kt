@@ -17,7 +17,10 @@ import org.bson.types.ObjectId
 import org.koin.core.qualifier.named
 import org.koin.ktor.ext.inject
 import org.litote.kmongo.id.toId
+import java.lang.IllegalArgumentException
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeParseException
 
 fun Application.bookingRoutes(){
     val bookingService: BookingServiceImpl by inject()
@@ -33,8 +36,7 @@ fun Application.bookingRoutes(){
         get("/bookings/{id}") {
             val id = call.parameters["id"]
             try {
-                val idBooking = ObjectId(id).toId<Booking>()
-                idBooking.let { bookingService.findById(it).let { it1 -> call.respond(it1.toDTO()) } }
+                id.let { bookingService.findById(it!!).let { it1 -> call.respond(it1.toDTO()) } }
             } catch (e: BookingException) {
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado la reserva con el id: $id")
             } catch (e: Exception) {
@@ -46,12 +48,14 @@ fun Application.bookingRoutes(){
             val status = call.parameters["status"]
             try{
                 val data = status?.let { bookingService.findAllStatus(Booking.Status.valueOf(it))}
+                if (data != null) {
+                    if(data.isEmpty())
+                        call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el estado: $status")
+                }
                 val res = BookingAllDto(
                     data = data!!.map { it.toDTO() }
                 )
                 call.respond(res)
-            } catch (e: BookingException){
-                call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el estado: $status")
             } catch (e: Exception){
                 call.respond(HttpStatusCode.BadRequest, "El estado debe ser un estado válido")
             }
@@ -60,12 +64,12 @@ fun Application.bookingRoutes(){
         get("/bookings/space/{id}") {
             val id = call.parameters["id"]
             try{
-                val data= id?.let { bookingService.findBySpaceId(it) }
+                val data = id?.let { bookingService.findBySpaceId(it) }
                 val res = BookingAllDto(
                     data = data!!.map { it.toDTO() }
                 )
                 call.respond(res)
-            } catch (e: BookingException){
+            } catch (e: BookingException ){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el id de espacio: $id")
             } catch (e: Exception){
                 call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
@@ -80,17 +84,44 @@ fun Application.bookingRoutes(){
                     data = data!!.map { it.toDTO() }
                 )
                 call.respond(res)
-            } catch (e: BookingException){
+            } catch (e: BookingException ){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el id de usuario: $id")
             } catch (e: Exception){
                 call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
             }
         }
 
+        get("/bookings/time/{id}/{date}") {
+            val id = call.parameters["id"]
+            val date = call.parameters["date"]
+            try {
+                val data = id?.let { bookingService.findBySpaceId(id) }
+                LocalDate.parse(date)
+                val dataFiltered = data?.filter { it -> it.startTime.toString().split("T")[0] == date.toString() }
+                if (dataFiltered != null) {
+                    if (dataFiltered.isEmpty())
+                        call.respond(
+                            HttpStatusCode.NotFound,
+                            "No se ha encontrado ninguna reserva para la sala con uuid: $id cuya fecha de reserva sea: $date"
+                        )
+                }
+                val res = BookingAllDto(
+                    data = data!!.map { it.toDTO() }
+                )
+                call.respond(res)
+            }catch (e: BookingException) {
+                    call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna sala con el uuid: $id")
+            } catch (e: IllegalArgumentException){
+                call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
+            } catch (e: DateTimeParseException){
+                call.respond(HttpStatusCode.BadRequest, "La fecha debe tener un formato válido")
+            }
+        }
+
         post("/bookings") {
             val booking = call.receive<BookingDtoCreate>()
             try{
-                bookingService.save(booking.toModel()).let { call.respond(it.toDTO()) }
+                bookingService.save(booking.toModel()).let { call.respond(HttpStatusCode.Created, it.toDTO()) }
             } catch (e: Exception){
                 call.respond(HttpStatusCode.BadRequest, "Deben de estar todos los campos rellenos correctamente")
             }
@@ -100,7 +131,7 @@ fun Application.bookingRoutes(){
             val id = call.parameters["id"]
             val booking = call.receive<BookingDtoUpdate>()
             try{
-                bookingService.update(booking.toModel(), id!!).let { call.respond(it.toDTO()) }
+                bookingService.update(booking.toModel(), id!!).let { call.respond( it.toDTO()) }
             } catch (e: BookingException){
                 call.respond(HttpStatusCode.NotFound, "No se ha podido actualizar la reserva con id: $id")
             } catch (e: Exception){
@@ -111,8 +142,7 @@ fun Application.bookingRoutes(){
         delete("/bookings/{id}") {
             val id = call.parameters["id"]
             try {
-                val idBooking = ObjectId(id).toId<Booking>()
-                bookingService.delete(idBooking).let { call.respond(HttpStatusCode.NoContent) }
+                bookingService.delete(id!!).let { call.respond(HttpStatusCode.NoContent) }
             } catch (e: BookingException) {
                 call.respond(HttpStatusCode.NotFound, "No se ha podido borrar la reserva con id: $id")
             } catch (e: Exception) {

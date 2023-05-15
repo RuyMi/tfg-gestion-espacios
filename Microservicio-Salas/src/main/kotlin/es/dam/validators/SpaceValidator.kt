@@ -13,7 +13,7 @@ fun RequestValidationConfig.spaceValidation(){
             ValidationResult.Invalid("The price must be greater than zero")
         }else if(it.authorizedRoles.isEmpty()){
             ValidationResult.Invalid("The authorized roles cannot be empty")
-            //TODO Mirar si el Duration tiene ese regex
+            //TODO Algo para comprobar el regex del duration
         }else if(it.bookingWindow.isEmpty()){
             ValidationResult.Invalid("The booking window cannot be empty")
         }else {

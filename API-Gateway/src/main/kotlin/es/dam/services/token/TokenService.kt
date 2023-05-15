@@ -23,8 +23,8 @@ class TokensService(
             .withIssuer(token.payload.issuer)
             .withSubject(token.payload.subject)
             .withClaim("username", token.payload.getClaim("username").toString().replace("\"", ""))
-            .withClaim("rol", token.payload.getClaim("rol").toString().replace("\"", ""))
+            .withClaim("role", token.payload.getClaim("role").toString().replace("\"", ""))
             .withExpiresAt(token.payload.expiresAt)
-            .sign(Algorithm.HMAC512("iesluisvives"))
+            .sign(Algorithm.HMAC512("reservas-luisvives"))
     }
 }
