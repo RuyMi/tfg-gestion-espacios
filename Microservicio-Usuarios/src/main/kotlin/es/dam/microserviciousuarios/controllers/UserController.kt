@@ -88,6 +88,23 @@ class UsersController @Autowired constructor(
         }
     }
 
+    @PutMapping("/active/{id}/{active}")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
+    suspend fun updateActive(
+        @PathVariable id: String,
+        @PathVariable active: Boolean
+    ): ResponseEntity<UserResponseDTO> {
+        try {
+            val updated = userService.findByUuid(id)
+            val res = userService.update(updated.copy(isActive = active))
+            return ResponseEntity.status(HttpStatus.OK).body(res?.toDTO())
+        } catch (e: UserNotFoundException) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
+        } catch (e: UserBadRequestException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
+        }
+    }
+
     @PutMapping("/me")
     suspend fun update(
         @AuthenticationPrincipal user: User,

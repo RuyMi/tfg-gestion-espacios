@@ -178,6 +178,85 @@ class BookingRoutesTest {
 
     @OptIn(InternalAPI::class)
     @Test
+    fun getByDate() = testApplication {
+        environment { config }
+        BookingRepositoryImpl().save(booking)
+        val fechaTest = booking.startTime.toLocalDate()
+        val response = client.get("/bookings/time/${booking.spaceId}/$fechaTest")
+        val responseData = jsonPerso.decodeFromString<BookingAllDto>(response.content.readUTF8Line()!!).data
+        val startTimeReduced = responseData[0].startTime.substring(0, 23)
+        val endTimeReduced = responseData[0].endTime.substring(0, 23)
+
+        assertAll(
+            {assertEquals(HttpStatusCode.OK, response.status)},
+            { assertEquals(1, responseData.size) },
+            { assertEquals(responseData[0].id, responseData[0].id) },
+            { assertEquals(responseData[0].uuid, responseData[0].uuid) },
+            { assertEquals(responseData[0].userId, responseData[0].userId) },
+            { assertEquals(responseData[0].spaceId, responseData[0].spaceId) },
+            { assertEquals(responseData[0].status, responseData[0].status) },
+            { assertEquals(startTimeReduced, responseData[0].startTime) },
+            { assertEquals(endTimeReduced, responseData[0].endTime) },
+            { assertEquals(responseData[0].phone, responseData[0].phone) }
+        )
+    }
+
+    @OptIn(InternalAPI::class)
+    @Test
+    fun getByDateNotFound() = testApplication {
+        environment { config }
+        BookingRepositoryImpl().save(booking)
+        val fechaTest = LocalDateTime.parse("2023-07-10T22:23:23.542295200").toLocalDate()
+        val response = client.get("/bookings/time/${booking.spaceId}/$fechaTest")
+        val body =  response.content.readUTF8Line()!!
+        assertAll(
+            { assertEquals(HttpStatusCode.NotFound, response.status)},
+            { assertEquals("No se ha encontrado ninguna reserva para la sala con uuid: ${booking.spaceId} cuya fecha de reserva sea: $fechaTest", body) }
+        )
+    }
+
+    @OptIn(InternalAPI::class)
+    @Test
+    fun getByDateNotFoundUuid() = testApplication {
+        environment { config }
+        BookingRepositoryImpl().save(booking)
+        val uuidTest = UUID.fromString("4484ea54-18aa-48a7-b5ed-a46bdbf45a33").toString()
+        val response = client.get("/bookings/time/$uuidTest/$${booking.startTime}")
+        val body =  response.content.readUTF8Line()!!
+        assertAll(
+            { assertEquals(HttpStatusCode.NotFound, response.status)},
+            { assertEquals("No se ha encontrado ninguna sala con el uuid: $uuidTest", body) }
+        )
+    }
+
+    @OptIn(InternalAPI::class)
+    @Test
+    fun getByDateBadRequestUuid() = testApplication {
+        environment { config }
+        val fechaTest = booking.startTime.toLocalDate()
+        val response = client.get("/bookings/time/123/$fechaTest")
+        val body =  response.content.readUTF8Line()!!
+        assertAll(
+            {assertEquals(HttpStatusCode.BadRequest, response.status)},
+            { assertEquals("El id debe ser un id válido", body) }
+        )
+    }
+
+    @OptIn(InternalAPI::class)
+    @Test
+    fun getByDateBadRequestDate() = testApplication {
+        environment { config }
+        BookingRepositoryImpl().save(booking)
+        val response = client.get("/bookings/time/${booking.spaceId}/123")
+        val body =  response.content.readUTF8Line()!!
+        assertAll(
+            {assertEquals(HttpStatusCode.BadRequest, response.status)},
+            { assertEquals("La fecha debe tener un formato válido", body) }
+        )
+    }
+
+    @OptIn(InternalAPI::class)
+    @Test
     fun getBySpace() = testApplication {
         environment { config }
         BookingRepositoryImpl().save(booking)

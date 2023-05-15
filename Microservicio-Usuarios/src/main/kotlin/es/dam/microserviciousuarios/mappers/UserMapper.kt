@@ -15,6 +15,7 @@ fun User.toDTO(): UserResponseDTO {
         password = password,
         name = name,
         credits = credits,
+        isActive = isActive
     )
 }
 
