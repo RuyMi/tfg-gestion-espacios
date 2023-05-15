@@ -3,7 +3,9 @@ package es.dam.routes
 import es.dam.dto.BookingCreateDTO
 import es.dam.services.token.TokensService
 import es.dam.dto.BookingUpdateDTO
+import es.dam.exceptions.BookingBadRequestException
 import es.dam.exceptions.BookingExceptions
+import es.dam.exceptions.BookingNotFoundException
 import es.dam.repositories.booking.KtorFitBookingsRepository
 import es.dam.repositories.space.KtorFitSpacesRepository
 import es.dam.repositories.user.KtorFitUsersRepository
@@ -16,6 +18,8 @@ import io.ktor.server.routing.*
 import kotlinx.coroutines.async
 import org.koin.ktor.ext.inject
 import java.lang.IllegalArgumentException
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 private const val ENDPOINT = "bookings"
@@ -46,7 +50,6 @@ fun Application.bookingsRoutes() {
                 }
 
                 get("/{id}") {
-
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
                         val id = call.parameters["id"]
@@ -57,8 +60,10 @@ fun Application.bookingsRoutes() {
 
                         call.respond(HttpStatusCode.OK, booking.await())
 
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "La reserva con ese id no ha sido encontrada: ${e.stackTraceToString()}")
+                    } catch (e: BookingNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "La reserva con ese id no ha sido encontrada: ${e.message}")
+                    } catch (e: BookingBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     }
                 }
 
@@ -110,6 +115,23 @@ fun Application.bookingsRoutes() {
 
                     } catch (e: Exception) {
                         call.respond(HttpStatusCode.NotFound, "Error al encontrar la reserva con ese estado: ${e.stackTraceToString()}")
+                    }
+                }
+
+                get("/time/{id}/{date}"){
+                    try {
+                        val token = tokenService.generateToken(call.principal()!!)
+                        val id = call.parameters["id"]
+                        val date = call.parameters["date"]
+                        val res = async {
+                            bookingsRepository.findByTime("Bearer $token", id!!, date!!)
+                        }
+                        val bookings = res.await()
+
+                        call.respond(HttpStatusCode.OK, bookings)
+
+                    } catch (e: BookingBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "El id o la fecha no son correctos: ${e.stackTraceToString()}")
                     }
                 }
 
