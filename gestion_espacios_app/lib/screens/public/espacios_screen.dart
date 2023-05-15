@@ -81,17 +81,22 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                     Row(
                       children: [
                         Container(
+                          margin: const EdgeInsets.only(left: 10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: MyColors.pinkApp,
-                              width: 2,
-                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: MyColors.blackApp.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.asset(
-                                'assets/images/image_placeholder.png',
+                                'assets/images/sala_stock.jpg',
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover),
@@ -122,7 +127,8 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                         fontFamily: 'KoHo'),
                                     maxLines: 3),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [

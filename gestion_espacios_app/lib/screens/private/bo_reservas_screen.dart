@@ -53,7 +53,7 @@ class ReservasBOScreen extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.asset(
-                      'assets/images/image_placeholder.png',
+                      'assets/images/sala_stock.jpg',
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,

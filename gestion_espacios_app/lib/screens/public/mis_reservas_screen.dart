@@ -44,7 +44,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
         body: ListView(
           children: [
             Card(
-              color: MyColors.whiteApp,
+              color: MyColors.lightBlueApp.shade50,
               margin: const EdgeInsets.all(16),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -53,15 +53,26 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                     Row(
                       children: [
                         Container(
+                          margin: const EdgeInsets.only(left: 10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: MyColors.pinkApp,
-                              width: 2,
-                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: MyColors.blackApp.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
                           ),
-                          child: Image.asset('assets/images/logo.png',
-                              width: 100, height: 100, fit: BoxFit.cover),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                                'assets/images/sala_stock.jpg',
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover),
+                          ),
                         ),
                         const SizedBox(
                           width: 10,

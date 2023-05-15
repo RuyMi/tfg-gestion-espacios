@@ -46,6 +46,7 @@ flutter:
     - assets/images/logo.png
     - assets/images/profile_pic.png
     - assets/images/image_placeholder.png
+    - assets/images/sala_stock.jpg
 
   fonts:
     - family: KoHo

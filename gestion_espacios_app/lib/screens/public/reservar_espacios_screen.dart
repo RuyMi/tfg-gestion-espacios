@@ -77,6 +77,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
             ],
           )
         ],
+        backgroundColor: MyColors.whiteApp,
       ),
       body: SingleChildScrollView(
         controller: _scrollController,
@@ -86,16 +87,53 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
           child: Center(
             child: Column(
               children: [
-                Image.asset('assets/images/image_placeholder.png',
-                    width: 150, height: 150, fit: BoxFit.cover),
-                const SizedBox(height: 20),
-                const Text(
-                  'Descripción de la sala',
-                  maxLines: 3,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: 'KoHo',
+                const SizedBox(height: 10),
+                Container(
+                  margin: const EdgeInsets.only(right: 20, left: 20),
+                  decoration: BoxDecoration(
+                    color: MyColors.lightBlueApp,
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: MyColors.blackApp.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            bottomLeft: Radius.circular(20),
+                          ),
+                        ),
+                        child: const CircleAvatar(
+                          radius: 30,
+                          backgroundImage: AssetImage(
+                            'assets/images/sala_stock.jpg',
+                          ),
+                        ),
+                      ),
+                      const Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Text(
+                            'Descripción de la sala',
+                            maxLines: 3,
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: MyColors.whiteApp,
+                              fontFamily: 'KoHo',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -193,8 +231,8 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                           _isDaySelected = true;
                           this.selectedDay = selectedDay;
                         });
-                        _scrollController.animateTo(_scrollController
-                                          .position.viewportDimension,
+                        _scrollController.animateTo(
+                            _scrollController.position.viewportDimension,
                             duration: const Duration(milliseconds: 1000),
                             curve: Curves.easeInOut);
                       }
