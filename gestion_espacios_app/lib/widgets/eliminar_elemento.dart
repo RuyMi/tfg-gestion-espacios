@@ -1,26 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
 
-class MyLogoutAlert extends StatelessWidget {
-  const MyLogoutAlert({super.key});
+class MyDeleteAlert extends StatelessWidget {
+  final String title;
+  final String ruta;
+
+  const MyDeleteAlert({
+    Key? key,
+    required this.title,
+    required this.ruta,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: MyColors.pinkApp,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
-      title: const Column(
+      backgroundColor: MyColors.pinkApp,
+      title: Column(
         children: [
-          Icon(
+          const Icon(
             Icons.info,
             size: 60,
-            color: MyColors.whiteApp,
+            color: Colors.white,
           ),
-          SizedBox(height: 10),
-          Text('¿Desea cerrar sesión?',
-              style: TextStyle(
+          const SizedBox(height: 10),
+          Text(title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
                 color: MyColors.whiteApp,
                 fontFamily: 'KoHo',
                 fontSize: 20,
@@ -51,7 +59,7 @@ class MyLogoutAlert extends StatelessWidget {
 
             Navigator.pushNamedAndRemoveUntil(
               context,
-              '/login',
+              ruta,
               (Route<dynamic> route) => false,
             );
           },

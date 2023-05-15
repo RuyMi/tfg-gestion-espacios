@@ -50,7 +50,7 @@ class MyDrawer extends StatelessWidget {
                 style: TextStyle(fontFamily: 'KoHo', color: MyColors.whiteApp)),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/reservas');
+              Navigator.pushNamed(context, '/mis-reservas');
             },
           ),
           ListTile(

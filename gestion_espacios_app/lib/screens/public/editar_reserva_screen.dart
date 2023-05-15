@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
+import 'package:gestion_espacios_app/widgets/eliminar_elemento.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -15,8 +16,8 @@ final List<String> horas = [
   '14:20 - 15:15',
 ];
 
-class ReservaSala extends StatefulWidget {
-  const ReservaSala({super.key});
+class EditarReservaScreen extends StatefulWidget {
+  const EditarReservaScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -24,17 +25,19 @@ class ReservaSala extends StatefulWidget {
 }
 
 // ignore: must_be_immutable
-class _ReservaSala extends State<ReservaSala> {
+class _ReservaSala extends State<EditarReservaScreen> {
   bool _isDaySelected = false;
   bool _isHourSelected = false;
   DateTime? selectedDay;
+  String? selectedHour;
   final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Row(
+        title: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Nombre de la sala',
@@ -46,28 +49,28 @@ class _ReservaSala extends State<ReservaSala> {
             ),
           ],
         ),
-        actions: const [
-          Row(
-            children: [
-              Text(
-                '33',
-                style: TextStyle(
-                  fontFamily: 'KoHo',
-                  color: MyColors.pinkApp,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, '/mis-reservas');
+          },
+          icon: const Icon(Icons.arrow_back_ios_rounded),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => const MyDeleteAlert(
+                  title: '¿Está seguro de que desea eliminar la reserva?',
+                  ruta: '/mis-reservas',
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(right: 8),
-                child: Icon(
-                  Icons.monetization_on_outlined,
-                  color: MyColors.pinkApp,
-                  size: 20,
-                ),
-              ),
-            ],
-          )
+              );
+            },
+            icon: const Icon(Icons.delete_outline),
+            color: MyColors.pinkApp,
+            iconSize: 25,
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -89,6 +92,30 @@ class _ReservaSala extends State<ReservaSala> {
                   style: TextStyle(
                     fontFamily: 'KoHo',
                   ),
+                ),
+                const SizedBox(height: 5),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      'Fecha',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'KoHo',
+                        fontWeight: FontWeight.bold,
+                        color: MyColors.pinkApp,
+                      ),
+                    ),
+                    Text(
+                      'Hora',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'KoHo',
+                        fontWeight: FontWeight.bold,
+                        color: MyColors.pinkApp,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 30),
                 Container(
@@ -185,8 +212,9 @@ class _ReservaSala extends State<ReservaSala> {
                           _isDaySelected = true;
                           this.selectedDay = selectedDay;
                         });
-                        _scrollController.animateTo(200,
-                            duration: const Duration(milliseconds: 600),
+                        _scrollController.animateTo(
+                            _scrollController.position.viewportDimension,
+                            duration: const Duration(milliseconds: 1000),
                             curve: Curves.easeInOut);
                       }
                     },
@@ -204,10 +232,13 @@ class _ReservaSala extends State<ReservaSala> {
                                 onPressed: () {
                                   setState(() {
                                     _isHourSelected = true;
+                                    selectedHour = hora;
                                   });
-                                  _scrollController.animateTo(250,
+                                  _scrollController.animateTo(
+                                      _scrollController
+                                          .position.viewportDimension,
                                       duration:
-                                          const Duration(milliseconds: 600),
+                                          const Duration(milliseconds: 1000),
                                       curve: Curves.easeInOut);
                                 },
                                 style: ButtonStyle(
@@ -250,17 +281,38 @@ class _ReservaSala extends State<ReservaSala> {
                 ),
                 const SizedBox(height: 20),
                 Visibility(
+                    visible: _isDaySelected,
+                    child: Text(
+                      'Fecha elegida: ${selectedDay?.day}/${selectedDay?.month}/${selectedDay?.year}',
+                      style: const TextStyle(
+                        color: MyColors.pinkApp,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'KoHo',
+                      ),
+                    )),
+                Visibility(
+                    visible: _isHourSelected,
+                    child: Text(
+                      'Hora elegida: $selectedHour',
+                      style: const TextStyle(
+                        color: MyColors.pinkApp,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'KoHo',
+                      ),
+                    )),
+                const SizedBox(height: 20),
+                Visibility(
                   visible: _isHourSelected,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/home');
+                      Navigator.pushNamed(context, '/mis-reservas');
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return const MyMessageDialog(
-                              title: 'Reserva realizada',
+                              title: 'Reserva actualizada',
                               description:
-                                  'Se ha realizado la reserva correctamente.',
+                                  'Se ha actualizado la reserva correctamente.',
                             );
                           });
                     },
@@ -270,7 +322,7 @@ class _ReservaSala extends State<ReservaSala> {
                       ),
                       backgroundColor: MyColors.pinkApp,
                     ),
-                    child: const Text('Reservar',
+                    child: const Text('Editar reserva',
                         style: TextStyle(
                             color: MyColors.whiteApp, fontFamily: 'KoHo')),
                   ),

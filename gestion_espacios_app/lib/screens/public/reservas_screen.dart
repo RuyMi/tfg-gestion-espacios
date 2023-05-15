@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/screens/public/editar_reserva_screen.dart';
 
-class ReservasScreen extends StatefulWidget {
-  const ReservasScreen({Key? key}) : super(key: key);
+class MisReservasScreen extends StatefulWidget {
+  const MisReservasScreen({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _ReservasScreenState createState() => _ReservasScreenState();
+  _MisReservasScreenState createState() => _MisReservasScreenState();
 }
 
-class _ReservasScreenState extends State<ReservasScreen> {
+class _MisReservasScreenState extends State<MisReservasScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,17 +24,13 @@ class _ReservasScreenState extends State<ReservasScreen> {
             fontWeight: FontWeight.bold,
             fontSize: 25,
           ),
-          // leading: IconButton(
-          //   onPressed: () {
-          //     showDialog(
-          //         context: context,
-          //         builder: (BuildContext context) {
-          //           return const AcercaDeWidget();
-          //         });
-          //   },
-          //   icon: Image.asset('assets/images/logo.png'),
-          //   iconSize: 25,
-          // ),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/home');
+            },
+            icon: const Icon(Icons.arrow_back_ios_rounded),
+          ),
           actions: [
             IconButton(
               onPressed: () {},
@@ -86,11 +83,36 @@ class _ReservasScreenState extends State<ReservasScreen> {
                                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                                     style: TextStyle(
                                         fontWeight: FontWeight.normal,
+                                        overflow: TextOverflow.ellipsis,
                                         fontSize: 12,
-                                        fontFamily: 'KoHo')),
+                                        fontFamily: 'KoHo'),
+                                    maxLines: 3),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.share,
+                                              color: MyColors.blackApp),
+                                          onPressed: () {},
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.bookmark,
+                                              color: MyColors.lightBlueApp),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const EditarReservaScreen(),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                     const Row(
                                       children: [
                                         Text('100',
@@ -101,16 +123,6 @@ class _ReservasScreenState extends State<ReservasScreen> {
                                         Icon(Icons.monetization_on_outlined,
                                             color: MyColors.pinkApp),
                                       ],
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.bookmark,
-                                          color: MyColors.lightBlueApp),
-                                      onPressed: () {},
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.share,
-                                          color: MyColors.blackApp),
-                                      onPressed: () {},
                                     ),
                                   ],
                                 ),

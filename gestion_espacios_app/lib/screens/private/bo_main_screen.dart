@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
-import 'package:gestion_espacios_app/screens/private/espaciosbo_screen.dart';
-import 'package:gestion_espacios_app/screens/private/reservasbo_screen.dart';
-import 'package:gestion_espacios_app/screens/private/usuariosbo_screen.dart';
+import 'package:gestion_espacios_app/screens/private/bo_espacios_screen.dart';
+import 'package:gestion_espacios_app/screens/private/bo_reservas_screen.dart';
+import 'package:gestion_espacios_app/screens/private/bo_usuarios_screen.dart';
 import 'package:gestion_espacios_app/widgets/logout_widget.dart';
 
 class BOMainScreen extends StatefulWidget {
@@ -71,6 +71,7 @@ class _BOMainScreenState extends State<BOMainScreen>
                     'BackOffice',
                     style: TextStyle(
                       fontFamily: 'KoHo',
+                      overflow: TextOverflow.ellipsis,
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
@@ -78,6 +79,7 @@ class _BOMainScreenState extends State<BOMainScreen>
                   Text(
                     'IES Luis Vives',
                     style: TextStyle(
+                      overflow: TextOverflow.ellipsis,
                       fontFamily: 'KoHo',
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
@@ -89,6 +91,7 @@ class _BOMainScreenState extends State<BOMainScreen>
           ),
           bottom: TabBar(
             controller: _tabController,
+            indicatorSize: TabBarIndicatorSize.label,
             tabs: const [
               Tab(text: 'Reservas'),
               Tab(text: 'Salas'),
@@ -96,13 +99,16 @@ class _BOMainScreenState extends State<BOMainScreen>
             ],
             labelColor: MyColors.blackApp,
             unselectedLabelColor: MyColors.blackApp,
+            labelPadding: const EdgeInsets.symmetric(horizontal: 16.0),
             labelStyle: const TextStyle(
+              overflow: TextOverflow.ellipsis,
               fontFamily: 'KoHo',
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
             unselectedLabelStyle: const TextStyle(
               fontFamily: 'KoHo',
+              overflow: TextOverflow.ellipsis,
               fontSize: 16,
               fontWeight: FontWeight.normal,
             ),
@@ -151,7 +157,10 @@ class _BOMainScreenState extends State<BOMainScreen>
                         ),
                         hintText: 'Buscar',
                         hintStyle: const TextStyle(
-                            fontFamily: 'KoHo', color: MyColors.pinkApp),
+                          fontFamily: 'KoHo',
+                          color: MyColors.pinkApp,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                         prefixIcon: const Icon(Icons.search,
                             color: MyColors.pinkApp, size: 30),
                       ),
@@ -172,6 +181,7 @@ class _BOMainScreenState extends State<BOMainScreen>
                         'Nuevo',
                         style: TextStyle(
                           color: MyColors.whiteApp,
+                          overflow: TextOverflow.ellipsis,
                           fontFamily: 'KoHo',
                           fontSize: 20,
                         ),

@@ -16,10 +16,6 @@ class MyErrorMessageDialog extends StatelessWidget {
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: const BorderSide(
-          color: MyColors.whiteApp,
-          width: 2.0,
-        ),
       ),
       backgroundColor: MyColors.pinkApp,
       content: Column(

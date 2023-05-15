@@ -8,22 +8,35 @@ class AcercaDeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      contentPadding: const EdgeInsets.all(16),
+      backgroundColor: MyColors.lightBlueApp,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
       content: SizedBox(
         width: double.maxFinite,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              decoration: BoxDecoration(
+              width: 100,
+              height: 100,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
                 color: MyColors.whiteApp,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: MyColors.darkBlueApp,
-                  width: 2,
+              ),
+              padding: const EdgeInsets.all(4),
+              child: ClipOval(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-              child: Image.asset('assets/images/logo.png',
-                  width: 100, height: 100, fit: BoxFit.cover),
             ),
             const SizedBox(height: 16),
             const Row(
@@ -103,15 +116,6 @@ class AcercaDeWidget extends StatelessWidget {
               ],
             ),
           ],
-        ),
-      ),
-      contentPadding: const EdgeInsets.all(16),
-      backgroundColor: MyColors.lightBlueApp,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: const BorderSide(
-          color: MyColors.whiteApp,
-          width: 2,
         ),
       ),
     );

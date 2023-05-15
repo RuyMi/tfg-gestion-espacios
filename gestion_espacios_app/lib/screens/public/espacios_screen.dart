@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
-import 'package:gestion_espacios_app/screens/public/reservar_espacios.dart';
+import 'package:gestion_espacios_app/screens/public/reservar_espacios_screen.dart';
 import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 
 class EspaciosScreen extends StatefulWidget {
@@ -117,11 +117,36 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                                     style: TextStyle(
                                         fontWeight: FontWeight.normal,
+                                        overflow: TextOverflow.ellipsis,
                                         fontSize: 12,
-                                        fontFamily: 'KoHo')),
+                                        fontFamily: 'KoHo'),
+                                    maxLines: 3),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.share,
+                                              color: MyColors.blackApp),
+                                          onPressed: () {},
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(
+                                              Icons.bookmark_outline,
+                                              color: MyColors.lightBlueApp),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const ReservaEspacioScreen(),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                     const Row(
                                       children: [
                                         Text('100',
@@ -132,23 +157,6 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                         Icon(Icons.monetization_on_outlined,
                                             color: MyColors.pinkApp),
                                       ],
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.bookmark_outline,
-                                          color: MyColors.lightBlueApp),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => const ReservaSala(),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.share,
-                                          color: MyColors.blackApp),
-                                      onPressed: () {},
                                     ),
                                   ],
                                 ),
