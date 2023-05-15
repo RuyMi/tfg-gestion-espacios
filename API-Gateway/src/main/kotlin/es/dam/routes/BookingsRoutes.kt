@@ -20,6 +20,7 @@ import org.koin.ktor.ext.inject
 import java.lang.IllegalArgumentException
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.Period
 import java.util.*
 
 private const val ENDPOINT = "bookings"
@@ -145,9 +146,29 @@ fun Application.bookingsRoutes() {
                             call.respond(HttpStatusCode.BadRequest, "No tienes créditos suficientes para realizar la reserva")
                         }
                         userRepository.updateCredits(token, user.uuid, space.price)
-                        val booking = async {
-                            bookingsRepository.create(token, entity)
+                        require(LocalDateTime.parse(entity.startTime) > LocalDateTime.now())
+                        {"No se ha podio guardar la reserva fecha introducida es anterior a la actual."}
+                        require(Period.between(LocalDate.now(),LocalDate.parse(entity.startTime.split("T")[0])).days <= space.bookingWindow.toInt())
+                        {"No se puede reservar con tanta anterioridad."}
+                        require(bookingsRepository.findByTime(token, entity.spaceId, entity.startTime.split("T")[0])
+                                .data
+                                .filter{it -> it.startTime == entity.startTime}
+                                .isNotEmpty()
+                        )
+                        {"Franja horaria no disponible."}
+
+                        var booking = async {  }
+
+                        if(space.requiresAuthorization){
+                            booking = async {
+                                bookingsRepository.create(token, entity.copy(status = "APPROVED"))
+                            }
+                        }else{
+                            booking = async {
+                                bookingsRepository.create(token, entity)
+                            }
                         }
+
                         call.respond(HttpStatusCode.Created, booking.await())
                     } catch (e: BookingExceptions) {
                         call.respond(HttpStatusCode.BadRequest, "La reserva ya ha sido creada: ${e.stackTraceToString()}")
@@ -162,8 +183,30 @@ fun Application.bookingsRoutes() {
                         val id = call.parameters["id"]
                         val booking = call.receive<BookingUpdateDTO>()
 
-                        val updatedbooking = async {
-                            bookingsRepository.update("Bearer $token", id!!, booking)
+                        require(bookingsRepository.findByUser(token, booking.userId).data.filter{it.userId == booking.userId}.isEmpty())
+                        {"La reserva que se quiere actualizar no está guardada bajo el mismo usuario."}
+                        require(LocalDateTime.parse(booking.startTime) > LocalDateTime.now())
+                        {"No se ha podio guardar la reserva fecha introducida es anterior a la actual."}
+                        require(Period.between(LocalDate.now(),LocalDate.parse(booking.startTime.split("T")[0])).days <=
+                                spaceRepository.findById(token, booking.spaceId).bookingWindow.toInt())
+                        {"No se puede reservar con tanta anterioridad."}
+                        require(bookingsRepository.findByTime(token, booking.spaceId, booking.startTime.split("T")[0])
+                                .data
+                                .filter{it.startTime == booking.startTime}
+                                .isNotEmpty()
+                        )
+                        {"Franja horaria no disponible."}
+
+                        var updatedbooking = async {}
+
+                        if(spaceRepository.findById(token, booking.spaceId).requiresAuthorization){
+                            updatedbooking = async {
+                                bookingsRepository.update("Bearer $token", id!!, booking.copy(status = "APPROVED"))
+                            }
+                        }else{
+                            updatedbooking = async {
+                                bookingsRepository.update("Bearer $token", id!!, booking)
+                            }
                         }
 
                         call.respond(HttpStatusCode.OK, updatedbooking.await())
@@ -175,12 +218,27 @@ fun Application.bookingsRoutes() {
                     }
                 }
 
-                delete("/{id}") {
+                delete("/{id}/{userId}") {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
                         val id = call.parameters["id"]
+                        val userId = call.parameters["userId"]
                         val uuid = UUID.fromString(id)!!
+                        val userUuid = UUID.fromString(userId)!!
+
+                        require(bookingsRepository.findById(token, id!!).userId == userId)
+                        {"La reserva que se quiere actualizar no está guardada bajo su mismo teléfono de contacto."}
+
                         bookingsRepository.delete("Bearer $token", id!!)
+
+                        userRepository.updateCredits(
+                                token,
+                                userId,
+                                spaceRepository.findById(
+                                        token,
+                                        bookingsRepository.findById(token, id!!).spaceId
+                                ).price * -1
+                        )
 
                         call.respond(HttpStatusCode.NoContent)
 

@@ -2,6 +2,7 @@ package es.dam.routes
 
 import es.dam.dto.SpaceCreateDTO
 import es.dam.dto.SpaceUpdateDTO
+import es.dam.repositories.booking.KtorFitBookingsRepository
 import es.dam.services.token.TokensService
 import es.dam.repositories.space.KtorFitSpacesRepository
 import io.ktor.http.*
@@ -18,6 +19,7 @@ import java.util.UUID
 private const val ENDPOINT = "spaces"
 
 fun Application.spacesRoutes() {
+    val bookingsRepository : KtorFitBookingsRepository by inject()
     val spacesRepository : KtorFitSpacesRepository by inject()
     val tokenService : TokensService by inject()
 
@@ -27,6 +29,7 @@ fun Application.spacesRoutes() {
                 get() {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
+
 
                         val res = async {
                             spacesRepository.findAll("Bearer $token")
@@ -131,6 +134,8 @@ fun Application.spacesRoutes() {
                         val id = call.parameters["id"]
                         val uuid = UUID.fromString(id)
 
+                        require(bookingsRepository.findBySpace(token, id!!).data.isNotEmpty())
+                        {"Se deben actualizar o eliminar las reservas asociadas a esta sala antes de continuar con la operación."}
                         spacesRepository.delete("Bearer $token", id!!)
 
                         call.respond(HttpStatusCode.NoContent)
