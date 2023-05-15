@@ -49,6 +49,15 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    override suspend fun isActive(username: String): Boolean = withContext(Dispatchers.IO)  {
+        val call = async { client.isActive(username) }
+        try {
+            return@withContext call.await()
+        } catch (e: Exception) {
+            throw Exception("Error getting user's state with username $username ${e.message}")
+        }
+    }
+
     override suspend fun update(token: String, id: String, entity: UserUpdateDTO): UserResponseDTO = withContext(Dispatchers.IO)  {
         val call = async { client.update(token, id, entity) }
         try {
