@@ -56,3 +56,8 @@ data class SpaceResponseDTO(
     val authorizedRoles: Set<String>,
     val bookingWindow: Duration
 )
+
+@Serializable
+data class SpacePhotoDTO(
+    val data: Map<String, String>
+)

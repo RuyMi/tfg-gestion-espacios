@@ -20,6 +20,7 @@ import org.litote.kmongo.id.toId
 import java.lang.IllegalArgumentException
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.Period
 import java.time.format.DateTimeParseException
 
 fun Application.bookingRoutes(){
@@ -27,9 +28,10 @@ fun Application.bookingRoutes(){
 
     routing {
         get("/bookings") {
-            val response = BookingAllDto(
-                data = bookingService.findAll().map { it.toDTO() },
-            )
+            val data = bookingService.findAll()
+            if (data.isEmpty())
+                call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva")
+            val response = BookingAllDto(data = data.map { it.toDTO()})
             call.respond(response)
         }
 
@@ -52,9 +54,7 @@ fun Application.bookingRoutes(){
                     if(data.isEmpty())
                         call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el estado: $status")
                 }
-                val res = BookingAllDto(
-                    data = data!!.map { it.toDTO() }
-                )
+                val res = BookingAllDto(data = data!!.map { it.toDTO() })
                 call.respond(res)
             } catch (e: Exception){
                 call.respond(HttpStatusCode.BadRequest, "El estado debe ser un estado válido")

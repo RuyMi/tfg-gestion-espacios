@@ -2,15 +2,20 @@ package es.dam.routes
 
 import es.dam.dto.SpaceCreateDTO
 import es.dam.dto.SpaceUpdateDTO
+import es.dam.exceptions.*
 import es.dam.repositories.booking.KtorFitBookingsRepository
 import es.dam.services.token.TokensService
 import es.dam.repositories.space.KtorFitSpacesRepository
+import io.ktor.client.request.forms.*
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
+import io.ktor.server.response.respond
 import io.ktor.server.routing.*
+import io.ktor.utils.io.streams.*
 import kotlinx.coroutines.async
 import org.koin.ktor.ext.inject
 import java.lang.IllegalArgumentException
@@ -38,8 +43,10 @@ fun Application.spacesRoutes() {
 
                         call.respond(HttpStatusCode.OK, spaces)
 
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al obtener las salas: ${e.stackTraceToString()}")
+                    } catch (e: SpaceNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    }  catch (e: SpaceInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -55,8 +62,12 @@ fun Application.spacesRoutes() {
 
                         call.respond(HttpStatusCode.OK, space.await())
 
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound,"La sala con ese id no ha sido encontrada: ${e.stackTraceToString()}")
+                    } catch (e: SpaceNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: SpaceBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: SpaceInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -72,8 +83,12 @@ fun Application.spacesRoutes() {
 
                         call.respond(HttpStatusCode.OK, spaces)
 
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al obtener salas reservables: ${e.stackTraceToString()}")
+                    } catch (e: SpaceNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: SpaceBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: SpaceInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -88,8 +103,12 @@ fun Application.spacesRoutes() {
 
                         call.respond(HttpStatusCode.OK, space.await())
 
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound,"La sala con ese id no ha sido encontrada: ${e.stackTraceToString()}")
+                    } catch (e: SpaceNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: SpaceBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: SpaceInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -97,15 +116,59 @@ fun Application.spacesRoutes() {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
                         val entity = call.receive<SpaceCreateDTO>()
-
-                        val space = async {
-                            spacesRepository.create(token,  entity)
-                        }
-
+                        val space = async { spacesRepository.create(token,  entity) }
                         call.respond(HttpStatusCode.Created, space.await())
 
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "Esta sala ya ha sido creada: ${e.stackTraceToString()}")
+                    } catch (e: SpaceNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: SpaceBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: SpaceInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    }
+                }
+
+                //TODO No funciona desde api general
+                post("/storage"){
+                    try {
+                        val token = tokenService.generateToken(call.principal()!!)
+                        val multipart = call.receiveMultipart()
+                        var fileData: ByteArray? = null
+                        var fileName: String? = null
+
+                        multipart.forEachPart { part ->
+                            when (part) {
+                                is PartData.FileItem -> {
+                                    fileData = part.streamProvider().readBytes()
+                                    fileName = part.originalFileName
+                                }
+                                is PartData.FormItem -> {
+                                    // Handle form items if needed
+                                }
+
+                                else -> {}
+                            }
+                            part.dispose()
+                        }
+
+                        // Procesar el archivo y enviarlo al microservicio
+
+                        val filePart = PartData.FileItem({
+                            fileData!!.inputStream().asInput()
+                        }, {}, headersOf(HttpHeaders.ContentDisposition, "filename=$fileName"))
+
+                        val requestBody = MultiPartFormDataContent(listOf(filePart))
+                        val res = async {
+                            spacesRepository.uploadFile("Bearer $token", requestBody)
+                        }
+                        val space = res.await()
+                        call.respond(HttpStatusCode.OK, space)
+                    } catch (e: SpaceNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: SpaceBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: SpaceInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -121,10 +184,12 @@ fun Application.spacesRoutes() {
 
                         call.respond(HttpStatusCode.OK, updatedspace.await())
 
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al actualizar la sala: ${e.stackTraceToString()}")
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "EError al actualizar la sala: ${e.stackTraceToString()}")
+                    } catch (e: SpaceNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: SpaceBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: SpaceInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -140,16 +205,14 @@ fun Application.spacesRoutes() {
 
                         call.respond(HttpStatusCode.NoContent)
 
+                    } catch (e: SpaceNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: SpaceBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: SpaceInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     } catch (e: IllegalArgumentException) {
-                        call.respond(
-                            HttpStatusCode.BadRequest,
-                            "El id introducido no es válido: ${e.stackTraceToString()}"
-                        )
-                    } catch (e: Exception) {
-                        call.respond(
-                            HttpStatusCode.NotFound,
-                            "La sala con ese id no ha sido encontrada: ${e.stackTraceToString()}"
-                        )
+                        call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
                     }
                 }
             }

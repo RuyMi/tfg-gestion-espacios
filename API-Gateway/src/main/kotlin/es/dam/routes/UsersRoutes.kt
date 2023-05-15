@@ -4,6 +4,9 @@ import es.dam.dto.UserLoginDTO
 import es.dam.dto.UserRegisterDTO
 import es.dam.services.token.TokensService
 import es.dam.dto.UserUpdateDTO
+import es.dam.exceptions.UserBadRequestException
+import es.dam.exceptions.UserInternalErrorException
+import es.dam.exceptions.UserNotFoundException
 import es.dam.repositories.booking.KtorFitBookingsRepository
 import es.dam.repositories.user.KtorFitUsersRepository
 import io.ktor.http.*
@@ -39,10 +42,12 @@ fun Application.usersRoutes() {
 
                     call.respond(HttpStatusCode.OK, user.await())
 
-                } catch (e: UserException) {
-                    call.respond(HttpStatusCode.BadRequest, "Usuario o contraseña inválidos: ${e.stackTraceToString()}")
-                } catch (e: Exception) {
-                    call.respond(HttpStatusCode.BadRequest, "Error al hacer login: ${e.stackTraceToString()}")
+                } catch (e: UserNotFoundException) {
+                    call.respond(HttpStatusCode.NotFound, "${e.message}")
+                } catch (e: UserBadRequestException) {
+                    call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                } catch (e: UserInternalErrorException) {
+                    call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                 }
             }
 
@@ -56,10 +61,12 @@ fun Application.usersRoutes() {
 
                     call.respond(HttpStatusCode.Created, user.await())
 
-                } catch (e: UserException) {
-                    call.respond(HttpStatusCode.BadRequest, "El usuario ya esta registrado: ${e.stackTraceToString()}")
-                } catch (e: Exception) {
-                    call.respond(HttpStatusCode.BadRequest, "Error al registrar el usuario: ${e.stackTraceToString()}")
+                } catch (e: UserNotFoundException) {
+                    call.respond(HttpStatusCode.NotFound, "${e.message}")
+                } catch (e: UserBadRequestException) {
+                    call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                } catch (e: UserInternalErrorException) {
+                    call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                 }
             }
 
@@ -75,8 +82,10 @@ fun Application.usersRoutes() {
 
                         call.respond(HttpStatusCode.OK, users)
 
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error getting users")
+                    } catch (e: UserNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    }  catch (e: UserInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -92,10 +101,12 @@ fun Application.usersRoutes() {
 
                         call.respond(HttpStatusCode.OK, user.await())
 
-                    } catch (e: UserException) {
-                        call.respond(HttpStatusCode.NotFound,"El usuario con ese id no ha sido encontrado: ${e.stackTraceToString()}")
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "Error al obtener el usuario: ${e.stackTraceToString()}")
+                    } catch (e: UserNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: UserBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: UserInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -111,10 +122,12 @@ fun Application.usersRoutes() {
 
                         call.respond(HttpStatusCode.OK, updatedUser.await())
 
-                    } catch (e: UserException) {
-                        call.respond(HttpStatusCode.NotFound, "Error al actualizar el usuario: ${e.stackTraceToString()}")
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "Error al actualizar el usuario: ${e.stackTraceToString()}")
+                    } catch (e: UserNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: UserBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: UserInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -129,10 +142,12 @@ fun Application.usersRoutes() {
 
                         call.respond(HttpStatusCode.OK, updatedUser.await())
 
-                    } catch (e: UserException) {
-                        call.respond(HttpStatusCode.NotFound, "Error al actualizar el usuario: ${e.stackTraceToString()}")
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "Error al actualizar el usuario: ${e.stackTraceToString()}")
+                    } catch (e: UserNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: UserBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: UserInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -148,10 +163,12 @@ fun Application.usersRoutes() {
 
                         call.respond(HttpStatusCode.OK, updatedUser.await())
 
-                    } catch (e: UserException) {
-                        call.respond(HttpStatusCode.NotFound, "El usuario con ese id no ha sido encontrado: ${e.stackTraceToString()}")
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "Error al actualizar el usuario: ${e.stackTraceToString()}")
+                    } catch (e: UserNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: UserBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: UserInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -166,10 +183,12 @@ fun Application.usersRoutes() {
                         }
                         call.respond(HttpStatusCode.OK, updatedUser.await())
 
-                    } catch (e: UserException) {
-                        call.respond(HttpStatusCode.NotFound, "El usuario con ese id no ha sido encontrado: ${e.stackTraceToString()}")
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "Error al actualizar el usuario: ${e.stackTraceToString()}")
+                    } catch (e: UserNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: UserBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: UserInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -184,10 +203,12 @@ fun Application.usersRoutes() {
 
                         call.respond(HttpStatusCode.NoContent)
 
-                    } catch (e: UserException) {
-                        call.respond(HttpStatusCode.NotFound, "El usuario con ese id no ha sido encontrado: ${e.stackTraceToString()}")
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "Error al eliminar el usuario: ${e.stackTraceToString()}")
+                    } catch (e: UserNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: UserBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: UserInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
             }

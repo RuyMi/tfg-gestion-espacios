@@ -5,6 +5,7 @@ import es.dam.services.token.TokensService
 import es.dam.dto.BookingUpdateDTO
 import es.dam.exceptions.BookingBadRequestException
 import es.dam.exceptions.BookingExceptions
+import es.dam.exceptions.BookingInternalErrorException
 import es.dam.exceptions.BookingNotFoundException
 import es.dam.repositories.booking.KtorFitBookingsRepository
 import es.dam.repositories.space.KtorFitSpacesRepository
@@ -45,8 +46,10 @@ fun Application.bookingsRoutes() {
 
                         call.respond(HttpStatusCode.OK, bookings)
 
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al obtener las reservas: ${e.stackTraceToString()}")
+                    } catch (e: BookingNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: BookingInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -62,9 +65,11 @@ fun Application.bookingsRoutes() {
                         call.respond(HttpStatusCode.OK, booking.await())
 
                     } catch (e: BookingNotFoundException) {
-                        call.respond(HttpStatusCode.NotFound, "La reserva con ese id no ha sido encontrada: ${e.message}")
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: BookingBadRequestException) {
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: BookingInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -80,8 +85,12 @@ fun Application.bookingsRoutes() {
 
                         call.respond(HttpStatusCode.OK, bookings)
 
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al encontrar las reservas para ese id de sala: ${e.stackTraceToString()}")
+                    } catch (e: BookingNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: BookingBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: BookingInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -97,8 +106,12 @@ fun Application.bookingsRoutes() {
 
                         call.respond(HttpStatusCode.OK, bookings)
 
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al encontrar las reservas para ese id de sala: ${e.stackTraceToString()}")
+                    } catch (e: BookingNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: BookingBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: BookingInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -114,8 +127,12 @@ fun Application.bookingsRoutes() {
 
                         call.respond(HttpStatusCode.OK, bookings)
 
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al encontrar la reserva con ese estado: ${e.stackTraceToString()}")
+                    } catch (e: BookingNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: BookingBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: BookingInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -131,8 +148,12 @@ fun Application.bookingsRoutes() {
 
                         call.respond(HttpStatusCode.OK, bookings)
 
+                    } catch (e: BookingNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: BookingBadRequestException) {
-                        call.respond(HttpStatusCode.BadRequest, "El id o la fecha no son correctos: ${e.stackTraceToString()}")
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: BookingInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -170,10 +191,12 @@ fun Application.bookingsRoutes() {
                         }
 
                         call.respond(HttpStatusCode.Created, booking.await())
-                    } catch (e: BookingExceptions) {
-                        call.respond(HttpStatusCode.BadRequest, "La reserva ya ha sido creada: ${e.stackTraceToString()}")
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "Error al crear la reserva: ${e.stackTraceToString()}")
+                    } catch (e: BookingNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: BookingBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: BookingInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -211,10 +234,12 @@ fun Application.bookingsRoutes() {
 
                         call.respond(HttpStatusCode.OK, updatedbooking.await())
 
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "Error al actualizar la reserva: ${e.stackTraceToString()}")
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "Error al actualizar la reserva: ${e.stackTraceToString()}")
+                    } catch (e: BookingNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: BookingBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: BookingInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
 
@@ -247,8 +272,12 @@ fun Application.bookingsRoutes() {
                             HttpStatusCode.BadRequest,
                             "El id introducido no es válido: ${e.stackTraceToString()}"
                         )
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotFound, "La reserva con ese id no ha sido encontrada: ${e.stackTraceToString()}")
+                    } catch (e: BookingNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: BookingBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: BookingInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
             }

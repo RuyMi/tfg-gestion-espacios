@@ -1,10 +1,9 @@
 package es.dam.repositories.space
 
-import es.dam.dto.SpaceCreateDTO
-import es.dam.dto.SpaceDataDTO
-import es.dam.dto.SpaceResponseDTO
-import es.dam.dto.SpaceUpdateDTO
+import es.dam.dto.*
 import es.dam.services.space.KtorFitClientSpaces
+import io.ktor.client.request.forms.*
+import io.ktor.http.content.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
@@ -56,6 +55,15 @@ class KtorFitSpacesRepository: ISpacesRepository {
             return@withContext call.await()
         } catch (e: Exception) {
             throw Exception("Error creating space: ${e.message}")
+        }
+    }
+
+    override suspend fun uploadFile(token: String, part: MultiPartFormDataContent): SpacePhotoDTO = withContext(Dispatchers.IO) {
+        val call = async { client.uploadFile(token, part) }
+        try {
+            return@withContext call.await()
+        } catch (e: Exception) {
+            throw Exception("Error uploading file: ${e.message}")
         }
     }
 
