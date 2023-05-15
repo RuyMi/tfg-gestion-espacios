@@ -6,7 +6,8 @@ import es.dam.models.Booking
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Single
-import org.litote.kmongo.eq
+import org.litote.kmongo.*
+import java.time.LocalDate
 import java.util.*
 
 @Single
@@ -21,7 +22,7 @@ class BookingRepositoryImpl : BookingRepository {
     }
 
     override suspend fun findAllStatus(status: Booking.Status): List<Booking> = withContext(Dispatchers.IO) {
-        return@withContext manager.database.getCollection<Booking>().find(Booking::status eq status).toList().ifEmpty { throw BookingException("The booking with spaceId $uuid does not exist") }
+        return@withContext manager.database.getCollection<Booking>().find(Booking::status eq status).toList().ifEmpty { throw BookingException("The booking with status $status does not exist") }
     }
 
     override suspend fun findAll(): List<Booking> = withContext(Dispatchers.IO) {
