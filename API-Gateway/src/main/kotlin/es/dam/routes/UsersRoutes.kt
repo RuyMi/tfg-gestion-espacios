@@ -14,6 +14,7 @@ import io.ktor.server.routing.*
 import jdk.jshell.spi.ExecutionControl.UserException
 import kotlinx.coroutines.async
 import org.koin.ktor.ext.inject
+import java.time.LocalDateTime
 
 private const val ENDPOINT = "users"
 
@@ -142,6 +143,24 @@ fun Application.usersRoutes() {
                             userRepository.updateCredits("Bearer $token", id!!, creditsAmount!!.toInt())
                         }
 
+                        call.respond(HttpStatusCode.OK, updatedUser.await())
+
+                    } catch (e: UserException) {
+                        call.respond(HttpStatusCode.NotFound, "El usuario con ese id no ha sido encontrado: ${e.stackTraceToString()}")
+                    } catch (e: Exception) {
+                        call.respond(HttpStatusCode.BadRequest, "Error al actualizar el usuario: ${e.stackTraceToString()}")
+                    }
+                }
+
+                put("/active/{id}/{active}") {
+                    try {
+                        val token = tokenService.generateToken(call.principal()!!)
+                        val id = call.parameters["id"]
+                        val active = call.parameters["active"]
+
+                        val updatedUser = async {
+                            userRepository.updateActive("Bearer $token", id!!, active!!.toBoolean())
+                        }
                         call.respond(HttpStatusCode.OK, updatedUser.await())
 
                     } catch (e: UserException) {

@@ -5,15 +5,10 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
 @Component
-class ScheduleService @Autowired constructor(
-    val userService: UserService
-){
+class ScheduleService {
     @Scheduled(cron = "0 0 1 1 * ?")
-    suspend fun poner20creditosAllUsers() {
+     fun poner20creditosAllUsers() {
         println("Poniendo 20 creditos a todos los usuarios")
-        userService.findAll().forEach {
-            //it.credits = 20
-            //userService.save(it)
-        }
+
     }
 }

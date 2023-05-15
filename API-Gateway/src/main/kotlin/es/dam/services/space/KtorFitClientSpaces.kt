@@ -2,6 +2,8 @@ package es.dam.services.space
 
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.create
+import es.dam.exceptions.*
+import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
@@ -19,6 +21,21 @@ object KtorFitClientSpaces {
                 }
                 install(DefaultRequest) {
                     header(HttpHeaders.ContentType, ContentType.Application.Json)
+                }
+                HttpResponseValidator {
+                    validateResponse { response ->
+                        val status = response
+                        when(status.status) {
+                            HttpStatusCode.NotFound -> throw SpaceNotFoundException(status.body<String>())
+                            HttpStatusCode.BadRequest -> throw SpaceBadRequestException(status.body<String>())
+                            else -> {
+                                if (status.status != HttpStatusCode.OK && status.status != HttpStatusCode.Created && status.status != HttpStatusCode.NoContent) {
+                                    throw SpaceInternalErrorException(status.body<String>())
+                                }
+                            }
+                        }
+
+                    }
                 }
             }
             .baseUrl(API_URL)

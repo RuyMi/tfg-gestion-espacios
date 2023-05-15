@@ -33,6 +33,13 @@ interface KtorFitRestBookings {
         @Path("status") status: String
     ): BookingDataDTO
 
+    @GET("bookings/time/{id}/{date}")
+    suspend fun findByTime(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+        @Path("date") date: String
+    ): BookingDataDTO
+
     @POST("bookings")
     suspend fun create(
         @Header("Authorization") token: String,
