@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
 
-class ErrorMessageDialog extends StatelessWidget {
+class MyErrorMessageDialog extends StatelessWidget {
   final String title;
   final String description;
 
-  const ErrorMessageDialog({
+  const MyErrorMessageDialog({
     Key? key,
     required this.title,
     required this.description,
@@ -15,7 +15,11 @@ class ErrorMessageDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(20),
+        side: const BorderSide(
+          color: MyColors.whiteApp,
+          width: 2.0,
+        ),
       ),
       backgroundColor: MyColors.pinkApp,
       content: Column(
@@ -39,6 +43,7 @@ class ErrorMessageDialog extends StatelessWidget {
           const SizedBox(height: 10.0),
           Text(
             description,
+            textAlign: TextAlign.center,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 16.0,
