@@ -42,7 +42,7 @@ data class User(
     val avatar: String? = null,
     val userRole: String = UserRole.USER.name,
     val credits: Int = 20,
-
+    val isActive: Boolean = true,
     // Históricos.
     @Serializable(with = LocalDateTimeSerializer::class)
     val createdAt: LocalDateTime = LocalDateTime.now(),

@@ -1,6 +1,7 @@
 package es.dam.repositories
 
 import es.dam.models.Booking
+import java.time.LocalDate
 import java.util.*
 
 interface BookingRepository : CrudRepository<Booking, UUID> {

@@ -17,7 +17,10 @@ import org.bson.types.ObjectId
 import org.koin.core.qualifier.named
 import org.koin.ktor.ext.inject
 import org.litote.kmongo.id.toId
+import java.lang.IllegalArgumentException
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeParseException
 
 fun Application.bookingRoutes(){
     val bookingService: BookingServiceImpl by inject()
@@ -85,6 +88,33 @@ fun Application.bookingRoutes(){
                 call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el id de usuario: $id")
             } catch (e: Exception){
                 call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
+            }
+        }
+
+        get("/bookings/time/{id}/{date}") {
+            val id = call.parameters["id"]
+            val date = call.parameters["date"]
+            try {
+                val data = id?.let { bookingService.findBySpaceId(id) }
+                LocalDate.parse(date)
+                val dataFiltered = data?.filter { it -> it.startTime.toString().split("T")[0] == date.toString() }
+                if (dataFiltered != null) {
+                    if (dataFiltered.isEmpty())
+                        call.respond(
+                            HttpStatusCode.NotFound,
+                            "No se ha encontrado ninguna reserva para la sala con uuid: $id cuya fecha de reserva sea: $date"
+                        )
+                }
+                val res = BookingAllDto(
+                    data = data!!.map { it.toDTO() }
+                )
+                call.respond(res)
+            }catch (e: BookingException) {
+                    call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna sala con el uuid: $id")
+            } catch (e: IllegalArgumentException){
+                call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
+            } catch (e: DateTimeParseException){
+                call.respond(HttpStatusCode.BadRequest, "La fecha debe tener un formato válido")
             }
         }
 
