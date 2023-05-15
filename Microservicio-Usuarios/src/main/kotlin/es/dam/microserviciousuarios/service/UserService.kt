@@ -40,6 +40,14 @@ class UserService
         }
     }
 
+    suspend fun isActive(username: String): Boolean = withContext(Dispatchers.IO) {
+        if (usersRepository.findUserByUsername(username).isNotEmpty()) {
+            return@withContext usersRepository.findUserByUsername(username).first().isActive
+        } else {
+            throw UserNotFoundException("User with username $username not found.")
+        }
+    }
+
     suspend fun findByUuid(uuid: String): User = withContext(Dispatchers.IO) {
         try {
             UUID.fromString(uuid)

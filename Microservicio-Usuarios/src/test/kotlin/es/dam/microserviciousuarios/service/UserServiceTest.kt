@@ -132,6 +132,26 @@ class UserServiceTest {
     }
 
     @Test
+    fun isActive() = runTest {
+        coEvery { usersRepository.findUserByUsername(user.username) } returns listOf(user)
+
+        val result = usersService.isActive(user.username)
+        assertAll(
+                { assertEquals(user.isActive, result) }
+        )
+    }
+
+    @Test
+    fun isActiveNotFound() = runTest {
+        coEvery { usersRepository.findUserByUsername(user.username) } returns listOf()
+
+        val exception = assertThrows<UserNotFoundException> {
+            usersService.isActive(user.username)
+        }
+        assertEquals("User with username ${user.username} not found.", exception.message)
+    }
+
+    @Test
     fun findByUuid() = runTest {
         coEvery { usersRepository.findUserByUuid(user.uuid) } returns listOf(user)
 

@@ -66,7 +66,8 @@ class UsersControllerTest {
             password = "updated1234",
             avatar = null,
             credits = 20,
-            userRole = setOf("USER")
+            userRole = setOf("USER"),
+            isActive = true
     )
 
     val userRegister = UserRegisterDTO(
