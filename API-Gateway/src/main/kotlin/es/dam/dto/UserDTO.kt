@@ -59,7 +59,6 @@ data class UserTokenDTO(
 
 @Serializable
 data class UserResponseDTO(
-    val id: String? = null,
     val uuid: String,
     val name: String,
     val username: String,

@@ -35,7 +35,7 @@ fun Application.usersRoutes() {
                 try {
                     val login = call.receive<UserLoginDTO>()
 
-                    require(userRepository.isActive(login.username)){"No se ha podido iniciar sesión ya que este usuario está dado de baja."}
+                   // require(userRepository.isActive(login.username)){"No se ha podido iniciar sesión ya que este usuario está dado de baja."}
                     val user = async {
                         userRepository.login(login)
                     }
