@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/models/espacio.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -33,13 +34,16 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Espacio episodio =
+        ModalRoute.of(context)!.settings.arguments as Espacio;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Row(
+        title: Row(
           children: [
             Text(
-              'Nombre de la sala',
-              style: TextStyle(
+              episodio.name,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'KoHo',
@@ -54,19 +58,19 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
           },
           icon: const Icon(Icons.arrow_back_ios_rounded),
         ),
-        actions: const [
+        actions: [
           Row(
             children: [
               Text(
-                '33',
-                style: TextStyle(
+                episodio.price.toString(),
+                style: const TextStyle(
                   fontFamily: 'KoHo',
                   color: MyColors.pinkApp,
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(right: 8),
                 child: Icon(
                   Icons.monetization_on_outlined,
@@ -118,15 +122,15 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                           ),
                         ),
                       ),
-                      const Expanded(
+                      Expanded(
                         child: Padding(
-                          padding: EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           child: Text(
-                            'Descripción de la sala',
+                            episodio.name,
                             maxLines: 3,
                             textAlign: TextAlign.start,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: MyColors.whiteApp,
                               fontFamily: 'KoHo',
                             ),

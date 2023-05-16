@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gestion_espacios_app/providers/espacios_provider.dart';
+import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/providers/theme_provider.dart';
+import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
 import 'package:gestion_espacios_app/screens/public/reservar_espacios_screen.dart';
 import 'package:gestion_espacios_app/screens/screens.dart';
 import 'package:gestion_espacios_app/theme/app_theme.dart';
@@ -7,8 +10,19 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider<ThemeNotifier>(
-      create: (_) => ThemeNotifier(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeNotifier>(
+          create: (_) => ThemeNotifier(),
+        ),
+        ChangeNotifierProvider(create: (_) => UsuariosProvider()),
+        ChangeNotifierProvider(
+            create: (context) =>
+                EspaciosProvider(Provider.of<UsuariosProvider>(context))),
+        ChangeNotifierProvider(
+            create: (context) =>
+                ReservasProvider(Provider.of<UsuariosProvider>(context)))
+      ],
       child: const MyApp(),
     ),
   );
@@ -38,8 +52,8 @@ class MyApp extends StatelessWidget {
         '/mis-reservas': (context) => const MisReservasScreen(),
         '/buzon': (context) => const BuzonScreen(),
         '/perfil': (context) => const PerfilScreen(),
-        'reservar-espacio': (context) => const ReservaEspacioScreen(),
-        'editar-reserva': (context) => const EditarReservaScreen(),
+        '/reservar-espacio': (context) => const ReservaEspacioScreen(),
+        '/editar-reserva': (context) => const EditarReservaScreen(),
 
         // Private
         '/login-bo': (context) => const BOLoginScreen(),

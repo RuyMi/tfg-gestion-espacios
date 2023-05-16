@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
-import 'package:gestion_espacios_app/screens/public/reservar_espacios_screen.dart';
+import 'package:gestion_espacios_app/providers/espacios_provider.dart';
+import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
 import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
+import 'package:provider/provider.dart';
 
 class EspaciosScreen extends StatefulWidget {
   const EspaciosScreen({Key? key}) : super(key: key);
@@ -14,6 +16,9 @@ class EspaciosScreen extends StatefulWidget {
 class _EspaciosScreenState extends State<EspaciosScreen> {
   @override
   Widget build(BuildContext context) {
+    final usuariosProvider = Provider.of<UsuariosProvider>(context);
+    final espaciosProvider = EspaciosProvider(usuariosProvider);
+    final espacios = espaciosProvider.espaciosReservables;
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -69,114 +74,121 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
           ],
           backgroundColor: MyColors.whiteApp,
         ),
-        body: ListView(
-          children: [
-            Card(
-              color: MyColors.lightBlueApp.shade50,
-              margin: const EdgeInsets.all(16),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: MyColors.blackApp.withOpacity(0.5),
-                                spreadRadius: 1,
-                                blurRadius: 5,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                                'assets/images/sala_stock.jpg',
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Nombre del lugar',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      fontFamily: 'KoHo'),
-                                ),
-                                const Text(
-                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        overflow: TextOverflow.ellipsis,
-                                        fontSize: 12,
-                                        fontFamily: 'KoHo'),
-                                    maxLines: 3),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(Icons.share,
-                                              color: MyColors.blackApp),
-                                          onPressed: () {},
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(
-                                              Icons.bookmark_outline,
-                                              color: MyColors.lightBlueApp),
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const ReservaEspacioScreen(),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    const Row(
-                                      children: [
-                                        Text('100',
-                                            style: TextStyle(
-                                                fontFamily: 'KoHo',
-                                                fontWeight: FontWeight.bold,
-                                                color: MyColors.pinkApp)),
-                                        Icon(Icons.monetization_on_outlined,
-                                            color: MyColors.pinkApp),
-                                      ],
+        body: espacios.isEmpty
+            ? const Center(
+                child: CircularProgressIndicator.adaptive(),
+              )
+            : ListView.builder(
+                itemCount: espacios.length,
+                itemBuilder: (context, index) {
+                  final espacio = espacios[index];
+                  return Card(
+                    color: MyColors.lightBlueApp.shade50,
+                    margin: const EdgeInsets.all(16),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(left: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: MyColors.blackApp.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 3),
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.asset(
+                                      'assets/images/sala_stock.jpg',
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        espacio.name,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            fontFamily: 'KoHo'),
+                                      ),
+                                      Text(espacio.authorizedRoles.toString(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              overflow: TextOverflow.ellipsis,
+                                              fontSize: 12,
+                                              fontFamily: 'KoHo'),
+                                          maxLines: 3),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              IconButton(
+                                                icon: const Icon(Icons.share,
+                                                    color: MyColors.blackApp),
+                                                onPressed: () {},
+                                              ),
+                                              IconButton(
+                                                icon: const Icon(
+                                                    Icons.bookmark_outline,
+                                                    color:
+                                                        MyColors.lightBlueApp),
+                                                onPressed: () {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    '/reservar-espacio',
+                                                    arguments: espacio,
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(espacio.price.toString(),
+                                                  style: const TextStyle(
+                                                      fontFamily: 'KoHo',
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: MyColors.pinkApp)),
+                                              const Icon(
+                                                  Icons
+                                                      .monetization_on_outlined,
+                                                  color: MyColors.pinkApp),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ));
+                  );
+                }));
   }
 }
