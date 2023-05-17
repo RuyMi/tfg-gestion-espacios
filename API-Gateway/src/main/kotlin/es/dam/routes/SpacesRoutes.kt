@@ -148,7 +148,7 @@ fun Application.spacesRoutes() {
                                     val inputStream = part.streamProvider()
                                     val fileBytes = inputStream.readBytes()
                                     val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
-                                    val multipartBody = MultipartBody.Part.createFormData("file", "image.png", requestBody)
+                                    val multipartBody = MultipartBody.Part.createFormData("file", "${UUID.randomUUID()}.png", requestBody)
                                     spacePhotoDto = spacesRepository.uploadFile(token, multipartBody).await()
                                 }
                                 else -> {

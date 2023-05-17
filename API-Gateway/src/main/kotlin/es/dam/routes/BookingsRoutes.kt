@@ -136,10 +136,10 @@ fun Application.bookingsRoutes() {
                     }
                 }
 
-                get("/time/{id}/{date}"){
+                get("/time/{idSpace}/{date}"){
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
-                        val id = call.parameters["id"]
+                        val id = call.parameters["idSpace"]
                         val date = call.parameters["date"]
                         val res = async {
                             bookingsRepository.findByTime("Bearer $token", id!!, date!!)
