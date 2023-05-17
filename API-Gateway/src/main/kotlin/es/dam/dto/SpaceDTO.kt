@@ -45,7 +45,6 @@ data class SpaceDataDTO(
 
 @Serializable
 data class SpaceResponseDTO(
-    val id: String,
     val uuid: String,
     val name: String,
     val image: String?,

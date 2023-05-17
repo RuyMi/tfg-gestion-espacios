@@ -17,7 +17,7 @@ interface KtorFitRestUsers {
 
     @GET("users/{username}")
     suspend fun isActive(
-            @Path("id") username: String
+            @Path("username") username: String
     ): Boolean
 
     @POST("users/login")

@@ -35,11 +35,11 @@ interface KtorFitRestSpaces {
         @Body space: SpaceCreateDTO
     ): SpaceResponseDTO
 
-    @Multipart
+
     @POST("spaces/storage")
     suspend fun uploadFile(
         @Header("Authorization") token: String,
-        @Part("image") image: MultiPartFormDataContent
+        @Body image: MultiPartFormDataContent
     ): SpacePhotoDTO
 
 
