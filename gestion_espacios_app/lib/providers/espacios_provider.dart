@@ -2,20 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
-import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
+import 'package:gestion_espacios_app/providers/providers.dart';
 import 'package:http/http.dart' as http;
 
 class EspaciosProvider with ChangeNotifier {
-  final UsuariosProvider _usuariosProvider;
-
   List<Espacio> _espacios = [];
   List<Espacio> _espaciosReservables = [];
 
   List<Espacio> get espacios => _espacios;
   List<Espacio> get espaciosReservables => _espaciosReservables;
-  String get token => _usuariosProvider.token;
 
-  EspaciosProvider(this._usuariosProvider) {
+  EspaciosProvider() {
+    String token = UsuariosProvider().token;
     fetchEspacios(token);
     fetchEspaciosByReservable(true, token);
   }
@@ -41,8 +39,6 @@ class EspaciosProvider with ChangeNotifier {
               ))
           .toList();
       notifyListeners();
-    } else {
-      throw Exception('Failed to fetch espacios');
     }
   }
 
@@ -70,12 +66,10 @@ class EspaciosProvider with ChangeNotifier {
               ))
           .toList();
       notifyListeners();
-    } else {
-      throw Exception('Failed to fetch espacios by reservable');
     }
   }
 
-  Future<Espacio> fetchEspacioByUuid(String uuid, String token) async {
+  Future<Espacio?> fetchEspacioByUuid(String uuid, String token) async {
     final response = await http.get(
       Uri.parse('http://magarcia.asuscomm.com:25546/spaces/$uuid'),
       headers: {'Authorization': 'Bearer $token'},
@@ -94,11 +88,11 @@ class EspaciosProvider with ChangeNotifier {
         bookingWindow: data['bookingWindow'],
       );
     } else {
-      throw Exception('Failed to fetch espacio by ID');
+      return null;
     }
   }
 
-  Future<Espacio> fetchEspacioByName(String name, String token) async {
+  Future<Espacio?> fetchEspacioByName(String name, String token) async {
     final response = await http.get(
       Uri.parse('http://magarcia.asuscomm.com:25546/spaces/nombre/$name'),
       headers: {'Authorization': 'Bearer $token'},
@@ -117,7 +111,7 @@ class EspaciosProvider with ChangeNotifier {
         bookingWindow: data['bookingWindow'],
       );
     } else {
-      throw Exception('Failed to fetch espacio by ID');
+      return null;
     }
   }
 

@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
+import 'package:gestion_espacios_app/widgets/error_widget.dart';
+import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  String username = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +22,7 @@ class LoginScreen extends StatelessWidget {
             Image.asset('assets/images/logo.png'),
             const SizedBox(height: 50),
             TextField(
+              onChanged: (value) => username = value,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -31,6 +39,7 @@ class LoginScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             TextField(
+              onChanged: (value) => password = value,
               obscureText: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -49,7 +58,25 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/home');
+                final usuariosProvider =
+                    Provider.of<UsuariosProvider>(context, listen: false);
+                usuariosProvider.login(username, password).then(
+                  (usuario) {
+                    final loginSucceed = usuariosProvider.loginSucceed;
+
+                    if (loginSucceed) {
+                      Navigator.pushNamed(context, '/home');
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) => const MyErrorMessageDialog(
+                          title: 'Error al iniciar sesión',
+                          description: 'Usuario o contraseña incorrectos.',
+                        ),
+                      );
+                    }
+                  },
+                );
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

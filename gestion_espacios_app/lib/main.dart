@@ -12,16 +12,10 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<ThemeNotifier>(
-          create: (_) => ThemeNotifier(),
-        ),
+        ChangeNotifierProvider<ThemeNotifier>(create: (_) => ThemeNotifier()),
         ChangeNotifierProvider(create: (_) => UsuariosProvider()),
-        ChangeNotifierProvider(
-            create: (context) =>
-                EspaciosProvider(Provider.of<UsuariosProvider>(context))),
-        ChangeNotifierProvider(
-            create: (context) =>
-                ReservasProvider(Provider.of<UsuariosProvider>(context)))
+        ChangeNotifierProvider(create: (_) => EspaciosProvider()),
+        ChangeNotifierProvider(create: (_) => ReservasProvider()),
       ],
       child: const MyApp(),
     ),
@@ -46,7 +40,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
 
         // Public
-        '/login': (context) => const LoginScreen(),
+        '/login': (context) => LoginScreen(),
         '/home': (context) => const MainScreen(),
         '/espacios': (context) => const EspaciosScreen(),
         '/mis-reservas': (context) => const MisReservasScreen(),

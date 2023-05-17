@@ -7,13 +7,49 @@ import 'package:http/http.dart' as http;
 class UsuariosProvider with ChangeNotifier {
   String _token = '';
 
+  Usuario _usuario = Usuario(
+    uuid: '',
+    name: '',
+    username: '',
+    email: '',
+    password: '',
+    avatar: '',
+    userRole: [],
+    credits: 0,
+    isActive: false,
+  );
+
+  bool loginSucceed = false;
+
   List<Usuario> _usuarios = [];
 
   List<Usuario> get usuarios => _usuarios;
   String get token => _token;
+  Usuario get usuario => _usuario;
+
+  void updateToken(String token) {
+    _token = token;
+  }
 
   UsuariosProvider() {
-    fetchUsuarios(token);
+    fetchUsuarios(_token);
+  }
+
+  void logout() {
+    _token = '';
+    _usuario = Usuario(
+      uuid: '',
+      name: '',
+      username: '',
+      email: '',
+      password: '',
+      avatar: '',
+      userRole: [],
+      credits: 0,
+      isActive: false,
+    );
+    loginSucceed = false;
+    notifyListeners();
   }
 
   Future<void> fetchUsuarios(String token) async {
@@ -37,12 +73,10 @@ class UsuariosProvider with ChangeNotifier {
                 isActive: json['isActive'],
               ))
           .toList();
-    } else {
-      throw Exception('Failed to fetch usuarios');
     }
   }
 
-  Future<Usuario> fetchUsuario(String uuid, String token) async {
+  Future<Usuario?> fetchUsuario(String uuid, String token) async {
     final response = await http.get(
         Uri.parse('http://magarcia.asuscomm.com:25546/users/$uuid'),
         headers: {'Authorization': 'Bearer $token'});
@@ -60,14 +94,14 @@ class UsuariosProvider with ChangeNotifier {
         credits: data['credits'],
         isActive: data['isActive'],
       );
-    } else {
-      throw Exception('Failed to fetch usuario');
     }
+
+    return null;
   }
 
-  Future<String> login(String username, String password) async {
+  Future<Usuario?> login(String username, String password) async {
     final response = await http.post(
-      Uri.parse('http://magarcia.asuscomm.com:25546/login'),
+      Uri.parse('http://magarcia.asuscomm.com:25546/users/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
@@ -79,17 +113,33 @@ class UsuariosProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      _token = data['token'];
+      Usuario usuario = Usuario(
+        uuid: data['user']['uuid'],
+        name: data['user']['name'],
+        username: data['user']['username'],
+        email: data['user']['email'],
+        password: data['user']['password'],
+        avatar: data['user']['avatar'],
+        userRole: List<String>.from(data['user']['userRole']),
+        credits: data['user']['credits'],
+        isActive: data['user']['isActive'],
+      );
 
-      return data['token'];
-    } else {
-      throw Exception('Failed to login');
+      loginSucceed = true;
+
+      _usuario = usuario;
+      _token = data['token'];
+      notifyListeners();
+
+      return usuario;
     }
+
+    return null;
   }
 
   Future<Usuario> register(Usuario usuario) async {
     final response = await http.post(
-      Uri.parse('http://magarcia.asuscomm.com:25546/users'),
+      Uri.parse('http://magarcia.asuscomm.com:25546/users/register'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(usuario),
     );
@@ -106,15 +156,13 @@ class UsuariosProvider with ChangeNotifier {
         userRole: List<String>.from(data['userRole']),
         credits: data['user']['credits'],
         isActive: data['user']['isActive'],
-        token: data['token'],
       ));
-      notifyListeners();
-
       _token = data['token'];
-      return usuario;
-    } else {
-      throw Exception('Failed to register');
+
+      notifyListeners();
     }
+
+    return usuario;
   }
 
   Future<void> updateUsuario(String uuid, String token) async {
@@ -138,8 +186,6 @@ class UsuariosProvider with ChangeNotifier {
         isActive: data['isActive'],
       );
       notifyListeners();
-    } else {
-      throw Exception('Failed to update usuario');
     }
   }
 
@@ -156,8 +202,6 @@ class UsuariosProvider with ChangeNotifier {
       _usuarios.firstWhere((element) => element.uuid == uuid).isActive =
           data['isActive'];
       notifyListeners();
-    } else {
-      throw Exception('Failed to update usuario');
     }
   }
 
@@ -174,8 +218,6 @@ class UsuariosProvider with ChangeNotifier {
       _usuarios.firstWhere((element) => element.uuid == uuid).credits =
           data['credits'];
       notifyListeners();
-    } else {
-      throw Exception('Failed to update usuario');
     }
   }
 
@@ -204,8 +246,6 @@ class UsuariosProvider with ChangeNotifier {
       _usuarios.firstWhere((element) => element.uuid == data['uuid']).isActive =
           data['isActive'];
       notifyListeners();
-    } else {
-      throw Exception('Failed to update usuario');
     }
   }
 
@@ -218,8 +258,6 @@ class UsuariosProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       _usuarios.removeWhere((element) => element.uuid == uuid);
       notifyListeners();
-    } else {
-      throw Exception('Failed to delete usuario');
     }
   }
 }

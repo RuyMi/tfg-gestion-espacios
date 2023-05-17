@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/providers/providers.dart';
+import 'package:gestion_espacios_app/widgets/error_widget.dart';
+import 'package:provider/provider.dart';
 
 class BOLoginScreen extends StatelessWidget {
   const BOLoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String username = '';
+    String password = '';
+
     return Scaffold(
       body: Container(
         margin: const EdgeInsets.all(20),
@@ -24,6 +30,7 @@ class BOLoginScreen extends StatelessWidget {
             ),
             const SizedBox(height: 50),
             TextField(
+              onChanged: (value) => username = value,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -40,6 +47,7 @@ class BOLoginScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             TextField(
+              onChanged: (value) => password = value,
               obscureText: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -58,7 +66,26 @@ class BOLoginScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/home-bo');
+                final usuariosProvider =
+                    Provider.of<UsuariosProvider>(context, listen: false);
+                usuariosProvider.login(username, password).then(
+                  (usuario) {
+                    final loginSucceed = usuariosProvider.loginSucceed;
+                    final roles = usuariosProvider.usuario.userRole;
+
+                    if (loginSucceed && roles.contains('ADMINISTRATOR')) {
+                      Navigator.pushNamed(context, '/home-bo');
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) => const MyErrorMessageDialog(
+                          title: 'Error al iniciar sesión',
+                          description: 'Usuario o contraseña incorrectos.',
+                        ),
+                      );
+                    }
+                  },
+                );
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
-import 'package:gestion_espacios_app/providers/espacios_provider.dart';
-import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
+import 'package:gestion_espacios_app/providers/providers.dart';
 import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -17,28 +16,31 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
   @override
   Widget build(BuildContext context) {
     final usuariosProvider = Provider.of<UsuariosProvider>(context);
-    final espaciosProvider = EspaciosProvider(usuariosProvider);
-    final espacios = espaciosProvider.espaciosReservables;
+    final usuario = usuariosProvider.usuario;
+    
+    final espaciosProvider = Provider.of<EspaciosProvider>(context);
+    final espacios = espaciosProvider.espacios;
+
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           centerTitle: true,
-          title: const Column(
+          title: Column(
             children: [
-              Text('IES Luis Vives'),
+              const Text('IES Luis Vives'),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '100',
-                    style: TextStyle(
+                    usuario.credits.toString(),
+                    style: const TextStyle(
                       fontFamily: 'KoHo',
                       color: MyColors.pinkApp,
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
                     ),
                   ),
-                  Icon(
+                  const Icon(
                     Icons.monetization_on_outlined,
                     color: MyColors.pinkApp,
                     size: 20,

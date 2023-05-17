@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
+import 'package:provider/provider.dart';
 
 class MyLogoutAlert extends StatelessWidget {
   const MyLogoutAlert({super.key});
@@ -47,7 +49,9 @@ class MyLogoutAlert extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               )),
           onPressed: () {
-            // TODO: función para cerrar sesión.
+            final usuariosProvider =
+                Provider.of<UsuariosProvider>(context, listen: false);
+            usuariosProvider.logout();
 
             Navigator.pushNamedAndRemoveUntil(
               context,

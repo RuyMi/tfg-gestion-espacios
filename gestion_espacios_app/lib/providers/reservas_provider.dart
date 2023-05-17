@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/reserva.dart';
-import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
 import 'package:http/http.dart' as http;
 
 class ReservasProvider with ChangeNotifier {
-  final UsuariosProvider _usuariosProvider;
+  String _token = '';
 
   List<Reserva> _reservas = [];
   List<Reserva> _reservasByUser = [];
@@ -19,11 +18,14 @@ class ReservasProvider with ChangeNotifier {
   List<Reserva> get reservasBySpace => _reservasBySpace;
   List<Reserva> get reservasByStatus => _reservasByStatus;
   List<Reserva> get reservasByTime => _reservasByTime;
-  String get token => _usuariosProvider.token;
+  String get token => _token;
 
-  ReservasProvider(this._usuariosProvider) {
-    fetchReservas(token);
-    fetchReservasByUser('', token);
+  void updateToken(String token) {
+    _token = token;
+  }
+
+  ReservasProvider() {
+    fetchReservas(_token);
   }
 
   Future<void> fetchReservas(token) async {
@@ -45,12 +47,10 @@ class ReservasProvider with ChangeNotifier {
                 status: json['status'],
               ))
           .toList();
-    } else {
-      throw Exception('Failed to fetch reservas');
     }
   }
 
-  Future<Reserva> fetchReservaByUuid(String uuid, String token) async {
+  Future<Reserva?> fetchReservaByUuid(String uuid, String token) async {
     final response = await http.get(
       Uri.parse('http://magarcia.asuscomm.com:25546/bookings/$uuid'),
       headers: {'Authorization': 'Bearer $token'},
@@ -68,7 +68,7 @@ class ReservasProvider with ChangeNotifier {
         status: data['status'],
       );
     } else {
-      throw Exception('Failed to fetch reserva by ID');
+      return null;
     }
   }
 
@@ -92,8 +92,6 @@ class ReservasProvider with ChangeNotifier {
                 status: json['status'],
               ))
           .toList();
-    } else {
-      throw Exception('Failed to fetch reserva by user');
     }
   }
 
@@ -117,8 +115,6 @@ class ReservasProvider with ChangeNotifier {
                 status: json['status'],
               ))
           .toList();
-    } else {
-      throw Exception('Failed to fetch reserva by user');
     }
   }
 
@@ -142,8 +138,6 @@ class ReservasProvider with ChangeNotifier {
                 status: json['status'],
               ))
           .toList();
-    } else {
-      throw Exception('Failed to fetch reserva by user');
     }
   }
 
@@ -169,8 +163,6 @@ class ReservasProvider with ChangeNotifier {
                 status: json['status'],
               ))
           .toList();
-    } else {
-      throw Exception('Failed to fetch reserva by user');
     }
   }
 
@@ -192,8 +184,6 @@ class ReservasProvider with ChangeNotifier {
         status: data['status'],
       ));
       notifyListeners();
-    } else {
-      throw Exception('Failed to add reserva');
     }
   }
 
@@ -217,8 +207,6 @@ class ReservasProvider with ChangeNotifier {
         status: data['status'],
       );
       notifyListeners();
-    } else {
-      throw Exception('Failed to update reserva');
     }
   }
 
@@ -230,8 +218,6 @@ class ReservasProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       _reservas.removeWhere((element) => element.uuid == uuid);
       notifyListeners();
-    } else {
-      throw Exception('Failed to delete reserva');
     }
   }
 }
