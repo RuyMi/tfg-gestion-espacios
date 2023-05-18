@@ -53,8 +53,37 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
         backgroundColor: MyColors.whiteApp,
       ),
       body: misReservas.isEmpty
-          ? const Center(
-              child: CircularProgressIndicator.adaptive(),
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.hide_source_rounded,
+                    size: 100,
+                    color: MyColors.lightBlueApp,
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: MyColors.whiteApp,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: MyColors.lightBlueApp,
+                        width: 2,
+                      ),
+                    ),
+                    child: const Text(
+                      'No se han realizado reservas aún',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'KoHo',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             )
           : ListView.builder(
               itemCount: misReservas.length,
@@ -145,7 +174,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                         ),
                                         Row(
                                           children: [
-                                            Text(reserva.status,
+                                            Text(reserva.status!,
                                                 style: const TextStyle(
                                                     fontFamily: 'KoHo',
                                                     fontWeight: FontWeight.bold,

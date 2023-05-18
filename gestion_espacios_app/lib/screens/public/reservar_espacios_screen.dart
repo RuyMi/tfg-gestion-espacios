@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
+import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 final List<String> horas = [
@@ -34,15 +37,19 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Espacio episodio =
+    final Espacio espacio =
         ModalRoute.of(context)!.settings.arguments as Espacio;
+    // ignore: unused_local_variable
+    final reservasProvider = Provider.of<ReservasProvider>(context);
+    // ignore: unused_local_variable
+    final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
             Text(
-              episodio.name,
+              espacio.name,
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -62,7 +69,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
           Row(
             children: [
               Text(
-                episodio.price.toString(),
+                espacio.price.toString(),
                 style: const TextStyle(
                   fontFamily: 'KoHo',
                   color: MyColors.pinkApp,
@@ -126,7 +133,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(20),
                           child: Text(
-                            episodio.name,
+                            espacio.name,
                             maxLines: 3,
                             textAlign: TextAlign.start,
                             overflow: TextOverflow.ellipsis,

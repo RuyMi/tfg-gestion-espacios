@@ -78,9 +78,38 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
           backgroundColor: MyColors.whiteApp,
         ),
         body: espacios.isEmpty
-            ? const Center(
-                child: CircularProgressIndicator.adaptive(),
-              )
+            ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.hide_source_rounded,
+                    size: 100,
+                    color: MyColors.lightBlueApp,
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: MyColors.whiteApp,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: MyColors.lightBlueApp,
+                        width: 2,
+                      ),
+                    ),
+                    child: const Text(
+                      'No existen espacios disponibles',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'KoHo',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
             : ListView.builder(
                 itemCount: espacios.length,
                 itemBuilder: (context, index) {

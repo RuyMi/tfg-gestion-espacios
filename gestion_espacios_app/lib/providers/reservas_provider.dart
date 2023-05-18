@@ -42,6 +42,8 @@ class ReservasProvider with ChangeNotifier {
                 status: json['status'],
               ))
           .toList();
+
+      notifyListeners();
     }
   }
 
@@ -87,6 +89,8 @@ class ReservasProvider with ChangeNotifier {
                 status: json['status'],
               ))
           .toList();
+
+      notifyListeners();
     }
   }
 
@@ -110,6 +114,8 @@ class ReservasProvider with ChangeNotifier {
                 status: json['status'],
               ))
           .toList();
+
+      notifyListeners();
     }
   }
 
@@ -133,11 +139,12 @@ class ReservasProvider with ChangeNotifier {
                 status: json['status'],
               ))
           .toList();
+
+      notifyListeners();
     }
   }
 
-  Future<void> fetchReservasByTime(
-      String time, String uuidSpace) async {
+  Future<void> fetchReservasByTime(String time, String uuidSpace) async {
     final response = await http.get(
       Uri.parse(
           'http://magarcia.asuscomm.com:25546/bookings/time/$uuidSpace/$time'),
@@ -158,6 +165,8 @@ class ReservasProvider with ChangeNotifier {
                 status: json['status'],
               ))
           .toList();
+
+      notifyListeners();
     }
   }
 
@@ -178,6 +187,7 @@ class ReservasProvider with ChangeNotifier {
         phone: data['phone'],
         status: data['status'],
       ));
+
       notifyListeners();
     }
   }
@@ -201,6 +211,7 @@ class ReservasProvider with ChangeNotifier {
         phone: data['phone'],
         status: data['status'],
       );
+
       notifyListeners();
     }
   }
@@ -212,6 +223,7 @@ class ReservasProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       _reservas.removeWhere((element) => element.uuid == uuid);
+
       notifyListeners();
     }
   }

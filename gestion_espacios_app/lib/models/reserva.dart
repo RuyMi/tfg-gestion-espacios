@@ -1,19 +1,19 @@
 class Reserva {
   Reserva({
-    required this.uuid,
+    this.uuid,
     required this.userId,
     required this.spaceId,
     required this.startTime,
     required this.endTime,
     this.phone,
-    required this.status,
+    this.status,
   });
 
-  String uuid;
+  String? uuid;
   String userId;
   String spaceId;
   String startTime;
   String endTime;
   String? phone;
-  String status;
+  String? status;
 }
