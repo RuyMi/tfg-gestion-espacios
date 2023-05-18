@@ -25,6 +25,10 @@ class BookingRepositoryImpl : BookingRepository {
         return@withContext manager.database.getCollection<Booking>().find(Booking::status eq status).toList().ifEmpty { throw BookingException("The booking with status $status does not exist") }
     }
 
+    override suspend fun findByDate(uuid: UUID, date: LocalDate): List<Booking> = withContext(Dispatchers.IO) {
+        return@withContext manager.database.getCollection<Booking>().find(Booking::spaceId eq uuid.toString()).toList().filter { it.startTime.toString().split("T")[0] == date.toString() }
+    }
+
     override suspend fun findAll(): List<Booking> = withContext(Dispatchers.IO) {
         return@withContext manager.database.getCollection<Booking>().find().toList()
     }
@@ -50,8 +54,7 @@ class BookingRepositoryImpl : BookingRepository {
 
     override suspend fun delete(uuid: UUID): Boolean = withContext(Dispatchers.IO) {
         return@withContext manager.database.getCollection<Booking>().deleteOne(Booking::uuid eq uuid.toString()).let {
-            if(it.deletedCount == 1L) return@let it.wasAcknowledged()
-            throw BookingException("Failed to delete booking with uuid $uuid")
+            return@let it.wasAcknowledged()
         }
     }
 
