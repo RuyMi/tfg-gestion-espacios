@@ -88,7 +88,7 @@ class UsersController @Autowired constructor(
         }
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/isActive/{username}")
     suspend fun isActive(@PathVariable username: String): ResponseEntity<Boolean> {
         try {
             val res = userService.isActive(username)

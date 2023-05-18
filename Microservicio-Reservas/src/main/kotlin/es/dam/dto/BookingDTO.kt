@@ -20,7 +20,7 @@ data class BookingDtoCreate(
     val spaceId: String,
     val startTime: String,
     val endTime: String,
-    val phone: String?,
+    val phone: String? = null,
     val status: String = "PENDING"
 )
 

@@ -68,7 +68,7 @@ data class UserResponseDTO(
     val avatar: String? = null,
     val userRole: Set<String>,
     val credits: Int,
-    val isActive: Boolean,
+    val isActive: Boolean
 )
 
 @Serializable

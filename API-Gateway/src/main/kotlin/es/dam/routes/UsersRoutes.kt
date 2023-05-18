@@ -51,6 +51,26 @@ fun Application.usersRoutes() {
                 }
             }
 
+            post("/login") {
+                try {
+                    val login = call.receive<UserLoginDTO>()
+
+                    //require(userRepository.isActive(login.username)){"No se ha podido iniciar sesión ya que este usuario está dado de baja."}
+                    val user = async {
+                        userRepository.login(login)
+                    }
+
+                    call.respond(HttpStatusCode.OK, user.await())
+
+                } catch (e: UserNotFoundException) {
+                    call.respond(HttpStatusCode.NotFound, "${e.message}")
+                } catch (e: UserBadRequestException) {
+                    call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                } catch (e: UserInternalErrorException) {
+                    call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                }
+            }
+
             post("/register") {
                 try {
                     val register = call.receive<UserRegisterDTO>()
