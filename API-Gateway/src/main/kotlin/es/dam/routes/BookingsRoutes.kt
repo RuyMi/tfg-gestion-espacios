@@ -161,26 +161,26 @@ fun Application.bookingsRoutes() {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
                         val entity = call.receive<BookingCreateDTO>()
-                        val user = userRepository.findById(token, entity.userId)
-                        val space = spaceRepository.findById(token, entity.spaceId)
+                        val user = userRepository.findById("Bearer $token", entity.userId)
+                        val space = spaceRepository.findById("Bearer $token", entity.spaceId)
                         if (user.credits < space.price) {
                             call.respond(HttpStatusCode.BadRequest, "No tienes créditos suficientes para realizar la reserva")
                         }
-                        userRepository.updateCredits(token, user.uuid, space.price)
+                        userRepository.updateCredits("Bearer $token", user.uuid, space.price)
                         require(LocalDateTime.parse(entity.startTime) > LocalDateTime.now())
                         {"No se ha podio guardar la reserva fecha introducida es anterior a la actual."}
                         require(Period.between(LocalDate.now(),LocalDate.parse(entity.startTime.split("T")[0])).days <= space.bookingWindow.toInt())
                         {"No se puede reservar con tanta anterioridad."}
-                        require(bookingsRepository.findByTime(token, entity.spaceId, entity.startTime.split("T")[0])
+                        require(bookingsRepository.findByTime("Bearer $token", entity.spaceId, entity.startTime.split("T")[0])
                                 .data
                                 .filter{it -> it.startTime == entity.startTime}
-                                .isNotEmpty()
+                                .isEmpty()
                         )
                         {"Franja horaria no disponible."}
 
                         var booking = async {  }
 
-                        if(space.requiresAuthorization){
+                        if(!space.requiresAuthorization){
                             booking = async {
                                 bookingsRepository.create(token, entity.copy(status = "APPROVED"))
                             }

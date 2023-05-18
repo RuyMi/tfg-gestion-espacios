@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import org.koin.core.annotation.Single
 import retrofit2.Call
+import java.io.File
 
 @Single
 class KtorFitSpacesRepository: ISpacesRepository {
@@ -68,6 +69,15 @@ class KtorFitSpacesRepository: ISpacesRepository {
             return@withContext call.await()
         } catch (e: Exception) {
             throw Exception("Error uploading file: ${e.message}")
+        }
+    }
+
+    override suspend fun downloadFile(uuid: String): File = withContext(Dispatchers.IO) {
+        val call = async { retrofit.downloadFile(uuid) }
+        try {
+            return@withContext call.await()
+        } catch (e: Exception) {
+            throw Exception("Error downloading file: ${e.message}")
         }
     }
 
