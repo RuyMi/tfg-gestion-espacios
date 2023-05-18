@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
-import 'package:gestion_espacios_app/providers/providers.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -9,8 +9,8 @@ class MyDrawer extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    final usuariosProvider = Provider.of<UsuariosProvider>(context);
-    final usuario = usuariosProvider.usuario;
+    final authProvider = Provider.of<AuthProvider>(context);
+    final usuario = authProvider.usuario;
 
     return Drawer(
       backgroundColor: MyColors.lightBlueApp,

@@ -5,57 +5,20 @@ import 'package:gestion_espacios_app/models/usuario.dart';
 import 'package:http/http.dart' as http;
 
 class UsuariosProvider with ChangeNotifier {
-  String _token = '';
-
-  Usuario _usuario = Usuario(
-    uuid: '',
-    name: '',
-    username: '',
-    email: '',
-    password: '',
-    avatar: '',
-    userRole: [],
-    credits: 0,
-    isActive: false,
-  );
-
-  bool loginSucceed = false;
+  String? _token;
 
   List<Usuario> _usuarios = [];
 
   List<Usuario> get usuarios => _usuarios;
-  String get token => _token;
-  Usuario get usuario => _usuario;
 
-  void updateToken(String token) {
-    _token = token;
+  UsuariosProvider(this._token) {
+    fetchUsuarios();
   }
 
-  UsuariosProvider() {
-    fetchUsuarios(_token);
-  }
-
-  void logout() {
-    _token = '';
-    _usuario = Usuario(
-      uuid: '',
-      name: '',
-      username: '',
-      email: '',
-      password: '',
-      avatar: '',
-      userRole: [],
-      credits: 0,
-      isActive: false,
-    );
-    loginSucceed = false;
-    notifyListeners();
-  }
-
-  Future<void> fetchUsuarios(String token) async {
+  Future<void> fetchUsuarios() async {
     final response = await http.get(
         Uri.parse('http://magarcia.asuscomm.com:25546/users'),
-        headers: {'Authorization': 'Bearer $token'});
+        headers: {'Authorization': 'Bearer $_token'});
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -73,13 +36,15 @@ class UsuariosProvider with ChangeNotifier {
                 isActive: json['isActive'],
               ))
           .toList();
+
+      notifyListeners();
     }
   }
 
-  Future<Usuario?> fetchUsuario(String uuid, String token) async {
+  Future<Usuario?> fetchUsuario(String uuid) async {
     final response = await http.get(
         Uri.parse('http://magarcia.asuscomm.com:25546/users/$uuid'),
-        headers: {'Authorization': 'Bearer $token'});
+        headers: {'Authorization': 'Bearer $_token'});
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -94,44 +59,6 @@ class UsuariosProvider with ChangeNotifier {
         credits: data['credits'],
         isActive: data['isActive'],
       );
-    }
-
-    return null;
-  }
-
-  Future<Usuario?> login(String username, String password) async {
-    final response = await http.post(
-      Uri.parse('http://magarcia.asuscomm.com:25546/users/login'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(
-        {
-          'username': username,
-          'password': password,
-        },
-      ),
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      Usuario usuario = Usuario(
-        uuid: data['user']['uuid'],
-        name: data['user']['name'],
-        username: data['user']['username'],
-        email: data['user']['email'],
-        password: data['user']['password'],
-        avatar: data['user']['avatar'],
-        userRole: List<String>.from(data['user']['userRole']),
-        credits: data['user']['credits'],
-        isActive: data['user']['isActive'],
-      );
-
-      loginSucceed = true;
-
-      _usuario = usuario;
-      _token = data['token'];
-      notifyListeners();
-
-      return usuario;
     }
 
     return null;
@@ -165,10 +92,10 @@ class UsuariosProvider with ChangeNotifier {
     return usuario;
   }
 
-  Future<void> updateUsuario(String uuid, String token) async {
+  Future<void> updateUsuario(String uuid) async {
     final response = await http.put(
       Uri.parse('http://magarcia.asuscomm.com:25546/users/$uuid'),
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer $_token'},
     );
 
     if (response.statusCode == 200) {
@@ -190,11 +117,11 @@ class UsuariosProvider with ChangeNotifier {
   }
 
   Future<void> updateUsuarioActividad(
-      String uuid, bool isActive, String token) async {
+      String uuid, bool isActive) async {
     final response = await http.put(
       Uri.parse(
           'http://magarcia.asuscomm.com:25546/users/active/$uuid/$isActive'),
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer $_token'},
     );
 
     if (response.statusCode == 200) {
@@ -206,11 +133,11 @@ class UsuariosProvider with ChangeNotifier {
   }
 
   Future<void> updateUsuarioCreditos(
-      String uuid, String creditos, String token) async {
+      String uuid, String creditos) async {
     final response = await http.put(
       Uri.parse(
           'http://magarcia.asuscomm.com:25546/users/credits/$uuid/$creditos'),
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer $_token'},
     );
 
     if (response.statusCode == 200) {
@@ -221,10 +148,10 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updateMe(String token) async {
+  Future<void> updateMe() async {
     final response = await http.put(
       Uri.parse('http://magarcia.asuscomm.com:25546/users/me'),
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer $_token'},
     );
 
     if (response.statusCode == 200) {
@@ -249,10 +176,10 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
-  Future<void> deleteUsuarios(String uuid, String token) async {
+  Future<void> deleteUsuarios(String uuid) async {
     final response = await http.delete(
       Uri.parse('http://magarcia.asuscomm.com:25546/users/$uuid'),
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer $_token'},
     );
 
     if (response.statusCode == 200) {

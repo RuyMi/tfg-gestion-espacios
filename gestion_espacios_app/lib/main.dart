@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/espacios_provider.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/providers/theme_provider.dart';
@@ -13,9 +14,26 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider<ThemeNotifier>(create: (_) => ThemeNotifier()),
-        ChangeNotifierProvider(create: (_) => UsuariosProvider()),
-        ChangeNotifierProvider(create: (_) => EspaciosProvider()),
-        ChangeNotifierProvider(create: (_) => ReservasProvider()),
+
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+
+        ChangeNotifierProxyProvider<AuthProvider, UsuariosProvider>(
+          create: (context) => UsuariosProvider(null),
+          update: (context, authProvider, _) =>
+              UsuariosProvider(authProvider.token),
+        ),
+        
+        ChangeNotifierProxyProvider<AuthProvider, EspaciosProvider>(
+          create: (context) => EspaciosProvider(null),
+          update: (context, authProvider, _) =>
+              EspaciosProvider(authProvider.token),
+        ),
+
+        ChangeNotifierProxyProvider<AuthProvider, ReservasProvider>(
+          create: (context) => ReservasProvider(null),
+          update: (context, authProvider, _) =>
+              ReservasProvider(authProvider.token),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -40,7 +58,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
 
         // Public
-        '/login': (context) => LoginScreen(),
+        '/login': (context) => const LoginScreen(),
         '/home': (context) => const MainScreen(),
         '/espacios': (context) => const EspaciosScreen(),
         '/mis-reservas': (context) => const MisReservasScreen(),

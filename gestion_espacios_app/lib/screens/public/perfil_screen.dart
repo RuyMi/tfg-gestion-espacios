@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
-import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/widgets/logout_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -15,8 +15,8 @@ class PerfilScreen extends StatefulWidget {
 class _PerfilScreenState extends State<PerfilScreen> {
   @override
   Widget build(BuildContext context) {
-    final usuariosProvider = Provider.of<UsuariosProvider>(context);
-    final usuario = usuariosProvider.usuario;
+    final authProvider = Provider.of<AuthProvider>(context);
+    final usuario = authProvider.usuario;
 
     return Scaffold(
       appBar: AppBar(

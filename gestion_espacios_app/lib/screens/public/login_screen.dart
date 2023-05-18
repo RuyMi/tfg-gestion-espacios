@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
-import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
-
-  String username = '';
-  String password = '';
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+  String username = '';
+  String password = '';
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
     return Scaffold(
       body: Container(
         margin: const EdgeInsets.all(20),
@@ -58,11 +59,9 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                final usuariosProvider =
-                    Provider.of<UsuariosProvider>(context, listen: false);
-                usuariosProvider.login(username, password).then(
+                authProvider.login(username, password).then(
                   (usuario) {
-                    final loginSucceed = usuariosProvider.loginSucceed;
+                    final loginSucceed = authProvider.loginSucceed;
 
                     if (loginSucceed) {
                       Navigator.pushNamed(context, '/home');

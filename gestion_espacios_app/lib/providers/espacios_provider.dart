@@ -2,26 +2,25 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
-import 'package:gestion_espacios_app/providers/providers.dart';
 import 'package:http/http.dart' as http;
 
 class EspaciosProvider with ChangeNotifier {
   List<Espacio> _espacios = [];
   List<Espacio> _espaciosReservables = [];
+  final String? _token;
 
   List<Espacio> get espacios => _espacios;
   List<Espacio> get espaciosReservables => _espaciosReservables;
 
-  EspaciosProvider() {
-    String token = UsuariosProvider().token;
-    fetchEspacios(token);
-    fetchEspaciosByReservable(true, token);
+  EspaciosProvider(this._token) {
+    fetchEspacios();
+    fetchEspaciosByReservable(true);
   }
 
-  Future<void> fetchEspacios(String token) async {
+  Future<void> fetchEspacios() async {
     final response = await http.get(
         Uri.parse('http://magarcia.asuscomm.com:25546/spaces'),
-        headers: {'Authorization': 'Bearer $token'});
+        headers: {'Authorization': 'Bearer $_token'});
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -43,11 +42,11 @@ class EspaciosProvider with ChangeNotifier {
   }
 
   Future<void> fetchEspaciosByReservable(
-      bool isReservable, String token) async {
+      bool isReservable) async {
     final response = await http.get(
       Uri.parse(
           'http://magarcia.asuscomm.com:25546/spaces/reservables/$isReservable'),
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer $_token'},
     );
 
     if (response.statusCode == 200) {
@@ -69,10 +68,10 @@ class EspaciosProvider with ChangeNotifier {
     }
   }
 
-  Future<Espacio?> fetchEspacioByUuid(String uuid, String token) async {
+  Future<Espacio?> fetchEspacioByUuid(String uuid) async {
     final response = await http.get(
       Uri.parse('http://magarcia.asuscomm.com:25546/spaces/$uuid'),
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer $_token'},
     );
 
     if (response.statusCode == 200) {
@@ -92,10 +91,10 @@ class EspaciosProvider with ChangeNotifier {
     }
   }
 
-  Future<Espacio?> fetchEspacioByName(String name, String token) async {
+  Future<Espacio?> fetchEspacioByName(String name) async {
     final response = await http.get(
       Uri.parse('http://magarcia.asuscomm.com:25546/spaces/nombre/$name'),
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer $_token'},
     );
 
     if (response.statusCode == 200) {
@@ -115,10 +114,10 @@ class EspaciosProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addEspacio(Espacio espacio, String token) async {
+  Future<void> addEspacio(Espacio espacio) async {
     final response = await http.post(
       Uri.parse('http://magarcia.asuscomm.com:25546/spaces'),
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer $_token'},
       body: jsonEncode(espacio),
     );
 
@@ -140,10 +139,10 @@ class EspaciosProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updateEspacio(Espacio espacio, String token) async {
+  Future<void> updateEspacio(Espacio espacio) async {
     final response = await http.put(
       Uri.parse('http://magarcia.asuscomm.com:25546/spaces/${espacio.uuid}'),
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer $_token'},
       body: jsonEncode(espacio),
     );
 
@@ -166,10 +165,10 @@ class EspaciosProvider with ChangeNotifier {
     }
   }
 
-  Future<void> deleteEspacio(String uuid, String token) async {
+  Future<void> deleteEspacio(String uuid) async {
     final response = await http.delete(
       Uri.parse('http://magarcia.asuscomm.com:25546/spaces/$uuid'),
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer $_token'},
     );
 
     if (response.statusCode != 204) {

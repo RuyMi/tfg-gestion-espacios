@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
-import 'package:gestion_espacios_app/providers/providers.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
 import 'package:provider/provider.dart';
 
 class BOLoginScreen extends StatelessWidget {
   const BOLoginScreen({super.key});
 
+    
   @override
   Widget build(BuildContext context) {
     String username = '';
     String password = '';
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     return Scaffold(
       body: Container(
@@ -66,12 +68,10 @@ class BOLoginScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                final usuariosProvider =
-                    Provider.of<UsuariosProvider>(context, listen: false);
-                usuariosProvider.login(username, password).then(
+                authProvider.login(username, password).then(
                   (usuario) {
-                    final loginSucceed = usuariosProvider.loginSucceed;
-                    final roles = usuariosProvider.usuario.userRole;
+                    final loginSucceed = authProvider.loginSucceed;
+                    final roles = authProvider.usuario.userRole;
 
                     if (loginSucceed && roles.contains('ADMINISTRATOR')) {
                       Navigator.pushNamed(context, '/home-bo');

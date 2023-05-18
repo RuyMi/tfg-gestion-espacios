@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
-import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
 class MyLogoutAlert extends StatelessWidget {
@@ -8,6 +8,8 @@ class MyLogoutAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
     return AlertDialog(
       backgroundColor: MyColors.pinkApp,
       shape: const RoundedRectangleBorder(
@@ -49,9 +51,7 @@ class MyLogoutAlert extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               )),
           onPressed: () {
-            final usuariosProvider =
-                Provider.of<UsuariosProvider>(context, listen: false);
-            usuariosProvider.logout();
+            authProvider.logout();
 
             Navigator.pushNamedAndRemoveUntil(
               context,

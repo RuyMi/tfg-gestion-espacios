@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/providers.dart';
 import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 import 'package:provider/provider.dart';
@@ -15,11 +16,11 @@ class EspaciosScreen extends StatefulWidget {
 class _EspaciosScreenState extends State<EspaciosScreen> {
   @override
   Widget build(BuildContext context) {
-    final usuariosProvider = Provider.of<UsuariosProvider>(context);
-    final usuario = usuariosProvider.usuario;
-    
+    final authProvider = Provider.of<AuthProvider>(context);
+    final usuario = authProvider.usuario;
+
     final espaciosProvider = Provider.of<EspaciosProvider>(context);
-    final espacios = espaciosProvider.espacios;
+    final espacios = espaciosProvider.espaciosReservables;
 
     return Scaffold(
         appBar: AppBar(
@@ -109,7 +110,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.asset(
-                                      'assets/images/sala_stock.jpg',
+                                      'assets/images/image_placeholder.png',
                                       width: 100,
                                       height: 100,
                                       fit: BoxFit.cover),
