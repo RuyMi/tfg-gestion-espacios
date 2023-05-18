@@ -114,7 +114,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: Image.asset(
-                                    'assets/images/sala_stock.jpg',
+                                    'assets/images/image_placeholder.png',
                                     width: 100,
                                     height: 100,
                                     fit: BoxFit.cover),

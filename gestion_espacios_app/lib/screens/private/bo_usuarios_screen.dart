@@ -14,7 +14,7 @@ class UsuariosBOScreen extends StatelessWidget {
 
     if (usuarios.isEmpty) {
       return const Center(
-        child: Text('No hay usuarios'),
+        child: CircularProgressIndicator(),
       );
     } else {
       return StaggeredGridView.countBuilder(

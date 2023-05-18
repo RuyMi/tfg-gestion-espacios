@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
+import 'package:gestion_espacios_app/models/reserva.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
@@ -39,10 +40,15 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
   Widget build(BuildContext context) {
     final Espacio espacio =
         ModalRoute.of(context)!.settings.arguments as Espacio;
-    // ignore: unused_local_variable
     final reservasProvider = Provider.of<ReservasProvider>(context);
-    // ignore: unused_local_variable
     final authProvider = Provider.of<AuthProvider>(context);
+    final userId = authProvider.usuario.uuid;
+    final userName = authProvider.usuario.name;
+    final spaceId = espacio.uuid;
+    final spaceName = espacio.name;
+    String phone = '';
+    String startTime;
+    String endTime;
 
     return Scaffold(
       appBar: AppBar(
@@ -125,7 +131,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                         child: const CircleAvatar(
                           radius: 30,
                           backgroundImage: AssetImage(
-                            'assets/images/sala_stock.jpg',
+                            'assets/images/image_placeholder.png',
                           ),
                         ),
                       ),
@@ -145,6 +151,27 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    keyboardType: TextInputType.phone,
+                    onChanged: (value) => phone = value,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      labelText: 'Número de teléfono',
+                      labelStyle: const TextStyle(
+                          fontFamily: 'KoHo', color: MyColors.blackApp),
+                      prefixIcon:
+                          const Icon(Icons.phone, color: MyColors.lightBlueApp),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -335,8 +362,24 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                   visible: _isHourSelected,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/mis-reservas');
-                      showDialog(
+                      startTime =
+                          '${selectedDay?.day}/${selectedDay?.month}/${selectedDay?.year} ${selectedHour?.split(' ')[0]}';
+                      endTime =
+                          '${selectedDay?.day}/${selectedDay?.month}/${selectedDay?.year} ${selectedHour?.split(' ')[2]}';
+
+                      final reserva = Reserva(
+                        userId: userId,
+                        spaceId: spaceId,
+                        startTime: startTime,
+                        endTime: endTime,
+                        userName: userName,
+                        spaceName: spaceName,
+                        phone: phone,
+                      );
+
+                      reservasProvider.addReserva(reserva).then((_) {
+                        Navigator.pushNamed(context, '/mis-reservas');
+                        showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return const MyMessageDialog(
@@ -344,7 +387,19 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                               description:
                                   'Se ha realizado la reserva correctamente.',
                             );
-                          });
+                          },
+                        );
+                      }).catchError((error) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const MyErrorMessageDialog(
+                                title: 'Error',
+                                description:
+                                    'Ha ocurrido un error al realizar la reserva.',
+                              );
+                            });
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

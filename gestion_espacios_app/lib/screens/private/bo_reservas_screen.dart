@@ -14,7 +14,7 @@ class ReservasBOScreen extends StatelessWidget {
 
     if (reservas.isEmpty) {
       return const Center(
-        child: Text('No hay reservas'),
+        child: CircularProgressIndicator(),
       );
     } else {
       return StaggeredGridView.countBuilder(
@@ -48,7 +48,7 @@ class ReservasBOScreen extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.asset(
-                        'assets/images/sala_stock.jpg',
+                        'assets/images/image_placeholder.png',
                         width: 100,
                         height: 100,
                         fit: BoxFit.cover,

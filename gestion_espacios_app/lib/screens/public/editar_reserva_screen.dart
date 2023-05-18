@@ -109,7 +109,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                         child: const CircleAvatar(
                           radius: 30,
                           backgroundImage: AssetImage(
-                            'assets/images/sala_stock.jpg',
+                            'assets/images/image_placeholder.png',
                           ),
                         ),
                       ),
