@@ -4,6 +4,7 @@ import de.jensklingenberg.ktorfit.http.*
 import es.dam.dto.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.content.*
+import java.io.File
 
 interface KtorFitRestSpaces {
     @GET("spaces")
@@ -54,4 +55,9 @@ interface KtorFitRestSpaces {
         @Header("Authorization") token: String,
         @Path("id") id: String
     )
+
+    @GET("spaces/storage/{uuid}")
+    suspend fun downloadFile(
+        @Path("uuid") uuid: String
+    ): ByteArray
 }

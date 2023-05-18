@@ -24,6 +24,7 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.ktor.ext.inject
 import retrofit2.await
+import java.io.File
 import java.io.InputStream
 import java.lang.IllegalArgumentException
 import java.util.UUID
@@ -196,8 +197,9 @@ fun Application.spacesRoutes() {
                         val id = call.parameters["id"]
                         val uuid = UUID.fromString(id)
 
-                        require(bookingsRepository.findBySpace(token, id!!).data.isNotEmpty())
+                        require(bookingsRepository.findBySpace("Bearer $token", id!!).data.isNotEmpty())
                         {"Se deben actualizar o eliminar las reservas asociadas a esta sala antes de continuar con la operación."}
+
                         spacesRepository.delete("Bearer $token", id!!)
 
                         call.respond(HttpStatusCode.NoContent)
@@ -219,10 +221,8 @@ fun Application.spacesRoutes() {
 
                     val spacePhotoDto = async {
                         spacesRepository.downloadFile(uuid!!)
-                    }
-
-                    call.respond(HttpStatusCode.OK, spacePhotoDto.await())
-
+                    }.await()
+                    call.respondFile(spacePhotoDto)
                 } catch (e: SpaceNotFoundException) {
                     call.respond(HttpStatusCode.NotFound, "${e.message}")
                 } catch (e: SpaceBadRequestException) {

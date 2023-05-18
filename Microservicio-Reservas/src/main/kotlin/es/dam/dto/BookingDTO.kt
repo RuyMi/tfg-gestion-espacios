@@ -7,7 +7,9 @@ data class BookingDto(
     val id: String,
     val uuid:String,
     val userId: String,
+    val userName: String,
     val spaceId: String,
+    val spaceName: String,
     val startTime: String,
     val endTime: String,
     val phone: String?,
@@ -17,7 +19,9 @@ data class BookingDto(
 @Serializable
 data class BookingDtoCreate(
     val userId: String,
+    val userName: String,
     val spaceId: String,
+    val spaceName: String,
     val startTime: String,
     val endTime: String,
     val phone: String?,
@@ -27,7 +31,9 @@ data class BookingDtoCreate(
 @Serializable
 data class BookingDtoUpdate(
     val userId: String,
+    val userName: String,
     val spaceId: String,
+    val spaceName: String,
     val startTime: String,
     val endTime: String,
     val phone: String?,
