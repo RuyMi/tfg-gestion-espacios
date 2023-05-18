@@ -1,8 +1,10 @@
 package es.dam.routes
 
+import es.dam.dto.SpacePhotoDTO
 import es.dam.services.storage.StorageService
 import es.dam.services.storage.StorageServiceImpl
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -15,18 +17,40 @@ fun Application.storageRoutes() {
     val storageService: StorageServiceImpl by inject()
 
     routing {
+
         route("/spaces/storage") {
             post {
-                val readChannel = call.receiveChannel()
-                val fileName = UUID.randomUUID().toString()
-                val res = storageService.saveFile(fileName, readChannel)
-                call.respond(HttpStatusCode.OK, res)
+                val readChannel = call.receiveMultipart()
+                var fileName: String? = null
+                var fileBytes: ByteArray? = null
+                readChannel.forEachPart { part ->
+                    when (part) {
+                        is PartData.FileItem -> {
+                            fileBytes = part.streamProvider().use { it.readBytes() }
+                            fileName = part.originalFileName
+                        }
+                        is PartData.FormItem -> {
+                            // Handle form items if needed
+                        }
+
+                        else -> {}
+                    }
+                    part.dispose()
+                }
+
+                val res = storageService.saveFile(fileName!!, fileBytes!!)
+                val data = SpacePhotoDTO(res)
+                call.respond(HttpStatusCode.OK, data)
             }
 
             get("{fileName}") {
                 val fileName = call.parameters["fileName"].toString()
-                val file = storageService.getFile(fileName)
-                call.respondFile(file)
+                try{
+                    val file = storageService.getFile(fileName)
+                    call.respondFile(file)
+                }catch (e: Exception){
+                    call.respond(HttpStatusCode.NotFound, "No se ha encontrado el archivo con el nombre: $fileName")
+                }
             }
 
             delete("{fileName}") {
