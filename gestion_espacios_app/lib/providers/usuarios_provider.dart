@@ -15,9 +15,11 @@ class UsuariosProvider with ChangeNotifier {
     fetchUsuarios();
   }
 
+  String baseUrl = 'http://magarcia.asuscomm.com:25546';
+
   Future<void> fetchUsuarios() async {
     final response = await http.get(
-        Uri.parse('http://magarcia.asuscomm.com:25546/users'),
+        Uri.parse('$baseUrl/users'),
         headers: {'Authorization': 'Bearer $_token'});
 
     if (response.statusCode == 200) {
@@ -43,7 +45,7 @@ class UsuariosProvider with ChangeNotifier {
 
   Future<Usuario?> fetchUsuario(String uuid) async {
     final response = await http.get(
-        Uri.parse('http://magarcia.asuscomm.com:25546/users/$uuid'),
+        Uri.parse('$baseUrl/users/$uuid'),
         headers: {'Authorization': 'Bearer $_token'});
 
     if (response.statusCode == 200) {
@@ -66,7 +68,7 @@ class UsuariosProvider with ChangeNotifier {
 
   Future<Usuario> register(Usuario usuario) async {
     final response = await http.post(
-      Uri.parse('http://magarcia.asuscomm.com:25546/users/register'),
+      Uri.parse('$baseUrl/users/register'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(usuario),
     );
@@ -94,7 +96,7 @@ class UsuariosProvider with ChangeNotifier {
 
   Future<void> updateUsuario(String uuid) async {
     final response = await http.put(
-      Uri.parse('http://magarcia.asuscomm.com:25546/users/$uuid'),
+      Uri.parse('$baseUrl/users/$uuid'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 
@@ -120,7 +122,7 @@ class UsuariosProvider with ChangeNotifier {
       String uuid, bool isActive) async {
     final response = await http.put(
       Uri.parse(
-          'http://magarcia.asuscomm.com:25546/users/active/$uuid/$isActive'),
+          '$baseUrl/users/active/$uuid/$isActive'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 
@@ -136,7 +138,7 @@ class UsuariosProvider with ChangeNotifier {
       String uuid, String creditos) async {
     final response = await http.put(
       Uri.parse(
-          'http://magarcia.asuscomm.com:25546/users/credits/$uuid/$creditos'),
+          '$baseUrl/users/credits/$uuid/$creditos'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 
@@ -150,7 +152,7 @@ class UsuariosProvider with ChangeNotifier {
 
   Future<void> updateMe() async {
     final response = await http.put(
-      Uri.parse('http://magarcia.asuscomm.com:25546/users/me'),
+      Uri.parse('$baseUrl/users/me'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 
@@ -178,7 +180,7 @@ class UsuariosProvider with ChangeNotifier {
 
   Future<void> deleteUsuarios(String uuid) async {
     final response = await http.delete(
-      Uri.parse('http://magarcia.asuscomm.com:25546/users/$uuid'),
+      Uri.parse('$baseUrl/users/$uuid'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 

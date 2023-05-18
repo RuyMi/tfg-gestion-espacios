@@ -17,9 +17,11 @@ class EspaciosProvider with ChangeNotifier {
     fetchEspaciosByReservable(true);
   }
 
+  String baseUrl = 'http://magarcia.asuscomm.com:25546';
+
   Future<void> fetchEspacios() async {
     final response = await http.get(
-        Uri.parse('http://magarcia.asuscomm.com:25546/spaces'),
+        Uri.parse('$baseUrl/spaces'),
         headers: {'Authorization': 'Bearer $_token'});
 
     if (response.statusCode == 200) {
@@ -45,7 +47,7 @@ class EspaciosProvider with ChangeNotifier {
       bool isReservable) async {
     final response = await http.get(
       Uri.parse(
-          'http://magarcia.asuscomm.com:25546/spaces/reservables/$isReservable'),
+          '$baseUrl/spaces/reservables/$isReservable'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 
@@ -70,7 +72,7 @@ class EspaciosProvider with ChangeNotifier {
 
   Future<Espacio?> fetchEspacioByUuid(String uuid) async {
     final response = await http.get(
-      Uri.parse('http://magarcia.asuscomm.com:25546/spaces/$uuid'),
+      Uri.parse('$baseUrl/spaces/$uuid'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 
@@ -93,7 +95,7 @@ class EspaciosProvider with ChangeNotifier {
 
   Future<Espacio?> fetchEspacioByName(String name) async {
     final response = await http.get(
-      Uri.parse('http://magarcia.asuscomm.com:25546/spaces/nombre/$name'),
+      Uri.parse('$baseUrl/spaces/nombre/$name'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 
@@ -116,7 +118,7 @@ class EspaciosProvider with ChangeNotifier {
 
   Future<void> addEspacio(Espacio espacio) async {
     final response = await http.post(
-      Uri.parse('http://magarcia.asuscomm.com:25546/spaces'),
+      Uri.parse('$baseUrl/spaces'),
       headers: {'Authorization': 'Bearer $_token'},
       body: jsonEncode(espacio),
     );
@@ -141,7 +143,7 @@ class EspaciosProvider with ChangeNotifier {
 
   Future<void> updateEspacio(Espacio espacio) async {
     final response = await http.put(
-      Uri.parse('http://magarcia.asuscomm.com:25546/spaces/${espacio.uuid}'),
+      Uri.parse('$baseUrl/spaces/${espacio.uuid}'),
       headers: {'Authorization': 'Bearer $_token'},
       body: jsonEncode(espacio),
     );
@@ -167,7 +169,7 @@ class EspaciosProvider with ChangeNotifier {
 
   Future<void> deleteEspacio(String uuid) async {
     final response = await http.delete(
-      Uri.parse('http://magarcia.asuscomm.com:25546/spaces/$uuid'),
+      Uri.parse('$baseUrl/spaces/$uuid'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 

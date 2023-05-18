@@ -23,9 +23,11 @@ class ReservasProvider with ChangeNotifier {
     fetchReservas();
   }
 
+  String baseUrl = 'http://magarcia.asuscomm.com:25546';
+
   Future<void> fetchReservas() async {
     final response = await http.get(
-        Uri.parse('http://magarcia.asuscomm.com:25546/bookings'),
+        Uri.parse('$baseUrl/bookings'),
         headers: {'Authorization': 'Bearer $_token'});
 
     if (response.statusCode == 200) {
@@ -49,7 +51,7 @@ class ReservasProvider with ChangeNotifier {
 
   Future<Reserva?> fetchReservaByUuid(String uuid) async {
     final response = await http.get(
-      Uri.parse('http://magarcia.asuscomm.com:25546/bookings/$uuid'),
+      Uri.parse('$baseUrl/bookings/$uuid'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 
@@ -71,7 +73,7 @@ class ReservasProvider with ChangeNotifier {
 
   Future<void> fetchReservasByUser(String userUuid) async {
     final response = await http.get(
-      Uri.parse('http://magarcia.asuscomm.com:25546/bookings/user/$userUuid'),
+      Uri.parse('$baseUrl/bookings/user/$userUuid'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 
@@ -96,7 +98,7 @@ class ReservasProvider with ChangeNotifier {
 
   Future<void> fetchReservasBySpace(String spaceId) async {
     final response = await http.get(
-      Uri.parse('http://magarcia.asuscomm.com:25546/bookings/space/$spaceId'),
+      Uri.parse('$baseUrl/bookings/space/$spaceId'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 
@@ -121,7 +123,7 @@ class ReservasProvider with ChangeNotifier {
 
   Future<void> fetchReservasByStatus(String status) async {
     final response = await http.get(
-      Uri.parse('http://magarcia.asuscomm.com:25546/bookings/status/$status'),
+      Uri.parse('$baseUrl/bookings/status/$status'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 
@@ -147,7 +149,7 @@ class ReservasProvider with ChangeNotifier {
   Future<void> fetchReservasByTime(String time, String uuidSpace) async {
     final response = await http.get(
       Uri.parse(
-          'http://magarcia.asuscomm.com:25546/bookings/time/$uuidSpace/$time'),
+          '$baseUrl/bookings/time/$uuidSpace/$time'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 
@@ -172,7 +174,7 @@ class ReservasProvider with ChangeNotifier {
 
   Future<void> addReserva(Reserva reserva) async {
     final response = await http.post(
-        Uri.parse('http://magarcia.asuscomm.com:25546/bookings'),
+        Uri.parse('$baseUrl/bookings'),
         headers: {'Authorization': 'Bearer $_token'},
         body: jsonEncode(reserva));
 
@@ -195,7 +197,7 @@ class ReservasProvider with ChangeNotifier {
   Future<void> updateReserva(Reserva reserva) async {
     final response = await http.put(
         Uri.parse(
-            'http://magarcia.asuscomm.com:25546/bookings/${reserva.uuid}'),
+            '$baseUrl/bookings/${reserva.uuid}'),
         headers: {'Authorization': 'Bearer $_token'},
         body: jsonEncode(reserva));
 
@@ -218,7 +220,7 @@ class ReservasProvider with ChangeNotifier {
 
   Future<void> deleteReserva(String uuid) async {
     final response = await http.delete(
-        Uri.parse('http://magarcia.asuscomm.com:25546/bookings/$uuid'),
+        Uri.parse('$baseUrl/bookings/$uuid'),
         headers: {'Authorization': 'Bearer $_token'});
 
     if (response.statusCode == 200) {

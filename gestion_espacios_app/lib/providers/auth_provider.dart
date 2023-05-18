@@ -23,6 +23,8 @@ class AuthProvider with ChangeNotifier {
   Usuario get usuario => _usuario;
   String get token => _token;
 
+  String baseUrl = 'http://magarcia.asuscomm.com:25546';
+
   void logout() {
     _token = '';
     _usuario = Usuario(
@@ -42,7 +44,7 @@ class AuthProvider with ChangeNotifier {
 
   Future<Usuario?> login(String username, String password) async {
     final response = await http.post(
-      Uri.parse('http://magarcia.asuscomm.com:25546/users/login'),
+      Uri.parse('$baseUrl/users/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
