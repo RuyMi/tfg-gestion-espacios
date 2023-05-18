@@ -133,7 +133,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(20),
                           child: Text(
-                            espacio.name,
+                            espacio.description,
                             maxLines: 3,
                             textAlign: TextAlign.start,
                             overflow: TextOverflow.ellipsis,

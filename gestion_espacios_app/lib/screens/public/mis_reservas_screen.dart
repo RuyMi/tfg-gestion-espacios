@@ -130,8 +130,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      DateFormat('dd/MM/yyyy HH:mm').format(
-                                          DateTime.parse(reserva.startTime)),
+                                      reserva.spaceName,
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
@@ -139,7 +138,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                     ),
                                     Text(
                                         DateFormat('dd/MM/yyyy HH:mm').format(
-                                            DateTime.parse(reserva.endTime)),
+                                            DateTime.parse(reserva.startTime)),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.normal,
                                             overflow: TextOverflow.ellipsis,

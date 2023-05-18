@@ -3,7 +3,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 class ReservasBOScreen extends StatelessWidget {
   const ReservasBOScreen({super.key});
@@ -63,17 +62,14 @@ class ReservasBOScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          DateFormat('dd/MM/yyyy HH:mm')
-                              .format(DateTime.parse(reserva.startTime)),
+                          reserva.spaceName,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: 'KoHo',
                             color: MyColors.whiteApp,
                           ),
                         ),
-                        Text(
-                            DateFormat('dd/MM/yyyy HH:mm')
-                                .format(DateTime.parse(reserva.endTime)),
+                        Text('@${reserva.userName}',
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(

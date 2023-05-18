@@ -65,7 +65,7 @@ class EspaciosBOScreen extends StatelessWidget {
                             color: MyColors.whiteApp,
                           ),
                         ),
-                        Text(espacio.authorizedRoles.toString(),
+                        Text(espacio.description,
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(

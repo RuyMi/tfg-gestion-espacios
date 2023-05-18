@@ -37,6 +37,7 @@ class EspaciosProvider with ChangeNotifier {
                 requiresAuthorization: json['requiresAuthorization'],
                 authorizedRoles: List<String>.from(json['authorizedRoles']),
                 bookingWindow: json['bookingWindow'],
+                description: json['description'],
               ))
           .toList();
       notifyListeners();
@@ -64,6 +65,7 @@ class EspaciosProvider with ChangeNotifier {
                 requiresAuthorization: json['requiresAuthorization'],
                 authorizedRoles: List<String>.from(json['authorizedRoles']),
                 bookingWindow: json['bookingWindow'],
+                description: json['description'],
               ))
           .toList();
       notifyListeners();
@@ -87,6 +89,7 @@ class EspaciosProvider with ChangeNotifier {
         requiresAuthorization: data['requiresAuthorization'],
         authorizedRoles: List<String>.from(data['authorizedRoles']),
         bookingWindow: data['bookingWindow'],
+        description: data['description'],
       );
     } else {
       return null;
@@ -110,6 +113,7 @@ class EspaciosProvider with ChangeNotifier {
         requiresAuthorization: data['requiresAuthorization'],
         authorizedRoles: List<String>.from(data['authorizedRoles']),
         bookingWindow: data['bookingWindow'],
+        description: data['description'],
       );
     } else {
       return null;
@@ -136,6 +140,7 @@ class EspaciosProvider with ChangeNotifier {
         requiresAuthorization: data['requiresAuthorization'],
         authorizedRoles: List<String>.from(data['authorizedRoles']),
         bookingWindow: data['bookingWindow'],
+        description: data['description'],
       ));
       notifyListeners();
     }
@@ -162,6 +167,7 @@ class EspaciosProvider with ChangeNotifier {
         requiresAuthorization: data['requiresAuthorization'],
         authorizedRoles: List<String>.from(data['authorizedRoles']),
         bookingWindow: data['bookingWindow'],
+        description: data['description'],
       );
       notifyListeners();
     }

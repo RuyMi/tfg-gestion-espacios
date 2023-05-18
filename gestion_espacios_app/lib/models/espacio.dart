@@ -2,6 +2,7 @@ class Espacio {
   Espacio({
     required this.uuid,
     required this.name,
+    required this.description,
     this.image,
     required this.price,
     required this.isReservable,
@@ -12,6 +13,7 @@ class Espacio {
 
   String uuid;
   String name;
+  String description;
   String? image;
   int price;
   bool isReservable;

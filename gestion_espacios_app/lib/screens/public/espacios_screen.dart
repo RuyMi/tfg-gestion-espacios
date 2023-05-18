@@ -162,7 +162,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                             fontSize: 18,
                                             fontFamily: 'KoHo'),
                                       ),
-                                      Text(espacio.authorizedRoles.toString(),
+                                      Text(espacio.description,
                                           style: const TextStyle(
                                               fontWeight: FontWeight.normal,
                                               overflow: TextOverflow.ellipsis,

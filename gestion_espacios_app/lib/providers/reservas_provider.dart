@@ -26,8 +26,7 @@ class ReservasProvider with ChangeNotifier {
   String baseUrl = 'http://magarcia.asuscomm.com:25546';
 
   Future<void> fetchReservas() async {
-    final response = await http.get(
-        Uri.parse('$baseUrl/bookings'),
+    final response = await http.get(Uri.parse('$baseUrl/bookings'),
         headers: {'Authorization': 'Bearer $_token'});
 
     if (response.statusCode == 200) {
@@ -42,6 +41,8 @@ class ReservasProvider with ChangeNotifier {
                 endTime: json['endTime'],
                 phone: json['phone'],
                 status: json['status'],
+                userName: json['userName'],
+                spaceName: json['spaceName'],
               ))
           .toList();
 
@@ -65,6 +66,8 @@ class ReservasProvider with ChangeNotifier {
         endTime: data['endTime'],
         phone: data['phone'],
         status: data['status'],
+        userName: data['userName'],
+        spaceName: data['spaceName'],
       );
     } else {
       return null;
@@ -89,6 +92,8 @@ class ReservasProvider with ChangeNotifier {
                 endTime: json['endTime'],
                 phone: json['phone'],
                 status: json['status'],
+                userName: json['userName'],
+                spaceName: json['spaceName'],
               ))
           .toList();
 
@@ -114,6 +119,8 @@ class ReservasProvider with ChangeNotifier {
                 endTime: json['endTime'],
                 phone: json['phone'],
                 status: json['status'],
+                userName: json['userName'],
+                spaceName: json['spaceName'],
               ))
           .toList();
 
@@ -139,6 +146,8 @@ class ReservasProvider with ChangeNotifier {
                 endTime: json['endTime'],
                 phone: json['phone'],
                 status: json['status'],
+                userName: json['userName'],
+                spaceName: json['spaceName'],
               ))
           .toList();
 
@@ -148,8 +157,7 @@ class ReservasProvider with ChangeNotifier {
 
   Future<void> fetchReservasByTime(String time, String uuidSpace) async {
     final response = await http.get(
-      Uri.parse(
-          '$baseUrl/bookings/time/$uuidSpace/$time'),
+      Uri.parse('$baseUrl/bookings/time/$uuidSpace/$time'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 
@@ -165,6 +173,8 @@ class ReservasProvider with ChangeNotifier {
                 endTime: json['endTime'],
                 phone: json['phone'],
                 status: json['status'],
+                userName: json['userName'],
+                spaceName: json['spaceName'],
               ))
           .toList();
 
@@ -173,8 +183,7 @@ class ReservasProvider with ChangeNotifier {
   }
 
   Future<void> addReserva(Reserva reserva) async {
-    final response = await http.post(
-        Uri.parse('$baseUrl/bookings'),
+    final response = await http.post(Uri.parse('$baseUrl/bookings'),
         headers: {'Authorization': 'Bearer $_token'},
         body: jsonEncode(reserva));
 
@@ -188,6 +197,8 @@ class ReservasProvider with ChangeNotifier {
         endTime: data['endTime'],
         phone: data['phone'],
         status: data['status'],
+        userName: data['userName'],
+        spaceName: data['spaceName'],
       ));
 
       notifyListeners();
@@ -196,8 +207,7 @@ class ReservasProvider with ChangeNotifier {
 
   Future<void> updateReserva(Reserva reserva) async {
     final response = await http.put(
-        Uri.parse(
-            '$baseUrl/bookings/${reserva.uuid}'),
+        Uri.parse('$baseUrl/bookings/${reserva.uuid}'),
         headers: {'Authorization': 'Bearer $_token'},
         body: jsonEncode(reserva));
 
@@ -212,6 +222,8 @@ class ReservasProvider with ChangeNotifier {
         endTime: data['endTime'],
         phone: data['phone'],
         status: data['status'],
+        userName: data['userName'],
+        spaceName: data['spaceName'],
       );
 
       notifyListeners();
@@ -219,8 +231,7 @@ class ReservasProvider with ChangeNotifier {
   }
 
   Future<void> deleteReserva(String uuid) async {
-    final response = await http.delete(
-        Uri.parse('$baseUrl/bookings/$uuid'),
+    final response = await http.delete(Uri.parse('$baseUrl/bookings/$uuid'),
         headers: {'Authorization': 'Bearer $_token'});
 
     if (response.statusCode == 200) {
