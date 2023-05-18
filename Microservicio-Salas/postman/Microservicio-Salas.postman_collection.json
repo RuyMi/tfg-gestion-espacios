@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "3587196a-1866-475b-80c7-0b7b62c9a9b2",
+		"_postman_id": "ea839227-2f5d-4d5e-90c1-acc3613d3d60",
 		"name": "Microservicio-Salas",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25247269"
 	},
 	"item": [
 		{
@@ -195,6 +196,90 @@
 					"path": [
 						"spaces",
 						"32a4e706-5958-40fa-aeaf-c31c912cfe47"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE IMAGE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzZmE4OTZmYi1kM2M2LTQxNDYtYTc0Zi05M2JkNzlhNTkwNTkiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgzNTczMzQzLCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.F153K_6MbgIaWRAQ3YdRmR2JLt6o864BtT1Rvt5l8eJkPs3JXHl423sxVz-x3k39JxKs2uzTEs0DmlyEE-fxMQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "/C:/Users/Rubén/Pictures/Screenshots/Captura de pantalla 2023-05-14 180030.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8282/spaces/storage",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8282",
+					"path": [
+						"spaces",
+						"storage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET IMAGE",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzZmE4OTZmYi1kM2M2LTQxNDYtYTc0Zi05M2JkNzlhNTkwNTkiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgzNTczMzQzLCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.F153K_6MbgIaWRAQ3YdRmR2JLt6o864BtT1Rvt5l8eJkPs3JXHl423sxVz-x3k39JxKs2uzTEs0DmlyEE-fxMQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "/C:/Users/Rubén/Pictures/Screenshots/Captura de pantalla 2023-05-14 180030.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8282/spaces/storage/03d1e525-9560-4d3f-9957-f1eaa93c9b60.png",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8282",
+					"path": [
+						"spaces",
+						"storage",
+						"03d1e525-9560-4d3f-9957-f1eaa93c9b60.png"
 					]
 				}
 			},

@@ -167,6 +167,8 @@ fun Application.spacesRoutes() {
                     }
                 }
 
+
+
                 put("/{id}") {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
@@ -211,6 +213,25 @@ fun Application.spacesRoutes() {
                     }
                 }
             }
+            get("/storage/{uuid}") {
+                try {
+                    val uuid = call.parameters["uuid"]
+
+                    val spacePhotoDto = async {
+                        spacesRepository.downloadFile(uuid!!)
+                    }
+
+                    call.respond(HttpStatusCode.OK, spacePhotoDto.await())
+
+                } catch (e: SpaceNotFoundException) {
+                    call.respond(HttpStatusCode.NotFound, "${e.message}")
+                } catch (e: SpaceBadRequestException) {
+                    call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                } catch (e: SpaceInternalErrorException) {
+                    call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                }
+            }
+
         }
     }
 }

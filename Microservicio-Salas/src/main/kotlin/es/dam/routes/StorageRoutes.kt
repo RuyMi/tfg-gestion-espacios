@@ -45,8 +45,12 @@ fun Application.storageRoutes() {
 
             get("{fileName}") {
                 val fileName = call.parameters["fileName"].toString()
-                val file = storageService.getFile(fileName)
-                call.respondFile(file)
+                try{
+                    val file = storageService.getFile(fileName)
+                    call.respondFile(file)
+                }catch (e: Exception){
+                    call.respond(HttpStatusCode.NotFound, "No se ha encontrado el archivo con el nombre: $fileName")
+                }
             }
 
             delete("{fileName}") {

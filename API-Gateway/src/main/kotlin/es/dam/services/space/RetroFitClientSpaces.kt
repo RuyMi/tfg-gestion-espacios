@@ -1,5 +1,6 @@
 package es.dam.services.space
 
+import es.dam.exceptions.HttpResponseInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,6 +15,8 @@ object RetroFitClientSpaces {
     }
 
     private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
+        .addInterceptor(HttpResponseInterceptor())
         .build()
 
     val retrofit: RetroFitRestSpaces = Retrofit.Builder()
