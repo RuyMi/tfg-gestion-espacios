@@ -46,7 +46,7 @@ class UsersController @Autowired constructor(
 
             return ResponseEntity.ok(UserTokenDTO(user.toDTO(), jwtToken))
         } catch (e: Exception) {
-            throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+            throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password")
         }
     }
 
@@ -59,7 +59,7 @@ class UsersController @Autowired constructor(
 
             return ResponseEntity.ok(UserTokenDTO(userInsert.toDTO(), jwtToken))
         } catch (e: UserBadRequestException) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists with that username or email")
         }
     }
 
@@ -71,7 +71,7 @@ class UsersController @Autowired constructor(
             val res2 = UserDataDTO(res)
             return ResponseEntity.ok(res2)
         } catch (e: UserNotFoundException) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Users not found")
         }
     }
 
@@ -109,9 +109,9 @@ class UsersController @Autowired constructor(
             val res = userService.update(updated.copy(isActive = active))
             return ResponseEntity.status(HttpStatus.OK).body(res?.toDTO())
         } catch (e: UserNotFoundException) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with uuid: $id")
         } catch (e: UserBadRequestException) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID string: $id")
         }
     }
 
@@ -128,9 +128,9 @@ class UsersController @Autowired constructor(
 
             return ResponseEntity.status(HttpStatus.OK).body(res?.toDTO())
         } catch (e: UserNotFoundException) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with uuid: ${user.uuid}")
         } catch (e: UserBadRequestException) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID string: ${user.uuid}")
         }
     }
 
@@ -146,9 +146,9 @@ class UsersController @Autowired constructor(
             val res = userService.update(updated.copy(credits = updatedCredits))
             return ResponseEntity.status(HttpStatus.OK).body(res?.toDTO())
         } catch (e: UserNotFoundException) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.NOT_FOUND,"User not found with uuid: $id")
         } catch (e: UserBadRequestException) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID or credits amount")
         }
     }
 
@@ -170,9 +170,9 @@ class UsersController @Autowired constructor(
 
             return ResponseEntity.status(HttpStatus.OK).body(res?.toDTO())
         } catch (e: UserNotFoundException) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with uuid: $id")
         } catch (e: UserBadRequestException) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID string: $id")
         }
     }
 
@@ -183,9 +183,9 @@ class UsersController @Autowired constructor(
             userService.deleteByUuid(id)
             return ResponseEntity.noContent().build()
         } catch (e: UserNotFoundException) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with uuid: $id")
         } catch (e: UserBadRequestException) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.stackTraceToString())
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID string: $id")
         }
     }
 }

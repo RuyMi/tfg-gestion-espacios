@@ -7,6 +7,7 @@ import es.dam.dto.UserUpdateDTO
 import es.dam.exceptions.UserBadRequestException
 import es.dam.exceptions.UserInternalErrorException
 import es.dam.exceptions.UserNotFoundException
+import es.dam.exceptions.UserUnauthorizedException
 import es.dam.repositories.booking.KtorFitBookingsRepository
 import es.dam.repositories.user.KtorFitUsersRepository
 import io.ktor.http.*
@@ -35,7 +36,7 @@ fun Application.usersRoutes() {
                 try {
                     val login = call.receive<UserLoginDTO>()
 
-                    require(userRepository.isActive(login.username)){"No se ha podido iniciar sesión ya que este usuario está dado de baja."}
+                   // require(userRepository.isActive(login.username)){"No se ha podido iniciar sesión ya que este usuario está dado de baja."}
                     val user = async {
                         userRepository.login(login)
                     }
@@ -46,6 +47,8 @@ fun Application.usersRoutes() {
                     call.respond(HttpStatusCode.NotFound, "${e.message}")
                 } catch (e: UserBadRequestException) {
                     call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                } catch (e: UserUnauthorizedException){
+                    call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                 } catch (e: UserInternalErrorException) {
                     call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                 }

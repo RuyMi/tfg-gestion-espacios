@@ -1,6 +1,7 @@
 package es.dam.routes
 
 import es.dam.dto.SpaceCreateDTO
+import es.dam.dto.SpacePhotoDTO
 import es.dam.dto.SpaceUpdateDTO
 import es.dam.exceptions.*
 import es.dam.repositories.booking.KtorFitBookingsRepository
@@ -17,7 +18,13 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.*
 import io.ktor.utils.io.streams.*
 import kotlinx.coroutines.async
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.ktor.ext.inject
+import retrofit2.await
+import java.io.InputStream
 import java.lang.IllegalArgumentException
 import java.util.UUID
 
@@ -133,36 +140,24 @@ fun Application.spacesRoutes() {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
                         val multipart = call.receiveMultipart()
-                        var fileData: ByteArray? = null
-                        var fileName: String? = null
+                        var spacePhotoDto: SpacePhotoDTO? = null
 
                         multipart.forEachPart { part ->
                             when (part) {
-                                is PartData.FileItem -> {
-                                    fileData = part.streamProvider().readBytes()
-                                    fileName = part.originalFileName
+                                is PartData.FileItem  -> {
+                                    val inputStream = part.streamProvider()
+                                    val fileBytes = inputStream.readBytes()
+                                    val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
+                                    val multipartBody = MultipartBody.Part.createFormData("file", "${UUID.randomUUID()}.png", requestBody)
+                                    spacePhotoDto = spacesRepository.uploadFile(token, multipartBody).await()
                                 }
-                                is PartData.FormItem -> {
-                                    // Handle form items if needed
+                                else -> {
+                                    // Procesa los campos de formulario aquí si los hay
                                 }
-
-                                else -> {}
                             }
                             part.dispose()
                         }
-
-                        // Procesar el archivo y enviarlo al microservicio
-
-                        val filePart = PartData.FileItem({
-                            fileData!!.inputStream().asInput()
-                        }, {}, headersOf(HttpHeaders.ContentDisposition, "filename=$fileName"))
-
-                        val requestBody = MultiPartFormDataContent(listOf(filePart))
-                        val res = async {
-                            spacesRepository.uploadFile("Bearer $token", requestBody)
-                        }
-                        val space = res.await()
-                        call.respond(HttpStatusCode.OK, space)
+                        call.respond(HttpStatusCode.OK, spacePhotoDto!!)
                     } catch (e: SpaceNotFoundException) {
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: SpaceBadRequestException) {
@@ -171,6 +166,8 @@ fun Application.spacesRoutes() {
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
+
+
 
                 put("/{id}") {
                     try {
@@ -216,6 +213,25 @@ fun Application.spacesRoutes() {
                     }
                 }
             }
+            get("/storage/{uuid}") {
+                try {
+                    val uuid = call.parameters["uuid"]
+
+                    val spacePhotoDto = async {
+                        spacesRepository.downloadFile(uuid!!)
+                    }
+
+                    call.respond(HttpStatusCode.OK, spacePhotoDto.await())
+
+                } catch (e: SpaceNotFoundException) {
+                    call.respond(HttpStatusCode.NotFound, "${e.message}")
+                } catch (e: SpaceBadRequestException) {
+                    call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                } catch (e: SpaceInternalErrorException) {
+                    call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                }
+            }
+
         }
     }
 }

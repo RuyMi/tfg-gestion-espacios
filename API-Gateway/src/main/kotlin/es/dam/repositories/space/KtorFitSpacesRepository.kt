@@ -2,16 +2,21 @@ package es.dam.repositories.space
 
 import es.dam.dto.*
 import es.dam.services.space.KtorFitClientSpaces
+import es.dam.services.space.RetroFitClientSpaces
 import io.ktor.client.request.forms.*
 import io.ktor.http.content.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
 import org.koin.core.annotation.Single
+import retrofit2.Call
+import java.io.File
 
 @Single
 class KtorFitSpacesRepository: ISpacesRepository {
     private val client by lazy { KtorFitClientSpaces.instance }
+    private val retrofit by lazy { RetroFitClientSpaces.retrofit}
 
     override suspend fun findAll(token: String): SpaceDataDTO = withContext(Dispatchers.IO) {
         val call = async { client.findAll(token) }
@@ -58,12 +63,21 @@ class KtorFitSpacesRepository: ISpacesRepository {
         }
     }
 
-    override suspend fun uploadFile(token: String, part: MultiPartFormDataContent): SpacePhotoDTO = withContext(Dispatchers.IO) {
-        val call = async { client.uploadFile(token, part) }
+    override suspend fun uploadFile(token: String, part: MultipartBody.Part): Call<SpacePhotoDTO> = withContext(Dispatchers.IO) {
+        val call = async { retrofit.uploadFile(part) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {
             throw Exception("Error uploading file: ${e.message}")
+        }
+    }
+
+    override suspend fun downloadFile(uuid: String): File = withContext(Dispatchers.IO) {
+        val call = async { retrofit.downloadFile(uuid) }
+        try {
+            return@withContext call.await()
+        } catch (e: Exception) {
+            throw Exception("Error downloading file: ${e.message}")
         }
     }
 
