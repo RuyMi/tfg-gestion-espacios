@@ -96,9 +96,9 @@ class _PerfilScreenState extends State<PerfilScreen> {
               child: Column(
                 children: [
                   TextButton(
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Icon(Icons.settings),
                         SizedBox(width: 10),
                         Text(
@@ -122,9 +122,9 @@ class _PerfilScreenState extends State<PerfilScreen> {
                         },
                       );
                     },
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Icon(Icons.logout),
                         SizedBox(width: 10),
                         Text(

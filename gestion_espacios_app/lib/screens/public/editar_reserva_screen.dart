@@ -36,9 +36,9 @@ class _ReservaSala extends State<EditarReservaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: const [
             Text(
               'Nombre de la sala',
               style: TextStyle(
@@ -132,9 +132,9 @@ class _ReservaSala extends State<EditarReservaScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Row(
+                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
+                  children: const [
                     Text(
                       'Fecha',
                       style: TextStyle(

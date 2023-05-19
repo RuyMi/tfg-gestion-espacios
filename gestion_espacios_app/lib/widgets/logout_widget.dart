@@ -15,8 +15,8 @@ class MyLogoutAlert extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
-      title: const Column(
-        children: [
+      title: Column(
+        children: const [
           Icon(
             Icons.info,
             size: 60,

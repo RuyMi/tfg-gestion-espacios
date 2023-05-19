@@ -39,9 +39,9 @@ class AcercaDeWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: const [
                 Icon(Icons.location_on, color: MyColors.whiteApp, size: 24),
                 SizedBox(width: 8),
                 Text('P.º de la Ermita, 15, \n28918 Leganés, Madrid',
@@ -53,9 +53,9 @@ class AcercaDeWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            const Row(
+             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: const [
                 Icon(Icons.phone, color: MyColors.whiteApp, size: 24),
                 SizedBox(width: 8),
                 Text('916 80 77 12',

@@ -64,9 +64,9 @@ class _BOMainScreenState extends State<BOMainScreen>
                 height: 100,
               ),
               const SizedBox(width: 10),
-              const Column(
+               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: const [
                   Text(
                     'BackOffice',
                     style: TextStyle(
