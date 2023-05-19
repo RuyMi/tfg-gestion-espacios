@@ -1,17 +1,21 @@
 package es.dam.repositories.space
 
+import de.jensklingenberg.ktorfit.ktorfit
 import es.dam.dto.*
 import es.dam.services.space.KtorFitClientSpaces
 import es.dam.services.space.RetroFitClientSpaces
 import io.ktor.client.request.forms.*
 import io.ktor.http.content.*
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import org.koin.core.annotation.Single
 import retrofit2.Call
 import java.io.File
+import java.nio.file.Files
 
 @Single
 class KtorFitSpacesRepository: ISpacesRepository {
@@ -73,9 +77,13 @@ class KtorFitSpacesRepository: ISpacesRepository {
     }
 
     override suspend fun downloadFile(uuid: String): File = withContext(Dispatchers.IO) {
-        val call = async { retrofit.downloadFile(uuid) }
+        val call = async { client.downloadFile(uuid) }
         try {
-            return@withContext call.await()
+            val response =call.await()
+            val tempFile = Files.createTempFile("temp", ".png").toFile()
+            tempFile.writeBytes(response)
+            return@withContext tempFile
+
         } catch (e: Exception) {
             throw Exception("Error downloading file: ${e.message}")
         }
