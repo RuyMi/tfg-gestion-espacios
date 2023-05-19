@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/widgets/logout_widget.dart';
+import 'package:provider/provider.dart';
 
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({Key? key}) : super(key: key);
@@ -13,6 +15,9 @@ class PerfilScreen extends StatefulWidget {
 class _PerfilScreenState extends State<PerfilScreen> {
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final usuario = authProvider.usuario;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -49,35 +54,36 @@ class _PerfilScreenState extends State<PerfilScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Nombre y Apellidos',
-              style: TextStyle(
+            Text(
+              usuario.name,
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 fontFamily: 'KoHo',
               ),
             ),
-            const Text(
-              '@nombre_de_usuario',
-              style: TextStyle(
+            Text(
+              '@${usuario.username}',
+              style: const TextStyle(
                 fontSize: 16,
                 fontFamily: 'KoHo',
               ),
             ),
             const SizedBox(height: 20),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  '100',
-                  style: TextStyle(
+                  usuario.credits.toString(),
+                  style: const TextStyle(
                     fontFamily: 'KoHo',
                     color: MyColors.pinkApp,
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
                   ),
                 ),
-                Icon(
+                const Icon(
                   Icons.monetization_on_outlined,
                   color: MyColors.pinkApp,
                   size: 20,

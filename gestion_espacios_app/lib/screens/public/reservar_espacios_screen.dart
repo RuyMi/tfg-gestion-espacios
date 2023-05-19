@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/models/espacio.dart';
+import 'package:gestion_espacios_app/models/reserva.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
+import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 final List<String> horas = [
@@ -33,13 +38,25 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Espacio espacio =
+        ModalRoute.of(context)!.settings.arguments as Espacio;
+    final reservasProvider = Provider.of<ReservasProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
+    final userId = authProvider.usuario.uuid;
+    final userName = authProvider.usuario.name;
+    final spaceId = espacio.uuid;
+    final spaceName = espacio.name;
+    String phone = '';
+    String startTime;
+    String endTime;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Row(
+        title: Row(
           children: [
             Text(
-              'Nombre de la sala',
-              style: TextStyle(
+              espacio.name,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'KoHo',
@@ -54,19 +71,19 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
           },
           icon: const Icon(Icons.arrow_back_ios_rounded),
         ),
-        actions: const [
+        actions: [
           Row(
             children: [
               Text(
-                '33',
-                style: TextStyle(
+                espacio.price.toString(),
+                style: const TextStyle(
                   fontFamily: 'KoHo',
                   color: MyColors.pinkApp,
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(right: 8),
                 child: Icon(
                   Icons.monetization_on_outlined,
@@ -77,6 +94,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
             ],
           )
         ],
+        backgroundColor: MyColors.whiteApp,
       ),
       body: SingleChildScrollView(
         controller: _scrollController,
@@ -86,16 +104,74 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
           child: Center(
             child: Column(
               children: [
-                Image.asset('assets/images/image_placeholder.png',
-                    width: 150, height: 150, fit: BoxFit.cover),
-                const SizedBox(height: 20),
-                const Text(
-                  'Descripción de la sala',
-                  maxLines: 3,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: 'KoHo',
+                const SizedBox(height: 10),
+                Container(
+                  margin: const EdgeInsets.only(right: 20, left: 20),
+                  decoration: BoxDecoration(
+                    color: MyColors.lightBlueApp,
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: MyColors.blackApp.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            bottomLeft: Radius.circular(20),
+                          ),
+                        ),
+                        child: const CircleAvatar(
+                          radius: 30,
+                          backgroundImage: AssetImage(
+                            'assets/images/image_placeholder.png',
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            espacio.description,
+                            maxLines: 3,
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: MyColors.whiteApp,
+                              fontFamily: 'KoHo',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    keyboardType: TextInputType.phone,
+                    onChanged: (value) => phone = value,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      labelText: 'Número de teléfono',
+                      labelStyle: const TextStyle(
+                          fontFamily: 'KoHo', color: MyColors.blackApp),
+                      prefixIcon:
+                          const Icon(Icons.phone, color: MyColors.lightBlueApp),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -193,8 +269,8 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                           _isDaySelected = true;
                           this.selectedDay = selectedDay;
                         });
-                        _scrollController.animateTo(_scrollController
-                                          .position.viewportDimension,
+                        _scrollController.animateTo(
+                            _scrollController.position.viewportDimension,
                             duration: const Duration(milliseconds: 1000),
                             curve: Curves.easeInOut);
                       }
@@ -286,8 +362,24 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                   visible: _isHourSelected,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/mis-reservas');
-                      showDialog(
+                      startTime =
+                          '${selectedDay?.day}/${selectedDay?.month}/${selectedDay?.year} ${selectedHour?.split(' ')[0]}';
+                      endTime =
+                          '${selectedDay?.day}/${selectedDay?.month}/${selectedDay?.year} ${selectedHour?.split(' ')[2]}';
+
+                      final reserva = Reserva(
+                        userId: userId,
+                        spaceId: spaceId,
+                        startTime: startTime,
+                        endTime: endTime,
+                        userName: userName,
+                        spaceName: spaceName,
+                        phone: phone,
+                      );
+
+                      reservasProvider.addReserva(reserva).then((_) {
+                        Navigator.pushNamed(context, '/mis-reservas');
+                        showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return const MyMessageDialog(
@@ -295,7 +387,19 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                               description:
                                   'Se ha realizado la reserva correctamente.',
                             );
-                          });
+                          },
+                        );
+                      }).catchError((error) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const MyErrorMessageDialog(
+                                title: 'Error',
+                                description:
+                                    'Ha ocurrido un error al realizar la reserva.',
+                              );
+                            });
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

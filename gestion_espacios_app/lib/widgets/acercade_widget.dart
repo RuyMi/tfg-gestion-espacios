@@ -80,10 +80,10 @@ class AcercaDeWidget extends StatelessWidget {
                     }
                   },
                   child: const Text(
-                    'https://www.iesluisvives.es/',
+                    'Página Web',
                     style: TextStyle(
                       color: MyColors.whiteApp,
-                      decoration: TextDecoration.underline,
+                      decoration: TextDecoration.none,
                       fontFamily: 'KoHo',
                     ),
                   ),
@@ -105,10 +105,10 @@ class AcercaDeWidget extends StatelessWidget {
                     }
                   },
                   child: const Text(
-                    '@ies_luisvives',
+                    'Twitter',
                     style: TextStyle(
                       color: MyColors.whiteApp,
-                      decoration: TextDecoration.underline,
+                      decoration: TextDecoration.none,
                       fontFamily: 'KoHo',
                     ),
                   ),
