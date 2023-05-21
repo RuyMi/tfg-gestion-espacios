@@ -134,9 +134,9 @@ class _ReservaSala extends State<EditarReservaScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                   Row(
+                   const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
+                    children: [
                       Text(
                         'Fecha',
                         style: TextStyle(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 
 class InicioScreen extends StatefulWidget {
@@ -13,15 +12,17 @@ class InicioScreen extends StatefulWidget {
 class _InicioScreenState extends State<InicioScreen> {
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text('Inicio'),
-        titleTextStyle: const TextStyle(
+        titleTextStyle: TextStyle(
           fontFamily: 'KoHo',
-          color: MyColors.blackApp,
+          color: theme.colorScheme.surface,
           fontWeight: FontWeight.bold,
           fontSize: 25,
         ),
@@ -36,26 +37,26 @@ class _InicioScreenState extends State<InicioScreen> {
           icon: Image.asset('assets/images/logo.png'),
           iconSize: 25,
         ),
-        backgroundColor: MyColors.whiteApp,
+        backgroundColor: theme.colorScheme.background,
       ),
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
+              Icon(
                 Icons.developer_mode,
                 size: 100,
-                color: MyColors.lightBlueApp,
+                color: theme.colorScheme.onBackground,
               ),
               const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: MyColors.whiteApp,
+                  color: theme.colorScheme.background,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: MyColors.lightBlueApp,
+                    color: theme.colorScheme.onBackground,
                     width: 2,
                   ),
                 ),

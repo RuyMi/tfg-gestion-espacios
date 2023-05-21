@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
 
 class MyMessageDialog extends StatelessWidget {
   final String title;
@@ -13,29 +12,31 @@ class MyMessageDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: const BorderSide(
-          color: MyColors.whiteApp,
+        side: BorderSide(
+          color: theme.colorScheme.onPrimary,
           width: 2.0,
         ),
       ),
-      backgroundColor: MyColors.lightBlueApp,
+      backgroundColor: theme.colorScheme.onBackground,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
+          Icon(
             Icons.info,
             size: 60,
-            color: Colors.white,
+            color: theme.colorScheme.onPrimary,
           ),
           const SizedBox(height: 10.0),
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: theme.colorScheme.onPrimary,
               fontSize: 20.0,
               fontFamily: 'KoHo',
             ),
@@ -44,8 +45,8 @@ class MyMessageDialog extends StatelessWidget {
           Text(
             description,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: theme.colorScheme.onPrimary,
               fontSize: 16.0,
               fontFamily: 'KoHo',
             ),

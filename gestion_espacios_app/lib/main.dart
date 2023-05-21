@@ -13,22 +13,18 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<ThemeNotifier>(create: (_) => ThemeNotifier()),
-
+        ChangeNotifierProvider.value(value: ThemeProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
-
         ChangeNotifierProxyProvider<AuthProvider, UsuariosProvider>(
           create: (context) => UsuariosProvider(null),
           update: (context, authProvider, _) =>
               UsuariosProvider(authProvider.token),
         ),
-        
         ChangeNotifierProxyProvider<AuthProvider, EspaciosProvider>(
           create: (context) => EspaciosProvider(null),
           update: (context, authProvider, _) =>
               EspaciosProvider(authProvider.token),
         ),
-
         ChangeNotifierProxyProvider<AuthProvider, ReservasProvider>(
           create: (context) => ReservasProvider(null),
           update: (context, authProvider, _) =>
@@ -45,14 +41,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeNotifier = Provider.of<ThemeNotifier>(context);
-    final appTheme = AppTheme();
-    final theme = appTheme.getTheme(themeNotifier.isDarkMode);
-
+    var themeProvider = context.watch<ThemeProvider>();
+    
     return MaterialApp(
       title: 'Luis Vives',
       debugShowCheckedModeBanner: false,
-      theme: theme,
+      theme: AppTheme.lightThemeData,
+      darkTheme: AppTheme.darkThemeData,
+      themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),

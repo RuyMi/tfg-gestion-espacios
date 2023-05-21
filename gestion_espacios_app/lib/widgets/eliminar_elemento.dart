@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
 
 class MyDeleteAlert extends StatelessWidget {
   final String title;
@@ -13,23 +12,25 @@ class MyDeleteAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return AlertDialog(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
-      backgroundColor: MyColors.pinkApp,
+      backgroundColor: theme.colorScheme.error,
       title: Column(
         children: [
-          const Icon(
+          Icon(
             Icons.info,
             size: 60,
-            color: Colors.white,
+            color: theme.colorScheme.onError,
           ),
           const SizedBox(height: 10),
           Text(title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: MyColors.whiteApp,
+              style: TextStyle(
+                color: theme.colorScheme.onError,
                 fontFamily: 'KoHo',
                 fontSize: 20,
               )),
@@ -37,9 +38,9 @@ class MyDeleteAlert extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          child: const Text('No',
+          child: Text('No',
               style: TextStyle(
-                color: MyColors.whiteApp,
+                color: theme.colorScheme.onError,
                 fontFamily: 'KoHo',
                 fontWeight: FontWeight.bold,
               )),
@@ -48,14 +49,14 @@ class MyDeleteAlert extends StatelessWidget {
           },
         ),
         TextButton(
-          child: const Text('Sí',
+          child: Text('Sí',
               style: TextStyle(
-                color: MyColors.whiteApp,
+                color: theme.colorScheme.onError,
                 fontFamily: 'KoHo',
                 fontWeight: FontWeight.bold,
               )),
           onPressed: () {
-            // TODO: función para cerrar sesión.
+            // TODO: función para eliminar elemento.
 
             Navigator.pushNamedAndRemoveUntil(
               context,
