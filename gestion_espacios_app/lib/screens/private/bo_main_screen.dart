@@ -64,9 +64,9 @@ class _BOMainScreenState extends State<BOMainScreen>
                 height: 100,
               ),
               const SizedBox(width: 10),
-               Column(
+               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'BackOffice',
                     style: TextStyle(
@@ -135,102 +135,104 @@ class _BOMainScreenState extends State<BOMainScreen>
             ),
           ],
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: MyColors.pinkApp.shade100,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none,
+        body: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: MyColors.pinkApp.shade100,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none,
+                          ),
+                          hintText: 'Buscar',
+                          hintStyle: const TextStyle(
+                            fontFamily: 'KoHo',
+                            color: MyColors.pinkApp,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          prefixIcon: const Icon(Icons.search,
+                              color: MyColors.pinkApp, size: 30),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none,
-                        ),
-                        hintText: 'Buscar',
-                        hintStyle: const TextStyle(
-                          fontFamily: 'KoHo',
-                          color: MyColors.pinkApp,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        prefixIcon: const Icon(Icons.search,
-                            color: MyColors.pinkApp, size: 30),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          // _searchText = value;
-                        });
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Visibility(
-                    visible: _showNewButton,
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.add, color: MyColors.whiteApp),
-                      label: const Text(
-                        'Nuevo',
-                        style: TextStyle(
-                          color: MyColors.whiteApp,
-                          overflow: TextOverflow.ellipsis,
-                          fontFamily: 'KoHo',
-                          fontSize: 20,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        backgroundColor: MyColors.pinkApp,
+                        onChanged: (value) {
+                          setState(() {
+                            // _searchText = value;
+                          });
+                        },
                       ),
                     ),
-                  ),
-                  Visibility(
-                    visible: _tabController.index == 0,
-                    child: Row(
-                      children: [
-                        const Icon(Icons.person, color: MyColors.lightBlueApp),
-                        Switch(
-                          focusColor: MyColors.pinkApp,
-                          activeColor: MyColors.pinkApp,
-                          inactiveTrackColor: MyColors.lightBlueApp.shade100,
-                          inactiveThumbColor: MyColors.lightBlueApp,
-                          value: _sortByUsers,
-                          onChanged: (value) {
-                            setState(() {
-                              _sortByUsers = value;
-                              _handleSortBy(_sortByUsers);
-                            });
-                          },
+                    const SizedBox(width: 20),
+                    Visibility(
+                      visible: _showNewButton,
+                      child: ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(Icons.add, color: MyColors.whiteApp),
+                        label: const Text(
+                          'Nuevo',
+                          style: TextStyle(
+                            color: MyColors.whiteApp,
+                            overflow: TextOverflow.ellipsis,
+                            fontFamily: 'KoHo',
+                            fontSize: 20,
+                          ),
                         ),
-                        const Icon(Icons.calendar_today,
-                            color: MyColors.pinkApp),
-                      ],
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          backgroundColor: MyColors.pinkApp,
+                        ),
+                      ),
                     ),
-                  )
-                ],
+                    Visibility(
+                      visible: _tabController.index == 0,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.person, color: MyColors.lightBlueApp),
+                          Switch(
+                            focusColor: MyColors.pinkApp,
+                            activeColor: MyColors.pinkApp,
+                            inactiveTrackColor: MyColors.lightBlueApp.shade100,
+                            inactiveThumbColor: MyColors.lightBlueApp,
+                            value: _sortByUsers,
+                            onChanged: (value) {
+                              setState(() {
+                                _sortByUsers = value;
+                                _handleSortBy(_sortByUsers);
+                              });
+                            },
+                          ),
+                          const Icon(Icons.calendar_today,
+                              color: MyColors.pinkApp),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: const [
-                  ReservasBOScreen(),
-                  EspaciosBOScreen(),
-                  UsuariosBOScreen(),
-                ],
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: const [
+                    ReservasBOScreen(),
+                    EspaciosBOScreen(),
+                    UsuariosBOScreen(),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

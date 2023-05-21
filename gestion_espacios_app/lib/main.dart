@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
     final theme = appTheme.getTheme(themeNotifier.isDarkMode);
 
     return MaterialApp(
-      title: 'IES Luis Vives App',
+      title: 'Luis Vives',
       debugShowCheckedModeBanner: false,
       theme: theme,
       initialRoute: '/',

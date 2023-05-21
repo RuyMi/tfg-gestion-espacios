@@ -25,6 +25,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
     final misReservas = reservasProvider.reservasByUser;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: true,
         centerTitle: true,
@@ -52,150 +53,152 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
         ],
         backgroundColor: MyColors.whiteApp,
       ),
-      body: misReservas.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.hide_source_rounded,
-                    size: 100,
-                    color: MyColors.lightBlueApp,
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: MyColors.whiteApp,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: MyColors.lightBlueApp,
-                        width: 2,
+      body: SafeArea(
+        child: misReservas.isEmpty
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.hide_source_rounded,
+                      size: 100,
+                      color: MyColors.lightBlueApp,
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: MyColors.whiteApp,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: MyColors.lightBlueApp,
+                          width: 2,
+                        ),
+                      ),
+                      child: const Text(
+                        'No se han realizado reservas aún',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'KoHo',
+                        ),
                       ),
                     ),
-                    child: const Text(
-                      'No se han realizado reservas aún',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'KoHo',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : ListView.builder(
-              itemCount: misReservas.length,
-              itemBuilder: (context, index) {
-                final reserva = misReservas[index];
-                return Card(
-                  color: MyColors.lightBlueApp.shade50,
-                  margin: const EdgeInsets.all(16),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(left: 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: MyColors.blackApp.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                    'assets/images/image_placeholder.png',
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.cover),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      reserva.spaceName,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          fontFamily: 'KoHo'),
-                                    ),
-                                    Text(
-                                        DateFormat('dd/MM/yyyy HH:mm').format(
-                                            DateTime.parse(reserva.startTime)),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            overflow: TextOverflow.ellipsis,
-                                            fontSize: 12,
-                                            fontFamily: 'KoHo'),
-                                        maxLines: 3),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            IconButton(
-                                              icon: const Icon(Icons.share,
-                                                  color: MyColors.blackApp),
-                                              onPressed: () {},
-                                            ),
-                                            IconButton(
-                                              icon: const Icon(Icons.bookmark,
-                                                  color: MyColors.lightBlueApp),
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const EditarReservaScreen(),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(reserva.status!,
-                                                style: const TextStyle(
-                                                    fontFamily: 'KoHo',
-                                                    fontWeight: FontWeight.bold,
-                                                    color: MyColors.pinkApp)),
-                                            const Icon(
-                                                Icons.monetization_on_outlined,
-                                                color: MyColors.pinkApp),
-                                          ],
-                                        ),
-                                      ],
+                  ],
+                ),
+              )
+            : ListView.builder(
+                itemCount: misReservas.length,
+                itemBuilder: (context, index) {
+                  final reserva = misReservas[index];
+                  return Card(
+                    color: MyColors.lightBlueApp.shade50,
+                    margin: const EdgeInsets.all(16),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(left: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: MyColors.blackApp.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 3),
                                     ),
                                   ],
                                 ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.asset(
+                                      'assets/images/image_placeholder.png',
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        reserva.spaceName,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            fontFamily: 'KoHo'),
+                                      ),
+                                      Text(
+                                          DateFormat('dd/MM/yyyy HH:mm').format(
+                                              DateTime.parse(reserva.startTime)),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              overflow: TextOverflow.ellipsis,
+                                              fontSize: 12,
+                                              fontFamily: 'KoHo'),
+                                          maxLines: 3),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              IconButton(
+                                                icon: const Icon(Icons.share,
+                                                    color: MyColors.blackApp),
+                                                onPressed: () {},
+                                              ),
+                                              IconButton(
+                                                icon: const Icon(Icons.bookmark,
+                                                    color: MyColors.lightBlueApp),
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const EditarReservaScreen(),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(reserva.status!,
+                                                  style: const TextStyle(
+                                                      fontFamily: 'KoHo',
+                                                      fontWeight: FontWeight.bold,
+                                                      color: MyColors.pinkApp)),
+                                              const Icon(
+                                                  Icons.monetization_on_outlined,
+                                                  color: MyColors.pinkApp),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+      ),
     );
   }
 }
