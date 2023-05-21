@@ -14,13 +14,18 @@ class MyDrawer extends StatelessWidget {
     var theme = Theme.of(context);
 
     return Drawer(
-      backgroundColor: theme.colorScheme.onBackground,
+      backgroundColor: theme.colorScheme.primary,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
             decoration: BoxDecoration(
-              color: theme.colorScheme.onBackground,
+              color: theme.colorScheme.primary,
+              border: Border(
+                bottom: BorderSide(
+                  color: theme.colorScheme.onPrimary,
+                ),
+              ),
             ),
             accountName: Text(usuario.name,
                 style: TextStyle(

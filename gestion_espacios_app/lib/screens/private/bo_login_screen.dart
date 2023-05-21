@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
 import 'package:provider/provider.dart';
@@ -7,9 +6,10 @@ import 'package:provider/provider.dart';
 class BOLoginScreen extends StatelessWidget {
   const BOLoginScreen({super.key});
 
-    
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     String username = '';
     String password = '';
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -36,17 +36,23 @@ class BOLoginScreen extends StatelessWidget {
               TextField(
                 onChanged: (value) => username = value,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
+                  enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.onSurface,
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.onSurface,
+                    ),
                   ),
                   labelText: 'Nombre de usuario',
-                  labelStyle: const TextStyle(
-                      fontFamily: 'KoHo', color: MyColors.blackApp),
+                  labelStyle: TextStyle(
+                      fontFamily: 'KoHo', color: theme.colorScheme.surface),
                   prefixIcon:
-                      const Icon(Icons.person, color: MyColors.lightBlueApp),
+                      Icon(Icons.person, color: theme.colorScheme.surface),
                 ),
               ),
               const SizedBox(height: 10),
@@ -54,17 +60,23 @@ class BOLoginScreen extends StatelessWidget {
                 onChanged: (value) => password = value,
                 obscureText: true,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
+                  enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.onSurface,
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.onSurface,
+                    ),
                   ),
                   labelText: 'Contraseña',
-                  labelStyle: const TextStyle(
-                      fontFamily: 'KoHo', color: MyColors.blackApp),
+                  labelStyle: TextStyle(
+                      fontFamily: 'KoHo', color: theme.colorScheme.surface),
                   prefixIcon:
-                      const Icon(Icons.lock, color: MyColors.lightBlueApp),
+                      Icon(Icons.lock, color: theme.colorScheme.surface),
                 ),
               ),
               const SizedBox(height: 20),
@@ -74,7 +86,7 @@ class BOLoginScreen extends StatelessWidget {
                     (usuario) {
                       final loginSucceed = authProvider.loginSucceed;
                       final roles = authProvider.usuario.userRole;
-      
+
                       if (loginSucceed && roles.contains('ADMINISTRATOR')) {
                         Navigator.pushNamed(context, '/home-bo');
                       } else {
@@ -93,21 +105,26 @@ class BOLoginScreen extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  backgroundColor: MyColors.pinkApp,
+                  backgroundColor: theme.colorScheme.secondary,
                 ),
-                child: const Text('Validar',
-                    style:
-                        TextStyle(color: MyColors.whiteApp, fontFamily: 'KoHo')),
+                child: Text('Validar',
+                    style: TextStyle(
+                        color: theme.colorScheme.onSecondary,
+                        fontFamily: 'KoHo')),
               ),
               const SizedBox(height: 10),
               TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/login');
                 },
-                child: const Text(
+                style: TextButton.styleFrom(
+                  foregroundColor: theme.colorScheme.onBackground,
+                ),
+                child: Text(
                   'Acceso al servicio público.',
                   style: TextStyle(
                     fontFamily: 'KoHo',
+                    color: theme.colorScheme.secondary,
                   ),
                 ),
               ),

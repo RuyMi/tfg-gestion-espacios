@@ -7,7 +7,7 @@ class Reserva {
     required this.endTime,
     required this.userName,
     required this.spaceName,
-    this.phone,
+    this.observations,
     this.status,
   });
 
@@ -18,6 +18,6 @@ class Reserva {
   String endTime;
   String userName;
   String spaceName;
-  String? phone;
+  String? observations;
   String? status;
 }

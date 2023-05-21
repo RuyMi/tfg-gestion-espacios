@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
+import 'package:gestion_espacios_app/widgets/error_widget.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -75,21 +76,19 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () {
                   authProvider.login(username, password).then(
                     (usuario) {
-                      // final loginSucceed = authProvider.loginSucceed;
+                      final loginSucceed = authProvider.loginSucceed;
 
-                      // if (loginSucceed) {
-                      //   Navigator.pushNamed(context, '/home');
-                      // } else {
-                      //   showDialog(
-                      //     context: context,
-                      //     builder: (context) => const MyErrorMessageDialog(
-                      //       title: 'Error al iniciar sesión',
-                      //       description: 'Usuario o contraseña incorrectos.',
-                      //     ),
-                      //   );
-                      // }
-
-                      Navigator.pushNamed(context, '/home');
+                      if (loginSucceed) {
+                        Navigator.pushNamed(context, '/home');
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const MyErrorMessageDialog(
+                            title: 'Error al iniciar sesión',
+                            description: 'Usuario o contraseña incorrectos.',
+                          ),
+                        );
+                      }
                     },
                   );
                 },
@@ -110,7 +109,7 @@ class LoginScreen extends StatelessWidget {
                   Navigator.pushNamed(context, '/login-bo');
                 },
                 style: TextButton.styleFrom(
-                  foregroundColor: theme.colorScheme.secondary,
+                  foregroundColor: theme.colorScheme.onBackground,
                 ),
                 child: Text(
                   'Acceso al área privada del centro.',
