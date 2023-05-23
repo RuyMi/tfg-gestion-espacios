@@ -14,7 +14,7 @@ fun BookingDtoCreate.toModel() = Booking(
     userName = this.userName,
     startTime = LocalDateTime.parse(this.startTime),
     endTime = LocalDateTime.parse(this.endTime),
-    phone = this.phone,
+    observations = this.observations,
     status = Booking.Status.valueOf(this.status)
 )
 
@@ -25,7 +25,7 @@ fun BookingDtoUpdate.toModel() = Booking(
     userName = this.userName,
     startTime = LocalDateTime.parse(this.startTime),
     endTime = LocalDateTime.parse(this.endTime),
-    phone = this.phone,
+    observations = this.observations,
     status = Booking.Status.valueOf(this.status)
 )
 
@@ -38,7 +38,7 @@ fun Booking.toDTO() = BookingDto(
     userName = this.userName,
     startTime = this.startTime.toString(),
     endTime = this.endTime.toString(),
-    phone = this.phone,
+    observations = this.observations,
     status = this.status.toString()
 )
 
