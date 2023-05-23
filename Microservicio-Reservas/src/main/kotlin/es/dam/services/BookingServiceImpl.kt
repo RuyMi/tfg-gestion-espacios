@@ -48,7 +48,7 @@ class BookingServiceImpl(
             spaceId = entity.spaceId,
             startTime = entity.startTime,
             endTime = entity.startTime,
-            phone = entity.phone,
+            observations = entity.observations,
             status = entity.status
         )
         return repository.update(bookingUpdated)
