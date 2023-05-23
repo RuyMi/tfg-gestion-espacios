@@ -12,7 +12,7 @@ data class BookingDto(
     val spaceName: String,
     val startTime: String,
     val endTime: String,
-    val phone: String?,
+    val observations: String?,
     val status: String
 )
 
@@ -24,7 +24,7 @@ data class BookingDtoCreate(
     val spaceName: String,
     val startTime: String,
     val endTime: String,
-    val phone: String?,
+    val observations: String?,
     val status: String = "PENDING"
 )
 
@@ -36,7 +36,7 @@ data class BookingDtoUpdate(
     val spaceName: String,
     val startTime: String,
     val endTime: String,
-    val phone: String?,
+    val observations: String?,
     val status: String
 )
 

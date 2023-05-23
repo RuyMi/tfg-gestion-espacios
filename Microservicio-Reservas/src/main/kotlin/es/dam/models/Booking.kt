@@ -25,7 +25,7 @@ data class Booking(
     val startTime: LocalDateTime,
     @Serializable(with = LocalDateTimeSerializer::class)
     val endTime: LocalDateTime,
-    val phone: String?,
+    val observations: String?,
     val status: Status = Status.PENDING,
 
 ) {
