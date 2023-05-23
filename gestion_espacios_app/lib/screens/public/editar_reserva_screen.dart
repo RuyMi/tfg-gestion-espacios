@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gestion_espacios_app/models/reserva.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
+import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/eliminar_elemento.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 final List<String> horas = [
@@ -35,15 +40,25 @@ class _ReservaSala extends State<EditarReservaScreen> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
+    final Reserva reserva =
+        ModalRoute.of(context)!.settings.arguments as Reserva;
+    final reservasProvider = Provider.of<ReservasProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
+    final userName = authProvider.usuario.name;
+    final spaceName = reserva.spaceName;
+    String observations = '';
+    String startTime;
+    String endTime;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Nombre de la sala',
-              style: TextStyle(
+              reserva.spaceName,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'KoHo',
@@ -93,7 +108,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                       borderRadius: BorderRadius.circular(50),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.colorScheme.surface.withOpacity(0.5),
+                          color: theme.colorScheme.surface.withOpacity(0.2),
                           spreadRadius: 2,
                           blurRadius: 5,
                           offset: const Offset(0, 3),
@@ -120,12 +135,12 @@ class _ReservaSala extends State<EditarReservaScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(20),
                             child: Text(
-                              'Descripción de la sala',
+                              'Reserva de $userName para el espacio: $spaceName',
                               maxLines: 3,
                               textAlign: TextAlign.start,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                color: theme.colorScheme.surface,
+                                color: theme.colorScheme.onSecondary,
                                 fontFamily: 'KoHo',
                               ),
                             ),
@@ -134,12 +149,41 @@ class _ReservaSala extends State<EditarReservaScreen> {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 30),
+                  SizedBox(
+                    width: 250,
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      onChanged: (value) => observations = value,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(
+                            color: theme.colorScheme.secondary,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(
+                            color: theme.colorScheme.secondary,
+                          ),
+                        ),
+                        labelText: reserva.observations,
+                        labelStyle: TextStyle(
+                            fontFamily: 'KoHo',
+                            color: theme.colorScheme.secondary),
+                        prefixIcon: Icon(Icons.message,
+                            color: theme.colorScheme.secondary),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        'Fecha',
+                        DateFormat('dd/MM/yyyy HH:mm')
+                            .format(DateTime.parse(reserva.startTime)),
                         style: TextStyle(
                           fontSize: 15,
                           fontFamily: 'KoHo',
@@ -148,7 +192,8 @@ class _ReservaSala extends State<EditarReservaScreen> {
                         ),
                       ),
                       Text(
-                        'Hora',
+                        DateFormat('dd/MM/yyyy HH:mm')
+                            .format(DateTime.parse(reserva.endTime)),
                         style: TextStyle(
                           fontSize: 15,
                           fontFamily: 'KoHo',
@@ -347,8 +392,24 @@ class _ReservaSala extends State<EditarReservaScreen> {
                     visible: _isHourSelected,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/mis-reservas');
-                        showDialog(
+                        startTime =
+                            '${selectedDay?.day}-${selectedDay?.month}-${selectedDay?.year} ${selectedHour?.split(' ')[0]}';
+                        endTime =
+                            '${selectedDay?.day}-${selectedDay?.month}-${selectedDay?.year} ${selectedHour?.split(' ')[2]}';
+
+                        final reservaActualizada = Reserva(
+                          userId: reserva.userId,
+                          spaceId: reserva.spaceId,
+                          startTime: startTime,
+                          endTime: endTime,
+                          userName: reserva.userName,
+                          spaceName: reserva.spaceName,
+                          observations: observations,
+                        );
+
+                        reservasProvider.updateReserva(reservaActualizada).then((_) {
+                          Navigator.pushNamed(context, '/mis-reservas');
+                          showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return const MyMessageDialog(
@@ -356,7 +417,19 @@ class _ReservaSala extends State<EditarReservaScreen> {
                                 description:
                                     'Se ha actualizado la reserva correctamente.',
                               );
-                            });
+                            },
+                          );
+                        }).catchError((error) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const MyErrorMessageDialog(
+                                  title: 'Error',
+                                  description:
+                                      'Ha ocurrido un error al actualizar la reserva.',
+                                );
+                              });
+                        });
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(

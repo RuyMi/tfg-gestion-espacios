@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
-import 'package:gestion_espacios_app/screens/public/editar_reserva_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -52,7 +51,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
             iconSize: 25,
           ),
         ],
-        backgroundColor: theme.colorScheme.primary,
+        backgroundColor: theme.colorScheme.background,
       ),
       body: SafeArea(
         child: misReservas.isEmpty
@@ -93,7 +92,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                 itemBuilder: (context, index) {
                   final reserva = misReservas[index];
                   return Card(
-                    color: theme.colorScheme.onBackground,
+                    color: theme.colorScheme.onBackground.withOpacity(0.3),
                     margin: const EdgeInsets.all(16),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -108,7 +107,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                   boxShadow: [
                                     BoxShadow(
                                       color: theme.colorScheme.surface
-                                          .withOpacity(0.5),
+                                          .withOpacity(0.2),
                                       spreadRadius: 1,
                                       blurRadius: 5,
                                       offset: const Offset(0, 3),
@@ -168,12 +167,10 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                                     color: theme.colorScheme
                                                         .onBackground),
                                                 onPressed: () {
-                                                  Navigator.push(
+                                                  Navigator.pushNamed(
                                                     context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const EditarReservaScreen(),
-                                                    ),
+                                                    '/editar-reserva',
+                                                    arguments: reserva,
                                                   );
                                                 },
                                               ),

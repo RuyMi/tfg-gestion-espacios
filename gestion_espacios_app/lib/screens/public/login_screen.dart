@@ -19,107 +19,115 @@ class LoginScreen extends StatelessWidget {
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/images/logo.png'),
-              const SizedBox(height: 50),
-              TextField(
-                autocorrect: true,
-                onChanged: (value) => username = value,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onSurface,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/images/logo.png'),
+                const SizedBox(height: 50),
+                SizedBox(
+                  width: 400,
+                  child: TextField(
+                    autocorrect: true,
+                    onChanged: (value) => username = value,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ),
+                      labelText: 'Nombre de usuario',
+                      labelStyle: TextStyle(
+                          fontFamily: 'KoHo', color: theme.colorScheme.onSurface),
+                      prefixIcon:
+                          Icon(Icons.person, color: theme.colorScheme.onSurface),
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onSurface,
-                    ),
-                  ),
-                  labelText: 'Nombre de usuario',
-                  labelStyle: TextStyle(
-                      fontFamily: 'KoHo', color: theme.colorScheme.onSurface),
-                  prefixIcon:
-                      Icon(Icons.person, color: theme.colorScheme.onSurface),
                 ),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                onChanged: (value) => password = value,
-                obscureText: true,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onSurface,
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: 400,
+                  child: TextField(
+                    onChanged: (value) => password = value,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ),
+                      labelText: 'Contraseña',
+                      labelStyle: TextStyle(
+                          fontFamily: 'KoHo', color: theme.colorScheme.onSurface),
+                      prefixIcon:
+                          Icon(Icons.lock, color: theme.colorScheme.onSurface),
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onSurface,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    authProvider.login(username, password).then(
+                      (usuario) {
+                        final loginSucceed = authProvider.loginSucceed;
+          
+                        if (loginSucceed) {
+                          Navigator.pushNamed(context, '/home');
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) => const MyErrorMessageDialog(
+                              title: 'Error al iniciar sesión',
+                              description: 'Usuario o contraseña incorrectos.',
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
+                    backgroundColor: theme.colorScheme.secondary,
                   ),
-                  labelText: 'Contraseña',
-                  labelStyle: TextStyle(
-                      fontFamily: 'KoHo', color: theme.colorScheme.onSurface),
-                  prefixIcon:
-                      Icon(Icons.lock, color: theme.colorScheme.onSurface),
+                  child: Text('Validar',
+                      style: TextStyle(
+                          color: theme.colorScheme.onSecondary,
+                          fontFamily: 'KoHo')),
                 ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  authProvider.login(username, password).then(
-                    (usuario) {
-                      final loginSucceed = authProvider.loginSucceed;
-
-                      if (loginSucceed) {
-                        Navigator.pushNamed(context, '/home');
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (context) => const MyErrorMessageDialog(
-                            title: 'Error al iniciar sesión',
-                            description: 'Usuario o contraseña incorrectos.',
-                          ),
-                        );
-                      }
-                    },
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+                const SizedBox(height: 10),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/login-bo');
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: theme.colorScheme.onBackground,
                   ),
-                  backgroundColor: theme.colorScheme.secondary,
-                ),
-                child: Text('Validar',
+                  child: Text(
+                    'Acceso al área privada del centro.',
                     style: TextStyle(
-                        color: theme.colorScheme.onSecondary,
-                        fontFamily: 'KoHo')),
-              ),
-              const SizedBox(height: 10),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/login-bo');
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: theme.colorScheme.onBackground,
-                ),
-                child: Text(
-                  'Acceso al área privada del centro.',
-                  style: TextStyle(
-                    fontFamily: 'KoHo',
-                    color: theme.colorScheme.secondary,
+                      fontFamily: 'KoHo',
+                      color: theme.colorScheme.secondary,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -115,7 +115,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                       borderRadius: BorderRadius.circular(50),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.colorScheme.surface.withOpacity(0.5),
+                          color: theme.colorScheme.surface.withOpacity(0.2),
                           spreadRadius: 2,
                           blurRadius: 5,
                           offset: const Offset(0, 3),
@@ -131,10 +131,25 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                               bottomLeft: Radius.circular(20),
                             ),
                           ),
-                          child: const CircleAvatar(
-                            radius: 30,
-                            backgroundImage: AssetImage(
-                              'assets/images/image_placeholder.png',
+                          child: CircleAvatar(
+                            radius: 35,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(75),
+                              child: Image.network(
+                                'http://magarcia.asuscomm.com:25546/spaces/storage/${espacio.image}.png',
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace? stackTrace) {
+                                  return Image.asset(
+                                    'assets/images/image_placeholder.png',
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),
@@ -147,7 +162,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                               textAlign: TextAlign.start,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                color: theme.colorScheme.surface,
+                                color: theme.colorScheme.onSecondary,
                                 fontFamily: 'KoHo',
                               ),
                             ),
@@ -163,18 +178,24 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                       keyboardType: TextInputType.text,
                       onChanged: (value) => observations = value,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(
+                        enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(
+                            color: theme.colorScheme.secondary,
+                          ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(
+                            color: theme.colorScheme.secondary,
+                          ),
                         ),
-                        labelText: 'Observaciones...',
+                        labelText: 'Observaciones',
                         labelStyle: TextStyle(
                             fontFamily: 'KoHo',
-                            color: theme.colorScheme.surface),
+                            color: theme.colorScheme.secondary),
                         prefixIcon: Icon(Icons.message,
-                            color: theme.colorScheme.background),
+                            color: theme.colorScheme.secondary),
                       ),
                     ),
                   ),
@@ -233,7 +254,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                           shape: BoxShape.circle,
                         ),
                         todayTextStyle: TextStyle(
-                            color: theme.colorScheme.surface,
+                            color: theme.colorScheme.background,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'KoHo'),
                         weekendTextStyle: const TextStyle(

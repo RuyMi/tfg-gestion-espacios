@@ -48,8 +48,21 @@ class EspaciosBOScreen extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.asset('assets/images/image_placeholder.png',
-                          width: 100, height: 100, fit: BoxFit.cover),
+                      child: Image.network(
+                        'http://magarcia.asuscomm.com:25546/spaces/storage/${espacio.image}.png',
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return Image.asset(
+                            'assets/images/image_placeholder.png',
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
                     ),
                   ),
                   Padding(

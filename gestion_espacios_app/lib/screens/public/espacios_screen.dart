@@ -117,7 +117,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                   itemBuilder: (context, index) {
                     final espacio = espacios[index];
                     return Card(
-                      color: theme.colorScheme.onBackground,
+                      color: theme.colorScheme.onBackground.withOpacity(0.3),
                       margin: const EdgeInsets.all(16),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -132,7 +132,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                     boxShadow: [
                                       BoxShadow(
                                         color: theme.colorScheme.surface
-                                            .withOpacity(0.5),
+                                            .withOpacity(0.2),
                                         spreadRadius: 1,
                                         blurRadius: 5,
                                         offset: const Offset(0, 3),
@@ -141,11 +141,22 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                   ),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: Image.asset(
-                                        'assets/images/image_placeholder.png',
-                                        width: 100,
-                                        height: 100,
-                                        fit: BoxFit.cover),
+                                    child: Image.network(
+                                      'http://magarcia.asuscomm.com:25546/spaces/storage/${espacio.image}.png',
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (BuildContext context,
+                                          Object exception,
+                                          StackTrace? stackTrace) {
+                                        return Image.asset(
+                                          'assets/images/image_placeholder.png',
+                                          width: 100,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(

@@ -54,6 +54,7 @@ class _BOMainScreenState extends State<BOMainScreen>
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           toolbarHeight: 100,
           backgroundColor: theme.colorScheme.primary.withOpacity(0.3),
