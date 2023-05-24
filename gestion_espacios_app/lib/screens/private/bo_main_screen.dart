@@ -138,105 +138,103 @@ class _BOMainScreenState extends State<BOMainScreen>
             ),
           ],
         ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _searchController,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: MyColors.pinkApp.shade100,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide.none,
-                          ),
-                          hintText: 'Buscar',
-                          hintStyle: TextStyle(
-                            fontFamily: 'KoHo',
-                            color: theme.colorScheme.secondary,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          prefixIcon: Icon(Icons.search,
-                              color: theme.colorScheme.secondary, size: 30),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: MyColors.pinkApp.shade100,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            // _searchText = value;
-                          });
-                        },
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                        hintText: 'Buscar',
+                        hintStyle: TextStyle(
+                          fontFamily: 'KoHo',
+                          color: theme.colorScheme.secondary,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        prefixIcon: Icon(Icons.search,
+                            color: theme.colorScheme.secondary, size: 30),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          // _searchText = value;
+                        });
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Visibility(
+                    visible: _showNewButton,
+                    child: ElevatedButton.icon(
+                      onPressed: () {},
+                      icon: Icon(Icons.add, color: theme.colorScheme.onSecondary),
+                      label: Text(
+                        'Nuevo',
+                        style: TextStyle(
+                          color: theme.colorScheme.onSecondary,
+                          overflow: TextOverflow.ellipsis,
+                          fontFamily: 'KoHo',
+                          fontSize: 20,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        backgroundColor: theme.colorScheme.secondary,
                       ),
                     ),
-                    const SizedBox(width: 20),
-                    Visibility(
-                      visible: _showNewButton,
-                      child: ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: Icon(Icons.add, color: theme.colorScheme.onSecondary),
-                        label: Text(
-                          'Nuevo',
-                          style: TextStyle(
-                            color: theme.colorScheme.onSecondary,
-                            overflow: TextOverflow.ellipsis,
-                            fontFamily: 'KoHo',
-                            fontSize: 20,
-                          ),
+                  ),
+                  Visibility(
+                    visible: _tabController.index == 0,
+                    child: Row(
+                      children: [
+                        Icon(Icons.person,
+                            color: theme.colorScheme.onBackground),
+                        Switch(
+                          focusColor: theme.colorScheme.secondary,
+                          activeColor: theme.colorScheme.secondary,
+                          inactiveTrackColor: theme.colorScheme.onBackground.withOpacity(0.2),
+                          inactiveThumbColor: theme.colorScheme.onBackground,
+                          value: _sortByUsers,
+                          onChanged: (value) {
+                            setState(() {
+                              _sortByUsers = value;
+                              _handleSortBy(_sortByUsers);
+                            });
+                          },
                         ),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          backgroundColor: theme.colorScheme.secondary,
-                        ),
-                      ),
+                        Icon(Icons.calendar_today,
+                            color: theme.colorScheme.secondary),
+                      ],
                     ),
-                    Visibility(
-                      visible: _tabController.index == 0,
-                      child: Row(
-                        children: [
-                          Icon(Icons.person,
-                              color: theme.colorScheme.onBackground),
-                          Switch(
-                            focusColor: theme.colorScheme.secondary,
-                            activeColor: theme.colorScheme.secondary,
-                            inactiveTrackColor: theme.colorScheme.onBackground.withOpacity(0.2),
-                            inactiveThumbColor: theme.colorScheme.onBackground,
-                            value: _sortByUsers,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortByUsers = value;
-                                _handleSortBy(_sortByUsers);
-                              });
-                            },
-                          ),
-                          Icon(Icons.calendar_today,
-                              color: theme.colorScheme.secondary),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: const [
-                    ReservasBOScreen(),
-                    EspaciosBOScreen(),
-                    UsuariosBOScreen(),
-                  ],
-                ),
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: const [
+                  ReservasBOScreen(),
+                  EspaciosBOScreen(),
+                  UsuariosBOScreen(),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

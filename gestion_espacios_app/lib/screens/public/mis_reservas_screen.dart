@@ -53,159 +53,157 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
         ],
         backgroundColor: theme.colorScheme.background,
       ),
-      body: SafeArea(
-        child: misReservas.isEmpty
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.hide_source_rounded,
-                      size: 100,
-                      color: theme.colorScheme.onBackground,
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.background,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: theme.colorScheme.onBackground,
-                          width: 2,
-                        ),
-                      ),
-                      child: const Text(
-                        'No se han realizado reservas aún',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'KoHo',
-                        ),
+      body: misReservas.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.hide_source_rounded,
+                    size: 100,
+                    color: theme.colorScheme.onBackground,
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.background,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: theme.colorScheme.onBackground,
+                        width: 2,
                       ),
                     ),
-                  ],
-                ),
-              )
-            : ListView.builder(
-                itemCount: misReservas.length,
-                itemBuilder: (context, index) {
-                  final reserva = misReservas[index];
-                  return Card(
-                    color: theme.colorScheme.onBackground.withOpacity(0.3),
-                    margin: const EdgeInsets.all(16),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: theme.colorScheme.surface
-                                          .withOpacity(0.2),
-                                      spreadRadius: 1,
-                                      blurRadius: 5,
-                                      offset: const Offset(0, 3),
+                    child: const Text(
+                      'No se han realizado reservas aún',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'KoHo',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : ListView.builder(
+              itemCount: misReservas.length,
+              itemBuilder: (context, index) {
+                final reserva = misReservas[index];
+                return Card(
+                  color: theme.colorScheme.onBackground.withOpacity(0.3),
+                  margin: const EdgeInsets.all(16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: theme.colorScheme.surface
+                                        .withOpacity(0.2),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.asset(
+                                    'assets/images/image_placeholder.png',
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      reserva.spaceName,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          fontFamily: 'KoHo'),
+                                    ),
+                                    Text(
+                                        DateFormat('dd/MM/yyyy HH:mm').format(
+                                            DateTime.parse(
+                                                reserva.startTime)),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            overflow: TextOverflow.ellipsis,
+                                            fontSize: 12,
+                                            fontFamily: 'KoHo'),
+                                        maxLines: 3),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(Icons.share,
+                                                  color: theme
+                                                      .colorScheme.surface),
+                                              onPressed: () {},
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.bookmark,
+                                                  color: theme.colorScheme
+                                                      .onBackground),
+                                              onPressed: () {
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  '/editar-reserva',
+                                                  arguments: reserva,
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(reserva.status!,
+                                                style: TextStyle(
+                                                    fontFamily: 'KoHo',
+                                                    fontWeight:
+                                                        FontWeight.bold,
+                                                    color: theme.colorScheme
+                                                        .secondary)),
+                                            Icon(
+                                                Icons
+                                                    .monetization_on_outlined,
+                                                color: theme
+                                                    .colorScheme.secondary),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.asset(
-                                      'assets/images/image_placeholder.png',
-                                      width: 100,
-                                      height: 100,
-                                      fit: BoxFit.cover),
-                                ),
                               ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        reserva.spaceName,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                            fontFamily: 'KoHo'),
-                                      ),
-                                      Text(
-                                          DateFormat('dd/MM/yyyy HH:mm').format(
-                                              DateTime.parse(
-                                                  reserva.startTime)),
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              overflow: TextOverflow.ellipsis,
-                                              fontSize: 12,
-                                              fontFamily: 'KoHo'),
-                                          maxLines: 3),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              IconButton(
-                                                icon: Icon(Icons.share,
-                                                    color: theme
-                                                        .colorScheme.surface),
-                                                onPressed: () {},
-                                              ),
-                                              IconButton(
-                                                icon: Icon(Icons.bookmark,
-                                                    color: theme.colorScheme
-                                                        .onBackground),
-                                                onPressed: () {
-                                                  Navigator.pushNamed(
-                                                    context,
-                                                    '/editar-reserva',
-                                                    arguments: reserva,
-                                                  );
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(reserva.status!,
-                                                  style: TextStyle(
-                                                      fontFamily: 'KoHo',
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: theme.colorScheme
-                                                          .secondary)),
-                                              Icon(
-                                                  Icons
-                                                      .monetization_on_outlined,
-                                                  color: theme
-                                                      .colorScheme.secondary),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  );
-                }),
-      ),
+                  ),
+                );
+              }),
     );
   }
 }

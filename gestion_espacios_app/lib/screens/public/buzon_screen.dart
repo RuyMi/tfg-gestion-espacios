@@ -39,38 +39,36 @@ class _BuzonScreenState extends State<BuzonScreen> {
         ),
         backgroundColor: theme.colorScheme.background,
       ),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-               Icon(
-                Icons.developer_mode,
-                size: 100,
-                color: theme.colorScheme.onBackground,
-              ),
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.background,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: theme.colorScheme.onBackground,
-                    width: 2,
-                  ),
-                ),
-                child: const Text(
-                  'En desarrollo',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'KoHo',
-                  ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+             Icon(
+              Icons.developer_mode,
+              size: 100,
+              color: theme.colorScheme.onBackground,
+            ),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.background,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: theme.colorScheme.onBackground,
+                  width: 2,
                 ),
               ),
-            ],
-          ),
+              child: const Text(
+                'En desarrollo',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'KoHo',
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

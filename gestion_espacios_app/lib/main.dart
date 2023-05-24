@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var themeProvider = context.watch<ThemeProvider>();
-    
+
     return MaterialApp(
       title: 'Luis Vives',
       debugShowCheckedModeBanner: false,

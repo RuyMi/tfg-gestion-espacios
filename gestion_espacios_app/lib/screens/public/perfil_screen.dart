@@ -39,119 +39,117 @@ class _PerfilScreenState extends State<PerfilScreen> {
         ),
         backgroundColor: theme.colorScheme.background,
       ),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              Container(
-                width: 75,
-                height: 75,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/profile_pic.png'),
-                    fit: BoxFit.cover,
-                  ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            Container(
+              width: 75,
+              height: 75,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: AssetImage('assets/images/profile_pic.png'),
+                  fit: BoxFit.cover,
                 ),
               ),
-              const SizedBox(height: 20),
-              Text(
-                usuario.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  fontFamily: 'KoHo',
-                ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              usuario.name,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                fontFamily: 'KoHo',
               ),
-              Text(
-                '@${usuario.username}',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontFamily: 'KoHo',
-                ),
+            ),
+            Text(
+              '@${usuario.username}',
+              style: const TextStyle(
+                fontSize: 16,
+                fontFamily: 'KoHo',
               ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    usuario.credits.toString(),
-                    style: TextStyle(
-                      fontFamily: 'KoHo',
-                      color: theme.colorScheme.secondary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  Icon(
-                    Icons.monetization_on_outlined,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  usuario.credits.toString(),
+                  style: TextStyle(
+                    fontFamily: 'KoHo',
                     color: theme.colorScheme.secondary,
-                    size: 20,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+                Icon(
+                  Icons.monetization_on_outlined,
+                  color: theme.colorScheme.secondary,
+                  size: 20,
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: 150,
+              child: Column(
+                children: [
+                  TextButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.settings,
+                          color: theme.colorScheme.onBackground,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Ajustes',
+                          style: TextStyle(
+                              fontFamily: 'KoHo',
+                              color: theme.colorScheme.surface,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    onPressed: () {},
+                  ),
+                  const SizedBox(height: 10),
+                  TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const MyLogoutAlert();
+                        },
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.logout,
+                          color: theme.colorScheme.onBackground,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Cerrar sesión',
+                          style: TextStyle(
+                            fontFamily: 'KoHo',
+                            color: theme.colorScheme.surface,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: 150,
-                child: Column(
-                  children: [
-                    TextButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.settings,
-                            color: theme.colorScheme.onBackground,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            'Ajustes',
-                            style: TextStyle(
-                                fontFamily: 'KoHo',
-                                color: theme.colorScheme.surface,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 10),
-                    TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return const MyLogoutAlert();
-                          },
-                        );
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.logout,
-                            color: theme.colorScheme.onBackground,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            'Cerrar sesión',
-                            style: TextStyle(
-                              fontFamily: 'KoHo',
-                              color: theme.colorScheme.surface,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
