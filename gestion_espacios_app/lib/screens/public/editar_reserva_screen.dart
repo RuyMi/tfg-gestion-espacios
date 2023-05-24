@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/models/reserva.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
+import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/eliminar_elemento.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 final List<String> horas = [
@@ -34,14 +38,27 @@ class _ReservaSala extends State<EditarReservaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
+    final Reserva reserva =
+        ModalRoute.of(context)!.settings.arguments as Reserva;
+    final reservasProvider = Provider.of<ReservasProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
+    final userName = authProvider.usuario.name;
+    final spaceName = reserva.spaceName;
+    String observations = '';
+    String startTime;
+    String endTime;
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
-              'Nombre de la sala',
-              style: TextStyle(
+              reserva.spaceName,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'KoHo',
@@ -68,11 +85,11 @@ class _ReservaSala extends State<EditarReservaScreen> {
               );
             },
             icon: const Icon(Icons.delete_outline),
-            color: MyColors.pinkApp,
+            color: theme.colorScheme.secondary,
             iconSize: 25,
           ),
         ],
-        backgroundColor: MyColors.whiteApp,
+        backgroundColor: theme.colorScheme.background,
       ),
       body: SingleChildScrollView(
         controller: _scrollController,
@@ -86,11 +103,11 @@ class _ReservaSala extends State<EditarReservaScreen> {
                 Container(
                   margin: const EdgeInsets.only(right: 20, left: 20),
                   decoration: BoxDecoration(
-                    color: MyColors.lightBlueApp,
+                    color: theme.colorScheme.onBackground,
                     borderRadius: BorderRadius.circular(50),
                     boxShadow: [
                       BoxShadow(
-                        color: MyColors.blackApp.withOpacity(0.5),
+                        color: theme.colorScheme.surface.withOpacity(0.2),
                         spreadRadius: 2,
                         blurRadius: 5,
                         offset: const Offset(0, 3),
@@ -113,16 +130,16 @@ class _ReservaSala extends State<EditarReservaScreen> {
                           ),
                         ),
                       ),
-                      const Expanded(
+                      Expanded(
                         child: Padding(
-                          padding: EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           child: Text(
-                            'Descripción de la sala',
+                            'Reserva de $userName para el espacio: $spaceName',
                             maxLines: 3,
                             textAlign: TextAlign.start,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              color: MyColors.whiteApp,
+                              color: theme.colorScheme.onSecondary,
                               fontFamily: 'KoHo',
                             ),
                           ),
@@ -131,26 +148,56 @@ class _ReservaSala extends State<EditarReservaScreen> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    keyboardType: TextInputType.text,
+                    onChanged: (value) => observations = value,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.secondary,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.secondary,
+                        ),
+                      ),
+                      labelText: reserva.observations,
+                      labelStyle: TextStyle(
+                          fontFamily: 'KoHo',
+                          color: theme.colorScheme.secondary),
+                      prefixIcon: Icon(Icons.message,
+                          color: theme.colorScheme.secondary),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 20),
-                 Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
+                  children: [
                     Text(
-                      'Fecha',
+                      DateFormat('dd/MM/yyyy HH:mm')
+                          .format(DateTime.parse(reserva.startTime)),
                       style: TextStyle(
                         fontSize: 15,
                         fontFamily: 'KoHo',
                         fontWeight: FontWeight.bold,
-                        color: MyColors.pinkApp,
+                        color: theme.colorScheme.secondary,
                       ),
                     ),
                     Text(
-                      'Hora',
+                      DateFormat('dd/MM/yyyy HH:mm')
+                          .format(DateTime.parse(reserva.endTime)),
                       style: TextStyle(
                         fontSize: 15,
                         fontFamily: 'KoHo',
                         fontWeight: FontWeight.bold,
-                        color: MyColors.pinkApp,
+                        color: theme.colorScheme.secondary,
                       ),
                     ),
                   ],
@@ -162,14 +209,14 @@ class _ReservaSala extends State<EditarReservaScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
-                      color: MyColors.pinkApp,
+                      color: theme.colorScheme.secondary,
                       width: 2,
                     ),
                   ),
                   child: TableCalendar(
-                    headerStyle: const HeaderStyle(
+                    headerStyle: HeaderStyle(
                       titleTextStyle: TextStyle(
-                        color: MyColors.pinkApp,
+                        color: theme.colorScheme.secondary,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'KoHo',
@@ -177,11 +224,11 @@ class _ReservaSala extends State<EditarReservaScreen> {
                       formatButtonVisible: false,
                       leftChevronIcon: Icon(
                         Icons.chevron_left,
-                        color: MyColors.pinkApp,
+                        color: theme.colorScheme.secondary,
                       ),
                       rightChevronIcon: Icon(
                         Icons.chevron_right,
-                        color: MyColors.pinkApp,
+                        color: theme.colorScheme.secondary,
                       ),
                     ),
                     focusedDay: DateTime.now(),
@@ -197,32 +244,32 @@ class _ReservaSala extends State<EditarReservaScreen> {
                         fontFamily: 'KoHo',
                       ),
                       isTodayHighlighted: true,
-                      selectedDecoration: const BoxDecoration(
-                        color: MyColors.pinkApp,
+                      selectedDecoration: BoxDecoration(
+                        color: theme.colorScheme.secondary,
                         shape: BoxShape.circle,
                       ),
-                      selectedTextStyle: const TextStyle(
-                          color: MyColors.whiteApp,
+                      selectedTextStyle: TextStyle(
+                          color: theme.colorScheme.onSecondary,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'KoHo'),
-                      todayDecoration: BoxDecoration(
-                        color: MyColors.blackApp.shade100,
+                      todayDecoration: const BoxDecoration(
+                        color: Colors.grey,
                         shape: BoxShape.circle,
                       ),
-                      todayTextStyle: const TextStyle(
-                          color: MyColors.blackApp,
+                      todayTextStyle: TextStyle(
+                          color: theme.colorScheme.surface,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'KoHo'),
                       weekendTextStyle: const TextStyle(
                           color: Colors.grey, fontFamily: 'KoHo'),
                     ),
-                    daysOfWeekStyle: const DaysOfWeekStyle(
+                    daysOfWeekStyle: DaysOfWeekStyle(
                       weekdayStyle: TextStyle(
-                        color: MyColors.pinkApp,
+                        color: theme.colorScheme.secondary,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'KoHo',
                       ),
-                      weekendStyle: TextStyle(
+                      weekendStyle: const TextStyle(
                         fontFamily: 'KoHo',
                         color: Colors.grey,
                       ),
@@ -280,12 +327,12 @@ class _ReservaSala extends State<EditarReservaScreen> {
                                       curve: Curves.easeInOut);
                                 },
                                 style: ButtonStyle(
-                                  overlayColor:
-                                      MaterialStateProperty.resolveWith<Color>(
+                                  overlayColor: MaterialStateProperty
+                                      .resolveWith<Color>(
                                     (Set<MaterialState> states) {
                                       if (states
                                           .contains(MaterialState.hovered)) {
-                                        return MyColors.pinkApp
+                                        return theme.colorScheme.secondary
                                             .withOpacity(0.2);
                                       }
                                       return Colors.transparent;
@@ -295,18 +342,19 @@ class _ReservaSala extends State<EditarReservaScreen> {
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.center,
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.access_time,
-                                      color: MyColors.blackApp,
+                                      color: theme.colorScheme.surface,
                                     ),
                                     const SizedBox(width: 10),
                                     Text(
                                       hora,
                                       textAlign: TextAlign.right,
-                                      style: const TextStyle(
-                                        color: MyColors.blackApp,
+                                      style: TextStyle(
+                                        color: theme.colorScheme.surface,
                                         fontFamily: 'KoHo',
                                       ),
                                     ),
@@ -322,8 +370,8 @@ class _ReservaSala extends State<EditarReservaScreen> {
                     visible: _isDaySelected,
                     child: Text(
                       'Fecha elegida: ${selectedDay?.day}/${selectedDay?.month}/${selectedDay?.year}',
-                      style: const TextStyle(
-                        color: MyColors.pinkApp,
+                      style: TextStyle(
+                        color: theme.colorScheme.secondary,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'KoHo',
                       ),
@@ -332,8 +380,8 @@ class _ReservaSala extends State<EditarReservaScreen> {
                     visible: _isHourSelected,
                     child: Text(
                       'Hora elegida: $selectedHour',
-                      style: const TextStyle(
-                        color: MyColors.pinkApp,
+                      style: TextStyle(
+                        color: theme.colorScheme.secondary,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'KoHo',
                       ),
@@ -343,8 +391,24 @@ class _ReservaSala extends State<EditarReservaScreen> {
                   visible: _isHourSelected,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/mis-reservas');
-                      showDialog(
+                      startTime =
+                          '${selectedDay?.day}-${selectedDay?.month}-${selectedDay?.year} ${selectedHour?.split(' ')[0]}';
+                      endTime =
+                          '${selectedDay?.day}-${selectedDay?.month}-${selectedDay?.year} ${selectedHour?.split(' ')[2]}';
+
+                      final reservaActualizada = Reserva(
+                        userId: reserva.userId,
+                        spaceId: reserva.spaceId,
+                        startTime: startTime,
+                        endTime: endTime,
+                        userName: reserva.userName,
+                        spaceName: reserva.spaceName,
+                        observations: observations,
+                      );
+
+                      reservasProvider.updateReserva(reservaActualizada).then((_) {
+                        Navigator.pushNamed(context, '/mis-reservas');
+                        showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return const MyMessageDialog(
@@ -352,17 +416,30 @@ class _ReservaSala extends State<EditarReservaScreen> {
                               description:
                                   'Se ha actualizado la reserva correctamente.',
                             );
-                          });
+                          },
+                        );
+                      }).catchError((error) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const MyErrorMessageDialog(
+                                title: 'Error',
+                                description:
+                                    'Ha ocurrido un error al actualizar la reserva.',
+                              );
+                            });
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      backgroundColor: MyColors.pinkApp,
+                      backgroundColor: theme.colorScheme.secondary,
                     ),
-                    child: const Text('Editar reserva',
+                    child: Text('Editar reserva',
                         style: TextStyle(
-                            color: MyColors.whiteApp, fontFamily: 'KoHo')),
+                            color: theme.colorScheme.onSecondary,
+                            fontFamily: 'KoHo')),
                   ),
                 ),
               ],

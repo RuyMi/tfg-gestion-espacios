@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +8,8 @@ class UsuariosBOScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     final usuariosProvider = Provider.of<UsuariosProvider>(context);
     final usuarios = usuariosProvider.usuarios;
 
@@ -27,7 +28,7 @@ class UsuariosBOScreen extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           final usuario = usuarios[index];
           return Card(
-            color: MyColors.lightBlueApp,
+            color: theme.colorScheme.onBackground,
             child: Container(
               constraints: const BoxConstraints(
                 maxHeight: 200,
@@ -41,7 +42,7 @@ class UsuariosBOScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       border: Border.all(
-                        color: MyColors.blackApp,
+                        color: theme.colorScheme.surface,
                         width: 2,
                       ),
                     ),
@@ -59,19 +60,19 @@ class UsuariosBOScreen extends StatelessWidget {
                       children: [
                         Text(
                           usuario.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'KoHo',
-                            color: MyColors.whiteApp,
+                            color: theme.colorScheme.onPrimary,
                           ),
                         ),
                         Text(usuario.username,
-                            style: const TextStyle(
+                            style: TextStyle(
                               overflow: TextOverflow.ellipsis,
                               fontStyle: FontStyle.italic,
                               fontFamily: 'KoHo',
-                              color: MyColors.whiteApp,
+                              color: theme.colorScheme.onPrimary,
                             )),
                       ],
                     ),

@@ -43,40 +43,46 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<Usuario?> login(String username, String password) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/users/login'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(
-        {
-          'username': username,
-          'password': password,
-        },
-      ),
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      Usuario usuario = Usuario(
-        uuid: data['user']['uuid'],
-        name: data['user']['name'],
-        username: data['user']['username'],
-        email: data['user']['email'],
-        password: data['user']['password'],
-        avatar: data['user']['avatar'],
-        userRole: List<String>.from(data['user']['userRole']),
-        credits: data['user']['credits'],
-        isActive: data['user']['isActive'],
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/users/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(
+          {
+            'username': username,
+            'password': password,
+          },
+        ),
       );
 
-      loginSucceed = true;
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        Usuario usuario = Usuario(
+          uuid: data['user']['uuid'],
+          name: data['user']['name'],
+          username: data['user']['username'],
+          email: data['user']['email'],
+          password: data['user']['password'],
+          avatar: data['user']['avatar'],
+          userRole: List<String>.from(data['user']['userRole']),
+          credits: data['user']['credits'],
+          isActive: data['user']['isActive'],
+        );
 
-      _usuario = usuario;
-      _token = data['token'];
+        loginSucceed = true;
+
+        _usuario = usuario;
+        _token = data['token'];
+        notifyListeners();
+
+        return usuario;
+      } else {
+        throw Exception('Error al iniciar sesión');
+      }
+    } catch (e) {
+      loginSucceed = false;
       notifyListeners();
-
-      return usuario;
+      return null;
     }
-
-    return null;
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
 
 class MyBottomNavigationBar extends StatelessWidget {
   const MyBottomNavigationBar({
@@ -13,6 +12,8 @@ class MyBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
@@ -25,12 +26,11 @@ class MyBottomNavigationBar extends StatelessWidget {
             icon: Icon(Icons.person_outline), label: 'Perfil'),
       ],
       currentIndex: selectedIndex,
-      selectedItemColor: MyColors.blackApp,
-      selectedIconTheme: const IconThemeData(
+      selectedIconTheme: IconThemeData(
         size: 30,
-        color: MyColors.lightBlueApp,
+        color: theme.colorScheme.onBackground,
       ),
-      unselectedItemColor: MyColors.blackApp,
+      unselectedItemColor: theme.colorScheme.onSurface,
       showSelectedLabels: false,
       showUnselectedLabels: false,
       iconSize: 25,

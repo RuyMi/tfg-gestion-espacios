@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
-import 'package:gestion_espacios_app/screens/public/editar_reserva_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -17,6 +15,8 @@ class MisReservasScreen extends StatefulWidget {
 class _MisReservasScreenState extends State<MisReservasScreen> {
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     final reservasProvider = Provider.of<ReservasProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
 
@@ -25,13 +25,14 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
     final misReservas = reservasProvider.reservasByUser;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: true,
         centerTitle: true,
         title: const Text('Mis reservas'),
-        titleTextStyle: const TextStyle(
+        titleTextStyle: TextStyle(
           fontFamily: 'KoHo',
-          color: MyColors.blackApp,
+          color: theme.colorScheme.surface,
           fontWeight: FontWeight.bold,
           fontSize: 25,
         ),
@@ -46,30 +47,30 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.search),
-            color: MyColors.blackApp,
+            color: theme.colorScheme.surface,
             iconSize: 25,
           ),
         ],
-        backgroundColor: MyColors.whiteApp,
+        backgroundColor: theme.colorScheme.background,
       ),
       body: misReservas.isEmpty
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.hide_source_rounded,
                     size: 100,
-                    color: MyColors.lightBlueApp,
+                    color: theme.colorScheme.onBackground,
                   ),
                   const SizedBox(height: 20),
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: MyColors.whiteApp,
+                      color: theme.colorScheme.background,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: MyColors.lightBlueApp,
+                        color: theme.colorScheme.onBackground,
                         width: 2,
                       ),
                     ),
@@ -90,7 +91,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
               itemBuilder: (context, index) {
                 final reserva = misReservas[index];
                 return Card(
-                  color: MyColors.lightBlueApp.shade50,
+                  color: theme.colorScheme.onBackground.withOpacity(0.3),
                   margin: const EdgeInsets.all(16),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -104,7 +105,8 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                 borderRadius: BorderRadius.circular(10),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: MyColors.blackApp.withOpacity(0.5),
+                                    color: theme.colorScheme.surface
+                                        .withOpacity(0.2),
                                     spreadRadius: 1,
                                     blurRadius: 5,
                                     offset: const Offset(0, 3),
@@ -127,7 +129,8 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       reserva.spaceName,
@@ -138,7 +141,8 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                     ),
                                     Text(
                                         DateFormat('dd/MM/yyyy HH:mm').format(
-                                            DateTime.parse(reserva.startTime)),
+                                            DateTime.parse(
+                                                reserva.startTime)),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.normal,
                                             overflow: TextOverflow.ellipsis,
@@ -152,20 +156,20 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                         Row(
                                           children: [
                                             IconButton(
-                                              icon: const Icon(Icons.share,
-                                                  color: MyColors.blackApp),
+                                              icon: Icon(Icons.share,
+                                                  color: theme
+                                                      .colorScheme.surface),
                                               onPressed: () {},
                                             ),
                                             IconButton(
-                                              icon: const Icon(Icons.bookmark,
-                                                  color: MyColors.lightBlueApp),
+                                              icon: Icon(Icons.bookmark,
+                                                  color: theme.colorScheme
+                                                      .onBackground),
                                               onPressed: () {
-                                                Navigator.push(
+                                                Navigator.pushNamed(
                                                   context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const EditarReservaScreen(),
-                                                  ),
+                                                  '/editar-reserva',
+                                                  arguments: reserva,
                                                 );
                                               },
                                             ),
@@ -174,13 +178,17 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                         Row(
                                           children: [
                                             Text(reserva.status!,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontFamily: 'KoHo',
-                                                    fontWeight: FontWeight.bold,
-                                                    color: MyColors.pinkApp)),
-                                            const Icon(
-                                                Icons.monetization_on_outlined,
-                                                color: MyColors.pinkApp),
+                                                    fontWeight:
+                                                        FontWeight.bold,
+                                                    color: theme.colorScheme
+                                                        .secondary)),
+                                            Icon(
+                                                Icons
+                                                    .monetization_on_outlined,
+                                                color: theme
+                                                    .colorScheme.secondary),
                                           ],
                                         ),
                                       ],

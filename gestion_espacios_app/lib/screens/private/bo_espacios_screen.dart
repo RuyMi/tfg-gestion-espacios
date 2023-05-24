@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/providers/espacios_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +8,8 @@ class EspaciosBOScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     final espaciosProvider = Provider.of<EspaciosProvider>(context);
     final espacios = espaciosProvider.espacios;
 
@@ -27,7 +28,7 @@ class EspaciosBOScreen extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           final espacio = espacios[index];
           return Card(
-            color: MyColors.lightBlueApp,
+            color: theme.colorScheme.onBackground,
             child: Container(
               constraints: const BoxConstraints(
                 maxHeight: 200,
@@ -41,14 +42,27 @@ class EspaciosBOScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: MyColors.blackApp,
+                        color: theme.colorScheme.surface,
                         width: 2,
                       ),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.asset('assets/images/image_placeholder.png',
-                          width: 100, height: 100, fit: BoxFit.cover),
+                      child: Image.network(
+                        'http://magarcia.asuscomm.com:25546/spaces/storage/${espacio.image}.png',
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return Image.asset(
+                            'assets/images/image_placeholder.png',
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
                     ),
                   ),
                   Padding(
@@ -59,31 +73,31 @@ class EspaciosBOScreen extends StatelessWidget {
                       children: [
                         Text(
                           espacio.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: 'KoHo',
-                            color: MyColors.whiteApp,
+                            color: theme.colorScheme.onPrimary,
                           ),
                         ),
                         Text(espacio.description,
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'KoHo',
-                              color: MyColors.whiteApp,
+                              color: theme.colorScheme.onPrimary,
                             )),
                         const SizedBox(height: 5),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(espacio.price.toString(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontFamily: 'KoHo',
                                     fontWeight: FontWeight.bold,
-                                    color: MyColors.pinkApp)),
-                            const Icon(
+                                    color: theme.colorScheme.secondary)),
+                            Icon(
                               Icons.monetization_on_outlined,
-                              color: MyColors.pinkApp,
+                              color: theme.colorScheme.secondary,
                             ),
                           ],
                         ),
