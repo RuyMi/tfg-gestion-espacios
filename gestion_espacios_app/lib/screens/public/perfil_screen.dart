@@ -85,10 +85,13 @@ class _PerfilScreenState extends State<PerfilScreen> {
                     fontSize: 15,
                   ),
                 ),
-                Icon(
-                  Icons.monetization_on_outlined,
-                  color: theme.colorScheme.secondary,
-                  size: 20,
+                Padding(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: Icon(
+                    Icons.monetization_on_outlined,
+                    color: theme.colorScheme.secondary,
+                    size: 20,
+                  ),
                 ),
               ],
             ),

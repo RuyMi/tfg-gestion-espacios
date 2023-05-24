@@ -9,6 +9,7 @@ class Reserva {
     required this.spaceName,
     this.observations,
     this.status,
+    this.image,
   });
 
   String? uuid;
@@ -20,4 +21,5 @@ class Reserva {
   String spaceName;
   String? observations;
   String? status;
+  String? image;
 }

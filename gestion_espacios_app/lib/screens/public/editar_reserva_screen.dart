@@ -5,6 +5,7 @@ import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/eliminar_elemento.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
+import 'package:gestion_espacios_app/widgets/image_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -123,10 +124,11 @@ class _ReservaSala extends State<EditarReservaScreen> {
                             bottomLeft: Radius.circular(20),
                           ),
                         ),
-                        child: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: AssetImage(
-                            'assets/images/image_placeholder.png',
+                        child: CircleAvatar(
+                          radius: 35,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(75),
+                            child: MyImageWidget(image: reserva.image),
                           ),
                         ),
                       ),
@@ -327,8 +329,8 @@ class _ReservaSala extends State<EditarReservaScreen> {
                                       curve: Curves.easeInOut);
                                 },
                                 style: ButtonStyle(
-                                  overlayColor: MaterialStateProperty
-                                      .resolveWith<Color>(
+                                  overlayColor:
+                                      MaterialStateProperty.resolveWith<Color>(
                                     (Set<MaterialState> states) {
                                       if (states
                                           .contains(MaterialState.hovered)) {
@@ -342,8 +344,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Icon(
                                       Icons.access_time,
@@ -406,7 +407,9 @@ class _ReservaSala extends State<EditarReservaScreen> {
                         observations: observations,
                       );
 
-                      reservasProvider.updateReserva(reservaActualizada).then((_) {
+                      reservasProvider
+                          .updateReserva(reservaActualizada)
+                          .then((_) {
                         Navigator.pushNamed(context, '/mis-reservas');
                         showDialog(
                           context: context,

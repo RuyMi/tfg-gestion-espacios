@@ -24,8 +24,9 @@ class AppTheme {
     );
   }
 
-  static ColorScheme lightColorScheme = const ColorScheme(
+  static ColorScheme lightColorScheme = ColorScheme(
     primary: MyColors.lightBlueApp,
+    inversePrimary: MyColors.lightBlueApp.shade50,
     onPrimary: MyColors.whiteApp,
     primaryContainer: MyColors.lightBlueApp,
     secondary: MyColors.pinkApp,
@@ -40,8 +41,9 @@ class AppTheme {
     brightness: Brightness.light,
   );
 
-  static ColorScheme darkColorScheme = const ColorScheme(
+  static ColorScheme darkColorScheme = ColorScheme(
     primary: MyColors.darkBlueApp,
+    inversePrimary: MyColors.darkBlueApp.shade400,
     onPrimary: MyColors.whiteApp,
     primaryContainer: MyColors.darkBlueApp,
     secondary: MyColors.pinkApp,

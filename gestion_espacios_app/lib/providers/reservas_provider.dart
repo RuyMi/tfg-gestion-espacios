@@ -44,6 +44,7 @@ class ReservasProvider with ChangeNotifier {
                   status: json['status'],
                   userName: json['userName'],
                   spaceName: json['spaceName'],
+                  image: json['image'],
                 ))
             .toList();
 
@@ -76,6 +77,7 @@ class ReservasProvider with ChangeNotifier {
           status: data['status'],
           userName: data['userName'],
           spaceName: data['spaceName'],
+          image: data['image'],
         );
       } else {
         throw Exception('Error al obtener la reserva.');
@@ -106,6 +108,7 @@ class ReservasProvider with ChangeNotifier {
                   status: json['status'],
                   userName: json['userName'],
                   spaceName: json['spaceName'],
+                  image: json['image'],
                 ))
             .toList();
 
@@ -140,6 +143,7 @@ class ReservasProvider with ChangeNotifier {
                   status: json['status'],
                   userName: json['userName'],
                   spaceName: json['spaceName'],
+                  image: json['image'],
                 ))
             .toList();
 
@@ -174,6 +178,7 @@ class ReservasProvider with ChangeNotifier {
                   status: json['status'],
                   userName: json['userName'],
                   spaceName: json['spaceName'],
+                  image: json['image'],
                 ))
             .toList();
 
@@ -208,6 +213,7 @@ class ReservasProvider with ChangeNotifier {
                   status: json['status'],
                   userName: json['userName'],
                   spaceName: json['spaceName'],
+                  image: json['image'],
                 ))
             .toList();
 
@@ -239,6 +245,7 @@ class ReservasProvider with ChangeNotifier {
           status: data['status'],
           userName: data['userName'],
           spaceName: data['spaceName'],
+          image: data['image'],
         ));
 
         notifyListeners();
@@ -270,6 +277,7 @@ class ReservasProvider with ChangeNotifier {
           status: data['status'],
           userName: data['userName'],
           spaceName: data['spaceName'],
+          image: data['image'],
         );
 
         notifyListeners();

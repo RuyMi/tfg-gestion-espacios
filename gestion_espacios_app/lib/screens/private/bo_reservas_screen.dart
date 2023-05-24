@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
+import 'package:gestion_espacios_app/widgets/image_widget.dart';
 import 'package:provider/provider.dart';
 
 class ReservasBOScreen extends StatelessWidget {
@@ -48,12 +49,7 @@ class ReservasBOScreen extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        'assets/images/image_placeholder.png',
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
+                      child: MyImageWidget(image: reserva.image),
                     ),
                   ),
                   Padding(
@@ -88,7 +84,7 @@ class ReservasBOScreen extends StatelessWidget {
                                     color: theme.colorScheme.secondary)),
                             const SizedBox(width: 5),
                             Icon(
-                              Icons.timelapse_rounded,
+                              Icons.info_outline_rounded,
                               color: theme.colorScheme.secondary,
                             ),
                           ],

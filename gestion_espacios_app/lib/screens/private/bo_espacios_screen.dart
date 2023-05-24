@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gestion_espacios_app/providers/espacios_provider.dart';
+import 'package:gestion_espacios_app/widgets/image_widget.dart';
 import 'package:provider/provider.dart';
 
 class EspaciosBOScreen extends StatelessWidget {
@@ -48,21 +49,7 @@ class EspaciosBOScreen extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        'http://magarcia.asuscomm.com:25546/spaces/storage/${espacio.image}.png',
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                        errorBuilder: (BuildContext context, Object exception,
-                            StackTrace? stackTrace) {
-                          return Image.asset(
-                            'assets/images/image_placeholder.png',
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      ),
+                      child: MyImageWidget(image: espacio.image),
                     ),
                   ),
                   Padding(
@@ -95,9 +82,12 @@ class EspaciosBOScreen extends StatelessWidget {
                                     fontFamily: 'KoHo',
                                     fontWeight: FontWeight.bold,
                                     color: theme.colorScheme.secondary)),
-                            Icon(
-                              Icons.monetization_on_outlined,
-                              color: theme.colorScheme.secondary,
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2.0),
+                              child: Icon(
+                                Icons.monetization_on_outlined,
+                                color: theme.colorScheme.secondary,
+                              ),
                             ),
                           ],
                         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
+import 'package:gestion_espacios_app/widgets/image_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -90,116 +91,140 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
               itemCount: misReservas.length,
               itemBuilder: (context, index) {
                 final reserva = misReservas[index];
-                return Card(
-                  color: theme.colorScheme.onBackground.withOpacity(0.3),
-                  margin: const EdgeInsets.all(16),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(left: 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: theme.colorScheme.surface
-                                        .withOpacity(0.2),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                    'assets/images/image_placeholder.png',
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.cover),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      reserva.spaceName,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          fontFamily: 'KoHo'),
-                                    ),
-                                    Text(
-                                        DateFormat('dd/MM/yyyy HH:mm').format(
-                                            DateTime.parse(
-                                                reserva.startTime)),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            overflow: TextOverflow.ellipsis,
-                                            fontSize: 12,
-                                            fontFamily: 'KoHo'),
-                                        maxLines: 3),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            IconButton(
-                                              icon: Icon(Icons.share,
-                                                  color: theme
-                                                      .colorScheme.surface),
-                                              onPressed: () {},
-                                            ),
-                                            IconButton(
-                                              icon: Icon(Icons.bookmark,
-                                                  color: theme.colorScheme
-                                                      .onBackground),
-                                              onPressed: () {
-                                                Navigator.pushNamed(
-                                                  context,
-                                                  '/editar-reserva',
-                                                  arguments: reserva,
-                                                );
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(reserva.status!,
-                                                style: TextStyle(
-                                                    fontFamily: 'KoHo',
-                                                    fontWeight:
-                                                        FontWeight.bold,
-                                                    color: theme.colorScheme
-                                                        .secondary)),
-                                            Icon(
-                                                Icons
-                                                    .monetization_on_outlined,
-                                                color: theme
-                                                    .colorScheme.secondary),
-                                          ],
-                                        ),
-                                      ],
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/editar-reserva',
+                      arguments: reserva,
+                    );
+                  },
+                  child: Card(
+                    color: theme.colorScheme.inversePrimary,
+                    margin: const EdgeInsets.only(
+                        top: 5, bottom: 5, left: 10, right: 10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: theme.colorScheme.surface
+                                          .withOpacity(0.2),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 3),
                                     ),
                                   ],
                                 ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: MyImageWidget(image: reserva.image),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        reserva.spaceName,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            fontFamily: 'KoHo'),
+                                      ),
+                                      Text(
+                                          DateFormat('dd/MM/yyyy HH:mm').format(
+                                              DateTime.parse(
+                                                  reserva.startTime)),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              overflow: TextOverflow.ellipsis,
+                                              fontSize: 12,
+                                              fontFamily: 'KoHo'),
+                                          maxLines: 2),
+                                      const SizedBox(
+                                        height: 18,
+                                      ),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              IconButton(
+                                                padding: EdgeInsets.zero,
+                                                constraints:
+                                                    const BoxConstraints(),
+                                                icon: Icon(Icons.share,
+                                                    color: theme
+                                                        .colorScheme.surface,
+                                                    size: 20),
+                                                onPressed: () {},
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              IconButton(
+                                                padding: EdgeInsets.zero,
+                                                constraints:
+                                                    const BoxConstraints(),
+                                                icon: Icon(Icons.bookmark,
+                                                    color: theme.colorScheme
+                                                        .onBackground,
+                                                    size: 20),
+                                                onPressed: () {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    '/editar-reserva',
+                                                    arguments: reserva,
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(reserva.status!,
+                                                  style: TextStyle(
+                                                      fontFamily: 'KoHo',
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: theme.colorScheme
+                                                          .secondary,
+                                                      fontSize: 12)),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Icon(Icons.info_outline_rounded,
+                                                  color: theme
+                                                      .colorScheme.secondary,
+                                                  size: 16),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
