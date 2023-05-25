@@ -83,7 +83,7 @@ class UsuariosProvider with ChangeNotifier {
         body: jsonEncode(usuario),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         final data = jsonDecode(response.body);
         _usuarios.add(Usuario(
           uuid: data['user']['uuid'],
@@ -109,11 +109,15 @@ class UsuariosProvider with ChangeNotifier {
     return usuario;
   }
 
-  Future<void> updateUsuario(String uuid) async {
+  Future<void> updateUsuario(String uuid, Usuario usuario) async {
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/users/$uuid'),
-        headers: {'Authorization': 'Bearer $_token'},
+        headers: {
+          'Authorization': 'Bearer $_token',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(usuario),
       );
 
       if (response.statusCode == 200) {
@@ -179,36 +183,31 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updateMe() async {
+  Future<void> updateMe(Usuario usuario) async {
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/users/me'),
-        headers: {'Authorization': 'Bearer $_token'},
+        headers: {
+          'Authorization': 'Bearer $_token',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(usuario),
       );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        _usuarios.firstWhere((element) => element.uuid == data['uuid']).name =
-            data['name'];
-        _usuarios
-            .firstWhere((element) => element.uuid == data['uuid'])
-            .username = data['username'];
-        _usuarios.firstWhere((element) => element.uuid == data['uuid']).email =
-            data['email'];
-        _usuarios
-            .firstWhere((element) => element.uuid == data['uuid'])
-            .password = data['password'];
-        _usuarios.firstWhere((element) => element.uuid == data['uuid']).avatar =
-            data['avatar'];
-        _usuarios
-            .firstWhere((element) => element.uuid == data['uuid'])
-            .userRole = List<String>.from(data['userRole']);
-        _usuarios
-            .firstWhere((element) => element.uuid == data['uuid'])
-            .credits = data['credits'];
-        _usuarios
-            .firstWhere((element) => element.uuid == data['uuid'])
-            .isActive = data['isActive'];
+        _usuarios[_usuarios
+            .indexWhere((element) => element.uuid == usuario.uuid)] = Usuario(
+          uuid: data['uuid'],
+          name: data['name'],
+          username: data['username'],
+          email: data['email'],
+          password: data['password'],
+          avatar: data['avatar'],
+          userRole: List<String>.from(data['userRole']),
+          credits: data['credits'],
+          isActive: data['isActive'],
+        );
         notifyListeners();
       } else {
         throw Exception('Error al actualizar el usuario.');
@@ -225,7 +224,7 @@ class UsuariosProvider with ChangeNotifier {
         headers: {'Authorization': 'Bearer $_token'},
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 204) {
         _usuarios.removeWhere((element) => element.uuid == uuid);
         notifyListeners();
       } else {

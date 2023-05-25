@@ -230,10 +230,13 @@ class ReservasProvider with ChangeNotifier {
   Future<void> addReserva(Reserva reserva) async {
     try {
       final response = await http.post(Uri.parse('$baseUrl/bookings'),
-          headers: {'Authorization': 'Bearer $_token'},
+          headers: {
+            'Authorization': 'Bearer $_token',
+            'Content-Type': 'application/json'
+          },
           body: jsonEncode(reserva));
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         final data = jsonDecode(response.body);
         _reservas.add(Reserva(
           uuid: data['uuid'],
@@ -261,7 +264,10 @@ class ReservasProvider with ChangeNotifier {
     try {
       final response = await http.put(
           Uri.parse('$baseUrl/bookings/${reserva.uuid}'),
-          headers: {'Authorization': 'Bearer $_token'},
+          headers: {
+            'Authorization': 'Bearer $_token',
+            'Content-Type': 'application/json'
+          },
           body: jsonEncode(reserva));
 
       if (response.statusCode == 200) {
@@ -289,12 +295,13 @@ class ReservasProvider with ChangeNotifier {
     }
   }
 
-  Future<void> deleteReserva(String uuid) async {
+  Future<void> deleteReserva(String uuid, String userId) async {
     try {
-      final response = await http.delete(Uri.parse('$baseUrl/bookings/$uuid'),
+      final response = await http.delete(
+          Uri.parse('$baseUrl/bookings/$uuid/$userId'),
           headers: {'Authorization': 'Bearer $_token'});
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 204) {
         _reservas.removeWhere((element) => element.uuid == uuid);
 
         notifyListeners();

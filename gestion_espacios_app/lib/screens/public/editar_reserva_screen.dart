@@ -393,9 +393,9 @@ class _ReservaSala extends State<EditarReservaScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       startTime =
-                          '${selectedDay?.day}-${selectedDay?.month}-${selectedDay?.year} ${selectedHour?.split(' ')[0]}';
+                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:00';
                       endTime =
-                          '${selectedDay?.day}-${selectedDay?.month}-${selectedDay?.year} ${selectedHour?.split(' ')[2]}';
+                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:00';
 
                       final reservaActualizada = Reserva(
                         userId: reserva.userId,
@@ -405,6 +405,8 @@ class _ReservaSala extends State<EditarReservaScreen> {
                         userName: reserva.userName,
                         spaceName: reserva.spaceName,
                         observations: observations,
+                        status: reserva.status,
+                        image: reserva.image,
                       );
 
                       reservasProvider

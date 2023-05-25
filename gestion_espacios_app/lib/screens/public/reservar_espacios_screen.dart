@@ -374,9 +374,9 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       startTime =
-                          '${selectedDay?.day}-${selectedDay?.month}-${selectedDay?.year} ${selectedHour?.split(' ')[0]}';
+                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:00';
                       endTime =
-                          '${selectedDay?.day}-${selectedDay?.month}-${selectedDay?.year} ${selectedHour?.split(' ')[2]}';
+                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:00';
 
                       final reserva = Reserva(
                         userId: userId,
@@ -386,6 +386,8 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                         userName: userName,
                         spaceName: spaceName,
                         observations: observations,
+                        status: 'PENDING',
+                        image: espacio.image,
                       );
 
                       reservasProvider.addReserva(reserva).then((_) {
