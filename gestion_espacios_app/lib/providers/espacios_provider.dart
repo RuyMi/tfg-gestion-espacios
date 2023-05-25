@@ -143,7 +143,10 @@ class EspaciosProvider with ChangeNotifier {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/spaces'),
-        headers: {'Authorization': 'Bearer $_token'},
+        headers: {
+          'Authorization': 'Bearer $_token',
+          'Content-Type': 'application/json'
+        },
         body: jsonEncode(espacio),
       );
 
@@ -173,7 +176,10 @@ class EspaciosProvider with ChangeNotifier {
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/spaces/${espacio.uuid}'),
-        headers: {'Authorization': 'Bearer $_token'},
+        headers: {
+          'Authorization': 'Bearer $_token',
+          'Content-Type': 'application/json'
+        },
         body: jsonEncode(espacio),
       );
 

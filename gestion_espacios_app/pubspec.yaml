@@ -46,10 +46,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/logo.png
-    - assets/images/profile_pic.png
-    - assets/images/image_placeholder.png
-    - assets/images/sala_stock.jpg
+    - assets/images/
 
   fonts:
     - family: KoHo

@@ -5,6 +5,7 @@ import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
+import 'package:gestion_espacios_app/widgets/image_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -134,21 +135,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                           radius: 35,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(75),
-                            child: Image.network(
-                              'http://magarcia.asuscomm.com:25546/spaces/storage/${espacio.image}.png',
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                              errorBuilder: (BuildContext context,
-                                  Object exception, StackTrace? stackTrace) {
-                                return Image.asset(
-                                  'assets/images/image_placeholder.png',
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            ),
+                            child: MyImageWidget(image: espacio.image),
                           ),
                         ),
                       ),
@@ -323,8 +310,8 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                                       curve: Curves.easeInOut);
                                 },
                                 style: ButtonStyle(
-                                  overlayColor: MaterialStateProperty
-                                      .resolveWith<Color>(
+                                  overlayColor:
+                                      MaterialStateProperty.resolveWith<Color>(
                                     (Set<MaterialState> states) {
                                       if (states
                                           .contains(MaterialState.hovered)) {
@@ -338,8 +325,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Icon(
                                       Icons.access_time,
@@ -388,9 +374,9 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       startTime =
-                          '${selectedDay?.day}-${selectedDay?.month}-${selectedDay?.year} ${selectedHour?.split(' ')[0]}';
+                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:00';
                       endTime =
-                          '${selectedDay?.day}-${selectedDay?.month}-${selectedDay?.year} ${selectedHour?.split(' ')[2]}';
+                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:00';
 
                       final reserva = Reserva(
                         userId: userId,
@@ -400,6 +386,8 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                         userName: userName,
                         spaceName: spaceName,
                         observations: observations,
+                        status: 'PENDING',
+                        image: espacio.image,
                       );
 
                       reservasProvider.addReserva(reserva).then((_) {

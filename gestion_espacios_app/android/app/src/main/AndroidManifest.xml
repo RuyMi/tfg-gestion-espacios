@@ -2,7 +2,7 @@
     package="com.example.gestion_espacios_app">
    <application
         android:label="gestion_espacios_app"
-        android:name="Luis Vives"
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

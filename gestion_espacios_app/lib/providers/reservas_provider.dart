@@ -6,8 +6,10 @@ import 'package:http/http.dart' as http;
 
 class ReservasProvider with ChangeNotifier {
   final String? _token;
+  final String? _userId;
 
   List<Reserva> _reservas = [];
+  List<Reserva> _misReservas = [];
   List<Reserva> _reservasByUser = [];
   List<Reserva> _reservasBySpace = [];
   List<Reserva> _reservasByStatus = [];
@@ -15,11 +17,13 @@ class ReservasProvider with ChangeNotifier {
 
   List<Reserva> get reservas => _reservas;
   List<Reserva> get reservasByUser => _reservasByUser;
+  List<Reserva> get misReservas => _misReservas;
   List<Reserva> get reservasBySpace => _reservasBySpace;
   List<Reserva> get reservasByStatus => _reservasByStatus;
   List<Reserva> get reservasByTime => _reservasByTime;
 
-  ReservasProvider(this._token) {
+  ReservasProvider(this._token, this._userId) {
+    fetchMyReservas();
     fetchReservas();
   }
 
@@ -44,6 +48,7 @@ class ReservasProvider with ChangeNotifier {
                   status: json['status'],
                   userName: json['userName'],
                   spaceName: json['spaceName'],
+                  image: json['image'],
                 ))
             .toList();
 
@@ -76,12 +81,48 @@ class ReservasProvider with ChangeNotifier {
           status: data['status'],
           userName: data['userName'],
           spaceName: data['spaceName'],
+          image: data['image'],
         );
       } else {
         throw Exception('Error al obtener la reserva.');
       }
     } catch (e) {
       return null;
+    }
+  }
+
+  Future<void> fetchMyReservas() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/bookings/user/$_userId'),
+        headers: {'Authorization': 'Bearer $_token'},
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final results = data['data'] as List<dynamic>;
+        _misReservas = results
+            .map((json) => Reserva(
+                  uuid: json['uuid'],
+                  userId: json['userId'],
+                  spaceId: json['spaceId'],
+                  startTime: json['startTime'],
+                  endTime: json['endTime'],
+                  observations: json['observations'],
+                  status: json['status'],
+                  userName: json['userName'],
+                  spaceName: json['spaceName'],
+                  image: json['image'],
+                ))
+            .toList();
+
+        notifyListeners();
+      } else {
+        throw Exception('Error al obtener las reservas.');
+      }
+    } catch (e) {
+      _misReservas = [];
+      notifyListeners();
     }
   }
 
@@ -106,6 +147,7 @@ class ReservasProvider with ChangeNotifier {
                   status: json['status'],
                   userName: json['userName'],
                   spaceName: json['spaceName'],
+                  image: json['image'],
                 ))
             .toList();
 
@@ -140,6 +182,7 @@ class ReservasProvider with ChangeNotifier {
                   status: json['status'],
                   userName: json['userName'],
                   spaceName: json['spaceName'],
+                  image: json['image'],
                 ))
             .toList();
 
@@ -174,6 +217,7 @@ class ReservasProvider with ChangeNotifier {
                   status: json['status'],
                   userName: json['userName'],
                   spaceName: json['spaceName'],
+                  image: json['image'],
                 ))
             .toList();
 
@@ -208,6 +252,7 @@ class ReservasProvider with ChangeNotifier {
                   status: json['status'],
                   userName: json['userName'],
                   spaceName: json['spaceName'],
+                  image: json['image'],
                 ))
             .toList();
 
@@ -224,10 +269,13 @@ class ReservasProvider with ChangeNotifier {
   Future<void> addReserva(Reserva reserva) async {
     try {
       final response = await http.post(Uri.parse('$baseUrl/bookings'),
-          headers: {'Authorization': 'Bearer $_token'},
+          headers: {
+            'Authorization': 'Bearer $_token',
+            'Content-Type': 'application/json'
+          },
           body: jsonEncode(reserva));
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         final data = jsonDecode(response.body);
         _reservas.add(Reserva(
           uuid: data['uuid'],
@@ -239,6 +287,7 @@ class ReservasProvider with ChangeNotifier {
           status: data['status'],
           userName: data['userName'],
           spaceName: data['spaceName'],
+          image: data['image'],
         ));
 
         notifyListeners();
@@ -254,7 +303,10 @@ class ReservasProvider with ChangeNotifier {
     try {
       final response = await http.put(
           Uri.parse('$baseUrl/bookings/${reserva.uuid}'),
-          headers: {'Authorization': 'Bearer $_token'},
+          headers: {
+            'Authorization': 'Bearer $_token',
+            'Content-Type': 'application/json'
+          },
           body: jsonEncode(reserva));
 
       if (response.statusCode == 200) {
@@ -270,6 +322,7 @@ class ReservasProvider with ChangeNotifier {
           status: data['status'],
           userName: data['userName'],
           spaceName: data['spaceName'],
+          image: data['image'],
         );
 
         notifyListeners();
@@ -281,12 +334,13 @@ class ReservasProvider with ChangeNotifier {
     }
   }
 
-  Future<void> deleteReserva(String uuid) async {
+  Future<void> deleteReserva(String uuid, String userId) async {
     try {
-      final response = await http.delete(Uri.parse('$baseUrl/bookings/$uuid'),
+      final response = await http.delete(
+          Uri.parse('$baseUrl/bookings/$uuid/$userId'),
           headers: {'Authorization': 'Bearer $_token'});
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 204) {
         _reservas.removeWhere((element) => element.uuid == uuid);
 
         notifyListeners();

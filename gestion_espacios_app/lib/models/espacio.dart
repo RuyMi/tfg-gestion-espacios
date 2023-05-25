@@ -20,4 +20,18 @@ class Espacio {
   bool requiresAuthorization;
   List<String> authorizedRoles;
   String bookingWindow;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'uuid': uuid,
+      'name': name,
+      'description': description,
+      'image': image,
+      'price': price,
+      'isReservable': isReservable,
+      'requiresAuthorization': requiresAuthorization,
+      'authorizedRoles': authorizedRoles,
+      'bookingWindow': bookingWindow,
+    };
+  }
 }

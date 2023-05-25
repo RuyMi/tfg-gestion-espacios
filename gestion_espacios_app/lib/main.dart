@@ -16,9 +16,9 @@ void main() {
         ChangeNotifierProvider.value(value: ThemeProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProxyProvider<AuthProvider, UsuariosProvider>(
-          create: (context) => UsuariosProvider(null),
+          create: (context) => UsuariosProvider(null, null),
           update: (context, authProvider, _) =>
-              UsuariosProvider(authProvider.token),
+              UsuariosProvider(authProvider.token, authProvider.userId),
         ),
         ChangeNotifierProxyProvider<AuthProvider, EspaciosProvider>(
           create: (context) => EspaciosProvider(null),
@@ -26,9 +26,9 @@ void main() {
               EspaciosProvider(authProvider.token),
         ),
         ChangeNotifierProxyProvider<AuthProvider, ReservasProvider>(
-          create: (context) => ReservasProvider(null),
+          create: (context) => ReservasProvider(null, null),
           update: (context, authProvider, _) =>
-              ReservasProvider(authProvider.token),
+              ReservasProvider(authProvider.token, authProvider.userId),
         ),
       ],
       child: const MyApp(),
