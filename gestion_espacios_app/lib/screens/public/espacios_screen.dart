@@ -14,6 +14,14 @@ class EspaciosScreen extends StatefulWidget {
 
 class _EspaciosScreenState extends State<EspaciosScreen> {
   @override
+  void initState() {
+    super.initState();
+    final espaciosProvider =
+        Provider.of<EspaciosProvider>(context, listen: false);
+    espaciosProvider.fetchEspaciosByReservable(true);
+  }
+
+  @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 

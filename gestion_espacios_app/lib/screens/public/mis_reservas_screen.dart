@@ -14,6 +14,14 @@ class MisReservasScreen extends StatefulWidget {
 
 class _MisReservasScreenState extends State<MisReservasScreen> {
   @override
+  void initState() {
+    super.initState();
+    final reservasProvider =
+        Provider.of<ReservasProvider>(context, listen: false);
+    reservasProvider.fetchMyReservas();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
