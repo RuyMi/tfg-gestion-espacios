@@ -21,7 +21,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
     final usuario = authProvider.usuario;
 
     final espaciosProvider = Provider.of<EspaciosProvider>(context);
-    final espacios = espaciosProvider.espaciosReservables;
+    var espacios = espaciosProvider.espaciosReservables;
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -71,8 +71,13 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.search),
+              onPressed: () async {
+                await espaciosProvider.fetchEspacios();
+                setState(() {
+                  espacios = espaciosProvider.espaciosReservables;
+                });
+              },
+              icon: const Icon(Icons.refresh_rounded),
               color: theme.colorScheme.surface,
               iconSize: 25,
             ),

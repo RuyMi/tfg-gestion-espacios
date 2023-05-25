@@ -6,8 +6,10 @@ import 'package:http/http.dart' as http;
 
 class ReservasProvider with ChangeNotifier {
   final String? _token;
+  final String? _userId;
 
   List<Reserva> _reservas = [];
+  List<Reserva> _misReservas = [];
   List<Reserva> _reservasByUser = [];
   List<Reserva> _reservasBySpace = [];
   List<Reserva> _reservasByStatus = [];
@@ -15,11 +17,13 @@ class ReservasProvider with ChangeNotifier {
 
   List<Reserva> get reservas => _reservas;
   List<Reserva> get reservasByUser => _reservasByUser;
+  List<Reserva> get misReservas => _misReservas;
   List<Reserva> get reservasBySpace => _reservasBySpace;
   List<Reserva> get reservasByStatus => _reservasByStatus;
   List<Reserva> get reservasByTime => _reservasByTime;
 
-  ReservasProvider(this._token) {
+  ReservasProvider(this._token, this._userId) {
+    fetchMyReservas();
     fetchReservas();
   }
 
@@ -84,6 +88,41 @@ class ReservasProvider with ChangeNotifier {
       }
     } catch (e) {
       return null;
+    }
+  }
+
+  Future<void> fetchMyReservas() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/bookings/user/$_userId'),
+        headers: {'Authorization': 'Bearer $_token'},
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final results = data['data'] as List<dynamic>;
+        _misReservas = results
+            .map((json) => Reserva(
+                  uuid: json['uuid'],
+                  userId: json['userId'],
+                  spaceId: json['spaceId'],
+                  startTime: json['startTime'],
+                  endTime: json['endTime'],
+                  observations: json['observations'],
+                  status: json['status'],
+                  userName: json['userName'],
+                  spaceName: json['spaceName'],
+                  image: json['image'],
+                ))
+            .toList();
+
+        notifyListeners();
+      } else {
+        throw Exception('Error al obtener las reservas.');
+      }
+    } catch (e) {
+      _misReservas = [];
+      notifyListeners();
     }
   }
 

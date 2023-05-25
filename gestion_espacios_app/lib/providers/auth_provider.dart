@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 class AuthProvider with ChangeNotifier {
   String _token = '';
+  String _userId = '';
 
   Usuario _usuario = Usuario(
     uuid: '',
@@ -22,6 +23,7 @@ class AuthProvider with ChangeNotifier {
   bool loginSucceed = false;
   Usuario get usuario => _usuario;
   String get token => _token;
+  String get userId => _userId;
 
   String baseUrl = 'http://magarcia.asuscomm.com:25546';
 
@@ -73,6 +75,7 @@ class AuthProvider with ChangeNotifier {
 
         _usuario = usuario;
         _token = data['token'];
+        _userId = data['user']['uuid'];
         notifyListeners();
 
         return usuario;

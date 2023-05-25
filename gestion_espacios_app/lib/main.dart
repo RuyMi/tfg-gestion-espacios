@@ -26,9 +26,9 @@ void main() {
               EspaciosProvider(authProvider.token),
         ),
         ChangeNotifierProxyProvider<AuthProvider, ReservasProvider>(
-          create: (context) => ReservasProvider(null),
+          create: (context) => ReservasProvider(null, null),
           update: (context, authProvider, _) =>
-              ReservasProvider(authProvider.token),
+              ReservasProvider(authProvider.token, authProvider.userId),
         ),
       ],
       child: const MyApp(),

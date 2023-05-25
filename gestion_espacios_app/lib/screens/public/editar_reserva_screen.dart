@@ -79,9 +79,10 @@ class _ReservaSala extends State<EditarReservaScreen> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (BuildContext context) => const MyDeleteAlert(
+                builder: (BuildContext context) => MyDeleteAlert(
                   title: '¿Está seguro de que desea eliminar la reserva?',
                   ruta: '/mis-reservas',
+                  elemento: reserva,
                 ),
               );
             },
@@ -398,6 +399,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                           '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:00';
 
                       final reservaActualizada = Reserva(
+                        uuid: reserva.uuid,
                         userId: reserva.userId,
                         spaceId: reserva.spaceId,
                         startTime: startTime,

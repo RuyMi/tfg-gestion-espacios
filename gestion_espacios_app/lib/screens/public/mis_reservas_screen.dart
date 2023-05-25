@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/widgets/image_widget.dart';
 import 'package:provider/provider.dart';
@@ -19,11 +18,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
     var theme = Theme.of(context);
 
     final reservasProvider = Provider.of<ReservasProvider>(context);
-    final authProvider = Provider.of<AuthProvider>(context);
-
-    final usuario = authProvider.usuario;
-    reservasProvider.fetchReservasByUser(usuario.uuid);
-    final misReservas = reservasProvider.reservasByUser;
+    var misReservas = reservasProvider.misReservas;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -46,8 +41,13 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
+            onPressed: () async {
+              await reservasProvider.fetchMyReservas();
+              setState(() {
+                misReservas = reservasProvider.misReservas;
+              });
+            },
+            icon: const Icon(Icons.refresh_rounded),
             color: theme.colorScheme.surface,
             iconSize: 25,
           ),

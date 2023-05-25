@@ -217,7 +217,7 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
-  Future<void> deleteUsuarios(String uuid) async {
+  Future<void> deleteUsuario(String uuid) async {
     try {
       final response = await http.delete(
         Uri.parse('$baseUrl/users/$uuid'),
