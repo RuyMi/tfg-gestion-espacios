@@ -72,7 +72,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
           actions: [
             IconButton(
               onPressed: () async {
-                await espaciosProvider.fetchEspacios();
+                await espaciosProvider.fetchEspaciosByReservable(true);
                 setState(() {
                   espacios = espaciosProvider.espaciosReservables;
                 });
