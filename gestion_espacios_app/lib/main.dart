@@ -16,9 +16,9 @@ void main() {
         ChangeNotifierProvider.value(value: ThemeProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProxyProvider<AuthProvider, UsuariosProvider>(
-          create: (context) => UsuariosProvider(null),
+          create: (context) => UsuariosProvider(null, null),
           update: (context, authProvider, _) =>
-              UsuariosProvider(authProvider.token),
+              UsuariosProvider(authProvider.token, authProvider.userId),
         ),
         ChangeNotifierProxyProvider<AuthProvider, EspaciosProvider>(
           create: (context) => EspaciosProvider(null),

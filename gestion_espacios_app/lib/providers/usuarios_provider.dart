@@ -6,13 +6,27 @@ import 'package:http/http.dart' as http;
 
 class UsuariosProvider with ChangeNotifier {
   String? _token;
+  final String? _userId;
 
   List<Usuario> _usuarios = [];
+  Usuario _actualUsuario = Usuario(
+    uuid: '',
+    name: '',
+    username: '',
+    email: '',
+    password: '',
+    avatar: '',
+    userRole: [],
+    credits: 0,
+    isActive: false,
+  );
 
   List<Usuario> get usuarios => _usuarios;
+  Usuario get actualUsuario => _actualUsuario;
 
-  UsuariosProvider(this._token) {
+  UsuariosProvider(this._token, this._userId) {
     fetchUsuarios();
+    fetchActualUsuario();
   }
 
   String baseUrl = 'http://magarcia.asuscomm.com:25546';
@@ -49,14 +63,14 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
-  Future<Usuario?> fetchUsuario(String uuid) async {
+  Future<Usuario?> fetchActualUsuario() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/users/$uuid'),
+      final response = await http.get(Uri.parse('$baseUrl/users/$_userId'),
           headers: {'Authorization': 'Bearer $_token'});
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return Usuario(
+        _actualUsuario = Usuario(
           uuid: data['uuid'],
           name: data['name'],
           username: data['username'],
@@ -67,6 +81,38 @@ class UsuariosProvider with ChangeNotifier {
           credits: data['credits'],
           isActive: data['isActive'],
         );
+
+        notifyListeners();
+        return _actualUsuario;
+      } else {
+        throw Exception('Error al obtener el usuario.');
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<Usuario?> fetchUsuario(String uuid) async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/users/$uuid'),
+          headers: {'Authorization': 'Bearer $_token'});
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        var usuario = Usuario(
+          uuid: data['uuid'],
+          name: data['name'],
+          username: data['username'],
+          email: data['email'],
+          password: data['password'],
+          avatar: data['avatar'],
+          userRole: List<String>.from(data['userRole']),
+          credits: data['credits'],
+          isActive: data['isActive'],
+        );
+
+        notifyListeners();
+        return usuario;
       } else {
         throw Exception('Error al obtener el usuario.');
       }

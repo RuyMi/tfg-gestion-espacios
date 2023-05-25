@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/providers/auth_provider.dart';
+import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
 import 'package:gestion_espacios_app/widgets/logout_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -13,9 +13,17 @@ class PerfilScreen extends StatefulWidget {
 
 class _PerfilScreenState extends State<PerfilScreen> {
   @override
+  void initState() {
+    super.initState();
+    final usuarioProvider =
+        Provider.of<UsuariosProvider>(context, listen: false);
+    usuarioProvider.fetchActualUsuario();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    final usuario = authProvider.usuario;
+    final usuarioProvider = Provider.of<UsuariosProvider>(context);
+    final usuario = usuarioProvider.actualUsuario;
     var theme = Theme.of(context);
 
     return Scaffold(
