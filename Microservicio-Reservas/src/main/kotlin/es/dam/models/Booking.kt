@@ -21,6 +21,7 @@ data class Booking(
     val userName: String,
     val spaceId: String,
     val spaceName: String,
+    val image: String?,
     @Serializable(with = LocalDateTimeSerializer::class)
     val startTime: LocalDateTime,
     @Serializable(with = LocalDateTimeSerializer::class)

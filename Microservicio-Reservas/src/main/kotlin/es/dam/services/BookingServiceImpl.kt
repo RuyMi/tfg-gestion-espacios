@@ -45,9 +45,12 @@ class BookingServiceImpl(
         val bookingOriginal = repository.findById(UUID.fromString(id))
         val bookingUpdated = bookingOriginal.copy(
             userId = entity.userId,
+            userName = entity.userName,
             spaceId = entity.spaceId,
+            spaceName = entity.spaceName,
+            image = entity.image,
             startTime = entity.startTime,
-            endTime = entity.startTime,
+            endTime = entity.endTime,
             observations = entity.observations,
             status = entity.status
         )

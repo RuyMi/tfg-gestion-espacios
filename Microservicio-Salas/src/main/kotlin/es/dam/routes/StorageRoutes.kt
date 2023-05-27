@@ -11,6 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.core.qualifier.named
 import org.koin.ktor.ext.inject
+import java.io.File
 import java.util.*
 
 fun Application.storageRoutes() {
@@ -49,7 +50,7 @@ fun Application.storageRoutes() {
                     val file = storageService.getFile(fileName)
                     call.respondFile(file)
                 }catch (e: Exception){
-                    call.respond(HttpStatusCode.NotFound, "No se ha encontrado el archivo con el nombre: $fileName")
+                    //Creame
                 }
             }
 

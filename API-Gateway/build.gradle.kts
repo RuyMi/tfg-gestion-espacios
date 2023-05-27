@@ -41,6 +41,7 @@ dependencies {
     implementation("io.ktor:ktor-server-openapi:$ktor_version")
     implementation("io.ktor:ktor-server-websockets-jvm:$ktor_version")
     implementation("io.ktor:ktor-network-tls-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-cors:$ktor_version")
 
     //Tests
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")

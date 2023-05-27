@@ -39,7 +39,7 @@ class KtorFitBookingsRepository: IBookingsRepository {
         try {
             return@withContext call.await()
         } catch (e: Exception) {
-            throw Exception("Error getting booking with space's id $id ${e.message}")
+            return@withContext BookingDataDTO(emptyList())
         }
     }
 

@@ -12,6 +12,7 @@ fun BookingDtoCreate.toModel() = Booking(
     spaceName = this.spaceName,
     userId = this.userId,
     userName = this.userName,
+    image = this.image,
     startTime = LocalDateTime.parse(this.startTime),
     endTime = LocalDateTime.parse(this.endTime),
     observations = this.observations,
@@ -23,6 +24,7 @@ fun BookingDtoUpdate.toModel() = Booking(
     spaceName = this.spaceName,
     userId = this.userId,
     userName = this.userName,
+    image = this.image,
     startTime = LocalDateTime.parse(this.startTime),
     endTime = LocalDateTime.parse(this.endTime),
     observations = this.observations,
@@ -30,10 +32,10 @@ fun BookingDtoUpdate.toModel() = Booking(
 )
 
 fun Booking.toDTO() = BookingDto(
-    id = this.id.toString(),
     uuid = this.uuid,
     spaceId = this.spaceId,
     spaceName = this.spaceName,
+    image = this.image,
     userId = this.userId,
     userName = this.userName,
     startTime = this.startTime.toString(),
