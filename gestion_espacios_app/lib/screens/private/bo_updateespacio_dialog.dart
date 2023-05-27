@@ -23,6 +23,8 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
   late TextEditingController descriptionController;
   late TextEditingController priceController;
   late TextEditingController bookingWindowController;
+  late TextEditingController isReservableController;
+  late TextEditingController requiresAuthorizationController;
 
   @override
   void initState() {
@@ -34,6 +36,10 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
         TextEditingController(text: widget.espacio.price.toString());
     bookingWindowController =
         TextEditingController(text: widget.espacio.bookingWindow);
+    isReservableController =
+        TextEditingController(text: widget.espacio.isReservable.toString());
+    requiresAuthorizationController = TextEditingController(
+        text: widget.espacio.requiresAuthorization.toString());
   }
 
   @override
@@ -42,6 +48,8 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
     descriptionController.dispose();
     priceController.dispose();
     bookingWindowController.dispose();
+    isReservableController.dispose();
+    requiresAuthorizationController.dispose();
     super.dispose();
   }
 
@@ -49,14 +57,11 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     final espaciosProvider = Provider.of<EspaciosProvider>(context);
-
     final Espacio espacio = widget.espacio;
     String name = widget.espacio.name;
     String description = widget.espacio.description;
     String? image = widget.espacio.image;
     int price = widget.espacio.price;
-    bool isReservable = widget.espacio.isReservable;
-    bool requiresAuthorization = widget.espacio.requiresAuthorization;
     List<String> authorizedRoles = widget.espacio.authorizedRoles;
     String bookingWindow = widget.espacio.bookingWindow;
 
@@ -160,10 +165,10 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
               CheckboxListTile(
                 title: Text('Reservable',
                     style: TextStyle(color: theme.colorScheme.onPrimary)),
-                value: isReservable,
+                value: isReservableController.text == 'true',
                 onChanged: (bool? newValue) {
                   setState(() {
-                    isReservable = newValue!;
+                    isReservableController.text = newValue!.toString();
                   });
                 },
                 activeColor: theme.colorScheme.onBackground,
@@ -178,10 +183,10 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                   'Autorización requerida',
                   style: TextStyle(color: theme.colorScheme.onPrimary),
                 ),
-                value: requiresAuthorization,
+                value: requiresAuthorizationController.text == 'true',
                 onChanged: (bool? newValue) {
                   setState(() {
-                    requiresAuthorization = newValue!;
+                    requiresAuthorizationController.text = newValue!.toString();
                   });
                 },
                 activeColor: theme.colorScheme.onBackground,
@@ -333,8 +338,9 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                       description: description,
                       price: price,
                       image: image,
-                      isReservable: isReservable,
-                      requiresAuthorization: requiresAuthorization,
+                      isReservable: isReservableController.text == 'true',
+                      requiresAuthorization:
+                          requiresAuthorizationController.text == 'true',
                       authorizedRoles: authorizedRoles,
                       bookingWindow: bookingWindow,
                     );
