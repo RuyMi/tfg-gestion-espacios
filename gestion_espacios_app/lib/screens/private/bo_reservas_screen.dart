@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
+import 'package:gestion_espacios_app/widgets/image_widget.dart';
 import 'package:provider/provider.dart';
 
 class ReservasBOScreen extends StatelessWidget {
@@ -9,6 +9,8 @@ class ReservasBOScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     final reservasProvider = Provider.of<ReservasProvider>(context);
     final reservas = reservasProvider.reservas;
 
@@ -27,7 +29,7 @@ class ReservasBOScreen extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           final reserva = reservas[index];
           return Card(
-            color: MyColors.lightBlueApp,
+            color: theme.colorScheme.onBackground,
             child: Container(
               constraints: const BoxConstraints(
                 maxHeight: 200,
@@ -41,18 +43,13 @@ class ReservasBOScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: MyColors.blackApp,
+                        color: theme.colorScheme.surface,
                         width: 2,
                       ),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        'assets/images/image_placeholder.png',
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
+                      child: MyImageWidget(image: reserva.image),
                     ),
                   ),
                   Padding(
@@ -63,32 +60,32 @@ class ReservasBOScreen extends StatelessWidget {
                       children: [
                         Text(
                           reserva.spaceName,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: 'KoHo',
-                            color: MyColors.whiteApp,
+                            color: theme.colorScheme.onPrimary,
                           ),
                         ),
                         Text('@${reserva.userName}',
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'KoHo',
-                              color: MyColors.whiteApp,
+                              color: theme.colorScheme.onPrimary,
                             )),
                         const SizedBox(height: 5),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(reserva.status!,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontFamily: 'KoHo',
                                     fontWeight: FontWeight.bold,
-                                    color: MyColors.pinkApp)),
+                                    color: theme.colorScheme.secondary)),
                             const SizedBox(width: 5),
-                            const Icon(
-                              Icons.timelapse_rounded,
-                              color: MyColors.pinkApp,
+                            Icon(
+                              Icons.info_outline_rounded,
+                              color: theme.colorScheme.secondary,
                             ),
                           ],
                         ),

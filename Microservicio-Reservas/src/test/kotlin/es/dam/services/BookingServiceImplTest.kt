@@ -38,7 +38,9 @@ class BookingServiceImplTest {
         status = Booking.Status.PENDING,
         startTime = LocalDateTime.now(),
         endTime = LocalDateTime.now(),
-        phone = "123456789",
+        observations =  "test",
+        userName = "test",
+        spaceName = "test"
     )
 
 
@@ -57,7 +59,9 @@ class BookingServiceImplTest {
             { assertEquals(booking.status, result[0].status) },
             { assertEquals(booking.startTime, result[0].startTime) },
             { assertEquals(booking.endTime, result[0].endTime) },
-            { assertEquals(booking.phone, result[0].phone) },
+            { assertEquals(booking.observations, result[0].observations) },
+            { assertEquals(booking.spaceName, result[0].spaceName) },
+            { assertEquals(booking.userName, result[0].userName) }
         )
     }
 
@@ -77,7 +81,9 @@ class BookingServiceImplTest {
             { assertEquals(booking.status, result[0].status) },
             { assertEquals(booking.startTime, result[0].startTime) },
             { assertEquals(booking.endTime, result[0].endTime) },
-            { assertEquals(booking.phone, result[0].phone) },
+            { assertEquals(booking.observations, result[0].observations) },
+            { assertEquals(booking.spaceName, result[0].spaceName) },
+            { assertEquals(booking.userName, result[0].userName) }
         )
     }
 
@@ -96,7 +102,9 @@ class BookingServiceImplTest {
             { assertEquals(booking.status, result.status) },
             { assertEquals(booking.startTime, result.startTime) },
             { assertEquals(booking.endTime, result.endTime) },
-            { assertEquals(booking.phone, result.phone) }
+            { assertEquals(booking.observations, result.observations) },
+            { assertEquals(booking.spaceName, result.spaceName) },
+            { assertEquals(booking.userName, result.userName) }
         )
     }
 
@@ -126,7 +134,9 @@ class BookingServiceImplTest {
             { assertEquals(booking.status, result[0].status) },
             { assertEquals(booking.startTime, result[0].startTime) },
             { assertEquals(booking.endTime, result[0].endTime) },
-            { assertEquals(booking.phone, result[0].phone) })
+            { assertEquals(booking.observations, result[0].observations) },
+            { assertEquals(booking.spaceName, result[0].spaceName) },
+            { assertEquals(booking.userName, result[0].userName) })
     }
 
     @Test
@@ -155,7 +165,9 @@ class BookingServiceImplTest {
             { assertEquals(booking.status, result[0].status) },
             { assertEquals(booking.startTime, result[0].startTime) },
             { assertEquals(booking.endTime, result[0].endTime) },
-            { assertEquals(booking.phone, result[0].phone) })
+            { assertEquals(booking.observations, result[0].observations) },
+            { assertEquals(booking.spaceName, result[0].spaceName) },
+            { assertEquals(booking.userName, result[0].userName) })
     }
 
     @Test
@@ -183,7 +195,9 @@ class BookingServiceImplTest {
             { assertEquals(booking.status, result.status) },
             { assertEquals(booking.startTime, result.startTime) },
             { assertEquals(booking.endTime, result.endTime) },
-            { assertEquals(booking.phone, result.phone) })
+            { assertEquals(booking.observations, result.observations) },
+            { assertEquals(booking.spaceName, result.spaceName) },
+            { assertEquals(booking.userName, result.userName) })
     }
 
     @Test
@@ -212,7 +226,9 @@ class BookingServiceImplTest {
             { assertEquals(booking.status, result.status) },
             { assertEquals(booking.startTime, result.startTime) },
             { assertEquals(booking.endTime, result.endTime) },
-            { assertEquals(booking.phone, result.phone) })
+            { assertEquals(booking.observations, result.observations) },
+            { assertEquals(booking.spaceName, result.spaceName) },
+            { assertEquals(booking.userName, result.userName) })
     }
 
     @Test

@@ -7,8 +7,9 @@ class Reserva {
     required this.endTime,
     required this.userName,
     required this.spaceName,
-    this.phone,
+    this.observations,
     this.status,
+    this.image,
   });
 
   String? uuid;
@@ -18,6 +19,22 @@ class Reserva {
   String endTime;
   String userName;
   String spaceName;
-  String? phone;
+  String? observations;
   String? status;
+  String? image;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'uuid': uuid,
+      'userId': userId,
+      'spaceId': spaceId,
+      'startTime': startTime,
+      'endTime': endTime,
+      'userName': userName,
+      'spaceName': spaceName,
+      'observations': observations,
+      'status': status,
+      'image': image,
+    };
+  }
 }

@@ -49,12 +49,15 @@ class _BOMainScreenState extends State<BOMainScreen>
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           toolbarHeight: 100,
-          backgroundColor: MyColors.lightBlueApp.shade100,
+          backgroundColor: theme.colorScheme.primary.withOpacity(0.3),
           automaticallyImplyLeading: false,
           title: Row(
             children: [
@@ -64,9 +67,9 @@ class _BOMainScreenState extends State<BOMainScreen>
                 height: 100,
               ),
               const SizedBox(width: 10),
-               Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'BackOffice',
                     style: TextStyle(
@@ -97,8 +100,8 @@ class _BOMainScreenState extends State<BOMainScreen>
               Tab(text: 'Salas'),
               Tab(text: 'Usuarios'),
             ],
-            labelColor: MyColors.blackApp,
-            unselectedLabelColor: MyColors.blackApp,
+            labelColor: theme.colorScheme.surface,
+            unselectedLabelColor: theme.colorScheme.surface,
             labelPadding: const EdgeInsets.symmetric(horizontal: 16.0),
             labelStyle: const TextStyle(
               overflow: TextOverflow.ellipsis,
@@ -112,9 +115,9 @@ class _BOMainScreenState extends State<BOMainScreen>
               fontSize: 16,
               fontWeight: FontWeight.normal,
             ),
-            indicator: const UnderlineTabIndicator(
+            indicator: UnderlineTabIndicator(
               borderSide: BorderSide(
-                color: MyColors.pinkApp,
+                color: theme.colorScheme.secondary,
                 width: 4.0,
               ),
             ),
@@ -122,7 +125,7 @@ class _BOMainScreenState extends State<BOMainScreen>
           actions: [
             IconButton(
               icon: const Icon(Icons.logout),
-              color: MyColors.blackApp,
+              color: theme.colorScheme.surface,
               iconSize: 25,
               onPressed: () {
                 showDialog(
@@ -156,13 +159,13 @@ class _BOMainScreenState extends State<BOMainScreen>
                           borderSide: BorderSide.none,
                         ),
                         hintText: 'Buscar',
-                        hintStyle: const TextStyle(
+                        hintStyle: TextStyle(
                           fontFamily: 'KoHo',
-                          color: MyColors.pinkApp,
+                          color: theme.colorScheme.secondary,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        prefixIcon: const Icon(Icons.search,
-                            color: MyColors.pinkApp, size: 30),
+                        prefixIcon: Icon(Icons.search,
+                            color: theme.colorScheme.secondary, size: 30),
                       ),
                       onChanged: (value) {
                         setState(() {
@@ -176,11 +179,11 @@ class _BOMainScreenState extends State<BOMainScreen>
                     visible: _showNewButton,
                     child: ElevatedButton.icon(
                       onPressed: () {},
-                      icon: const Icon(Icons.add, color: MyColors.whiteApp),
-                      label: const Text(
+                      icon: Icon(Icons.add, color: theme.colorScheme.onSecondary),
+                      label: Text(
                         'Nuevo',
                         style: TextStyle(
-                          color: MyColors.whiteApp,
+                          color: theme.colorScheme.onSecondary,
                           overflow: TextOverflow.ellipsis,
                           fontFamily: 'KoHo',
                           fontSize: 20,
@@ -190,7 +193,7 @@ class _BOMainScreenState extends State<BOMainScreen>
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        backgroundColor: MyColors.pinkApp,
+                        backgroundColor: theme.colorScheme.secondary,
                       ),
                     ),
                   ),
@@ -198,12 +201,13 @@ class _BOMainScreenState extends State<BOMainScreen>
                     visible: _tabController.index == 0,
                     child: Row(
                       children: [
-                        const Icon(Icons.person, color: MyColors.lightBlueApp),
+                        Icon(Icons.person,
+                            color: theme.colorScheme.onBackground),
                         Switch(
-                          focusColor: MyColors.pinkApp,
-                          activeColor: MyColors.pinkApp,
-                          inactiveTrackColor: MyColors.lightBlueApp.shade100,
-                          inactiveThumbColor: MyColors.lightBlueApp,
+                          focusColor: theme.colorScheme.secondary,
+                          activeColor: theme.colorScheme.secondary,
+                          inactiveTrackColor: theme.colorScheme.onBackground.withOpacity(0.2),
+                          inactiveThumbColor: theme.colorScheme.onBackground,
                           value: _sortByUsers,
                           onChanged: (value) {
                             setState(() {
@@ -212,8 +216,8 @@ class _BOMainScreenState extends State<BOMainScreen>
                             });
                           },
                         ),
-                        const Icon(Icons.calendar_today,
-                            color: MyColors.pinkApp),
+                        Icon(Icons.calendar_today,
+                            color: theme.colorScheme.secondary),
                       ],
                     ),
                   )

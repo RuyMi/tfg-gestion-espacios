@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
-import 'package:gestion_espacios_app/providers/auth_provider.dart';
+import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
 import 'package:gestion_espacios_app/widgets/logout_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -14,17 +13,28 @@ class PerfilScreen extends StatefulWidget {
 
 class _PerfilScreenState extends State<PerfilScreen> {
   @override
+  void initState() {
+    super.initState();
+    final usuarioProvider =
+        Provider.of<UsuariosProvider>(context, listen: false);
+    usuarioProvider.fetchActualUsuario();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    final usuario = authProvider.usuario;
+    final usuarioProvider = Provider.of<UsuariosProvider>(context);
+    final usuario = usuarioProvider.actualUsuario;
+    var theme = Theme.of(context);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Perfil'),
-        titleTextStyle: const TextStyle(
+        titleTextStyle: TextStyle(
           fontFamily: 'KoHo',
-          color: MyColors.blackApp,
+          color: theme.colorScheme.surface,
           fontWeight: FontWeight.bold,
           fontSize: 25,
         ),
@@ -35,7 +45,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
           },
           icon: const Icon(Icons.arrow_back_ios_rounded),
         ),
-        backgroundColor: MyColors.whiteApp,
+        backgroundColor: theme.colorScheme.background,
       ),
       body: Center(
         child: Column(
@@ -76,17 +86,20 @@ class _PerfilScreenState extends State<PerfilScreen> {
               children: [
                 Text(
                   usuario.credits.toString(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'KoHo',
-                    color: MyColors.pinkApp,
+                    color: theme.colorScheme.secondary,
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
                   ),
                 ),
-                const Icon(
-                  Icons.monetization_on_outlined,
-                  color: MyColors.pinkApp,
-                  size: 20,
+                Padding(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: Icon(
+                    Icons.monetization_on_outlined,
+                    color: theme.colorScheme.secondary,
+                    size: 20,
+                  ),
                 ),
               ],
             ),
@@ -98,14 +111,17 @@ class _PerfilScreenState extends State<PerfilScreen> {
                   TextButton(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.settings),
-                        SizedBox(width: 10),
+                      children: [
+                        Icon(
+                          Icons.settings,
+                          color: theme.colorScheme.onBackground,
+                        ),
+                        const SizedBox(width: 10),
                         Text(
                           'Ajustes',
                           style: TextStyle(
                               fontFamily: 'KoHo',
-                              color: MyColors.blackApp,
+                              color: theme.colorScheme.surface,
                               fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -124,14 +140,17 @@ class _PerfilScreenState extends State<PerfilScreen> {
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.logout),
-                        SizedBox(width: 10),
+                      children: [
+                        Icon(
+                          Icons.logout,
+                          color: theme.colorScheme.onBackground,
+                        ),
+                        const SizedBox(width: 10),
                         Text(
                           'Cerrar sesión',
                           style: TextStyle(
                             fontFamily: 'KoHo',
-                            color: MyColors.blackApp,
+                            color: theme.colorScheme.surface,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -144,7 +163,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
           ],
         ),
       ),
-      backgroundColor: MyColors.whiteApp,
     );
   }
 }
