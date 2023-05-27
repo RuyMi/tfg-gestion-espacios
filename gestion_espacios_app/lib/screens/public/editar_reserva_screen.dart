@@ -22,7 +22,10 @@ final List<String> horas = [
 ];
 
 class EditarReservaScreen extends StatefulWidget {
-  const EditarReservaScreen({super.key});
+  final Reserva reserva;
+
+  const EditarReservaScreen({Key? key, required this.reserva})
+      : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -40,6 +43,13 @@ class _ReservaSala extends State<EditarReservaScreen> {
   late TextEditingController observationsController;
 
   @override
+  void initState() {
+    super.initState();
+    observationsController =
+        TextEditingController(text: widget.reserva.observations);
+  }
+
+  @override
   void dispose() {
     observationsController.dispose();
     super.dispose();
@@ -49,8 +59,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    final Reserva reserva =
-        ModalRoute.of(context)!.settings.arguments as Reserva;
+    final Reserva reserva = widget.reserva;
     final reservasProvider = Provider.of<ReservasProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
     final userName = authProvider.usuario.name;
@@ -404,10 +413,12 @@ class _ReservaSala extends State<EditarReservaScreen> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    startTime =
-                        '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:00';
-                    endTime =
-                        '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:00';
+                    if (selectedDay != null && selectedHour != null) {
+                      startTime =
+                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:00';
+                      endTime =
+                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:00';
+                    }
 
                     final reservaActualizada = Reserva(
                       uuid: reserva.uuid,

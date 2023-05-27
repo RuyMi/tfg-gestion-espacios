@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
         '/buzon': (context) => const BuzonScreen(),
         '/perfil': (context) => const PerfilScreen(),
         '/reservar-espacio': (context) => const ReservaEspacioScreen(),
-        '/editar-reserva': (context) => const EditarReservaScreen(),
+        // '/editar-reserva': (context) => const EditarReservaScreen(),
 
         // Private
         '/login-bo': (context) => const BOLoginScreen(),

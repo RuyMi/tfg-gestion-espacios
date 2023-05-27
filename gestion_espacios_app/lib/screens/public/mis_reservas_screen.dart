@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
+import 'package:gestion_espacios_app/screens/screens.dart';
 import 'package:gestion_espacios_app/widgets/image_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -101,10 +102,13 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                 final reserva = misReservas[index];
                 return InkWell(
                   onTap: () {
-                    Navigator.pushNamed(
+                    Navigator.push(
                       context,
-                      '/editar-reserva',
-                      arguments: reserva,
+                      MaterialPageRoute(
+                        builder: (context) => EditarReservaScreen(
+                          reserva: reserva,
+                        ),
+                      ),
                     );
                   },
                   child: Card(

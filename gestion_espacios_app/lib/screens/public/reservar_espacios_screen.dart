@@ -28,13 +28,14 @@ class ReservaEspacioScreen extends StatefulWidget {
   _ReservaSala createState() => _ReservaSala();
 }
 
-// ignore: must_be_immutable
 class _ReservaSala extends State<ReservaEspacioScreen> {
   bool _isDaySelected = false;
   bool _isHourSelected = false;
   DateTime? selectedDay;
   String? selectedHour;
   final ScrollController _scrollController = ScrollController();
+
+  String observations = '';
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,6 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
     final userName = authProvider.usuario.name;
     final spaceId = espacio.uuid;
     final spaceName = espacio.name;
-    String observations = '';
     String startTime;
     String endTime;
 
