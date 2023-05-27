@@ -4,12 +4,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class BookingDto(
-    val id: String,
     val uuid:String,
     val userId: String,
     val userName: String,
     val spaceId: String,
     val spaceName: String,
+    val image: String?,
     val startTime: String,
     val endTime: String,
     val observations: String?,
@@ -22,6 +22,7 @@ data class BookingDtoCreate(
     val userName: String,
     val spaceId: String,
     val spaceName: String,
+    val image: String?,
     val startTime: String,
     val endTime: String,
     val observations: String?,
@@ -34,6 +35,7 @@ data class BookingDtoUpdate(
     val userName: String,
     val spaceId: String,
     val spaceName: String,
+    val image: String?,
     val startTime: String,
     val endTime: String,
     val observations: String?,

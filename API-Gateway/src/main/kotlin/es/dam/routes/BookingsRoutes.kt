@@ -162,7 +162,7 @@ fun Application.bookingsRoutes() {
                 post() {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
-                        val entity = call.receive<BookingCreateDTO>()
+                        var entity = call.receive<BookingCreateDTO>()
                         val user = userRepository.findById("Bearer $token", entity.userId)
                         val space = spaceRepository.findById("Bearer $token", entity.spaceId)
 
@@ -186,14 +186,13 @@ fun Application.bookingsRoutes() {
                         )
                         {"Franja horaria no disponible."}
 
-                        val booking: Deferred<BookingResponseDTO>
-
-                        if(!space.requiresAuthorization){
-                            booking = async {
+                        entity = entity.copy(spaceName = space.name, userName = user.name, image = space.image)
+                        val booking: Deferred<BookingResponseDTO> = if(!space.requiresAuthorization){
+                            async {
                                 bookingsRepository.create("Bearer $token", entity.copy(status = "APPROVED"))
                             }
                         }else{
-                            booking = async {
+                            async {
                                 bookingsRepository.create("Bearer $token", entity)
                             }
                         }
@@ -242,7 +241,8 @@ fun Application.bookingsRoutes() {
                             }
                         }
 
-                        call.respond(HttpStatusCode.OK, updatedbooking.await())
+                        val updated = updatedbooking.await()
+                        call.respond(HttpStatusCode.OK, updated)
 
                     } catch (e: BookingNotFoundException) {
                         call.respond(HttpStatusCode.NotFound, "${e.message}")

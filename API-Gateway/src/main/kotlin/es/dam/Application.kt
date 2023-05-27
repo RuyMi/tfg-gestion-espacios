@@ -11,6 +11,7 @@ fun Application.module() {
     configureKoin()
     configureSecurity()
     //configureHTTP()
+    configureCors()
     configureSockets()
     configureSerialization()
     //configureSwagger()
