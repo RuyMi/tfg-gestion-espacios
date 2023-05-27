@@ -6,20 +6,24 @@ import kotlinx.serialization.Serializable
 data class BookingResponseDTO(
     val uuid: String,
     val userId: String,
+    val userName: String,
     val spaceId: String,
+    val spaceName: String,
     val startTime: String,
     val endTime: String,
-    val phone: String? = null,
+    val observations: String? = null,
     val status: String
 )
 
 @Serializable
 data class BookingCreateDTO(
     val userId: String,
+    val userName: String,
     val spaceId: String,
+    val spaceName: String,
     val startTime: String,
     val endTime: String,
-    val phone: String? = null,
+    val observations: String? = null,
     val status: String = "PENDING"
 )
 
@@ -31,9 +35,11 @@ data class BookingDataDTO(
 @Serializable
 data class BookingUpdateDTO(
     val userId: String,
+    val userName: String,
     val spaceId: String,
+    val spaceName: String,
     val startTime: String,
     val endTime: String,
-    val phone: String? = null,
+    val observations: String? = null,
     val status: String
 )

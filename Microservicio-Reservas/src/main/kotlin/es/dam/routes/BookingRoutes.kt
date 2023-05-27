@@ -95,16 +95,8 @@ fun Application.bookingRoutes(){
             val id = call.parameters["id"]
             val date = call.parameters["date"]
             try {
-                val data = id?.let { bookingService.findBySpaceId(id) }
                 LocalDate.parse(date)
-                val dataFiltered = data?.filter { it -> it.startTime.toString().split("T")[0] == date.toString() }
-                if (dataFiltered != null) {
-                    if (dataFiltered.isEmpty())
-                        call.respond(
-                            HttpStatusCode.NotFound,
-                            "No se ha encontrado ninguna reserva para la sala con uuid: $id cuya fecha de reserva sea: $date"
-                        )
-                }
+                val data = id?.let { bookingService.findByDate(id, date!!) }
                 val res = BookingAllDto(
                     data = data!!.map { it.toDTO() }
                 )

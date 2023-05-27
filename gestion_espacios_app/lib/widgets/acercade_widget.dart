@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AcercaDeWidget extends StatelessWidget {
@@ -7,9 +6,11 @@ class AcercaDeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return AlertDialog(
       contentPadding: const EdgeInsets.all(16),
-      backgroundColor: MyColors.lightBlueApp,
+      backgroundColor: theme.colorScheme.onBackground,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -21,9 +22,9 @@ class AcercaDeWidget extends StatelessWidget {
             Container(
               width: 100,
               height: 100,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: MyColors.whiteApp,
+                color: theme.colorScheme.onSecondary,
               ),
               padding: const EdgeInsets.all(4),
               child: ClipOval(
@@ -39,29 +40,29 @@ class AcercaDeWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.location_on, color: MyColors.whiteApp, size: 24),
-                SizedBox(width: 8),
+                Icon(Icons.location_on, color: theme.colorScheme.onSecondary, size: 24),
+                const SizedBox(width: 8),
                 Text('P.º de la Ermita, 15, \n28918 Leganés, Madrid',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: MyColors.whiteApp,
+                      color: theme.colorScheme.onSecondary,
                       fontFamily: 'KoHo',
                     )),
               ],
             ),
             const SizedBox(height: 8),
-            const Row(
+             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.phone, color: MyColors.whiteApp, size: 24),
-                SizedBox(width: 8),
+                Icon(Icons.phone, color: theme.colorScheme.onSecondary, size: 24),
+                const SizedBox(width: 8),
                 Text('916 80 77 12',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: MyColors.whiteApp,
+                      color: theme.colorScheme.onSecondary,
                       fontFamily: 'KoHo',
                     )),
               ],
@@ -70,7 +71,7 @@ class AcercaDeWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.language, color: MyColors.whiteApp, size: 24),
+                Icon(Icons.language, color: theme.colorScheme.onSecondary, size: 24),
                 const SizedBox(width: 8),
                 GestureDetector(
                   onTap: () async {
@@ -79,11 +80,11 @@ class AcercaDeWidget extends StatelessWidget {
                       await launchUrl(url);
                     }
                   },
-                  child: const Text(
-                    'https://www.iesluisvives.es/',
+                  child: Text(
+                    'Página Web',
                     style: TextStyle(
-                      color: MyColors.whiteApp,
-                      decoration: TextDecoration.underline,
+                      color: theme.colorScheme.onSecondary,
+                      decoration: TextDecoration.none,
                       fontFamily: 'KoHo',
                     ),
                   ),
@@ -94,7 +95,7 @@ class AcercaDeWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.people, color: MyColors.whiteApp, size: 24),
+                Icon(Icons.people, color: theme.colorScheme.onSecondary, size: 24),
                 const SizedBox(width: 8),
                 GestureDetector(
                   onTap: () async {
@@ -104,11 +105,11 @@ class AcercaDeWidget extends StatelessWidget {
                       await launchUrl(url);
                     }
                   },
-                  child: const Text(
-                    '@ies_luisvives',
+                  child: Text(
+                    'Twitter',
                     style: TextStyle(
-                      color: MyColors.whiteApp,
-                      decoration: TextDecoration.underline,
+                      color: theme.colorScheme.onSecondary,
+                      decoration: TextDecoration.none,
                       fontFamily: 'KoHo',
                     ),
                   ),

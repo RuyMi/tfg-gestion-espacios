@@ -1,6 +1,7 @@
 package es.dam.routes
 
 import es.dam.dto.BookingCreateDTO
+import es.dam.dto.BookingResponseDTO
 import es.dam.services.token.TokensService
 import es.dam.dto.BookingUpdateDTO
 import es.dam.exceptions.BookingBadRequestException
@@ -16,6 +17,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import org.koin.ktor.ext.inject
 import java.lang.IllegalArgumentException
@@ -172,15 +174,13 @@ fun Application.bookingsRoutes() {
                         require(Period.between(LocalDate.now(),LocalDate.parse(entity.startTime.split("T")[0])).days <= space.bookingWindow.toInt())
                         {"No se puede reservar con tanta anterioridad."}
                         require(bookingsRepository.findByTime("Bearer $token", entity.spaceId, entity.startTime.split("T")[0])
-                                .data
-                                .filter{it -> it.startTime == entity.startTime}
-                                .isEmpty()
+                            .data
+                            .filter{it -> it.startTime.split("T")[1].split(":")[0] == entity.startTime.split("T")[1].split(":")[0]}
+                            .isEmpty()
                         )
                         {"Franja horaria no disponible."}
 
-                         */
-
-                        var booking = async {  }
+                        val booking: Deferred<BookingResponseDTO>
 
                         if(!space.requiresAuthorization){
                             booking = async {
@@ -199,6 +199,8 @@ fun Application.bookingsRoutes() {
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: BookingInternalErrorException) {
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    } catch (e: Exception) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     }
                 }
 
@@ -208,23 +210,23 @@ fun Application.bookingsRoutes() {
                         val id = call.parameters["id"]
                         val booking = call.receive<BookingUpdateDTO>()
 
-                        require(bookingsRepository.findByUser(token, booking.userId).data.filter{it.userId == booking.userId}.isEmpty())
+                        require(bookingsRepository.findByUser("Bearer $token", booking.userId).data.filter{it.userId == booking.userId}.isNotEmpty())
                         {"La reserva que se quiere actualizar no está guardada bajo el mismo usuario."}
                         require(LocalDateTime.parse(booking.startTime) > LocalDateTime.now())
                         {"No se ha podio guardar la reserva fecha introducida es anterior a la actual."}
                         require(Period.between(LocalDate.now(),LocalDate.parse(booking.startTime.split("T")[0])).days <=
-                                spaceRepository.findById(token, booking.spaceId).bookingWindow.toInt())
+                                spaceRepository.findById("Bearer $token", booking.spaceId).bookingWindow.toInt())
                         {"No se puede reservar con tanta anterioridad."}
-                        require(bookingsRepository.findByTime(token, booking.spaceId, booking.startTime.split("T")[0])
+                        require(bookingsRepository.findByTime("Bearer $token", booking.spaceId, booking.startTime.split("T")[0])
                                 .data
                                 .filter{it.startTime == booking.startTime}
-                                .isNotEmpty()
+                                .isEmpty()
                         )
                         {"Franja horaria no disponible."}
 
-                        var updatedbooking = async {}
+                        val updatedbooking: Deferred<BookingResponseDTO>
 
-                        if(!spaceRepository.findById(token, booking.spaceId).requiresAuthorization){
+                        if(spaceRepository.findById(token, booking.spaceId).requiresAuthorization){
                             updatedbooking = async {
                                 bookingsRepository.update("Bearer $token", id!!, booking.copy(status = "APPROVED"))
                             }
@@ -253,18 +255,19 @@ fun Application.bookingsRoutes() {
                         val uuid = UUID.fromString(id)!!
                         val userUuid = UUID.fromString(userId)!!
 
-                        require(bookingsRepository.findById(token, id!!).userId == userId)
-                        {"La reserva que se quiere actualizar no está guardada bajo su mismo teléfono de contacto."}
+                        require(bookingsRepository.findById("Bearer $token", id!!).userId == userId)
+                        {"La reserva que se quiere actualizar no está guardada bajo el mismo usuario."}
 
+                        val spaceId = bookingsRepository.findById("Bearer $token", id!!).spaceId
                         bookingsRepository.delete("Bearer $token", id!!)
 
                         userRepository.updateCredits(
-                                token,
-                                userId,
-                                spaceRepository.findById(
-                                        token,
-                                        bookingsRepository.findById(token, id!!).spaceId
-                                ).price * -1
+                            "Bearer $token",
+                            userId!!,
+                            spaceRepository.findById(
+                                "Bearer $token",
+                                spaceId
+                            ).price * -1
                         )
 
                         call.respond(HttpStatusCode.NoContent)
@@ -272,7 +275,7 @@ fun Application.bookingsRoutes() {
                     } catch (e: IllegalArgumentException) {
                         call.respond(
                             HttpStatusCode.BadRequest,
-                            "El id introducido no es válido: ${e.stackTraceToString()}"
+                            "El id introducido no es válido: ${e.message}"
                         )
                     } catch (e: BookingNotFoundException) {
                         call.respond(HttpStatusCode.NotFound, "${e.message}")

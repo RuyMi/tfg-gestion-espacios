@@ -4,6 +4,8 @@ import es.dam.models.Booking
 import es.dam.repositories.BookingRepositoryImpl
 import org.koin.core.annotation.InjectedParam
 import org.koin.core.annotation.Single
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 @Single
@@ -17,6 +19,10 @@ class BookingServiceImpl(
 
     override suspend fun findAllStatus(status: Booking.Status): List<Booking> {
         return repository.findAllStatus(status)
+    }
+
+    override suspend fun findByDate(uuid: String, date: String): List<Booking> {
+        return repository.findByDate(UUID.fromString(uuid), LocalDate.parse(date))
     }
 
     override suspend fun findById(id: String): Booking {
@@ -42,7 +48,7 @@ class BookingServiceImpl(
             spaceId = entity.spaceId,
             startTime = entity.startTime,
             endTime = entity.startTime,
-            phone = entity.phone,
+            observations = entity.observations,
             status = entity.status
         )
         return repository.update(bookingUpdated)

@@ -9,19 +9,23 @@ import java.time.LocalDateTime
 
 fun BookingDtoCreate.toModel() = Booking(
     spaceId = this.spaceId,
+    spaceName = this.spaceName,
     userId = this.userId,
+    userName = this.userName,
     startTime = LocalDateTime.parse(this.startTime),
     endTime = LocalDateTime.parse(this.endTime),
-    phone = this.phone,
+    observations = this.observations,
     status = Booking.Status.valueOf(this.status)
 )
 
 fun BookingDtoUpdate.toModel() = Booking(
     spaceId = this.spaceId,
+    spaceName = this.spaceName,
     userId = this.userId,
+    userName = this.userName,
     startTime = LocalDateTime.parse(this.startTime),
     endTime = LocalDateTime.parse(this.endTime),
-    phone = this.phone,
+    observations = this.observations,
     status = Booking.Status.valueOf(this.status)
 )
 
@@ -29,10 +33,12 @@ fun Booking.toDTO() = BookingDto(
     id = this.id.toString(),
     uuid = this.uuid,
     spaceId = this.spaceId,
+    spaceName = this.spaceName,
     userId = this.userId,
+    userName = this.userName,
     startTime = this.startTime.toString(),
     endTime = this.endTime.toString(),
-    phone = this.phone,
+    observations = this.observations,
     status = this.status.toString()
 )
 

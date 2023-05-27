@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/models/espacio.dart';
+import 'package:gestion_espacios_app/models/reserva.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
+import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
+import 'package:gestion_espacios_app/widgets/image_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 final List<String> horas = [
@@ -33,13 +38,28 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
+    final Espacio espacio =
+        ModalRoute.of(context)!.settings.arguments as Espacio;
+    final reservasProvider = Provider.of<ReservasProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
+    final userId = authProvider.usuario.uuid;
+    final userName = authProvider.usuario.name;
+    final spaceId = espacio.uuid;
+    final spaceName = espacio.name;
+    String observations = '';
+    String startTime;
+    String endTime;
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Row(
+        title: Row(
           children: [
             Text(
-              'Nombre de la sala',
-              style: TextStyle(
+              espacio.name,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'KoHo',
@@ -54,29 +74,30 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
           },
           icon: const Icon(Icons.arrow_back_ios_rounded),
         ),
-        actions: const [
+        actions: [
           Row(
             children: [
               Text(
-                '33',
+                espacio.price.toString(),
                 style: TextStyle(
                   fontFamily: 'KoHo',
-                  color: MyColors.pinkApp,
+                  color: theme.colorScheme.secondary,
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(right: 8),
+                padding: const EdgeInsets.only(right: 8),
                 child: Icon(
                   Icons.monetization_on_outlined,
-                  color: MyColors.pinkApp,
+                  color: theme.colorScheme.secondary,
                   size: 20,
                 ),
               ),
             ],
           )
         ],
+        backgroundColor: theme.colorScheme.background,
       ),
       body: SingleChildScrollView(
         controller: _scrollController,
@@ -86,16 +107,82 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
           child: Center(
             child: Column(
               children: [
-                Image.asset('assets/images/image_placeholder.png',
-                    width: 150, height: 150, fit: BoxFit.cover),
-                const SizedBox(height: 20),
-                const Text(
-                  'Descripción de la sala',
-                  maxLines: 3,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: 'KoHo',
+                const SizedBox(height: 10),
+                Container(
+                  margin: const EdgeInsets.only(right: 20, left: 20),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.onBackground,
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: theme.colorScheme.surface.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            bottomLeft: Radius.circular(20),
+                          ),
+                        ),
+                        child: CircleAvatar(
+                          radius: 35,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(75),
+                            child: MyImageWidget(image: espacio.image),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            espacio.description,
+                            maxLines: 3,
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: theme.colorScheme.onSecondary,
+                              fontFamily: 'KoHo',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    keyboardType: TextInputType.text,
+                    onChanged: (value) => observations = value,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.secondary,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.secondary,
+                        ),
+                      ),
+                      labelText: 'Observaciones',
+                      labelStyle: TextStyle(
+                          fontFamily: 'KoHo',
+                          color: theme.colorScheme.secondary),
+                      prefixIcon: Icon(Icons.message,
+                          color: theme.colorScheme.secondary),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -105,14 +192,14 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
-                      color: MyColors.pinkApp,
+                      color: theme.colorScheme.secondary,
                       width: 2,
                     ),
                   ),
                   child: TableCalendar(
-                    headerStyle: const HeaderStyle(
+                    headerStyle: HeaderStyle(
                       titleTextStyle: TextStyle(
-                        color: MyColors.pinkApp,
+                        color: theme.colorScheme.secondary,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'KoHo',
@@ -120,11 +207,11 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                       formatButtonVisible: false,
                       leftChevronIcon: Icon(
                         Icons.chevron_left,
-                        color: MyColors.pinkApp,
+                        color: theme.colorScheme.secondary,
                       ),
                       rightChevronIcon: Icon(
                         Icons.chevron_right,
-                        color: MyColors.pinkApp,
+                        color: theme.colorScheme.secondary,
                       ),
                     ),
                     focusedDay: DateTime.now(),
@@ -140,32 +227,32 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                         fontFamily: 'KoHo',
                       ),
                       isTodayHighlighted: true,
-                      selectedDecoration: const BoxDecoration(
-                        color: MyColors.pinkApp,
+                      selectedDecoration: BoxDecoration(
+                        color: theme.colorScheme.secondary,
                         shape: BoxShape.circle,
                       ),
-                      selectedTextStyle: const TextStyle(
-                          color: MyColors.whiteApp,
+                      selectedTextStyle: TextStyle(
+                          color: theme.colorScheme.onSecondary,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'KoHo'),
-                      todayDecoration: BoxDecoration(
-                        color: MyColors.blackApp.shade100,
+                      todayDecoration: const BoxDecoration(
+                        color: Colors.grey,
                         shape: BoxShape.circle,
                       ),
-                      todayTextStyle: const TextStyle(
-                          color: MyColors.blackApp,
+                      todayTextStyle: TextStyle(
+                          color: theme.colorScheme.background,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'KoHo'),
                       weekendTextStyle: const TextStyle(
                           color: Colors.grey, fontFamily: 'KoHo'),
                     ),
-                    daysOfWeekStyle: const DaysOfWeekStyle(
+                    daysOfWeekStyle: DaysOfWeekStyle(
                       weekdayStyle: TextStyle(
-                        color: MyColors.pinkApp,
+                        color: theme.colorScheme.secondary,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'KoHo',
                       ),
-                      weekendStyle: TextStyle(
+                      weekendStyle: const TextStyle(
                         fontFamily: 'KoHo',
                         color: Colors.grey,
                       ),
@@ -193,8 +280,8 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                           _isDaySelected = true;
                           this.selectedDay = selectedDay;
                         });
-                        _scrollController.animateTo(_scrollController
-                                          .position.viewportDimension,
+                        _scrollController.animateTo(
+                            _scrollController.position.viewportDimension,
                             duration: const Duration(milliseconds: 1000),
                             curve: Curves.easeInOut);
                       }
@@ -228,7 +315,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                                     (Set<MaterialState> states) {
                                       if (states
                                           .contains(MaterialState.hovered)) {
-                                        return MyColors.pinkApp
+                                        return theme.colorScheme.secondary
                                             .withOpacity(0.2);
                                       }
                                       return Colors.transparent;
@@ -240,16 +327,16 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.access_time,
-                                      color: MyColors.blackApp,
+                                      color: theme.colorScheme.surface,
                                     ),
                                     const SizedBox(width: 10),
                                     Text(
                                       hora,
                                       textAlign: TextAlign.right,
-                                      style: const TextStyle(
-                                        color: MyColors.blackApp,
+                                      style: TextStyle(
+                                        color: theme.colorScheme.surface,
                                         fontFamily: 'KoHo',
                                       ),
                                     ),
@@ -265,8 +352,8 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                     visible: _isDaySelected,
                     child: Text(
                       'Fecha elegida: ${selectedDay?.day}/${selectedDay?.month}/${selectedDay?.year}',
-                      style: const TextStyle(
-                        color: MyColors.pinkApp,
+                      style: TextStyle(
+                        color: theme.colorScheme.secondary,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'KoHo',
                       ),
@@ -275,8 +362,8 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                     visible: _isHourSelected,
                     child: Text(
                       'Hora elegida: $selectedHour',
-                      style: const TextStyle(
-                        color: MyColors.pinkApp,
+                      style: TextStyle(
+                        color: theme.colorScheme.secondary,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'KoHo',
                       ),
@@ -286,8 +373,26 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                   visible: _isHourSelected,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/mis-reservas');
-                      showDialog(
+                      startTime =
+                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:00';
+                      endTime =
+                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:00';
+
+                      final reserva = Reserva(
+                        userId: userId,
+                        spaceId: spaceId,
+                        startTime: startTime,
+                        endTime: endTime,
+                        userName: userName,
+                        spaceName: spaceName,
+                        observations: observations,
+                        status: 'PENDING',
+                        image: espacio.image,
+                      );
+
+                      reservasProvider.addReserva(reserva).then((_) {
+                        Navigator.pushNamed(context, '/mis-reservas');
+                        showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return const MyMessageDialog(
@@ -295,17 +400,30 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                               description:
                                   'Se ha realizado la reserva correctamente.',
                             );
-                          });
+                          },
+                        );
+                      }).catchError((error) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const MyErrorMessageDialog(
+                                title: 'Error',
+                                description:
+                                    'Ha ocurrido un error al realizar la reserva.',
+                              );
+                            });
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      backgroundColor: MyColors.pinkApp,
+                      backgroundColor: theme.colorScheme.secondary,
                     ),
-                    child: const Text('Reservar',
+                    child: Text('Reservar',
                         style: TextStyle(
-                            color: MyColors.whiteApp, fontFamily: 'KoHo')),
+                            color: theme.colorScheme.onSecondary,
+                            fontFamily: 'KoHo')),
                   ),
                 ),
               ],

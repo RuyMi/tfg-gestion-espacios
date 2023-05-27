@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/screens/public/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -52,8 +51,10 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: MyColors.whiteApp,
+      backgroundColor: theme.colorScheme.background,
       body: Center(
         child: FadeTransition(
           opacity: Tween<double>(begin: 0, end: 1).animate(

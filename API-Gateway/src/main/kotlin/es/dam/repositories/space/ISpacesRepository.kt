@@ -3,7 +3,9 @@ package es.dam.repositories.space
 import es.dam.dto.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.content.*
+import kotlinx.coroutines.Deferred
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import java.io.File
 

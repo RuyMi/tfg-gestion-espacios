@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
 
 class MyErrorMessageDialog extends StatelessWidget {
   final String title;
@@ -13,25 +12,27 @@ class MyErrorMessageDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      backgroundColor: MyColors.pinkApp,
+      backgroundColor: theme.colorScheme.error,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
+          Icon(
             Icons.warning,
             size: 60,
-            color: Colors.white,
+            color: theme.colorScheme.onError,
           ),
           const SizedBox(height: 10.0),
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: theme.colorScheme.onError,
               fontSize: 20.0,
               fontFamily: 'KoHo',
             ),
@@ -40,8 +41,8 @@ class MyErrorMessageDialog extends StatelessWidget {
           Text(
             description,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: theme.colorScheme.onError,
               fontSize: 16.0,
               fontFamily: 'KoHo',
             ),

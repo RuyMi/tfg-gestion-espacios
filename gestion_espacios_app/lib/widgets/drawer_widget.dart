@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -8,36 +8,51 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final usuario = authProvider.usuario;
+    var themeProvider = context.watch<ThemeProvider>();
+    var theme = Theme.of(context);
+
     return Drawer(
-      backgroundColor: MyColors.lightBlueApp,
+      backgroundColor: theme.colorScheme.primary,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const UserAccountsDrawerHeader(
+          UserAccountsDrawerHeader(
             decoration: BoxDecoration(
-              color: MyColors.lightBlueApp,
+              color: theme.colorScheme.primary,
+              border: Border(
+                bottom: BorderSide(
+                  color: theme.colorScheme.onPrimary,
+                ),
+              ),
             ),
-            accountName: Text('Nombre',
+            accountName: Text(usuario.name,
                 style: TextStyle(
                     fontFamily: 'KoHo',
-                    color: MyColors.whiteApp,
+                    color: theme.colorScheme.onPrimary,
                     fontWeight: FontWeight.bold)),
-            accountEmail: Text('@nombre_usuario',
+            accountEmail: Text('@${usuario.username}',
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
                   fontFamily: 'KoHo',
-                  color: MyColors.whiteApp,
+                  color: theme.colorScheme.onPrimary,
                 )),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/profile_pic.png'),
-              backgroundColor: MyColors.whiteApp,
+              backgroundImage:
+                  const AssetImage('assets/images/profile_pic.png'),
+              backgroundColor: theme.colorScheme.onPrimary,
             ),
+          ),
+          Divider(
+            color: theme.colorScheme.onPrimary,
           ),
           ListTile(
             leading: const Icon(Icons.person),
-            iconColor: MyColors.whiteApp,
-            title: const Text('Perfil',
-                style: TextStyle(fontFamily: 'KoHo', color: MyColors.whiteApp)),
+            iconColor: theme.colorScheme.onPrimary,
+            title: Text('Perfil',
+                style: TextStyle(
+                    fontFamily: 'KoHo', color: theme.colorScheme.onPrimary)),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/perfil');
@@ -45,9 +60,10 @@ class MyDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.bookmark_added),
-            iconColor: MyColors.whiteApp,
-            title: const Text('Mis reservas',
-                style: TextStyle(fontFamily: 'KoHo', color: MyColors.whiteApp)),
+            iconColor: theme.colorScheme.onPrimary,
+            title: Text('Mis reservas',
+                style: TextStyle(
+                    fontFamily: 'KoHo', color: theme.colorScheme.onPrimary)),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/mis-reservas');
@@ -55,26 +71,30 @@ class MyDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.settings),
-            iconColor: MyColors.whiteApp,
-            title: const Text('Ajustes',
-                style: TextStyle(fontFamily: 'KoHo', color: MyColors.whiteApp)),
+            iconColor: theme.colorScheme.onPrimary,
+            title: Text('Ajustes',
+                style: TextStyle(
+                    fontFamily: 'KoHo', color: theme.colorScheme.onPrimary)),
             onTap: () {},
           ),
-          const Divider(),
+          Divider(
+            color: theme.colorScheme.onPrimary,
+          ),
           ListTile(
-            iconColor: MyColors.whiteApp,
-            leading: Provider.of<ThemeNotifier>(context).isDarkMode
+            iconColor: theme.colorScheme.onPrimary,
+            leading: themeProvider.isDarkMode
                 ? const Icon(Icons.wb_sunny)
                 : const Icon(Icons.nightlight_round),
-            title: Provider.of<ThemeNotifier>(context).isDarkMode
-                ? const Text('Cambiar a tema claro',
-                    style:
-                        TextStyle(fontFamily: 'KoHo', color: MyColors.whiteApp))
-                : const Text('Cambiar a tema oscuro',
+            title: themeProvider.isDarkMode
+                ? Text('Cambiar a tema claro',
                     style: TextStyle(
-                        fontFamily: 'KoHo', color: MyColors.whiteApp)),
+                        fontFamily: 'KoHo', color: theme.colorScheme.onPrimary))
+                : Text('Cambiar a tema oscuro',
+                    style: TextStyle(
+                        fontFamily: 'KoHo',
+                        color: theme.colorScheme.onPrimary)),
             onTap: () {
-              Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
+              themeProvider.toggleTheme();
             },
           ),
         ],

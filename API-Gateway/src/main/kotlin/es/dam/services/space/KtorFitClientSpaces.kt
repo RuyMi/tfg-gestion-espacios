@@ -21,6 +21,8 @@ object KtorFitClientSpaces {
                 install(DefaultRequest) {
                     header(HttpHeaders.ContentType, ContentType.Application.Json)
                 }
+
+
                 HttpResponseValidator {
                     validateResponse { response ->
                         when (response.status) {
