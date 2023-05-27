@@ -165,8 +165,14 @@ fun Application.bookingsRoutes() {
                         val entity = call.receive<BookingCreateDTO>()
                         val user = userRepository.findById("Bearer $token", entity.userId)
                         val space = spaceRepository.findById("Bearer $token", entity.spaceId)
-                        if (user.credits < space.price) {
-                            call.respond(HttpStatusCode.BadRequest, "No tienes créditos suficientes para realizar la reserva")
+
+                        if(!user.userRole.contains("ADMINISTRATOR")) {
+                            if (user.credits < space.price) {
+                                call.respond(
+                                    HttpStatusCode.BadRequest,
+                                    "No tienes créditos suficientes para realizar la reserva"
+                                )
+                            }
                         }
                         userRepository.updateCredits("Bearer $token", user.uuid, space.price)
                         require(LocalDateTime.parse(entity.startTime) > LocalDateTime.now())
@@ -210,7 +216,7 @@ fun Application.bookingsRoutes() {
                         val id = call.parameters["id"]
                         val booking = call.receive<BookingUpdateDTO>()
 
-                        require(bookingsRepository.findByUser("Bearer $token", booking.userId).data.filter{it.userId == booking.userId}.isNotEmpty())
+                        require(userRepository.findById("Bearer $token", bookingsRepository.findById("Bearer $token", id!!).userId).userRole.contains("ADMINISTRATOR") ||bookingsRepository.findByUser("Bearer $token", booking.userId).data.filter{it.userId == booking.userId}.isNotEmpty())
                         {"La reserva que se quiere actualizar no está guardada bajo el mismo usuario."}
                         require(LocalDateTime.parse(booking.startTime) > LocalDateTime.now())
                         {"No se ha podio guardar la reserva fecha introducida es anterior a la actual."}
@@ -226,7 +232,7 @@ fun Application.bookingsRoutes() {
 
                         val updatedbooking: Deferred<BookingResponseDTO>
 
-                        if(!spaceRepository.findById("Bearer $token", booking.spaceId).requiresAuthorization){
+                        if(spaceRepository.findById(token, booking.spaceId).requiresAuthorization){
                             updatedbooking = async {
                                 bookingsRepository.update("Bearer $token", id!!, booking.copy(status = "APPROVED"))
                             }
@@ -255,7 +261,7 @@ fun Application.bookingsRoutes() {
                         val uuid = UUID.fromString(id)!!
                         val userUuid = UUID.fromString(userId)!!
 
-                        require(bookingsRepository.findById("Bearer $token", id!!).userId == userId)
+                        require(userRepository.findById("Bearer $token", bookingsRepository.findById("Bearer $token", id!!).userId).userRole.contains("ADMINISTRATOR") || bookingsRepository.findById("Bearer $token", id!!).userId == userId)
                         {"La reserva que se quiere actualizar no está guardada bajo el mismo usuario."}
 
                         val spaceId = bookingsRepository.findById("Bearer $token", id!!).spaceId
