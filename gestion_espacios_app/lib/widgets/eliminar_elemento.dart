@@ -79,7 +79,7 @@ class MyDeleteAlert extends StatelessWidget {
           onPressed: () {
             if (elemento is Espacio) {
               espaciosProvider.deleteEspacio(elemento.uuid).then((result) {
-                Navigator.pushNamed(context, '/mis-reservas');
+                Navigator.pushNamed(context, ruta);
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -105,7 +105,7 @@ class MyDeleteAlert extends StatelessWidget {
               reservasProvider
                   .deleteReserva(elemento.uuid, usuario.uuid)
                   .then((result) {
-                Navigator.pushNamed(context, '/mis-reservas');
+                Navigator.pushNamed(context, ruta);
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -129,7 +129,7 @@ class MyDeleteAlert extends StatelessWidget {
               });
             } else if (elemento is Usuario) {
               usuariosProvider.deleteUsuario(elemento.uuid).then((result) {
-                Navigator.pushNamed(context, '/mis-reservas');
+                Navigator.pushNamed(context, ruta);
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {

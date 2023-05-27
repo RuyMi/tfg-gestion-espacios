@@ -37,6 +37,7 @@ class BOLoginScreen extends StatelessWidget {
                 width: 400,
                 child: TextField(
                   onChanged: (value) => username = value,
+                  cursorColor: theme.colorScheme.secondary,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -63,6 +64,7 @@ class BOLoginScreen extends StatelessWidget {
                 width: 400,
                 child: TextField(
                   onChanged: (value) => password = value,
+                  cursorColor: theme.colorScheme.secondary,
                   obscureText: true,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(

@@ -23,12 +23,21 @@ class LoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset('assets/images/logo.png'),
+              const SizedBox(height: 10),
+              const Text(
+                'Gestión de espacios',
+                style: TextStyle(
+                  fontFamily: 'KoHo',
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 50),
               SizedBox(
                 width: 400,
                 child: TextField(
-                  autocorrect: true,
                   onChanged: (value) => username = value,
+                  cursorColor: theme.colorScheme.secondary,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -55,6 +64,7 @@ class LoginScreen extends StatelessWidget {
                 width: 400,
                 child: TextField(
                   onChanged: (value) => password = value,
+                  cursorColor: theme.colorScheme.secondary,
                   obscureText: true,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
@@ -83,7 +93,7 @@ class LoginScreen extends StatelessWidget {
                   authProvider.login(username, password).then(
                     (usuario) {
                       final loginSucceed = authProvider.loginSucceed;
-        
+
                       if (loginSucceed) {
                         Navigator.pushNamed(context, '/home');
                       } else {

@@ -1,6 +1,6 @@
 class Espacio {
   Espacio({
-    required this.uuid,
+    this.uuid,
     required this.name,
     required this.description,
     this.image,
@@ -11,7 +11,7 @@ class Espacio {
     required this.bookingWindow,
   });
 
-  String uuid;
+  String? uuid;
   String name;
   String description;
   String? image;
@@ -20,6 +20,7 @@ class Espacio {
   bool requiresAuthorization;
   List<String> authorizedRoles;
   String bookingWindow;
+  // int bookingWindowInt;
 
   Map<String, dynamic> toJson() {
     return {

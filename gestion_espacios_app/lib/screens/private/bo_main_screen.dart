@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/screens/private/bo_addespacio_dialog.dart';
 import 'package:gestion_espacios_app/screens/private/bo_espacios_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_reservas_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_usuarios_screen.dart';
@@ -209,8 +210,34 @@ class _BOMainScreenState extends State<BOMainScreen>
                       Visibility(
                         visible: _showNewButton,
                         child: ElevatedButton.icon(
-                          onPressed: () {},
-                          icon: Icon(Icons.add,
+                          onPressed: () {
+                            switch (_tabController.index) {
+                              case 0:
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return const NuevoEspacioBODialog();
+                                    });
+                                break;
+                              case 1:
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return const NuevoEspacioBODialog();
+                                    });
+                                break;
+                              case 2:
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return const NuevoEspacioBODialog();
+                                    });
+                                break;
+                              default:
+                                break;
+                            }
+                          },
+                          icon: Icon(Icons.add_rounded,
                               color: theme.colorScheme.onSecondary),
                           label: Text(
                             'Nuevo',

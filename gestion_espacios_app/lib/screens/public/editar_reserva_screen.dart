@@ -37,6 +37,14 @@ class _ReservaSala extends State<EditarReservaScreen> {
   String? selectedHour;
   final ScrollController _scrollController = ScrollController();
 
+  late TextEditingController observationsController;
+
+  @override
+  void dispose() {
+    observationsController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -47,9 +55,11 @@ class _ReservaSala extends State<EditarReservaScreen> {
     final authProvider = Provider.of<AuthProvider>(context);
     final userName = authProvider.usuario.name;
     final spaceName = reserva.spaceName;
-    String observations = '';
-    String startTime;
-    String endTime;
+    String observations = reserva.observations ?? '';
+    String startTime = reserva.startTime;
+    String endTime = reserva.endTime;
+
+    observationsController = TextEditingController(text: reserva.observations);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -155,8 +165,11 @@ class _ReservaSala extends State<EditarReservaScreen> {
                 SizedBox(
                   width: 250,
                   child: TextField(
-                    keyboardType: TextInputType.text,
+                    controller: observationsController,
                     onChanged: (value) => observations = value,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 3,
+                    cursorColor: theme.colorScheme.secondary,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -170,7 +183,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                           color: theme.colorScheme.secondary,
                         ),
                       ),
-                      labelText: reserva.observations,
+                      labelText: 'Observaciones',
                       labelStyle: TextStyle(
                           fontFamily: 'KoHo',
                           color: theme.colorScheme.secondary),
@@ -389,65 +402,62 @@ class _ReservaSala extends State<EditarReservaScreen> {
                       ),
                     )),
                 const SizedBox(height: 20),
-                Visibility(
-                  visible: _isHourSelected,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      startTime =
-                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:00';
-                      endTime =
-                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:00';
+                ElevatedButton(
+                  onPressed: () {
+                    startTime =
+                        '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:00';
+                    endTime =
+                        '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:00';
 
-                      final reservaActualizada = Reserva(
-                        uuid: reserva.uuid,
-                        userId: reserva.userId,
-                        spaceId: reserva.spaceId,
-                        startTime: startTime,
-                        endTime: endTime,
-                        userName: reserva.userName,
-                        spaceName: reserva.spaceName,
-                        observations: observations,
-                        status: reserva.status,
-                        image: reserva.image,
+                    final reservaActualizada = Reserva(
+                      uuid: reserva.uuid,
+                      userId: reserva.userId,
+                      spaceId: reserva.spaceId,
+                      startTime: startTime,
+                      endTime: endTime,
+                      userName: reserva.userName,
+                      spaceName: reserva.spaceName,
+                      observations: observations,
+                      status: reserva.status,
+                      image: reserva.image,
+                    );
+
+                    reservasProvider
+                        .updateReserva(reservaActualizada)
+                        .then((_) {
+                      Navigator.pushNamed(context, '/mis-reservas');
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const MyMessageDialog(
+                            title: 'Reserva actualizada',
+                            description:
+                                'Se ha actualizado la reserva correctamente.',
+                          );
+                        },
                       );
-
-                      reservasProvider
-                          .updateReserva(reservaActualizada)
-                          .then((_) {
-                        Navigator.pushNamed(context, '/mis-reservas');
-                        showDialog(
+                    }).catchError((error) {
+                      showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return const MyMessageDialog(
-                              title: 'Reserva actualizada',
+                            return const MyErrorMessageDialog(
+                              title: 'Error',
                               description:
-                                  'Se ha actualizado la reserva correctamente.',
+                                  'Ha ocurrido un error al actualizar la reserva.',
                             );
-                          },
-                        );
-                      }).catchError((error) {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return const MyErrorMessageDialog(
-                                title: 'Error',
-                                description:
-                                    'Ha ocurrido un error al actualizar la reserva.',
-                              );
-                            });
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      backgroundColor: theme.colorScheme.secondary,
+                          });
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Text('Editar reserva',
-                        style: TextStyle(
-                            color: theme.colorScheme.onSecondary,
-                            fontFamily: 'KoHo')),
+                    backgroundColor: theme.colorScheme.secondary,
                   ),
+                  child: Text('Editar reserva',
+                      style: TextStyle(
+                          color: theme.colorScheme.onSecondary,
+                          fontFamily: 'KoHo')),
                 ),
               ],
             ),

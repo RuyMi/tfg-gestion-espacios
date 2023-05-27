@@ -161,8 +161,10 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                 SizedBox(
                   width: 250,
                   child: TextField(
-                    keyboardType: TextInputType.text,
                     onChanged: (value) => observations = value,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 3,
+                    cursorColor: theme.colorScheme.secondary,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -380,7 +382,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
 
                       final reserva = Reserva(
                         userId: userId,
-                        spaceId: spaceId,
+                        spaceId: spaceId!,
                         startTime: startTime,
                         endTime: endTime,
                         userName: userName,
