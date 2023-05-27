@@ -220,7 +220,7 @@ fun Application.usersRoutes() {
                         val token = tokenService.generateToken(call.principal()!!)
                         val id = call.parameters["id"]
 
-                        require(bookingsRepository.findByUser(token, id!!).data.isNotEmpty())
+                        require(bookingsRepository.findByUser(token, id!!).data.isEmpty())
                         {"Se deben actualizar o eliminar las reservas asociadas a este usuario antes de continuar con la operación."}
                         userRepository.delete("Bearer $token", id!!)
 

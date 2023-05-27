@@ -14,15 +14,15 @@ import java.util.*
 class BookingRepositoryImpl : BookingRepository {
     private val manager = MongoDbManager
     override suspend fun findByUserId(uuid: UUID): List<Booking> = withContext(Dispatchers.IO) {
-        return@withContext manager.database.getCollection<Booking>().find(Booking::userId eq uuid.toString()).toList().ifEmpty { throw BookingException("The booking with userId $uuid does not exist")  }
+        return@withContext manager.database.getCollection<Booking>().find(Booking::userId eq uuid.toString()).toList().ifEmpty { emptyList() }
     }
 
     override suspend fun findBySpaceId(uuid: UUID): List<Booking> = withContext(Dispatchers.IO) {
-        return@withContext manager.database.getCollection<Booking>().find(Booking::spaceId eq uuid.toString()).toList().ifEmpty { throw BookingException("The booking with spaceId $uuid does not exist") }
+        return@withContext manager.database.getCollection<Booking>().find(Booking::spaceId eq uuid.toString()).toList().ifEmpty { emptyList() }
     }
 
     override suspend fun findAllStatus(status: Booking.Status): List<Booking> = withContext(Dispatchers.IO) {
-        return@withContext manager.database.getCollection<Booking>().find(Booking::status eq status).toList().ifEmpty { throw BookingException("The booking with status $status does not exist") }
+        return@withContext manager.database.getCollection<Booking>().find(Booking::status eq status).toList().ifEmpty { emptyList() }
     }
 
     override suspend fun findByDate(uuid: UUID, date: LocalDate): List<Booking> = withContext(Dispatchers.IO) {

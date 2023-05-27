@@ -136,7 +136,6 @@ fun Application.spacesRoutes() {
                     }
                 }
 
-                //TODO No funciona desde api general
                 post("/storage"){
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
@@ -153,18 +152,20 @@ fun Application.spacesRoutes() {
                                     spacePhotoDto = spacesRepository.uploadFile(token, multipartBody).await()
                                 }
                                 else -> {
-                                    // Procesa los campos de formulario aquí si los hay
+                                    throw BookingMediaNotSupportedException("Este tipo de archivo no está soportado")
                                 }
                             }
                             part.dispose()
                         }
-                        call.respond(HttpStatusCode.OK, spacePhotoDto!!)
+                        call.respond(HttpStatusCode.Created, spacePhotoDto!!)
                     } catch (e: SpaceNotFoundException) {
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: SpaceBadRequestException) {
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: SpaceInternalErrorException) {
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    } catch (e: BookingMediaNotSupportedException) {
+                        call.respond(HttpStatusCode.UnsupportedMediaType, "${e.message}")
                     }
                 }
 
@@ -197,7 +198,7 @@ fun Application.spacesRoutes() {
                         val id = call.parameters["id"]
                         val uuid = UUID.fromString(id)
 
-                        require(bookingsRepository.findBySpace("Bearer $token", id!!).data.isNotEmpty())
+                        require(bookingsRepository.findBySpace("Bearer $token", id!!).data.isEmpty())
                         {"Se deben actualizar o eliminar las reservas asociadas a esta sala antes de continuar con la operación."}
 
                         spacesRepository.delete("Bearer $token", id!!)

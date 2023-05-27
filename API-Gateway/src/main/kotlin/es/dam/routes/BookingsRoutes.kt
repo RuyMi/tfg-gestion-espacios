@@ -24,6 +24,7 @@ import java.lang.IllegalArgumentException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Period
+import java.time.format.DateTimeParseException
 import java.util.*
 
 private const val ENDPOINT = "bookings"
@@ -222,10 +223,13 @@ fun Application.bookingsRoutes() {
                         require(Period.between(LocalDate.now(),LocalDate.parse(booking.startTime.split("T")[0])).days <=
                                 spaceRepository.findById("Bearer $token", booking.spaceId).bookingWindow.toInt())
                         {"No se puede reservar con tanta anterioridad."}
-                        require(bookingsRepository.findByTime("Bearer $token", booking.spaceId, booking.startTime.split("T")[0])
-                                .data
-                                .filter{it.startTime == booking.startTime}
-                                .isEmpty()
+                        require(bookingsRepository.findByTime(
+                            "Bearer $token",
+                            booking.spaceId,
+                            booking.startTime.split("T")[0]
+                        )
+                            .data
+                            .filter { it.startTime == booking.startTime }.none { it.uuid != id }
                         )
                         {"Franja horaria no disponible."}
 
@@ -250,6 +254,10 @@ fun Application.bookingsRoutes() {
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: BookingInternalErrorException) {
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    } catch (e: DateTimeParseException){
+                        call.respond(HttpStatusCode.BadRequest, "Formato de fecha incorrecto.")
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     }
                 }
 
