@@ -17,7 +17,7 @@ class _BOMainScreenState extends State<BOMainScreen>
     with SingleTickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   // String _searchText = '';
-  bool _showNewButton = false;
+  bool _showNewButton = true;
   bool _sortByUsers = false;
 
   late TabController _tabController;
@@ -28,11 +28,11 @@ class _BOMainScreenState extends State<BOMainScreen>
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
       setState(() {
-        if (_tabController.index == 0) {
-          _showNewButton = false;
-        } else {
-          _showNewButton = true;
-        }
+        // if (_tabController.index == 2) {
+        //   _showNewButton = false;
+        // } else {
+        //   _showNewButton = true;
+        // }
       });
     });
   }
@@ -175,51 +175,61 @@ class _BOMainScreenState extends State<BOMainScreen>
                     ),
                   ),
                   const SizedBox(width: 20),
-                  Visibility(
-                    visible: _showNewButton,
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: Icon(Icons.add, color: theme.colorScheme.onSecondary),
-                      label: Text(
-                        'Nuevo',
-                        style: TextStyle(
-                          color: theme.colorScheme.onSecondary,
-                          overflow: TextOverflow.ellipsis,
-                          fontFamily: 'KoHo',
-                          fontSize: 20,
+                  Column(
+                    children: [
+                      Visibility(
+                        visible: _tabController.index == 0,
+                        child: Row(
+                          children: [
+                            Icon(Icons.person,
+                                color: theme.colorScheme.onBackground),
+                            Switch(
+                              focusColor: theme.colorScheme.secondary,
+                              activeColor: theme.colorScheme.secondary,
+                              inactiveTrackColor: theme.colorScheme.onBackground
+                                  .withOpacity(0.2),
+                              inactiveThumbColor:
+                                  theme.colorScheme.onBackground,
+                              value: _sortByUsers,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortByUsers = value;
+                                  _handleSortBy(_sortByUsers);
+                                });
+                              },
+                            ),
+                            Icon(Icons.calendar_today,
+                                color: theme.colorScheme.secondary),
+                          ],
                         ),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                      Visibility(
+                          visible: _tabController.index == 0,
+                          child: const SizedBox(height: 10)),
+                      Visibility(
+                        visible: _showNewButton,
+                        child: ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: Icon(Icons.add,
+                              color: theme.colorScheme.onSecondary),
+                          label: Text(
+                            'Nuevo',
+                            style: TextStyle(
+                              color: theme.colorScheme.onSecondary,
+                              overflow: TextOverflow.ellipsis,
+                              fontFamily: 'KoHo',
+                              fontSize: 20,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            backgroundColor: theme.colorScheme.secondary,
+                          ),
                         ),
-                        backgroundColor: theme.colorScheme.secondary,
                       ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: _tabController.index == 0,
-                    child: Row(
-                      children: [
-                        Icon(Icons.person,
-                            color: theme.colorScheme.onBackground),
-                        Switch(
-                          focusColor: theme.colorScheme.secondary,
-                          activeColor: theme.colorScheme.secondary,
-                          inactiveTrackColor: theme.colorScheme.onBackground.withOpacity(0.2),
-                          inactiveThumbColor: theme.colorScheme.onBackground,
-                          value: _sortByUsers,
-                          onChanged: (value) {
-                            setState(() {
-                              _sortByUsers = value;
-                              _handleSortBy(_sortByUsers);
-                            });
-                          },
-                        ),
-                        Icon(Icons.calendar_today,
-                            color: theme.colorScheme.secondary),
-                      ],
-                    ),
+                    ],
                   )
                 ],
               ),

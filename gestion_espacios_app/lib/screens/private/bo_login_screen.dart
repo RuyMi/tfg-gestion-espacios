@@ -92,7 +92,7 @@ class BOLoginScreen extends StatelessWidget {
                     (usuario) {
                       final loginSucceed = authProvider.loginSucceed;
                       final roles = authProvider.usuario.userRole;
-        
+
                       if (loginSucceed && roles.contains('ADMINISTRATOR')) {
                         Navigator.pushNamed(context, '/home-bo');
                       } else {

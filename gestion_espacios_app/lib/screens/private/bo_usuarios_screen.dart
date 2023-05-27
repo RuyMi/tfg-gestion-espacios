@@ -3,8 +3,22 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
 import 'package:provider/provider.dart';
 
-class UsuariosBOScreen extends StatelessWidget {
-  const UsuariosBOScreen({super.key});
+class UsuariosBOScreen extends StatefulWidget {
+  const UsuariosBOScreen({Key? key}) : super(key: key);
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _UsuariosBOScreen createState() => _UsuariosBOScreen();
+}
+
+class _UsuariosBOScreen extends State<UsuariosBOScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final usuariosProvider =
+        Provider.of<UsuariosProvider>(context, listen: false);
+    usuariosProvider.fetchUsuarios();
+  }
 
   @override
   Widget build(BuildContext context) {

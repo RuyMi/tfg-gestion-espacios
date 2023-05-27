@@ -4,8 +4,22 @@ import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/widgets/image_widget.dart';
 import 'package:provider/provider.dart';
 
-class ReservasBOScreen extends StatelessWidget {
-  const ReservasBOScreen({super.key});
+class ReservasBOScreen extends StatefulWidget {
+  const ReservasBOScreen({Key? key}) : super(key: key);
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _ReservasBOScreen createState() => _ReservasBOScreen();
+}
+
+class _ReservasBOScreen extends State<ReservasBOScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final reservasProvider =
+        Provider.of<ReservasProvider>(context, listen: false);
+    reservasProvider.fetchReservas();
+  }
 
   @override
   Widget build(BuildContext context) {

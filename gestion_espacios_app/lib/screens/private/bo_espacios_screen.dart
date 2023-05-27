@@ -4,8 +4,22 @@ import 'package:gestion_espacios_app/providers/espacios_provider.dart';
 import 'package:gestion_espacios_app/widgets/image_widget.dart';
 import 'package:provider/provider.dart';
 
-class EspaciosBOScreen extends StatelessWidget {
-  const EspaciosBOScreen({super.key});
+class EspaciosBOScreen extends StatefulWidget {
+  const EspaciosBOScreen({Key? key}) : super(key: key);
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _EspaciosBOScreen createState() => _EspaciosBOScreen();
+}
+
+class _EspaciosBOScreen extends State<EspaciosBOScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final espaciosProvider =
+        Provider.of<EspaciosProvider>(context, listen: false);
+    espaciosProvider.fetchEspacios();
+  }
 
   @override
   Widget build(BuildContext context) {
