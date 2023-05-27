@@ -105,7 +105,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                 ),
               );
             },
-            icon: const Icon(Icons.delete_outline),
+            icon: const Icon(Icons.delete_outline_rounded),
             color: theme.colorScheme.secondary,
             iconSize: 25,
           ),
@@ -196,7 +196,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                       labelStyle: TextStyle(
                           fontFamily: 'KoHo',
                           color: theme.colorScheme.secondary),
-                      prefixIcon: Icon(Icons.message,
+                      prefixIcon: Icon(Icons.message_rounded,
                           color: theme.colorScheme.secondary),
                     ),
                   ),

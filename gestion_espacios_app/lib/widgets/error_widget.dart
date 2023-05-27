@@ -23,7 +23,7 @@ class MyErrorMessageDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            Icons.warning,
+            Icons.warning_rounded,
             size: 60,
             color: theme.colorScheme.onError,
           ),

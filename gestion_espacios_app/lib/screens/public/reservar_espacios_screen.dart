@@ -182,7 +182,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                       labelStyle: TextStyle(
                           fontFamily: 'KoHo',
                           color: theme.colorScheme.secondary),
-                      prefixIcon: Icon(Icons.message,
+                      prefixIcon: Icon(Icons.message_rounded,
                           color: theme.colorScheme.secondary),
                     ),
                   ),
@@ -208,11 +208,11 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                       ),
                       formatButtonVisible: false,
                       leftChevronIcon: Icon(
-                        Icons.chevron_left,
+                        Icons.chevron_left_rounded,
                         color: theme.colorScheme.secondary,
                       ),
                       rightChevronIcon: Icon(
-                        Icons.chevron_right,
+                        Icons.chevron_right_rounded,
                         color: theme.colorScheme.secondary,
                       ),
                     ),
@@ -330,7 +330,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Icon(
-                                      Icons.access_time,
+                                      Icons.access_time_rounded,
                                       color: theme.colorScheme.surface,
                                     ),
                                     const SizedBox(width: 10),

@@ -125,7 +125,7 @@ class _BOMainScreenState extends State<BOMainScreen>
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.logout),
+              icon: const Icon(Icons.logout_rounded),
               color: theme.colorScheme.surface,
               iconSize: 25,
               onPressed: () {
@@ -165,7 +165,7 @@ class _BOMainScreenState extends State<BOMainScreen>
                           color: theme.colorScheme.secondary,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        prefixIcon: Icon(Icons.search,
+                        prefixIcon: Icon(Icons.search_rounded,
                             color: theme.colorScheme.secondary, size: 30),
                       ),
                       onChanged: (value) {
@@ -182,7 +182,7 @@ class _BOMainScreenState extends State<BOMainScreen>
                         visible: _tabController.index == 0,
                         child: Row(
                           children: [
-                            Icon(Icons.person,
+                            Icon(Icons.person_rounded,
                                 color: theme.colorScheme.onBackground),
                             Switch(
                               focusColor: theme.colorScheme.secondary,

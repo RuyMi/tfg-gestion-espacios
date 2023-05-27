@@ -55,7 +55,7 @@ class BOLoginScreen extends StatelessWidget {
                     labelStyle: TextStyle(
                         fontFamily: 'KoHo', color: theme.colorScheme.surface),
                     prefixIcon:
-                        Icon(Icons.person, color: theme.colorScheme.surface),
+                        Icon(Icons.person_rounded, color: theme.colorScheme.surface),
                   ),
                 ),
               ),
@@ -83,7 +83,7 @@ class BOLoginScreen extends StatelessWidget {
                     labelStyle: TextStyle(
                         fontFamily: 'KoHo', color: theme.colorScheme.surface),
                     prefixIcon:
-                        Icon(Icons.lock, color: theme.colorScheme.surface),
+                        Icon(Icons.lock_rounded, color: theme.colorScheme.surface),
                   ),
                 ),
               ),

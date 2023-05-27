@@ -103,7 +103,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                   labelStyle: TextStyle(
                       fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
                   prefixIcon:
-                      Icon(Icons.edit, color: theme.colorScheme.onPrimary),
+                      Icon(Icons.edit_rounded, color: theme.colorScheme.onPrimary),
                 ),
               ),
               const SizedBox(height: 16),
@@ -131,7 +131,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                   labelStyle: TextStyle(
                       fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
                   prefixIcon:
-                      Icon(Icons.edit, color: theme.colorScheme.onPrimary),
+                      Icon(Icons.edit_rounded, color: theme.colorScheme.onPrimary),
                 ),
               ),
               const SizedBox(height: 16),
@@ -357,7 +357,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                           return const MyMessageDialog(
                             title: 'Espacio actualizado',
                             description:
-                                'Se ha creado el actualizar correctamente.',
+                                'Se ha actualizado el espacio correctamente.',
                           );
                         },
                       );
@@ -368,7 +368,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                             return const MyErrorMessageDialog(
                               title: 'Error',
                               description:
-                                  'Ha ocurrido un error al actualizar es espacio.',
+                                  'Ha ocurrido un error al actualizar el espacio.',
                             );
                           });
                     });

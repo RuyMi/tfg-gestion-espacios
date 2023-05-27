@@ -113,7 +113,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.settings,
+                          Icons.settings_rounded,
                           color: theme.colorScheme.onBackground,
                         ),
                         const SizedBox(width: 10),
@@ -142,7 +142,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.logout,
+                          Icons.logout_rounded,
                           color: theme.colorScheme.onBackground,
                         ),
                         const SizedBox(width: 10),

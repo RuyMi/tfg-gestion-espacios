@@ -18,7 +18,7 @@ class MyLogoutAlert extends StatelessWidget {
       title: Column(
         children: [
           Icon(
-            Icons.info,
+            Icons.info_rounded,
             size: 60,
             color: theme.colorScheme.onError,
           ),

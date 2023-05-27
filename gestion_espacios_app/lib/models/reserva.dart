@@ -22,19 +22,4 @@ class Reserva {
   String? observations;
   String? status;
   String? image;
-
-  Map<String, dynamic> toJson() {
-    return {
-      'uuid': uuid,
-      'userId': userId,
-      'spaceId': spaceId,
-      'startTime': startTime,
-      'endTime': endTime,
-      'userName': userName,
-      'spaceName': spaceName,
-      'observations': observations,
-      'status': status,
-      'image': image,
-    };
-  }
 }

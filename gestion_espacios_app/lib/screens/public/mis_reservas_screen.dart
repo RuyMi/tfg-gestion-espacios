@@ -181,7 +181,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                                 padding: EdgeInsets.zero,
                                                 constraints:
                                                     const BoxConstraints(),
-                                                icon: Icon(Icons.share,
+                                                icon: Icon(Icons.share_rounded,
                                                     color: theme
                                                         .colorScheme.surface,
                                                     size: 20),
@@ -194,7 +194,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                                 padding: EdgeInsets.zero,
                                                 constraints:
                                                     const BoxConstraints(),
-                                                icon: Icon(Icons.bookmark,
+                                                icon: Icon(Icons.bookmark_rounded,
                                                     color: theme.colorScheme
                                                         .onBackground,
                                                     size: 20),

@@ -22,19 +22,4 @@ class Usuario {
   int credits;
   bool isActive;
   String? token;
-
-  Map<String, dynamic> toJson() {
-    return {
-      'uuid': uuid,
-      'name': name,
-      'username': username,
-      'email': email,
-      'password': password,
-      'avatar': avatar,
-      'userRole': userRole,
-      'credits': credits,
-      'isActive': isActive,
-      'token': token,
-    };
-  }
 }

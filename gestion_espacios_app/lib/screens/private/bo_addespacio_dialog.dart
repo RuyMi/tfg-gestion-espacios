@@ -65,7 +65,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                   labelStyle: TextStyle(
                       fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
                   prefixIcon:
-                      Icon(Icons.edit, color: theme.colorScheme.onPrimary),
+                      Icon(Icons.edit_rounded, color: theme.colorScheme.onPrimary),
                 ),
               ),
               const SizedBox(height: 16),
@@ -92,7 +92,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                   labelStyle: TextStyle(
                       fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
                   prefixIcon:
-                      Icon(Icons.edit, color: theme.colorScheme.onPrimary),
+                      Icon(Icons.edit_rounded, color: theme.colorScheme.onPrimary),
                 ),
               ),
               const SizedBox(height: 16),
@@ -326,7 +326,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                         });
                   });
                 },
-                icon: Icon(Icons.add, color: theme.colorScheme.onSecondary),
+                icon: Icon(Icons.add_rounded, color: theme.colorScheme.onSecondary),
                 label: Text(
                   'Añadir',
                   style: TextStyle(
