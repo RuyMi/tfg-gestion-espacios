@@ -251,6 +251,7 @@ fun Application.bookingsRoutes() {
                         if(!userRole.contains("ADMINISTRATOR")){
                             require(subject == entity.userId){"No se puede realizar la reserva a nombre de otra persona"}
                             require(user.credits >= space.price) {"No tienes créditos suficientes para realizar la reserva"}
+                            //TODO:crear usuario administrador para hacer un update y luego borrarlo
                             userRepository.updateCreditsMe("Bearer $token", subject, space.price)
 
                             require(LocalDateTime.parse(entity.startTime) > LocalDateTime.now())
@@ -335,7 +336,7 @@ fun Application.bookingsRoutes() {
                         if(!userRole.contains("ADMINISTRATOR")){
                             require(bookingsRepository.findByUser("Bearer $token", booking.userId).data.filter{it.userId == subject}.isNotEmpty()){"La reserva que se quiere actualizar no está guardada bajo el mismo usuario."}
                             require(LocalDateTime.parse(booking.startTime) > LocalDateTime.now())
-                            {"No se ha podio guardar la reserva fecha introducida es anterior a la actual."}
+                            {"No se ha podido guardar la reserva fecha introducida es anterior a la actual."}
                             require(Period.between(LocalDate.now(),LocalDate.parse(booking.startTime.split("T")[0])).days <=
                                     spaceRepository.findById("Bearer $token", booking.spaceId).bookingWindow.toInt())
                             {"No se puede reservar con tanta anterioridad."}
@@ -367,7 +368,7 @@ fun Application.bookingsRoutes() {
 
                         }else{
                             require(LocalDateTime.parse(booking.startTime) > LocalDateTime.now())
-                            {"No se ha podio guardar la reserva fecha introducida es anterior a la actual."}
+                            {"No se ha podido guardar la reserva fecha introducida es anterior a la actual."}
                             require(Period.between(LocalDate.now(),LocalDate.parse(booking.startTime.split("T")[0])).days <=
                                     spaceRepository.findById("Bearer $token", booking.spaceId).bookingWindow.toInt())
                             {"No se puede reservar con tanta anterioridad."}
