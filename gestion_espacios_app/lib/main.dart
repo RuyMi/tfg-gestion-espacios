@@ -75,6 +75,7 @@ class MyApp extends StatelessWidget {
         '/usuarios-bo': (context) => const UsuariosBOScreen(),
         '/nuevo-espacio': (context) => const NuevoEspacioBODialog(),
         // '/editar-espacio': (context) => const EditarEspacioBODialog(),
+        // '/editar-usuario': (context) => const EditarUsuarioBODialog(),
       },
     );
   }
