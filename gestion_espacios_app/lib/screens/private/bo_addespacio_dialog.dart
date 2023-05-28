@@ -64,8 +64,8 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                   labelText: 'Nombre del espacio',
                   labelStyle: TextStyle(
                       fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                  prefixIcon:
-                      Icon(Icons.edit_rounded, color: theme.colorScheme.onPrimary),
+                  prefixIcon: Icon(Icons.edit_rounded,
+                      color: theme.colorScheme.onPrimary),
                 ),
               ),
               const SizedBox(height: 16),
@@ -91,13 +91,13 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                   labelText: 'Descripción del espacio',
                   labelStyle: TextStyle(
                       fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                  prefixIcon:
-                      Icon(Icons.edit_rounded, color: theme.colorScheme.onPrimary),
+                  prefixIcon: Icon(Icons.edit_rounded,
+                      color: theme.colorScheme.onPrimary),
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
-                onChanged: (value) => price = int.parse(value),
+                onChanged: (value) => price = tryParseInt(value),
                 cursorColor: theme.colorScheme.secondary,
                 keyboardType: TextInputType.number,
                 style: TextStyle(color: theme.colorScheme.onPrimary),
@@ -262,7 +262,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
               ),
               const SizedBox(height: 16),
               TextField(
-                // onChanged: (value) => bookingWindow = int.parse(value),
+                // onChanged: (value) => bookingWindow = tryParseInt(value),
                 onChanged: (value) => bookingWindow = value,
                 cursorColor: theme.colorScheme.secondary,
                 keyboardType: TextInputType.number,
@@ -326,7 +326,8 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                         });
                   });
                 },
-                icon: Icon(Icons.add_rounded, color: theme.colorScheme.onSecondary),
+                icon: Icon(Icons.add_rounded,
+                    color: theme.colorScheme.onSecondary),
                 label: Text(
                   'Añadir',
                   style: TextStyle(
@@ -349,4 +350,14 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
       ),
     );
   }
+}
+
+int tryParseInt(String value, {int fallbackValue = 0}) {
+  int result;
+  try {
+    result = int.parse(value);
+  } catch (e) {
+    result = fallbackValue;
+  }
+  return result;
 }

@@ -58,12 +58,22 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
     var theme = Theme.of(context);
     final espaciosProvider = Provider.of<EspaciosProvider>(context);
     final Espacio espacio = widget.espacio;
-    String name = widget.espacio.name;
-    String description = widget.espacio.description;
-    String? image = widget.espacio.image;
-    int price = widget.espacio.price;
-    List<String> authorizedRoles = widget.espacio.authorizedRoles;
-    String bookingWindow = widget.espacio.bookingWindow;
+    String name = espacio.name;
+    String description = espacio.description;
+    String? image = espacio.image;
+    int price = espacio.price;
+    List<String> authorizedRoles = espacio.authorizedRoles;
+    String bookingWindow = espacio.bookingWindow;
+
+    int tryParseInt(String value, int lastValue) {
+      int result;
+      try {
+        result = int.parse(value);
+      } catch (e) {
+        result = lastValue;
+      }
+      return result;
+    }
 
     return AlertDialog(
       backgroundColor: theme.colorScheme.onBackground,
@@ -102,8 +112,8 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                   labelText: 'Nombre',
                   labelStyle: TextStyle(
                       fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                  prefixIcon:
-                      Icon(Icons.edit_rounded, color: theme.colorScheme.onPrimary),
+                  prefixIcon: Icon(Icons.edit_rounded,
+                      color: theme.colorScheme.onPrimary),
                 ),
               ),
               const SizedBox(height: 16),
@@ -130,14 +140,14 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                   labelText: 'Descripción',
                   labelStyle: TextStyle(
                       fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                  prefixIcon:
-                      Icon(Icons.edit_rounded, color: theme.colorScheme.onPrimary),
+                  prefixIcon: Icon(Icons.edit_rounded,
+                      color: theme.colorScheme.onPrimary),
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: priceController,
-                onChanged: (value) => price = int.parse(value),
+                onChanged: (value) => price = tryParseInt(value, price),
                 cursorColor: theme.colorScheme.secondary,
                 keyboardType: TextInputType.number,
                 style: TextStyle(color: theme.colorScheme.onPrimary),
@@ -303,7 +313,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
               const SizedBox(height: 16),
               TextField(
                 controller: bookingWindowController,
-                // onChanged: (value) => bookingWindow = int.parse(value),
+                // onChanged: (value) => bookingWindow = tryParseInt(value, bookingWindow),
                 onChanged: (value) => bookingWindow = value,
                 cursorColor: theme.colorScheme.secondary,
                 keyboardType: TextInputType.number,

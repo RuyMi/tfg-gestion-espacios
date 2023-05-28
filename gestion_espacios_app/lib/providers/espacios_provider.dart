@@ -41,12 +41,11 @@ class EspaciosProvider with ChangeNotifier {
                 ))
             .toList();
         notifyListeners();
-      } else {
-        throw Exception('Error al obtener los espacios.');
       }
     } catch (e) {
       _espacios = [];
       notifyListeners();
+      throw Exception('Error al obtener los espacios.');
     }
   }
 
@@ -74,12 +73,11 @@ class EspaciosProvider with ChangeNotifier {
                 ))
             .toList();
         notifyListeners();
-      } else {
-        throw Exception('Error al obtener los espacios.');
       }
     } catch (e) {
       _espaciosReservables = [];
       notifyListeners();
+      throw Exception('Error al obtener los espacios.');
     }
   }
 
@@ -104,10 +102,10 @@ class EspaciosProvider with ChangeNotifier {
           description: data['description'],
         );
       } else {
-        throw Exception('Error al obtener el espacio.');
+        return null;
       }
     } catch (e) {
-      return null;
+      throw Exception('Error al obtener el espacio.');
     }
   }
 
@@ -132,10 +130,10 @@ class EspaciosProvider with ChangeNotifier {
           description: data['description'],
         );
       } else {
-        throw Exception('Error al obtener el espacio.');
+        return null;
       }
     } catch (e) {
-      return null;
+      throw Exception('Error al obtener el espacio.');
     }
   }
 
@@ -164,11 +162,9 @@ class EspaciosProvider with ChangeNotifier {
           description: data['description'],
         ));
         notifyListeners();
-      } else {
-        throw Exception('Error al añadir el espacio.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al añadir el espacio.');
     }
   }
 
@@ -198,11 +194,9 @@ class EspaciosProvider with ChangeNotifier {
           description: data['description'],
         );
         notifyListeners();
-      } else {
-        throw Exception('Error al actualizar el espacio.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al actualizar el espacio.');
     }
   }
 
@@ -216,11 +210,9 @@ class EspaciosProvider with ChangeNotifier {
       if (response.statusCode == 204) {
         _espacios.removeWhere((element) => element.uuid == uuid);
         notifyListeners();
-      } else {
-        throw Exception('Error al eliminar el espacio.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al eliminar el espacio.');
     }
   }
 }

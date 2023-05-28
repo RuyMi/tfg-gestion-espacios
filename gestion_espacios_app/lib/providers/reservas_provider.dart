@@ -53,12 +53,11 @@ class ReservasProvider with ChangeNotifier {
             .toList();
 
         notifyListeners();
-      } else {
-        throw Exception('Error al obtener las reservas.');
       }
     } catch (e) {
       _reservas = [];
       notifyListeners();
+      throw Exception('Error al obtener las reservas.');
     }
   }
 
@@ -84,10 +83,10 @@ class ReservasProvider with ChangeNotifier {
           image: data['image'],
         );
       } else {
-        throw Exception('Error al obtener la reserva.');
+        return null;
       }
     } catch (e) {
-      return null;
+      throw Exception('Error al obtener la reserva.');
     }
   }
 
@@ -117,12 +116,11 @@ class ReservasProvider with ChangeNotifier {
             .toList();
 
         notifyListeners();
-      } else {
-        throw Exception('Error al obtener las reservas.');
       }
     } catch (e) {
       _misReservas = [];
       notifyListeners();
+      throw Exception('Error al obtener las reservas.');
     }
   }
 
@@ -152,12 +150,11 @@ class ReservasProvider with ChangeNotifier {
             .toList();
 
         notifyListeners();
-      } else {
-        throw Exception('Error al obtener las reservas.');
       }
     } catch (e) {
       _reservasByUser = [];
       notifyListeners();
+      throw Exception('Error al obtener las reservas.');
     }
   }
 
@@ -187,12 +184,11 @@ class ReservasProvider with ChangeNotifier {
             .toList();
 
         notifyListeners();
-      } else {
-        throw Exception('Error al obtener las reservas.');
       }
     } catch (e) {
       _reservasBySpace = [];
       notifyListeners();
+      throw Exception('Error al obtener las reservas.');
     }
   }
 
@@ -222,12 +218,11 @@ class ReservasProvider with ChangeNotifier {
             .toList();
 
         notifyListeners();
-      } else {
-        throw Exception('Error al obtener las reservas.');
       }
     } catch (e) {
       _reservasByStatus = [];
       notifyListeners();
+      throw Exception('Error al obtener las reservas.');
     }
   }
 
@@ -257,12 +252,11 @@ class ReservasProvider with ChangeNotifier {
             .toList();
 
         notifyListeners();
-      } else {
-        throw Exception('Error al obtener las reservas.');
       }
     } catch (e) {
       _reservasByTime = [];
       notifyListeners();
+      throw Exception('Error al obtener las reservas.');
     }
   }
 
@@ -291,8 +285,6 @@ class ReservasProvider with ChangeNotifier {
         ));
 
         notifyListeners();
-      } else {
-        throw Exception('Error al crear la reserva.');
       }
     } catch (e) {
       throw Exception('Error al crear la reserva.');
@@ -326,11 +318,9 @@ class ReservasProvider with ChangeNotifier {
         );
 
         notifyListeners();
-      } else {
-        throw Exception('Error al actualizar la reserva.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al actualizar la reserva.');
     }
   }
 
@@ -344,11 +334,9 @@ class ReservasProvider with ChangeNotifier {
         _reservas.removeWhere((element) => element.uuid == uuid);
 
         notifyListeners();
-      } else {
-        throw Exception('Error al eliminar la reserva.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al eliminar la reserva.');
     }
   }
 }

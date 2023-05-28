@@ -54,12 +54,11 @@ class UsuariosProvider with ChangeNotifier {
             .toList();
 
         notifyListeners();
-      } else {
-        throw Exception('Error al obtener los usuarios.');
       }
     } catch (e) {
       _usuarios = [];
       notifyListeners();
+      throw Exception('Error al obtener los usuarios.');
     }
   }
 
@@ -85,10 +84,10 @@ class UsuariosProvider with ChangeNotifier {
         notifyListeners();
         return _actualUsuario;
       } else {
-        throw Exception('Error al obtener el usuario.');
+        return null;
       }
     } catch (e) {
-      return null;
+      throw Exception('Error al obtener el usuario.');
     }
   }
 
@@ -114,10 +113,10 @@ class UsuariosProvider with ChangeNotifier {
         notifyListeners();
         return usuario;
       } else {
-        throw Exception('Error al obtener el usuario.');
+        return null;
       }
     } catch (e) {
-      return null;
+      throw Exception('Error al obtener el usuario.');
     }
   }
 
@@ -145,11 +144,9 @@ class UsuariosProvider with ChangeNotifier {
         _token = data['token'];
 
         notifyListeners();
-      } else {
-        throw Exception('Error al registrar el usuario.');
       }
     } catch (e) {
-      return null;
+      throw Exception('Error al registrar el usuario.');
     }
 
     return usuario;
@@ -181,11 +178,10 @@ class UsuariosProvider with ChangeNotifier {
           isActive: data['isActive'],
         );
         notifyListeners();
-      } else {
-        throw Exception('Error al actualizar el usuario.');
       }
     } catch (e) {
-      return;
+      print(e.toString());
+      throw Exception('Error al actualizar el usuario.');
     }
   }
 
@@ -201,8 +197,6 @@ class UsuariosProvider with ChangeNotifier {
         _usuarios.firstWhere((element) => element.uuid == uuid).isActive =
             data['isActive'];
         notifyListeners();
-      } else {
-        throw Exception('Error al actualizar el usuario.');
       }
     } catch (e) {
       return;
@@ -221,11 +215,9 @@ class UsuariosProvider with ChangeNotifier {
         _usuarios.firstWhere((element) => element.uuid == uuid).credits =
             data['credits'];
         notifyListeners();
-      } else {
-        throw Exception('Error al actualizar el usuario.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al actualizar el usuario.');
     }
   }
 
@@ -255,11 +247,9 @@ class UsuariosProvider with ChangeNotifier {
           isActive: data['isActive'],
         );
         notifyListeners();
-      } else {
-        throw Exception('Error al actualizar el usuario.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al actualizar el usuario.');
     }
   }
 
@@ -273,11 +263,9 @@ class UsuariosProvider with ChangeNotifier {
       if (response.statusCode == 204) {
         _usuarios.removeWhere((element) => element.uuid == uuid);
         notifyListeners();
-      } else {
-        throw Exception('Error al eliminar el usuario.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al eliminar el usuario.');
     }
   }
 }

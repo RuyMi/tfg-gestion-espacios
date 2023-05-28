@@ -129,9 +129,9 @@
     },
     {
       "name": "http",
-      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/http-0.13.6",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.0.0",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.0"
     },
     {
       "name": "http_parser",
@@ -165,9 +165,9 @@
     },
     {
       "name": "lints",
-      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/lints-2.0.1",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/lints-2.1.0",
       "packageUri": "lib/",
-      "languageVersion": "2.17"
+      "languageVersion": "3.0"
     },
     {
       "name": "matcher",
@@ -201,9 +201,9 @@
     },
     {
       "name": "path_provider_linux",
-      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_linux-2.1.10",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_linux-2.1.11",
       "packageUri": "lib/",
-      "languageVersion": "2.17"
+      "languageVersion": "2.18"
     },
     {
       "name": "path_provider_platform_interface",
@@ -219,9 +219,9 @@
     },
     {
       "name": "petitparser",
-      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/petitparser-5.1.0",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/petitparser-5.4.0",
       "packageUri": "lib/",
-      "languageVersion": "2.18"
+      "languageVersion": "2.19"
     },
     {
       "name": "platform",
@@ -363,7 +363,7 @@
     },
     {
       "name": "url_launcher_android",
-      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_android-6.0.31",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_android-6.0.35",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -393,9 +393,9 @@
     },
     {
       "name": "url_launcher_web",
-      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_web-2.0.16",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_web-2.0.17",
       "packageUri": "lib/",
-      "languageVersion": "2.17"
+      "languageVersion": "2.18"
     },
     {
       "name": "url_launcher_windows",
@@ -423,9 +423,9 @@
     },
     {
       "name": "xml",
-      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/xml-6.2.2",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/xml-6.3.0",
       "packageUri": "lib/",
-      "languageVersion": "2.18"
+      "languageVersion": "2.19"
     },
     {
       "name": "yaml",
@@ -440,7 +440,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2023-05-27T17:27:20.971293Z",
+  "generated": "2023-05-28T16:43:14.550336Z",
   "generator": "pub",
-  "generatorVersion": "3.0.0"
+  "generatorVersion": "3.0.2"
 }

@@ -61,6 +61,16 @@ class _EditarUsuariosBODialog extends State<EditarUsuariosBODialog> {
     List<String> userRole = usuario.userRole;
     int credits = usuario.credits;
 
+    int tryParseInt(String value, int lastValue) {
+      int result;
+      try {
+        result = int.parse(value);
+      } catch (e) {
+        result = lastValue;
+      }
+      return result;
+    }
+
     return AlertDialog(
         backgroundColor: theme.colorScheme.onBackground,
         shape: RoundedRectangleBorder(
@@ -162,7 +172,7 @@ class _EditarUsuariosBODialog extends State<EditarUsuariosBODialog> {
             const SizedBox(height: 16),
             TextField(
               controller: creditsController,
-              onChanged: (value) => credits = int.parse(value),
+              onChanged: (value) => credits = tryParseInt(value, credits),
               cursorColor: theme.colorScheme.secondary,
               keyboardType: TextInputType.number,
               style: TextStyle(color: theme.colorScheme.onPrimary),
