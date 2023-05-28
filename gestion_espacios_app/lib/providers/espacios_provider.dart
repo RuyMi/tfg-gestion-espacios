@@ -145,7 +145,7 @@ class EspaciosProvider with ChangeNotifier {
           'Authorization': 'Bearer $_token',
           'Content-Type': 'application/json'
         },
-        body: jsonEncode(espacio),
+        body: jsonEncode(espacio.toJson()),
       );
 
       if (response.statusCode == 201) {
@@ -176,7 +176,7 @@ class EspaciosProvider with ChangeNotifier {
           'Authorization': 'Bearer $_token',
           'Content-Type': 'application/json'
         },
-        body: jsonEncode(espacio),
+        body: jsonEncode(espacio.toJson()),
       );
 
       if (response.statusCode == 200) {

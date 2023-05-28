@@ -328,7 +328,9 @@ class _EditarUsuariosBODialog extends State<EditarUsuariosBODialog> {
                       email: email,
                       password: password,
                       avatar: usuario.avatar,
-                      credits: credits,
+                      credits: creditsController.text == ''
+                          ? usuario.credits
+                          : credits,
                       isActive: isActiveController.text == 'true',
                       userRole: userRole);
 

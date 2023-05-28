@@ -125,7 +125,7 @@ class UsuariosProvider with ChangeNotifier {
       final response = await http.post(
         Uri.parse('$baseUrl/users/register'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(usuario),
+        body: jsonEncode(usuario.toJson()),
       );
 
       if (response.statusCode == 201) {
@@ -160,7 +160,7 @@ class UsuariosProvider with ChangeNotifier {
           'Authorization': 'Bearer $_token',
           'Content-Type': 'application/json'
         },
-        body: jsonEncode(usuario),
+        body: jsonEncode(usuario.toJson()),
       );
 
       if (response.statusCode == 200) {
@@ -180,7 +180,6 @@ class UsuariosProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print(e.toString());
       throw Exception('Error al actualizar el usuario.');
     }
   }
@@ -229,7 +228,7 @@ class UsuariosProvider with ChangeNotifier {
           'Authorization': 'Bearer $_token',
           'Content-Type': 'application/json'
         },
-        body: jsonEncode(usuario),
+        body: jsonEncode(usuario.toJson()),
       );
 
       if (response.statusCode == 200) {

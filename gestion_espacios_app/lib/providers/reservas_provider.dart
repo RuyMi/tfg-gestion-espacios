@@ -267,7 +267,7 @@ class ReservasProvider with ChangeNotifier {
             'Authorization': 'Bearer $_token',
             'Content-Type': 'application/json'
           },
-          body: jsonEncode(reserva));
+          body: jsonEncode(reserva.toJson()));
 
       if (response.statusCode == 201) {
         final data = jsonDecode(response.body);
@@ -299,7 +299,7 @@ class ReservasProvider with ChangeNotifier {
             'Authorization': 'Bearer $_token',
             'Content-Type': 'application/json'
           },
-          body: jsonEncode(reserva));
+          body: jsonEncode(reserva.toJson()));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);

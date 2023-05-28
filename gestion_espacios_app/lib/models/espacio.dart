@@ -21,4 +21,18 @@ class Espacio {
   List<String> authorizedRoles;
   String bookingWindow;
   // int bookingWindowInt;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'uuid': uuid,
+      'name': name,
+      'description': description,
+      'image': image,
+      'price': price,
+      'isReservable': isReservable,
+      'requiresAuthorization': requiresAuthorization,
+      'authorizedRoles': authorizedRoles,
+      'bookingWindow': bookingWindow,
+    };
+  }
 }
