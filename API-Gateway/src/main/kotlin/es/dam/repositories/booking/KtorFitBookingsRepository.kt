@@ -6,7 +6,9 @@ import es.dam.dto.BookingResponseDTO
 import es.dam.dto.BookingUpdateDTO
 import es.dam.exceptions.BookingBadRequestException
 import es.dam.exceptions.BookingExceptions
+import es.dam.exceptions.BookingNotFoundException
 import es.dam.services.booking.KtorFitClientBookings
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
@@ -30,12 +32,12 @@ class KtorFitBookingsRepository: IBookingsRepository {
         try {
             return@withContext call.await()
         } catch (e: Exception) {
-            throw Exception("Error getting booking with id $id ${e.message}")
+            throw BookingNotFoundException("Booking not found with uuid: $id")
         }
     }
 
     override suspend fun findBySpace(token: String, id: String): BookingDataDTO = withContext(Dispatchers.IO) {
-        val call = async { client.findBySpace(token, id) }
+        val call = async (start = CoroutineStart.LAZY){ client.findBySpace(token, id) }
         try {
             return@withContext call.await()
         } catch (e: Exception) {

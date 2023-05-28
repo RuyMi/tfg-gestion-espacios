@@ -197,7 +197,7 @@ fun Application.spacesRoutes() {
                         val id = call.parameters["id"]
                         val uuid = UUID.fromString(id)
 
-                        require(bookingsRepository.findBySpace("Bearer $token", id!!).data.isNotEmpty())
+                        require(bookingsRepository.findBySpace("Bearer $token", id!!).data.isEmpty())
                         {"Se deben actualizar o eliminar las reservas asociadas a esta sala antes de continuar con la operación."}
 
                         spacesRepository.delete("Bearer $token", id!!)

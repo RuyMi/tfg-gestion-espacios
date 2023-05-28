@@ -13,6 +13,7 @@ import es.dam.repositories.user.KtorFitUsersRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -133,6 +134,28 @@ fun Application.usersRoutes() {
                     }
                 }
 
+                get("/me") {
+
+                    try {
+                        val originalToken = call.principal<JWTPrincipal>()!!
+                        val token = tokenService.generateToken(originalToken)
+                        val subject = originalToken.payload.subject
+
+                        val user = async {
+                            userRepository.findMe("Bearer $token", subject)
+                        }
+
+                        call.respond(HttpStatusCode.OK, user.await())
+
+                    } catch (e: UserNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: UserBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: UserInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    }
+                }
+
                 put("/{id}") {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
@@ -195,6 +218,29 @@ fun Application.usersRoutes() {
                     }
                 }
 
+                put("/credits/me/{creditsAmount}") {
+                    try {
+                        val originalToken = call.principal<JWTPrincipal>()!!
+                        val token = tokenService.generateToken(originalToken)
+                        val subject = originalToken.payload.subject
+
+                        val creditsAmount = call.parameters["creditsAmount"]
+
+                        val updatedUser = async {
+                            userRepository.updateCredits("Bearer $token", subject, creditsAmount!!.toInt())
+                        }
+
+                        call.respond(HttpStatusCode.OK, updatedUser.await())
+
+                    } catch (e: UserNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: UserBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: UserInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    }
+                }
+
                 put("/active/{id}/{active}") {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
@@ -220,7 +266,7 @@ fun Application.usersRoutes() {
                         val token = tokenService.generateToken(call.principal()!!)
                         val id = call.parameters["id"]
 
-                        require(bookingsRepository.findByUser(token, id!!).data.isNotEmpty())
+                        require(bookingsRepository.findByUser(token, id!!).data.isEmpty())
                         {"Se deben actualizar o eliminar las reservas asociadas a este usuario antes de continuar con la operación."}
                         userRepository.delete("Bearer $token", id!!)
 

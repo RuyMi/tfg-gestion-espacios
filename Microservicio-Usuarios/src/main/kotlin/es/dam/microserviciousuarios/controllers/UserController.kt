@@ -88,6 +88,18 @@ class UsersController @Autowired constructor(
         }
     }
 
+    @GetMapping("/me/{id}")
+    suspend fun findMe(@PathVariable id: String): ResponseEntity<UserResponseDTO> {
+        try {
+            val res = userService.findByUuid(id).toDTO()
+            return ResponseEntity.ok(res)
+        } catch (e: UserNotFoundException) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with uuid: $id")
+        } catch (e: UserBadRequestException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID string: $id")
+        }
+    }
+
     @GetMapping("/isActive/{username}")
     suspend fun isActive(@PathVariable username: String): ResponseEntity<Boolean> {
         try {
@@ -131,6 +143,23 @@ class UsersController @Autowired constructor(
             throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with uuid: ${user.uuid}")
         } catch (e: UserBadRequestException) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID string: ${user.uuid}")
+        }
+    }
+
+    @PutMapping("/credits/me/{id}/{creditsAmount}")
+    suspend fun updateCreditsMe(
+        @PathVariable id: String,
+        @PathVariable creditsAmount: Int
+    ): ResponseEntity<UserResponseDTO> {
+        try {
+            val updated = userService.findByUuid(id)
+            val updatedCredits = updated.credits - creditsAmount
+            val res = userService.update(updated.copy(credits = updatedCredits))
+            return ResponseEntity.status(HttpStatus.OK).body(res?.toDTO())
+        } catch (e: UserNotFoundException) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND,"User not found with uuid: $id")
+        } catch (e: UserBadRequestException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID or credits amount")
         }
     }
 
