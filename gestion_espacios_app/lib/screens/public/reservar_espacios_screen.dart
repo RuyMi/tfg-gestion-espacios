@@ -381,7 +381,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                           '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:00';
 
                       final reserva = Reserva(
-                        userId: userId,
+                        userId: userId!,
                         spaceId: spaceId!,
                         startTime: startTime,
                         endTime: endTime,

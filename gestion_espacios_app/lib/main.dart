@@ -4,7 +4,7 @@ import 'package:gestion_espacios_app/providers/espacios_provider.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/providers/theme_provider.dart';
 import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
-import 'package:gestion_espacios_app/screens/private/bo_addespacio_dialog.dart';
+import 'package:gestion_espacios_app/screens/private/bo_add_espacio_dialog.dart';
 import 'package:gestion_espacios_app/screens/private/bo_espacios_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_reservas_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_usuarios_screen.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gestion_espacios_app/providers/espacios_provider.dart';
-import 'package:gestion_espacios_app/screens/private/bo_updateespacio_dialog.dart';
+import 'package:gestion_espacios_app/screens/private/bo_update_espacio_dialog.dart';
 import 'package:gestion_espacios_app/widgets/image_widget.dart';
 import 'package:provider/provider.dart';
 

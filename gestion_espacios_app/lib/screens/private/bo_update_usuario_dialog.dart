@@ -6,18 +6,18 @@ import 'package:gestion_espacios_app/widgets/eliminar_elemento.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
 import 'package:provider/provider.dart';
 
-class EditarUsuariosBODialog extends StatefulWidget {
+class EditarUsuarioBODialog extends StatefulWidget {
   final Usuario usuario;
 
-  const EditarUsuariosBODialog({Key? key, required this.usuario})
+  const EditarUsuarioBODialog({Key? key, required this.usuario})
       : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _EditarUsuariosBODialog createState() => _EditarUsuariosBODialog();
+  _EditarUsuarioBODialog createState() => _EditarUsuarioBODialog();
 }
 
-class _EditarUsuariosBODialog extends State<EditarUsuariosBODialog> {
+class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
   late TextEditingController nameController;
   late TextEditingController usernameController;
   late TextEditingController passwordController;
@@ -337,7 +337,7 @@ class _EditarUsuariosBODialog extends State<EditarUsuariosBODialog> {
                   Navigator.of(context).pop();
 
                   usuariosProvider
-                      .updateUsuario(usuario.uuid, usuarioActualizado)
+                      .updateUsuario(usuario.uuid!, usuarioActualizado)
                       .then((_) {
                     Navigator.pushNamed(context, '/home-bo');
                     showDialog(

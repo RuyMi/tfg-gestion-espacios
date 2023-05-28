@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
-import 'package:gestion_espacios_app/screens/private/bo_updateusuario_dialog.dart';
+import 'package:gestion_espacios_app/screens/private/bo_update_usuario_dialog.dart';
 import 'package:provider/provider.dart';
 
 class UsuariosBOScreen extends StatefulWidget {
@@ -47,7 +47,7 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return EditarUsuariosBODialog(usuario: usuario);
+                  return EditarUsuarioBODialog(usuario: usuario);
                 },
               );
             },
@@ -91,7 +91,7 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
                               color: theme.colorScheme.onPrimary,
                             ),
                           ),
-                          Text(usuario.username,
+                          Text('@${usuario.username}',
                               style: TextStyle(
                                 overflow: TextOverflow.ellipsis,
                                 fontStyle: FontStyle.italic,

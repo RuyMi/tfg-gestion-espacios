@@ -120,7 +120,7 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
-  Future<Usuario?> register(Usuario usuario) async {
+  Future<void> register(Usuario usuario) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/users/register'),
@@ -148,8 +148,6 @@ class UsuariosProvider with ChangeNotifier {
     } catch (e) {
       throw Exception('Error al registrar el usuario.');
     }
-
-    return usuario;
   }
 
   Future<void> updateUsuario(String uuid, Usuario usuario) async {

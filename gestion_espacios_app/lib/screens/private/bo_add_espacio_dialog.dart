@@ -321,7 +321,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                           return const MyErrorMessageDialog(
                             title: 'Error',
                             description:
-                                'Ha ocurrido un error al crear es espacio.',
+                                'Ha ocurrido un error al crear el espacio.',
                           );
                         });
                   });

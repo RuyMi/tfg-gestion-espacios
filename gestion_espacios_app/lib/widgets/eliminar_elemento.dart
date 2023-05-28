@@ -103,7 +103,7 @@ class MyDeleteAlert extends StatelessWidget {
               });
             } else if (elemento is Reserva) {
               reservasProvider
-                  .deleteReserva(elemento.uuid, usuario.uuid)
+                  .deleteReserva(elemento.uuid, usuario.uuid!)
                   .then((result) {
                 Navigator.pushNamed(context, ruta);
                 showDialog(
