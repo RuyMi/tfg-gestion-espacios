@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
+import 'package:gestion_espacios_app/screens/private/bo_update_reserva_dialog.dart';
 import 'package:gestion_espacios_app/widgets/image_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -42,71 +43,81 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
         crossAxisSpacing: 10,
         itemBuilder: (BuildContext context, int index) {
           final reserva = reservas[index];
-          return Card(
-            color: theme.colorScheme.onBackground,
-            child: Container(
-              constraints: const BoxConstraints(
-                maxHeight: 200,
-                minHeight: 150,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: theme.colorScheme.surface,
-                        width: 2,
+          return InkWell(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return EditarReservaBODialog(reserva: reserva);
+                },
+              );
+            },
+            child: Card(
+              color: theme.colorScheme.onBackground,
+              child: Container(
+                constraints: const BoxConstraints(
+                  maxHeight: 200,
+                  minHeight: 150,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: theme.colorScheme.surface,
+                          width: 2,
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: MyImageWidget(image: reserva.image),
                       ),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: MyImageWidget(image: reserva.image),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          reserva.spaceName,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'KoHo',
-                            color: theme.colorScheme.onPrimary,
-                          ),
-                        ),
-                        Text('@${reserva.userName}',
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            reserva.spaceName,
                             style: TextStyle(
+                              fontWeight: FontWeight.bold,
                               fontFamily: 'KoHo',
                               color: theme.colorScheme.onPrimary,
-                            )),
-                        const SizedBox(height: 5),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(reserva.status!,
-                                style: TextStyle(
-                                    fontFamily: 'KoHo',
-                                    fontWeight: FontWeight.bold,
-                                    color: theme.colorScheme.secondary)),
-                            const SizedBox(width: 5),
-                            Icon(
-                              Icons.info_outline_rounded,
-                              color: theme.colorScheme.secondary,
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                          Text('@${reserva.userName}',
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onPrimary,
+                              )),
+                          const SizedBox(height: 5),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(reserva.status!,
+                                  style: TextStyle(
+                                      fontFamily: 'KoHo',
+                                      fontWeight: FontWeight.bold,
+                                      color: theme.colorScheme.secondary)),
+                              const SizedBox(width: 5),
+                              Icon(
+                                Icons.info_outline_rounded,
+                                color: theme.colorScheme.secondary,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

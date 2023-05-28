@@ -80,7 +80,9 @@ class AuthProvider with ChangeNotifier {
 
         return usuario;
       } else {
-        throw Exception('Error al iniciar sesión');
+        loginSucceed = false;
+        notifyListeners();
+        return null;
       }
     } catch (e) {
       loginSucceed = false;

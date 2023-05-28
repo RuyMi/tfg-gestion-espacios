@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/screens/private/bo_add_espacio_dialog.dart';
-import 'package:gestion_espacios_app/screens/private/bo_add_usuario_dialog%20copy.dart';
+import 'package:gestion_espacios_app/screens/private/bo_add_usuario_dialog.dart';
 import 'package:gestion_espacios_app/screens/private/bo_espacios_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_reservas_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_usuarios_screen.dart';

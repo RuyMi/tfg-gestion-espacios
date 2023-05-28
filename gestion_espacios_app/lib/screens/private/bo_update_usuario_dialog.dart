@@ -79,7 +79,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
         title: Text(
           usuario.name,
           style: TextStyle(
-              fontWeight: FontWeight.bold, color: theme.colorScheme.onPrimary),
+              fontWeight: FontWeight.bold, color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
         ),
         content: SingleChildScrollView(
             child: SizedBox(
@@ -90,7 +90,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
               controller: nameController,
               onChanged: (value) => name = value,
               cursorColor: theme.colorScheme.secondary,
-              style: TextStyle(color: theme.colorScheme.onPrimary),
+              style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
               keyboardType: TextInputType.name,
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
@@ -120,7 +120,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
               cursorColor: theme.colorScheme.secondary,
               keyboardType: TextInputType.multiline,
               maxLines: null,
-              style: TextStyle(color: theme.colorScheme.onPrimary),
+              style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -148,7 +148,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
               onChanged: (value) => email = value,
               cursorColor: theme.colorScheme.secondary,
               keyboardType: TextInputType.number,
-              style: TextStyle(color: theme.colorScheme.onPrimary),
+              style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -175,7 +175,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
               onChanged: (value) => credits = tryParseInt(value, credits),
               cursorColor: theme.colorScheme.secondary,
               keyboardType: TextInputType.number,
-              style: TextStyle(color: theme.colorScheme.onPrimary),
+              style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -199,7 +199,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
             const SizedBox(height: 16),
             CheckboxListTile(
               title: Text('Activo',
-                  style: TextStyle(color: theme.colorScheme.onPrimary)),
+                  style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo')),
               value: isActiveController.text == 'true',
               onChanged: (bool? newValue) {
                 setState(() {
@@ -218,7 +218,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
                 Text(
                   'Roles del usuario',
                   style: TextStyle(
-                      color: theme.colorScheme.onPrimary, fontSize: 18),
+                      color: theme.colorScheme.onPrimary, fontSize: 18, fontFamily: 'KoHo'),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -230,7 +230,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
                           Text(
                             'Administrador',
                             style:
-                                TextStyle(color: theme.colorScheme.onPrimary),
+                                TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                           ),
                           Checkbox(
                             value: userRole.contains('ADMINISTRATOR'),
@@ -260,7 +260,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
                           Text(
                             'Profesor',
                             style:
-                                TextStyle(color: theme.colorScheme.onPrimary),
+                                TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                           ),
                           Checkbox(
                             value: userRole.contains('TEACHER'),
@@ -290,7 +290,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
                           Text(
                             'Usuario',
                             style:
-                                TextStyle(color: theme.colorScheme.onPrimary),
+                                TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                           ),
                           Checkbox(
                             value: userRole.contains('USER'),

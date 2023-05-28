@@ -36,7 +36,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
       title: Text(
         'Nuevo espacio',
         style: TextStyle(
-            fontWeight: FontWeight.bold, color: theme.colorScheme.onPrimary),
+            fontWeight: FontWeight.bold, color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
       ),
       content: SingleChildScrollView(
         child: SizedBox(
@@ -46,7 +46,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
               TextField(
                 onChanged: (value) => name = value,
                 cursorColor: theme.colorScheme.secondary,
-                style: TextStyle(color: theme.colorScheme.onPrimary),
+                style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -74,7 +74,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                 cursorColor: theme.colorScheme.secondary,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
-                style: TextStyle(color: theme.colorScheme.onPrimary),
+                style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -100,7 +100,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                 onChanged: (value) => price = tryParseInt(value),
                 cursorColor: theme.colorScheme.secondary,
                 keyboardType: TextInputType.number,
-                style: TextStyle(color: theme.colorScheme.onPrimary),
+                style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -124,7 +124,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
               const SizedBox(height: 16),
               CheckboxListTile(
                 title: Text("Reservable",
-                    style: TextStyle(color: theme.colorScheme.onPrimary)),
+                    style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo')),
                 value: isReservable,
                 onChanged: (bool? newValue) {
                   setState(() {
@@ -141,7 +141,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
               CheckboxListTile(
                 title: Text(
                   'Autorización requerida',
-                  style: TextStyle(color: theme.colorScheme.onPrimary),
+                  style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                 ),
                 value: requiresAuthorization,
                 onChanged: (bool? newValue) {
@@ -161,7 +161,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                   Text(
                     'Roles autorizados',
                     style: TextStyle(
-                        color: theme.colorScheme.onPrimary, fontSize: 18),
+                        color: theme.colorScheme.onPrimary, fontSize: 18, fontFamily: 'KoHo'),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -173,7 +173,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                             Text(
                               'Administrador',
                               style:
-                                  TextStyle(color: theme.colorScheme.onPrimary),
+                                  TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                             ),
                             Checkbox(
                               value: authorizedRoles.contains('ADMINISTRATOR'),
@@ -203,7 +203,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                             Text(
                               'Profesor',
                               style:
-                                  TextStyle(color: theme.colorScheme.onPrimary),
+                                  TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                             ),
                             Checkbox(
                               value: authorizedRoles.contains('TEACHER'),
@@ -233,7 +233,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                             Text(
                               'Usuario',
                               style:
-                                  TextStyle(color: theme.colorScheme.onPrimary),
+                                  TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                             ),
                             Checkbox(
                               value: authorizedRoles.contains('USER'),
@@ -266,7 +266,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                 onChanged: (value) => bookingWindow = value,
                 cursorColor: theme.colorScheme.secondary,
                 keyboardType: TextInputType.number,
-                style: TextStyle(color: theme.colorScheme.onPrimary),
+                style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),

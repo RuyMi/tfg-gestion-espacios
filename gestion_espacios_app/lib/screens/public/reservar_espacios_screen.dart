@@ -194,7 +194,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
-                      color: theme.colorScheme.secondary,
+                      color: theme.colorScheme.onPrimary,
                       width: 2,
                     ),
                   ),

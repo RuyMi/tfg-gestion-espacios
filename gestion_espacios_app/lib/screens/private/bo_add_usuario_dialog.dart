@@ -36,7 +36,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
         title: Text(
           'Nuevo usuario',
           style: TextStyle(
-              fontWeight: FontWeight.bold, color: theme.colorScheme.onPrimary),
+              fontWeight: FontWeight.bold, color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
         ),
         content: SingleChildScrollView(
             child: SizedBox(
@@ -45,7 +45,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
             TextField(
               onChanged: (value) => name = value,
               cursorColor: theme.colorScheme.secondary,
-              style: TextStyle(color: theme.colorScheme.onPrimary),
+              style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
               keyboardType: TextInputType.name,
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
@@ -73,7 +73,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
               cursorColor: theme.colorScheme.secondary,
               keyboardType: TextInputType.multiline,
               maxLines: null,
-              style: TextStyle(color: theme.colorScheme.onPrimary),
+              style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -99,7 +99,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
               onChanged: (value) => email = value,
               cursorColor: theme.colorScheme.secondary,
               keyboardType: TextInputType.number,
-              style: TextStyle(color: theme.colorScheme.onPrimary),
+              style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -125,7 +125,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
               onChanged: (value) => credits = tryParseInt(value),
               cursorColor: theme.colorScheme.secondary,
               keyboardType: TextInputType.number,
-              style: TextStyle(color: theme.colorScheme.onPrimary),
+              style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -149,7 +149,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
             const SizedBox(height: 16),
             CheckboxListTile(
               title: Text('Activo',
-                  style: TextStyle(color: theme.colorScheme.onPrimary)),
+                  style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo')),
               value: isActive,
               onChanged: (bool? newValue) {
                 setState(() {
@@ -168,7 +168,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                 Text(
                   'Roles del usuario',
                   style: TextStyle(
-                      color: theme.colorScheme.onPrimary, fontSize: 18),
+                      color: theme.colorScheme.onPrimary, fontSize: 18, fontFamily: 'KoHo'),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -180,7 +180,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                           Text(
                             'Administrador',
                             style:
-                                TextStyle(color: theme.colorScheme.onPrimary),
+                                TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                           ),
                           Checkbox(
                             value: userRole.contains('ADMINISTRATOR'),
@@ -210,7 +210,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                           Text(
                             'Profesor',
                             style:
-                                TextStyle(color: theme.colorScheme.onPrimary),
+                                TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                           ),
                           Checkbox(
                             value: userRole.contains('TEACHER'),
@@ -240,7 +240,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                           Text(
                             'Usuario',
                             style:
-                                TextStyle(color: theme.colorScheme.onPrimary),
+                                TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                           ),
                           Checkbox(
                             value: userRole.contains('USER'),

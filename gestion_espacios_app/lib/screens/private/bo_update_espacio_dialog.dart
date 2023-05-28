@@ -83,7 +83,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
       title: Text(
         espacio.name,
         style: TextStyle(
-            fontWeight: FontWeight.bold, color: theme.colorScheme.onPrimary),
+            fontWeight: FontWeight.bold, color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
       ),
       content: SingleChildScrollView(
         child: SizedBox(
@@ -94,7 +94,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                 controller: nameController,
                 onChanged: (value) => name = value,
                 cursorColor: theme.colorScheme.secondary,
-                style: TextStyle(color: theme.colorScheme.onPrimary),
+                style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -123,7 +123,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                 cursorColor: theme.colorScheme.secondary,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
-                style: TextStyle(color: theme.colorScheme.onPrimary),
+                style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -150,7 +150,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                 onChanged: (value) => price = tryParseInt(value, price),
                 cursorColor: theme.colorScheme.secondary,
                 keyboardType: TextInputType.number,
-                style: TextStyle(color: theme.colorScheme.onPrimary),
+                style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -174,7 +174,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
               const SizedBox(height: 16),
               CheckboxListTile(
                 title: Text('Reservable',
-                    style: TextStyle(color: theme.colorScheme.onPrimary)),
+                    style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo')),
                 value: isReservableController.text == 'true',
                 onChanged: (bool? newValue) {
                   setState(() {
@@ -191,7 +191,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
               CheckboxListTile(
                 title: Text(
                   'Autorización requerida',
-                  style: TextStyle(color: theme.colorScheme.onPrimary),
+                  style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                 ),
                 value: requiresAuthorizationController.text == 'true',
                 onChanged: (bool? newValue) {
@@ -211,7 +211,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                   Text(
                     'Roles autorizados',
                     style: TextStyle(
-                        color: theme.colorScheme.onPrimary, fontSize: 18),
+                        color: theme.colorScheme.onPrimary, fontSize: 18, fontFamily: 'KoHo'),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -223,7 +223,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                             Text(
                               'Administrador',
                               style:
-                                  TextStyle(color: theme.colorScheme.onPrimary),
+                                  TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                             ),
                             Checkbox(
                               value: authorizedRoles.contains('ADMINISTRATOR'),
@@ -253,7 +253,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                             Text(
                               'Profesor',
                               style:
-                                  TextStyle(color: theme.colorScheme.onPrimary),
+                                  TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                             ),
                             Checkbox(
                               value: authorizedRoles.contains('TEACHER'),
@@ -283,7 +283,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                             Text(
                               'Usuario',
                               style:
-                                  TextStyle(color: theme.colorScheme.onPrimary),
+                                  TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                             ),
                             Checkbox(
                               value: authorizedRoles.contains('USER'),
@@ -317,7 +317,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                 onChanged: (value) => bookingWindow = value,
                 cursorColor: theme.colorScheme.secondary,
                 keyboardType: TextInputType.number,
-                style: TextStyle(color: theme.colorScheme.onPrimary),
+                style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
