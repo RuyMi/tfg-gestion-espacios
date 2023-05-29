@@ -10,7 +10,7 @@ import org.litote.kmongo.newId
 import java.time.LocalDateTime
 import java.util.*
 
-//TODO Poner nombre de usuario y nombre del espacio en la reserva
+
 @Serializable
 data class Booking(
     @BsonId
@@ -21,6 +21,7 @@ data class Booking(
     val userName: String,
     val spaceId: String,
     val spaceName: String,
+    val image: String?,
     @Serializable(with = LocalDateTimeSerializer::class)
     val startTime: LocalDateTime,
     @Serializable(with = LocalDateTimeSerializer::class)

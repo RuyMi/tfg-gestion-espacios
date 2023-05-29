@@ -9,6 +9,7 @@ data class BookingResponseDTO(
     val userName: String,
     val spaceId: String,
     val spaceName: String,
+    val image: String? = null,
     val startTime: String,
     val endTime: String,
     val observations: String? = null,
@@ -21,10 +22,11 @@ data class BookingCreateDTO(
     val userName: String,
     val spaceId: String,
     val spaceName: String,
+    val image: String? = null,
     val startTime: String,
     val endTime: String,
     val observations: String? = null,
-    val status: String = "PENDING"
+    val status: String? = "PENDING"
 )
 
 @Serializable
@@ -38,6 +40,7 @@ data class BookingUpdateDTO(
     val userName: String,
     val spaceId: String,
     val spaceName: String,
+    val image: String? = null,
     val startTime: String,
     val endTime: String,
     val observations: String? = null,

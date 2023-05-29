@@ -14,7 +14,7 @@ import java.util.*
 class BookingRepositoryImpl : BookingRepository {
     private val manager = MongoDbManager
     override suspend fun findByUserId(uuid: UUID): List<Booking> = withContext(Dispatchers.IO) {
-        return@withContext manager.database.getCollection<Booking>().find(Booking::userId eq uuid.toString()).toList().ifEmpty { emptyList()  }
+        return@withContext manager.database.getCollection<Booking>().find(Booking::userId eq uuid.toString()).toList().ifEmpty { emptyList() }
     }
 
     override suspend fun findBySpaceId(uuid: UUID): List<Booking> = withContext(Dispatchers.IO) {

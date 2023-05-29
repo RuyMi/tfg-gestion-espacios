@@ -28,12 +28,9 @@ class KtorFitBookingsRepository: IBookingsRepository {
     }
 
     override suspend fun findById(token: String, id: String): BookingResponseDTO = withContext(Dispatchers.IO) {
-        val call = async { client.findById(token, id) }
-        try {
-            return@withContext call.await()
-        } catch (e: Exception) {
-            throw BookingNotFoundException("Booking not found with uuid: $id")
-        }
+        val call = runCatching { client.findById(token, id) }
+        return@withContext if (call.isSuccess) call.getOrThrow() else throw BookingNotFoundException("Error getting booking with id $id ${call.exceptionOrNull()?.message}")
+
     }
 
     override suspend fun findBySpace(token: String, id: String): BookingDataDTO = withContext(Dispatchers.IO) {
@@ -41,7 +38,7 @@ class KtorFitBookingsRepository: IBookingsRepository {
         try {
             return@withContext call.await()
         } catch (e: Exception) {
-            throw Exception("Error getting booking with space's id $id ${e.message}")
+            return@withContext BookingDataDTO(emptyList())
         }
     }
 

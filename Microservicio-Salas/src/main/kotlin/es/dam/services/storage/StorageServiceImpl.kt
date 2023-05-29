@@ -61,7 +61,7 @@ class StorageServiceImpl(
     override suspend fun getFile(fileName: String): File = withContext(Dispatchers.IO) {
         val file = File("${storageConfig.uploadDir}/$fileName")
         if (!file.exists()) {
-            throw StorageException.FileNotFound("No se ha encontrado el fichero: $fileName")
+            return@withContext File("${storageConfig.uploadDir}/placeholder.jpeg")
         } else {
             return@withContext file
         }
