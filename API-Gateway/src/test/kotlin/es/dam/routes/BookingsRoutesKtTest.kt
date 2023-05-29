@@ -43,10 +43,9 @@ class BookingsRoutesKtTest{
             username = "tEsTiNg",
             email = "tEsTiNg@email.com",
             password = "admin1234",
-            userRole = setOf("ADMINISTRATOR")
+            userRole = setOf("ADMINISTRATOR"),
+            isActive = true
         )
-
-
 
         val spaceCreateDTO = SpaceCreateDTO(
             name = "tEsTiNg",

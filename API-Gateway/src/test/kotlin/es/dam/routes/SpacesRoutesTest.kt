@@ -39,14 +39,15 @@ class SpacesRoutesTest {
     private var spaceId = ""
 
     @BeforeAll
-    fun setup() = testApplication {
+    fun setup() = testApplication{
 
         val registerDTO = UserRegisterDTO(
             name = "tEsTiNg",
             username = "tEsTiNg",
             email = "tEsTiNg@email.com",
             password = "admin1234",
-            userRole = setOf("ADMINISTRATOR")
+            userRole = setOf("ADMINISTRATOR"),
+            isActive = true
         )
 
         val spaceCreateDTO = SpaceCreateDTO(
@@ -67,7 +68,7 @@ class SpacesRoutesTest {
             }
         }
 
-        client.post("/users/register") {
+         client.post("/users/register") {
             contentType(ContentType.Application.Json)
             setBody(registerDTO)
         }
@@ -91,17 +92,17 @@ class SpacesRoutesTest {
 
         val spaceResponse = json.decodeFromString<SpaceResponseDTO>(createSpace.bodyAsText())
 
-        val spaceUUID = spaceResponse.uuid
+        /*val spaceUUID = spaceResponse.uuid
 
-        spaceId = spaceUUID
+        spaceId = spaceUUID*/
 
-        val bookingCreateDTO = BookingCreateDTO(
+        /*val bookingCreateDTO = BookingCreateDTO(
             userId = userUUID,
             userName = "tEsTiNg",
             spaceId = spaceUUID,
             spaceName = "tEsTiNg",
             startTime = LocalDateTime.parse("2023-05-30T22:23:23.542295200").toString(),
-            endTime = LocalDateTime.parse("2023-05-30T22:23:23.542295200").toString(),
+            endTime = LocalDateTime.parse("2023-05-30T23:23:23.542295200").toString(),
             observations = "tEsTiNg"
         )
 
@@ -113,10 +114,10 @@ class SpacesRoutesTest {
 
         val bookingResponse = json.decodeFromString<BookingResponseDTO>(createBooking.bodyAsText())
 
-        bookingId = bookingResponse.uuid
+        bookingId = bookingResponse.uuid*/
     }
 
-    @AfterAll
+    /*@AfterAll
     fun tearDown() = testApplication {
         environment { config }
 
@@ -144,7 +145,7 @@ class SpacesRoutesTest {
         client.delete("/users/$userId") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
-    }
+    }*/
 
     @Test
     fun getAll() = testApplication {
