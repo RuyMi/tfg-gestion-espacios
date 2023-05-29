@@ -13,6 +13,7 @@ import es.dam.repositories.user.KtorFitUsersRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -20,6 +21,7 @@ import jdk.jshell.spi.ExecutionControl.UserException
 import kotlinx.coroutines.async
 import org.koin.ktor.ext.inject
 import java.time.LocalDateTime
+import java.util.*
 
 private const val ENDPOINT = "users"
 
@@ -36,7 +38,7 @@ fun Application.usersRoutes() {
                 try {
                     val login = call.receive<UserLoginDTO>()
 
-                   // require(userRepository.isActive(login.username)){"No se ha podido iniciar sesión ya que este usuario está dado de baja."}
+                   require(userRepository.isActive(login.username)){"Este usuario ha sido dado de baja."}
                     val user = async {
                         userRepository.login(login)
                     }
@@ -51,26 +53,8 @@ fun Application.usersRoutes() {
                     call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                 } catch (e: UserInternalErrorException) {
                     call.respond(HttpStatusCode.InternalServerError, "${e.message}")
-                }
-            }
-
-            post("/login") {
-                try {
-                    val login = call.receive<UserLoginDTO>()
-
-                    //require(userRepository.isActive(login.username)){"No se ha podido iniciar sesión ya que este usuario está dado de baja."}
-                    val user = async {
-                        userRepository.login(login)
-                    }
-
-                    call.respond(HttpStatusCode.OK, user.await())
-
-                } catch (e: UserNotFoundException) {
-                    call.respond(HttpStatusCode.NotFound, "${e.message}")
-                } catch (e: UserBadRequestException) {
-                    call.respond(HttpStatusCode.BadRequest, "${e.message}")
-                } catch (e: UserInternalErrorException) {
-                    call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                 }
             }
 
@@ -96,8 +80,11 @@ fun Application.usersRoutes() {
             authenticate {
                 get() {
                     try {
-                        val token = tokenService.generateToken(call.principal()!!)
+                        val originalToken = call.principal<JWTPrincipal>()!!
+                        val token = tokenService.generateToken(originalToken)
+                        val userRole = originalToken.payload.getClaim("role").toString()
 
+                        require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
                         val res = async {
                             userRepository.findAll("Bearer $token")
                         }
@@ -109,17 +96,52 @@ fun Application.usersRoutes() {
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     }  catch (e: UserInternalErrorException) {
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    } catch (e: IllegalArgumentException){
+                        call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                     }
                 }
 
                 get("/{id}") {
-
                     try {
-                        val token = tokenService.generateToken(call.principal()!!)
+                        val originalToken = call.principal<JWTPrincipal>()!!
+                        val token = tokenService.generateToken(originalToken)
+                        val userRole = originalToken.payload.getClaim("role").toString()
+
                         val id = call.parameters["id"]
+
+                        try{
+                            UUID.fromString(id)
+                        } catch (e: IllegalArgumentException){
+                            call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
+                        }
+
+                        require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
 
                         val user = async {
                             userRepository.findById("Bearer $token", id!!)
+                        }
+
+                        call.respond(HttpStatusCode.OK, user.await())
+
+                    } catch (e: UserNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: UserBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: UserInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    } catch (e: IllegalArgumentException){
+                        call.respond(HttpStatusCode.Unauthorized, "${e.message}")
+                    }
+                }
+
+                get("/me") {
+                    try {
+                        val originalToken = call.principal<JWTPrincipal>()!!
+                        val token = tokenService.generateToken(originalToken)
+                        val subject = originalToken.payload.subject
+
+                        val user = async {
+                            userRepository.findMe("Bearer $token", subject)
                         }
 
                         call.respond(HttpStatusCode.OK, user.await())
@@ -135,15 +157,28 @@ fun Application.usersRoutes() {
 
                 put("/{id}") {
                     try {
-                        val token = tokenService.generateToken(call.principal()!!)
-                        val id = call.parameters["id"]
-                        val user = call.receive<UserUpdateDTO>()
+                        val originalToken = call.principal<JWTPrincipal>()!!
+                        val token = tokenService.generateToken(originalToken)
+                        val userRole = originalToken.payload.getClaim("role").toString()
 
-                        val updatedUser = async {
-                            userRepository.update("Bearer $token", id!!, user)
+                        val id = call.parameters["id"]
+                        val userDTO = call.receive<UserUpdateDTO>()
+
+                        try{
+                            UUID.fromString(id)
+                        }catch(e: IllegalArgumentException) {
+                            call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
                         }
 
-                        call.respond(HttpStatusCode.OK, updatedUser.await())
+                        val user = userRepository.findById("Bearer $token", id!!)
+
+                        require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
+                            val updatedUser = async {
+                                userRepository.update("Bearer $token", user.uuid, userDTO)
+                            }
+
+                            call.respond(HttpStatusCode.OK, updatedUser.await())
+
 
                     } catch (e: UserNotFoundException) {
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
@@ -151,16 +186,23 @@ fun Application.usersRoutes() {
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: UserInternalErrorException) {
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                     }
                 }
 
                 put("/me") {
                     try {
-                        val token = tokenService.generateToken(call.principal()!!)
-                        val user = call.receive<UserUpdateDTO>()
+                        val originalToken = call.principal<JWTPrincipal>()!!
+                        val token = tokenService.generateToken(originalToken)
+                        val subject = originalToken.subject.toString()
+
+                        val userDTO = call.receive<UserUpdateDTO>()
+
+                        val user = userRepository.findById("Bearer $token", subject)
 
                         val updatedUser = async {
-                            userRepository.me("Bearer $token", user)
+                            userRepository.me("Bearer $token", userDTO)
                         }
 
                         call.respond(HttpStatusCode.OK, updatedUser.await())
@@ -176,12 +218,32 @@ fun Application.usersRoutes() {
 
                 put("/credits/{id}/{creditsAmount}") {
                     try {
-                        val token = tokenService.generateToken(call.principal()!!)
+                        val originalToken = call.principal<JWTPrincipal>()!!
+                        val token = tokenService.generateToken(originalToken)
+                        val userRole = originalToken.payload.getClaim("role").toString()
+
                         val id = call.parameters["id"]
+
+                        try{
+                            UUID.fromString(id)
+                        } catch (e: IllegalArgumentException){
+                            call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
+                        }
+
+                        val user = userRepository.findById("Bearer $token", id!!)
+
                         val creditsAmount = call.parameters["creditsAmount"]
 
+                        try{
+                            creditsAmount!!.toInt()
+                        } catch (e: IllegalArgumentException){
+                            call.respond(HttpStatusCode.BadRequest, "El número de créditos introducido no es válido: ${e.message}")
+                        }
+
+                        require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
+
                         val updatedUser = async {
-                            userRepository.updateCredits("Bearer $token", id!!, creditsAmount!!.toInt())
+                            userRepository.updateCredits("Bearer $token", user.uuid, creditsAmount!!.toInt())
                         }
 
                         call.respond(HttpStatusCode.OK, updatedUser.await())
@@ -192,17 +254,39 @@ fun Application.usersRoutes() {
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: UserInternalErrorException) {
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                     }
                 }
 
                 put("/active/{id}/{active}") {
                     try {
-                        val token = tokenService.generateToken(call.principal()!!)
+                        val originalToken = call.principal<JWTPrincipal>()!!
+                        val token = tokenService.generateToken(originalToken)
+                        val userRole = originalToken.payload.getClaim("role").toString()
+
                         val id = call.parameters["id"]
+
+                        try{
+                            UUID.fromString(id)
+                        } catch (e: IllegalArgumentException){
+                            call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
+                        }
+
+                        val user = userRepository.findById("Bearer $token", id!!)
+
                         val active = call.parameters["active"]
 
+                        try{
+                            active!!.toBoolean()
+                        } catch (e: IllegalArgumentException){
+                            call.respond(HttpStatusCode.BadRequest, "El estado de actividad introducido del usuario no es válido: ${e.message}")
+                        }
+
+                        require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
+
                         val updatedUser = async {
-                            userRepository.updateActive("Bearer $token", id!!, active!!.toBoolean())
+                            userRepository.updateActive("Bearer $token", user.uuid, active!!.toBoolean())
                         }
                         call.respond(HttpStatusCode.OK, updatedUser.await())
 
@@ -212,16 +296,30 @@ fun Application.usersRoutes() {
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: UserInternalErrorException) {
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                     }
                 }
 
                 delete("/{id}") {
                     try {
-                        val token = tokenService.generateToken(call.principal()!!)
+                        val originalToken = call.principal<JWTPrincipal>()!!
+                        val token = tokenService.generateToken(originalToken)
+                        val userRole = originalToken.payload.getClaim("role").toString()
+
                         val id = call.parameters["id"]
 
+                        try{
+                            UUID.fromString(id)
+                        } catch (e: IllegalArgumentException){
+                            call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
+                        }
+
+                        require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
                         require(bookingsRepository.findByUser(token, id!!).data.isEmpty())
                         {"Se deben actualizar o eliminar las reservas asociadas a este usuario antes de continuar con la operación."}
+                        userRepository.findById("Bearer $token", id!!)
+
                         userRepository.delete("Bearer $token", id!!)
 
                         call.respond(HttpStatusCode.NoContent)
@@ -232,6 +330,9 @@ fun Application.usersRoutes() {
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: UserInternalErrorException) {
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    } catch (e: IllegalArgumentException) {
+                        //TODO: no siempre
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     }
                 }
             }
