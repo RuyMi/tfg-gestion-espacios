@@ -66,6 +66,16 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
         '${startTimeFromLocalDateTime(startTime)} - ${endTimeFromLocalDateTime(endTime)}';
     String myDate = dateFromLocalDateTime(startTime);
 
+    void updateStatus(String newStatus) {
+      setState(() {
+        if (status == newStatus) {
+          status = '';
+        } else {
+          status = newStatus;
+        }
+      });
+    }
+
     return AlertDialog(
       backgroundColor: theme.colorScheme.onBackground,
       shape: RoundedRectangleBorder(
@@ -133,23 +143,56 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
                                   color: theme.colorScheme.onPrimary,
                                   fontFamily: 'KoHo'),
                             ),
-                            Checkbox(
-                              value: status == 'PENDING',
-                              onChanged: (bool? newValue) {
-                                setState(() {
-                                  if (newValue != null && newValue) {
-                                    status = 'PENDING';
-                                  } else {
-                                    status = 'PENDING';
-                                  }
-                                });
+                            StatefulBuilder(
+                              builder:
+                                  (BuildContext context, StateSetter setState) {
+                                return Checkbox(
+                                  value: status == 'PENDING',
+                                  onChanged: (bool? newValue) {
+                                    setState(() {
+                                      updateStatus('PENDING');
+                                    });
+                                  },
+                                  activeColor: theme.colorScheme.onBackground,
+                                  checkColor: theme.colorScheme.secondary,
+                                  side: BorderSide(
+                                      color: theme.colorScheme.onPrimary),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30)),
+                                );
                               },
-                              activeColor: theme.colorScheme.onBackground,
-                              checkColor: theme.colorScheme.secondary,
-                              side: BorderSide(
-                                  color: theme.colorScheme.onPrimary),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Aceptada',
+                              style: TextStyle(
+                                  color: theme.colorScheme.onPrimary,
+                                  fontFamily: 'KoHo'),
+                            ),
+                            StatefulBuilder(
+                              builder:
+                                  (BuildContext context, StateSetter setState) {
+                                return Checkbox(
+                                  value: status == 'APPROVED',
+                                  onChanged: (bool? newValue) {
+                                    setState(() {
+                                      updateStatus('APPROVED');
+                                    });
+                                  },
+                                  activeColor: theme.colorScheme.onBackground,
+                                  checkColor: theme.colorScheme.secondary,
+                                  side: BorderSide(
+                                      color: theme.colorScheme.onPrimary),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30)),
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -164,54 +207,24 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
                                   color: theme.colorScheme.onPrimary,
                                   fontFamily: 'KoHo'),
                             ),
-                            Checkbox(
-                              value: status == 'REJECTED',
-                              onChanged: (bool? newValue) {
-                                setState(() {
-                                  if (newValue != null && newValue) {
-                                    status = 'REJECTED';
-                                  } else {
-                                    status = 'PENDING';
-                                  }
-                                });
+                            StatefulBuilder(
+                              builder:
+                                  (BuildContext context, StateSetter setState) {
+                                return Checkbox(
+                                  value: status == 'REJECTED',
+                                  onChanged: (bool? newValue) {
+                                    setState(() {
+                                      updateStatus('REJECTED');
+                                    });
+                                  },
+                                  activeColor: theme.colorScheme.onBackground,
+                                  checkColor: theme.colorScheme.secondary,
+                                  side: BorderSide(
+                                      color: theme.colorScheme.onPrimary),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30)),
+                                );
                               },
-                              activeColor: theme.colorScheme.onBackground,
-                              checkColor: theme.colorScheme.secondary,
-                              side: BorderSide(
-                                  color: theme.colorScheme.onPrimary),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Aprobada',
-                              style: TextStyle(
-                                  color: theme.colorScheme.onPrimary,
-                                  fontFamily: 'KoHo'),
-                            ),
-                            Checkbox(
-                              value: status == 'APPROVED',
-                              onChanged: (bool? newValue) {
-                                setState(() {
-                                  if (newValue != null && newValue) {
-                                    status = 'APPROVED';
-                                  } else {
-                                    status = 'PENDING';
-                                  }
-                                });
-                              },
-                              activeColor: theme.colorScheme.onBackground,
-                              checkColor: theme.colorScheme.secondary,
-                              side: BorderSide(
-                                  color: theme.colorScheme.onPrimary),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)),
                             ),
                           ],
                         ),
@@ -340,9 +353,9 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
                             Container(
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
+                                borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: theme.colorScheme.onPrimary,
+                                  color: theme.colorScheme.secondary,
                                   width: 2,
                                 ),
                               ),
@@ -417,11 +430,11 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
                             ),
                             const SizedBox(height: 16),
                             Container(
-                              padding: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
+                                borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: theme.colorScheme.onPrimary,
+                                  color: theme.colorScheme.secondary,
                                   width: 2,
                                 ),
                               ),
