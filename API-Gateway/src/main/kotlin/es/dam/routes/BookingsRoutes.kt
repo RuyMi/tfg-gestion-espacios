@@ -215,14 +215,6 @@ fun Application.bookingsRoutes() {
                             bookingsRepository.findByTime("Bearer $token", id!!, date!!)
                         }
 
-                        /*if (res.isSuccess) {
-                            call.respond(HttpStatusCode.OK, res.getOrNull()!!)
-                        } else {
-                            throw res.exceptionOrNull()!!
-                        }
-
-                         */
-
                         call.respond(HttpStatusCode.OK, res.await())
 
 
@@ -389,7 +381,6 @@ fun Application.bookingsRoutes() {
                                 throw updatingResult.exceptionOrNull()!!
                             }
                         }
-
 
                     } catch (e: IllegalArgumentException) {
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")

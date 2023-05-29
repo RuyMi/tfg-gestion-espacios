@@ -199,7 +199,7 @@ fun Application.usersRoutes() {
 
                         val userDTO = call.receive<UserUpdateDTO>()
 
-                        val user = userRepository.findById("Bearer $token", subject)
+                        val user = userRepository.findMe("Bearer $token", subject)
 
                         val updatedUser = async {
                             userRepository.me("Bearer $token", userDTO)
@@ -230,17 +230,17 @@ fun Application.usersRoutes() {
                             call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
                         }
 
-                        val user = userRepository.findById("Bearer $token", id!!)
-
                         val creditsAmount = call.parameters["creditsAmount"]
 
                         try{
                             creditsAmount!!.toInt()
-                        } catch (e: IllegalArgumentException){
+                        } catch (e: java.lang.NumberFormatException){
                             call.respond(HttpStatusCode.BadRequest, "El número de créditos introducido no es válido: ${e.message}")
                         }
 
                         require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
+
+                        val user = userRepository.findById("Bearer $token", id!!)
 
                         val updatedUser = async {
                             userRepository.updateCredits("Bearer $token", user.uuid, creditsAmount!!.toInt())
@@ -273,7 +273,7 @@ fun Application.usersRoutes() {
                             call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
                         }
 
-                        val user = userRepository.findById("Bearer $token", id!!)
+                        val user = userRepository.findMe("Bearer $token", id!!)
 
                         val active = call.parameters["active"]
 
