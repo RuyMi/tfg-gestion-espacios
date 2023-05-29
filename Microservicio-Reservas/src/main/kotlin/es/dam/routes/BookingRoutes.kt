@@ -50,12 +50,10 @@ fun Application.bookingRoutes(){
             val status = call.parameters["status"]
             try{
                 val data = status?.let { bookingService.findAllStatus(Booking.Status.valueOf(it))}
-                if (data != null) {
-                    if(data.isEmpty())
-                        call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el estado: $status")
-                }
                 val res = BookingAllDto(data = data!!.map { it.toDTO() })
                 call.respond(res)
+            } catch (e: BookingException ){
+                call.respond(HttpStatusCode.NotFound, "No se ha encontrado ninguna reserva con el estado: $status")
             } catch (e: Exception){
                 call.respond(HttpStatusCode.BadRequest, "El estado debe ser un estado válido")
             }
