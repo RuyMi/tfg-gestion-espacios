@@ -20,6 +20,24 @@ final List<String> horas = [
   '14:20 - 15:15',
 ];
 
+final List<String> statusOptions = [
+  'PENDING',
+  'APPROVED',
+  'REJECTED',
+];
+
+String startTimeFromLocalDateTime(String localDateTimeString) {
+  return '${localDateTimeString.split('T')[1].split(':')[0]}:${localDateTimeString.split('T')[1].split(':')[1]}';
+}
+
+String endTimeFromLocalDateTime(String localDateTimeString) {
+  return '${localDateTimeString.split('T')[1].split(':')[0]}:${localDateTimeString.split('T')[1].split(':')[1]}';
+}
+
+String dateFromLocalDateTime(String localDateTimeString) {
+  return '${localDateTimeString.split('T')[0].split('-')[2]}/${localDateTimeString.split('T')[0].split('-')[1]}/${localDateTimeString.split('T')[0].split('-')[0].replaceAll('-', '/')}';
+}
+
 class EditarReservaBODialog extends StatefulWidget {
   final Reserva reserva;
 
@@ -60,21 +78,10 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
     String? image = reserva.image;
     String? startTime = reserva.startTime;
     String? endTime = reserva.endTime;
-    String status = reserva.status ?? 'PENDING';
 
     String myHour =
         '${startTimeFromLocalDateTime(startTime)} - ${endTimeFromLocalDateTime(endTime)}';
     String myDate = dateFromLocalDateTime(startTime);
-
-    void updateStatus(String newStatus) {
-      setState(() {
-        if (status == newStatus) {
-          status = '';
-        } else {
-          status = newStatus;
-        }
-      });
-    }
 
     return AlertDialog(
       backgroundColor: theme.colorScheme.onBackground,
@@ -130,107 +137,40 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
                         fontSize: 18,
                         fontFamily: 'KoHo'),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Pendiente',
-                              style: TextStyle(
-                                  color: theme.colorScheme.onPrimary,
-                                  fontFamily: 'KoHo'),
-                            ),
-                            StatefulBuilder(
-                              builder:
-                                  (BuildContext context, StateSetter setState) {
-                                return Checkbox(
-                                  value: status == 'PENDING',
-                                  onChanged: (bool? newValue) {
-                                    setState(() {
-                                      updateStatus('PENDING');
-                                    });
-                                  },
-                                  activeColor: theme.colorScheme.onBackground,
-                                  checkColor: theme.colorScheme.secondary,
-                                  side: BorderSide(
-                                      color: theme.colorScheme.onPrimary),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30)),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Aceptada',
-                              style: TextStyle(
-                                  color: theme.colorScheme.onPrimary,
-                                  fontFamily: 'KoHo'),
-                            ),
-                            StatefulBuilder(
-                              builder:
-                                  (BuildContext context, StateSetter setState) {
-                                return Checkbox(
-                                  value: status == 'APPROVED',
-                                  onChanged: (bool? newValue) {
-                                    setState(() {
-                                      updateStatus('APPROVED');
-                                    });
-                                  },
-                                  activeColor: theme.colorScheme.onBackground,
-                                  checkColor: theme.colorScheme.secondary,
-                                  side: BorderSide(
-                                      color: theme.colorScheme.onPrimary),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30)),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Rechazada',
-                              style: TextStyle(
-                                  color: theme.colorScheme.onPrimary,
-                                  fontFamily: 'KoHo'),
-                            ),
-                            StatefulBuilder(
-                              builder:
-                                  (BuildContext context, StateSetter setState) {
-                                return Checkbox(
-                                  value: status == 'REJECTED',
-                                  onChanged: (bool? newValue) {
-                                    setState(() {
-                                      updateStatus('REJECTED');
-                                    });
-                                  },
-                                  activeColor: theme.colorScheme.onBackground,
-                                  checkColor: theme.colorScheme.secondary,
-                                  side: BorderSide(
-                                      color: theme.colorScheme.onPrimary),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30)),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  const SizedBox(height: 8),
+                  DropdownButton<String>(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    value: reserva.status,
+                    onChanged: (String? value) {
+                      setState(() {
+                        reserva.status = value!;
+                      });
+                    },
+                    isExpanded: true,
+                    borderRadius: BorderRadius.circular(20),
+                    dropdownColor: theme.colorScheme.onBackground,
+                    icon: Icon(Icons.expand_more_rounded,
+                        color: theme.colorScheme.onPrimary, size: 15),
+                    style: TextStyle(
+                      color: theme.colorScheme.onPrimary,
+                      fontFamily: 'KoHo',
+                    ),
+                    underline: Container(
+                      height: 2,
+                      color: theme.colorScheme.secondary,
+                    ),
+                    items: statusOptions
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        alignment: Alignment.center,
+                        child: Text(setEstadoOption(value),
+                            style: TextStyle(
+                                color: theme.colorScheme.onPrimary,
+                                fontFamily: 'KoHo')),
+                      );
+                    }).toList(),
+                  )
                 ],
               ),
               const SizedBox(height: 16),
@@ -276,7 +216,7 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
                                 color: theme.colorScheme.secondary,
                               ),
                             ),
-                            focusedDay: DateTime.parse(startTime),
+                            focusedDay: DateTime.now(),
                             firstDay: DateTime.now()
                                 .subtract(const Duration(days: 365)),
                             lastDay:
@@ -469,9 +409,9 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
                 ElevatedButton.icon(
                   onPressed: () {
                     startTime =
-                        '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:00';
+                        '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:01';
                     endTime =
-                        '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:00';
+                        '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:01';
 
                     Reserva reservaActualizada = Reserva(
                         uuid: reserva.uuid,
@@ -483,9 +423,7 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
                         image: image,
                         startTime: startTime ?? reserva.startTime,
                         endTime: endTime ?? reserva.endTime,
-                        status: status);
-
-                    Navigator.of(context).pop();
+                        status: reserva.status);
 
                     reservasProvider
                         .updateReserva(reservaActualizada)
@@ -568,16 +506,17 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
       ),
     );
   }
-}
 
-String startTimeFromLocalDateTime(String localDateTimeString) {
-  return '${localDateTimeString.split('T')[1].split(':')[0]}:${localDateTimeString.split('T')[1].split(':')[1]}';
-}
-
-String endTimeFromLocalDateTime(String localDateTimeString) {
-  return '${localDateTimeString.split('T')[1].split(':')[0]}:${localDateTimeString.split('T')[1].split(':')[1]}';
-}
-
-String dateFromLocalDateTime(String localDateTimeString) {
-  return '${localDateTimeString.split('T')[0].split('-')[2]}/${localDateTimeString.split('T')[0].split('-')[1]}/${localDateTimeString.split('T')[0].split('-')[0].replaceAll('-', '/')}';
+  String setEstadoOption(String value) {
+    switch (value) {
+      case 'PENDING':
+        return 'PENDIENTE';
+      case 'APPROVED':
+        return 'APROBADA';
+      case 'REJECTED':
+        return 'RECHAZADA';
+      default:
+        return 'PENDIENTE';
+    }
+  }
 }

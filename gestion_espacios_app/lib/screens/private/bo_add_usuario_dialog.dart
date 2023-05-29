@@ -281,8 +281,6 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                   userRole: userRole,
                 );
 
-                Navigator.of(context).pop();
-
                 usuariosProvider.register(usuario).then((_) {
                   Navigator.pushNamed(context, '/home-bo');
                   showDialog(

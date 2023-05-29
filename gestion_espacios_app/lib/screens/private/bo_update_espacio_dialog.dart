@@ -355,8 +355,6 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                       bookingWindow: bookingWindow,
                     );
 
-                    Navigator.of(context).pop();
-
                     espaciosProvider
                         .updateEspacio(espacioActualizado)
                         .then((_) {

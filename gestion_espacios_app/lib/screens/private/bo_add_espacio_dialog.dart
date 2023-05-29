@@ -301,8 +301,6 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                     bookingWindow: bookingWindow,
                   );
 
-                  Navigator.of(context).pop();
-
                   espaciosProvider.addEspacio(espacio).then((_) {
                     Navigator.pushNamed(context, '/home-bo');
                     showDialog(

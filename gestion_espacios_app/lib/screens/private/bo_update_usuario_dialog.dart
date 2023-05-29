@@ -334,8 +334,6 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
                       isActive: isActiveController.text == 'true',
                       userRole: userRole);
 
-                  Navigator.of(context).pop();
-
                   usuariosProvider
                       .updateUsuario(usuario.uuid!, usuarioActualizado)
                       .then((_) {
