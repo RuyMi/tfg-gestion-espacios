@@ -54,7 +54,8 @@ class UsersRoutesKtTest{
             username = "TesTiNg-admin",
             email = "TesTiNgadmin@email.com",
             password = "admin1234",
-            userRole = setOf("ADMINISTRATOR")
+            userRole = setOf("ADMINISTRATOR"),
+            isActive = true
         )
 
         val registerNotAdminDTO = UserRegisterDTO(
@@ -62,7 +63,8 @@ class UsersRoutesKtTest{
             username = "TesTiNg-user",
             email = "TesTiNguser@email.com",
             password = "user1234",
-            userRole = setOf("USER")
+            userRole = setOf("USER"),
+            isActive = true
         )
 
         val registerInactiveDTO = UserRegisterDTO(
@@ -70,7 +72,8 @@ class UsersRoutesKtTest{
             username = "inactive",
             email = "inactive@email.com",
             password = "inactive1234",
-            userRole = setOf("USER")
+            userRole = setOf("USER"),
+            isActive = false
         )
 
         val registerDeleteDTO = UserRegisterDTO(
@@ -78,7 +81,8 @@ class UsersRoutesKtTest{
             username = "delete",
             email = "delete@email.com",
             password = "delete1234",
-            userRole = setOf("USER")
+            userRole = setOf("USER"),
+            isActive = true
         )
 
         environment { config }
@@ -238,7 +242,8 @@ class UsersRoutesKtTest{
             username = "registerTest",
             email = "registerTest",
             password = "registerTest",
-            userRole = setOf("ADMIN")
+            userRole = setOf("ADMIN"),
+            isActive = true
         )
 
 
@@ -267,7 +272,8 @@ class UsersRoutesKtTest{
             username = "registerTest",
             email = "registerTest",
             password = "1",
-            userRole = setOf("ADMIN")
+            userRole = setOf("ADMIN"),
+            isActive = true
         )
 
 
@@ -501,7 +507,8 @@ class UsersRoutesKtTest{
             password = "admin1234",
             avatar = "",
             userRole = setOf("ADMINISTRATOR"),
-            credits = 20
+            credits = 20,
+            isActive = true
         )
 
         val response = client.put("/users/$userAdminId") {
@@ -538,7 +545,8 @@ class UsersRoutesKtTest{
             password = "admin1234",
             avatar = "",
             userRole = setOf("ADMINISTRATOR"),
-            credits = 20
+            credits = 20,
+            isActive = true
         )
 
         val response = client.put("/users/$userAdminId") {
@@ -575,7 +583,8 @@ class UsersRoutesKtTest{
             password = "admin1234",
             avatar = "",
             userRole = setOf("ADMINISTRATOR"),
-            credits = 20
+            credits = 20,
+            isActive = true
         )
 
         val response = client.put("/users/$wrongUUID") {
@@ -612,7 +621,8 @@ class UsersRoutesKtTest{
             password = "admin1234",
             avatar = "",
             userRole = setOf("ADMINISTRATOR"),
-            credits = 20
+            credits = 20,
+            isActive = true
         )
 
         val response = client.put("/users/123") {
@@ -649,7 +659,8 @@ class UsersRoutesKtTest{
             password = "admin1234",
             avatar = "",
             userRole = setOf("ADMINISTRATOR"),
-            credits = 20
+            credits = 20,
+            isActive = true
         )
 
         val response = client.put("/users/me") {
@@ -686,7 +697,8 @@ class UsersRoutesKtTest{
             password = "user1234",
             avatar = "",
             userRole = setOf("USER"),
-            credits = 20
+            credits = 20,
+            isActive = true
         )
 
         val response = client.put("/users/$userAdminId") {
