@@ -388,7 +388,9 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                         userName: userName,
                         spaceName: spaceName,
                         observations: observations,
-                        status: 'PENDING',
+                        status: espacio.requiresAuthorization
+                            ? 'PENDING'
+                            : 'ACCEPTED',
                         image: espacio.image,
                       );
 
