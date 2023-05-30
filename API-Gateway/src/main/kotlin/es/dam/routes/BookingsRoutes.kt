@@ -44,13 +44,15 @@ fun Application.bookingsRoutes() {
 
                         require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
 
-                        val res = async {
+                        val res = runCatching {
                             bookingsRepository.findAll("Bearer $token")
                         }
-                        val bookings = res.await()
 
-                        call.respond(HttpStatusCode.OK, bookings)
-
+                        if (res.isSuccess) {
+                            call.respond(HttpStatusCode.OK, res.getOrNull()!!)
+                        } else {
+                            throw res.exceptionOrNull()!!
+                        }
                     } catch (e: BookingNotFoundException) {
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: BookingInternalErrorException) {
@@ -211,28 +213,26 @@ fun Application.bookingsRoutes() {
                         UUID.fromString(id)
                         val date = call.parameters["date"]
 
-                        val res = async {
+                        val res = runCatching {
                             bookingsRepository.findByTime("Bearer $token", id!!, date!!)
                         }
 
-                        /*if (res.isSuccess) {
+                        if (res.isSuccess) {
                             call.respond(HttpStatusCode.OK, res.getOrNull()!!)
                         } else {
                             throw res.exceptionOrNull()!!
                         }
-
-                         */
-
-                        call.respond(HttpStatusCode.OK, res.await())
-
-
                     } catch (e: IllegalArgumentException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
                     } catch (e: BookingNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: BookingBadRequestException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: BookingInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
@@ -245,7 +245,7 @@ fun Application.bookingsRoutes() {
                         val subject = originalToken.payload.subject
 
                         val entity = call.receive<BookingCreateDTO>()
-                        val user = userRepository.findMe("Bearer $token", subject)
+                        val user = userRepository.findById("Bearer $token", subject)
                         val space = spaceRepository.findById("Bearer $token", entity.spaceId)
 
                         if(!userRole.contains("ADMINISTRATOR")){
@@ -254,7 +254,7 @@ fun Application.bookingsRoutes() {
                             //TODO:crear usuario administrador para hacer un update y luego borrarlo
                             userRepository.updateCreditsMe("Bearer $token", subject, space.price)
 
-                            require(LocalDateTime.parse(entity.startTime) > LocalDateTime.now())
+                            require(LocalDateTime.parse(entity.startTime).isAfter( LocalDateTime.now()))
                             {"No se ha podido guardar la reserva fecha introducida es anterior a la actual."}
                             require(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(entity.startTime.split("T")[0])) <= space.bookingWindow.toInt())
                             {"No se puede reservar con tanta anterioridad."}
@@ -265,22 +265,26 @@ fun Application.bookingsRoutes() {
                             )
                             {"Franja horaria no disponible."}
 
-                            val booking: Deferred<BookingResponseDTO>
+                            val booking: Result<BookingResponseDTO>
 
                             if(!space.requiresAuthorization){
-                                booking = async {
+                                booking = runCatching {
                                     bookingsRepository.create("Bearer $token", entity.copy(status = "APPROVED"))
                                 }
                             }else{
-                                booking = async {
+                                booking = runCatching {
                                     bookingsRepository.create("Bearer $token", entity)
                                 }
                             }
 
-                            call.respond(HttpStatusCode.Created, booking.await())
+                            if (booking.isSuccess) {
+                                call.respond(HttpStatusCode.OK, booking.getOrNull()!!)
+                            } else {
+                                throw booking.exceptionOrNull()!!
+                            }
 
                         }else{
-                            require(LocalDateTime.parse(entity.startTime) > LocalDateTime.now())
+                            require(LocalDateTime.parse(entity.startTime).isAfter( LocalDateTime.now()))
                             {"No se ha podido guardar la reserva fecha introducida es anterior a la actual."}
                             require(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(entity.startTime.split("T")[0])) <= space.bookingWindow.toInt())
                             {"No se puede reservar con tanta anterioridad."}
@@ -291,27 +295,35 @@ fun Application.bookingsRoutes() {
                             )
                             {"Franja horaria no disponible."}
 
-                            val booking: Deferred<BookingResponseDTO>
-
-                            booking = async {
+                            val booking = runCatching {
                                 bookingsRepository.create("Bearer $token", entity.copy(status = "APPROVED"))
                             }
 
-                            call.respond(HttpStatusCode.Created, booking.await())
+                            if (booking.isSuccess) {
+                                call.respond(HttpStatusCode.OK, booking.getOrNull()!!)
+                            } else {
+                                throw booking.exceptionOrNull()!!
+                            }
                         }
                         //TODO: a los profes se les van a quitar creditos y van a necesitar autorizacion?
 
                     } catch (e: BookingNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: BookingBadRequestException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: BookingInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }catch (e: IllegalArgumentException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     }catch (e: SpaceNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     }catch (e: UserNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     }
                 }
@@ -329,6 +341,7 @@ fun Application.bookingsRoutes() {
                             UUID.fromString(id)
                         }catch (e: IllegalArgumentException) {
                             call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
+                            return@put
                         }
 
                         val booking = call.receive<BookingUpdateDTO>()
@@ -349,7 +362,7 @@ fun Application.bookingsRoutes() {
 
                             val updatingResult: Result<BookingResponseDTO>
 
-                            if(spaceRepository.findById(token, booking.spaceId).requiresAuthorization){
+                           /* if(spaceRepository.findById(token, booking.spaceId).requiresAuthorization){
                                 updatingResult = runCatching {
                                     bookingsRepository.update("Bearer $token", id!!, booking.copy(status = "APPROVED"))
                                 }
@@ -358,6 +371,10 @@ fun Application.bookingsRoutes() {
                                 updatingResult = runCatching {
                                     bookingsRepository.update("Bearer $token", id!!, booking)
                                 }
+                            }*/
+
+                            updatingResult = runCatching {
+                                bookingsRepository.update("Bearer $token", id!!, booking)
                             }
 
                             if (updatingResult.isSuccess) {
@@ -375,13 +392,13 @@ fun Application.bookingsRoutes() {
                             require(bookingsRepository.findByTime("Bearer $token", booking.spaceId, booking.startTime.split("T")[0])
                                 .data
                                 .filter{it.startTime == booking.startTime}
-                                .isEmpty()
+                                .none { it.uuid != id }
                             )
                             {"Franja horaria no disponible."}
 
                             val updatingResult = runCatching {
-                                    bookingsRepository.update("Bearer $token", id!!, booking.copy(status = "APPROVED"))
-                                }
+                                    bookingsRepository.update("Bearer $token", id!!, booking)
+                            }
 
                             if (updatingResult.isSuccess) {
                                 call.respond(HttpStatusCode.OK, updatingResult.getOrNull()!!)
@@ -392,14 +409,19 @@ fun Application.bookingsRoutes() {
 
 
                     } catch (e: IllegalArgumentException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: BookingNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     }catch (e: SpaceNotFoundException) {
-                            call.respond(HttpStatusCode.NotFound, "${e.message}")
+                        println("Error: ${e.message}")
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: BookingInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }catch (e: UserNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     }
                 }
@@ -422,12 +444,12 @@ fun Application.bookingsRoutes() {
                             require(bookingsRepository.findById("Bearer $token", id!!).userId == subject)
                             {"La reserva que se quiere eliminar no está guardada bajo el mismo usuario."}
 
-                            val spaceId = bookingsRepository.findById("Bearer $token", id!!).spaceId
-                            bookingsRepository.delete("Bearer $token", id!!)
+                            val spaceId = bookingsRepository.findById("Bearer $token", id).spaceId
+                            bookingsRepository.delete("Bearer $token", id)
 
                             userRepository.updateCreditsMe(
                                 "Bearer $token",
-                                subject!!,
+                                subject,
                                 spaceRepository.findById(
                                     "Bearer $token",
                                     spaceId
@@ -436,24 +458,30 @@ fun Application.bookingsRoutes() {
 
                             call.respond(HttpStatusCode.NoContent)
                         } else {
-                            val spaceId = bookingsRepository.findById("Bearer $token", id!!).spaceId
-                            bookingsRepository.delete("Bearer $token", id!!)
+                            bookingsRepository.findById("Bearer $token", id!!).spaceId
+                            bookingsRepository.delete("Bearer $token", id)
 
                             call.respond(HttpStatusCode.NoContent)
                         }
 
                         //TODO: todas las excepciones de los require salen como bad request, si salta excepcion porque no es admin deberia ser 401
                     } catch (e: IllegalArgumentException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: BookingNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: BookingBadRequestException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: BookingInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }catch (e: UserNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     }catch (e: SpaceNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     }
                 }

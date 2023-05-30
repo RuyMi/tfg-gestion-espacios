@@ -1184,7 +1184,8 @@ class BookingsRoutesKtTest{
             startTime = fechaActual.plusDays(5).toString(),
             endTime = fechaActual.plusHours(1).plusDays(5).toString(),
             observations = "testingUpdate",
-            status = "APPROVED"
+            status = "APPROVED",
+            image = "testingUpdate"
         )
 
         val response = client.put("/bookings/$uuid404") {

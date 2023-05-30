@@ -22,7 +22,7 @@ data class BookingDtoCreate(
     val userName: String,
     val spaceId: String,
     val spaceName: String,
-    val image: String?,
+    val image: String = "placeholder.jpeg",
     val startTime: String,
     val endTime: String,
     val observations: String?,

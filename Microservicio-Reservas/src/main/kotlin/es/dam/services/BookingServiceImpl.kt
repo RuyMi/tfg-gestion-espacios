@@ -54,6 +54,8 @@ class BookingServiceImpl(
             observations = entity.observations,
             status = entity.status
         )
+        print(entity)
+        print(bookingUpdated)
         return repository.update(bookingUpdated)
     }
 
