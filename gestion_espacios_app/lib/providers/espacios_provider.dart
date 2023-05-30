@@ -48,7 +48,6 @@ class EspaciosProvider with ChangeNotifier {
     } catch (e) {
       _espacios = [];
       notifyListeners();
-      throw Exception('Error al obtener los espacios.');
     }
   }
 
@@ -83,7 +82,6 @@ class EspaciosProvider with ChangeNotifier {
     } catch (e) {
       _espaciosReservables = [];
       notifyListeners();
-      throw Exception('Error al obtener los espacios.');
     }
   }
 

@@ -61,7 +61,6 @@ class UsuariosProvider with ChangeNotifier {
     } catch (e) {
       _usuarios = [];
       notifyListeners();
-      throw Exception('Error al obtener los usuarios.');
     }
   }
 

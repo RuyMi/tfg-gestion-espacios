@@ -60,7 +60,6 @@ class ReservasProvider with ChangeNotifier {
     } catch (e) {
       _reservas = [];
       notifyListeners();
-      throw Exception('Error al obtener las reservas.');
     }
   }
 
@@ -126,7 +125,6 @@ class ReservasProvider with ChangeNotifier {
     } catch (e) {
       _misReservas = [];
       notifyListeners();
-      throw Exception('Error al obtener las reservas.');
     }
   }
 
@@ -163,7 +161,6 @@ class ReservasProvider with ChangeNotifier {
     } catch (e) {
       _reservasByUser = [];
       notifyListeners();
-      throw Exception('Error al obtener las reservas.');
     }
   }
 
@@ -200,7 +197,6 @@ class ReservasProvider with ChangeNotifier {
     } catch (e) {
       _reservasBySpace = [];
       notifyListeners();
-      throw Exception('Error al obtener las reservas.');
     }
   }
 
@@ -237,7 +233,6 @@ class ReservasProvider with ChangeNotifier {
     } catch (e) {
       _reservasByStatus = [];
       notifyListeners();
-      throw Exception('Error al obtener las reservas.');
     }
   }
 
@@ -274,7 +269,6 @@ class ReservasProvider with ChangeNotifier {
     } catch (e) {
       _reservasByTime = [];
       notifyListeners();
-      throw Exception('Error al obtener las reservas.');
     }
   }
 
@@ -346,10 +340,10 @@ class ReservasProvider with ChangeNotifier {
     }
   }
 
-  Future<void> deleteReserva(String uuid, String userId) async {
+  Future<void> deleteReserva(String uuid) async {
     try {
       final response = await http.delete(
-          Uri.parse('$baseUrl/bookings/$uuid/$userId'),
+          Uri.parse('$baseUrl/bookings/$uuid'),
           headers: {'Authorization': 'Bearer $_token'});
 
       if (response.statusCode == 204) {
