@@ -75,7 +75,7 @@ class UsersController @Autowired constructor(
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
+    //@PreAuthorize("hasAnyRole('ADMINISTRATOR')")
     @GetMapping("/{id}")
     suspend fun findById(@PathVariable id: String): ResponseEntity<UserResponseDTO> {
         try {

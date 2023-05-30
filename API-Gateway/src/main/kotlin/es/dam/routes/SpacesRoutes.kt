@@ -63,33 +63,49 @@ fun Application.spacesRoutes() {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
                         val id = call.parameters["id"]
+                        UUID.fromString(id)
 
-                        val space = async {
+                        val space = runCatching {
                             spacesRepository.findById("Bearer $token", id!!)
                         }
 
-                        call.respond(HttpStatusCode.OK, space.await())
-
+                        if (space.isSuccess) {
+                            call.respond(HttpStatusCode.OK, space.getOrNull()!!)
+                        } else {
+                            call.respond(HttpStatusCode.NotFound, "${space.exceptionOrNull()?.message}")
+                        }
                     } catch (e: SpaceNotFoundException) {
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: SpaceBadRequestException) {
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: SpaceInternalErrorException) {
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(HttpStatusCode.BadRequest, "El id debe ser un UUID válido")
                     }
                 }
 
                 get("/reservables/{isReservable}") {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
-                        val isReservable = call.parameters["isReservable"].toBoolean()
+                        try {
+                            call.parameters["isReservable"]!!.toBooleanStrict()
+                        } catch (e: IllegalArgumentException) {
+                            call.respond(HttpStatusCode.BadRequest, "El parámetro isReservable debe ser un booleano")
+                            return@get
+                        }
+                        val isReservable = call.parameters["isReservable"]!!.toBooleanStrict()
 
-                        val res = async {
+                        val res = runCatching {
                             spacesRepository.findAllReservables("Bearer $token", isReservable)
                         }
-                        val spaces = res.await()
 
-                        call.respond(HttpStatusCode.OK, spaces)
+                        if (res.isSuccess) {
+                            call.respond(HttpStatusCode.OK, res.getOrNull()!!)
+                        } else {
+                            call.respond(HttpStatusCode.NotFound, "${res.exceptionOrNull()?.message}")
+                        }
+
 
                     } catch (e: SpaceNotFoundException) {
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
@@ -105,11 +121,15 @@ fun Application.spacesRoutes() {
                         val token = tokenService.generateToken(call.principal()!!)
                         val name = call.parameters["name"]
 
-                        val space = async {
+                        val space = runCatching {
                             spacesRepository.findByName("Bearer $token", name!!)
                         }
 
-                        call.respond(HttpStatusCode.OK, space.await())
+                        if (space.isSuccess) {
+                            call.respond(HttpStatusCode.OK, space.getOrNull()!!)
+                        } else {
+                            call.respond(HttpStatusCode.NotFound, "${space.exceptionOrNull()?.message}")
+                        }
 
                     } catch (e: SpaceNotFoundException) {
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
@@ -176,19 +196,25 @@ fun Application.spacesRoutes() {
                         val token = tokenService.generateToken(call.principal()!!)
                         val id = call.parameters["id"]
                         val space = call.receive<SpaceUpdateDTO>()
+                        UUID.fromString(id)
 
-                        val updatedspace = async {
+                        val res = runCatching {
                             spacesRepository.update("Bearer $token", id!!, space)
                         }
 
-                        call.respond(HttpStatusCode.OK, updatedspace.await())
-
+                        if (res.isSuccess) {
+                            call.respond(HttpStatusCode.OK, res.getOrNull()!!)
+                        } else {
+                            throw res.exceptionOrNull()!!
+                        }
                     } catch (e: SpaceNotFoundException) {
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: SpaceBadRequestException) {
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: SpaceInternalErrorException) {
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(HttpStatusCode.BadRequest, "El id debe ser un UUID válido")
                     }
                 }
 

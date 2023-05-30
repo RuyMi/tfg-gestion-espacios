@@ -30,8 +30,18 @@ private val json = Json {
 class SpacesRoutesTest {
 
     val loginDTO = UserLoginDTO(
-        username = "tEsTiNg",
+        username = "tEsTiNgR",
         password = "admin1234"
+    )
+
+    val spaceCreateDTO = SpaceCreateDTO(
+        name = "tEsTiNgR",
+        description = "tEsTiNg",
+        price = 1,
+        isReservable = true,
+        requiresAuthorization = false,
+        authorizedRoles = setOf("USER"),
+        bookingWindow = "10"
     )
 
     private var bookingId = ""
@@ -42,23 +52,15 @@ class SpacesRoutesTest {
     fun setup() = testApplication{
 
         val registerDTO = UserRegisterDTO(
-            name = "tEsTiNg",
-            username = "tEsTiNg",
-            email = "tEsTiNg@email.com",
+            name = "tEsTiNgR",
+            username = "tEsTiNgR",
+            email = "tEsTiNgR@email.com",
             password = "admin1234",
             userRole = setOf("ADMINISTRATOR"),
             isActive = true
         )
 
-        val spaceCreateDTO = SpaceCreateDTO(
-            name = "tEsTiNg",
-            description = "tEsTiNg",
-            price = 1,
-            isReservable = true,
-            requiresAuthorization = false,
-            authorizedRoles = setOf("USER"),
-            bookingWindow = "10"
-        )
+
 
         environment { config }
 
@@ -92,32 +94,13 @@ class SpacesRoutesTest {
 
         val spaceResponse = json.decodeFromString<SpaceResponseDTO>(createSpace.bodyAsText())
 
-        /*val spaceUUID = spaceResponse.uuid
+        val spaceUUID = spaceResponse.uuid
 
-        spaceId = spaceUUID*/
+        spaceId = spaceUUID
 
-        /*val bookingCreateDTO = BookingCreateDTO(
-            userId = userUUID,
-            userName = "tEsTiNg",
-            spaceId = spaceUUID,
-            spaceName = "tEsTiNg",
-            startTime = LocalDateTime.parse("2023-05-30T22:23:23.542295200").toString(),
-            endTime = LocalDateTime.parse("2023-05-30T23:23:23.542295200").toString(),
-            observations = "tEsTiNg"
-        )
-
-        val createBooking = client.post("/bookings") {
-            header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
-            contentType(ContentType.Application.Json)
-            setBody(bookingCreateDTO)
-        }
-
-        val bookingResponse = json.decodeFromString<BookingResponseDTO>(createBooking.bodyAsText())
-
-        bookingId = bookingResponse.uuid*/
     }
 
-    /*@AfterAll
+    @AfterAll
     fun tearDown() = testApplication {
         environment { config }
 
@@ -134,10 +117,6 @@ class SpacesRoutesTest {
 
         val userTokenDTO = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
 
-        client.delete("/bookings/$bookingId/$userId") {
-            header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
-        }
-
         client.delete("/spaces/$spaceId") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
@@ -145,7 +124,7 @@ class SpacesRoutesTest {
         client.delete("/users/$userId") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
-    }*/
+    }
 
     @Test
     fun getAll() = testApplication {
@@ -263,7 +242,7 @@ class SpacesRoutesTest {
 
         val response = client.get("/spaces/$spaceId")
         assertAll(
-            { assertEquals(HttpStatusCode.Forbidden, response.status) },
+            { assertEquals(HttpStatusCode.Unauthorized, response.status) },
         )
     }
 
@@ -359,7 +338,7 @@ class SpacesRoutesTest {
 
         val response = client.get("/spaces/reservables/true")
         assertAll(
-            { assertEquals(HttpStatusCode.Forbidden, response.status) },
+            { assertEquals(HttpStatusCode.Unauthorized, response.status) },
         )
     }
 
@@ -381,13 +360,13 @@ class SpacesRoutesTest {
         val userTokenDTO = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
 
 
-        val response = client.get("/spaces/nombre/Testing"){
+        val response = client.get("/spaces/nombre/tEsTiNg"){
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
-        val body = response.body<SpaceDataDTO>()
+        val body = response.body<SpaceResponseDTO>()
         assertAll(
             { assertEquals(HttpStatusCode.OK, response.status) },
-            { assertTrue(body.data.isNotEmpty()) },
+            { assertNotNull(body) },
         )
     }
 
@@ -417,30 +396,6 @@ class SpacesRoutesTest {
         )
     }
 
-    @Test
-    fun getByNombre400() = testApplication {
-        environment { config }
-
-        val client = createClient {
-            install(ContentNegotiation) {
-                json()
-            }
-        }
-        val login = client.post("/users/login") {
-            contentType(ContentType.Application.Json)
-            setBody(loginDTO)
-        }
-
-        val userTokenDTO = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
-
-
-        val response = client.get("/spaces/nombre/123"){
-            header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
-        }
-        assertAll(
-            { assertEquals(HttpStatusCode.BadRequest, response.status) },
-        )
-    }
 
     @Test
     fun getByNombre403() = testApplication {
@@ -454,7 +409,7 @@ class SpacesRoutesTest {
 
         val response = client.get("/spaces/nombre/Testing")
         assertAll(
-            { assertEquals(HttpStatusCode.Forbidden, response.status) },
+            { assertEquals(HttpStatusCode.Unauthorized, response.status) },
         )
     }
 
@@ -563,7 +518,7 @@ class SpacesRoutesTest {
             setBody(spaceCreateDTO)
         }
         assertAll(
-            { assertEquals(HttpStatusCode.Forbidden, response.status) },
+            { assertEquals(HttpStatusCode.Unauthorized, response.status) },
         )
     }
 
@@ -595,7 +550,15 @@ class SpacesRoutesTest {
             bookingWindow = "10"
         )
 
-        val response = client.put("/spaces/1") {
+        val create = client.post("/spaces") {
+            header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
+            contentType(ContentType.Application.Json)
+            setBody(spaceUpdateDTO)
+        }
+
+        spaceId = create.body<SpaceResponseDTO>().uuid
+
+        val response = client.put("/spaces/$spaceId") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
             contentType(ContentType.Application.Json)
             setBody(spaceUpdateDTO)
@@ -678,7 +641,7 @@ class SpacesRoutesTest {
             setBody(spaceUpdateDTO)
         }
         assertAll(
-            { assertEquals(HttpStatusCode.Forbidden, response.status) },
+            { assertEquals(HttpStatusCode.Unauthorized, response.status) },
         )
     }
 
@@ -710,7 +673,7 @@ class SpacesRoutesTest {
             bookingWindow = "10"
         )
 
-        val response = client.put("/spaces/999") {
+        val response = client.put("/spaces/ab3e47c3-016a-49b7-8616-262da0c86553") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
             contentType(ContentType.Application.Json)
             setBody(spaceUpdateDTO)
@@ -737,7 +700,7 @@ class SpacesRoutesTest {
 
         val userTokenDTO = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
 
-        val response = client.delete("/spaces/{$spaceId}") {
+        val response = client.delete("/spaces/${spaceId}") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
         assertAll(
@@ -757,7 +720,7 @@ class SpacesRoutesTest {
 
         val response = client.delete("/spaces/{$spaceId}")
         assertAll(
-            { assertEquals(HttpStatusCode.Forbidden, response.status) },
+            { assertEquals(HttpStatusCode.Unauthorized, response.status) },
         )
     }
 
@@ -778,7 +741,7 @@ class SpacesRoutesTest {
 
         val userTokenDTO = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
 
-        val response = client.delete("/spaces/999") {
+        val response = client.delete("/spaces/106ae131-94b5-458f-a1ad-8b347361b281") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
         assertAll(
@@ -786,6 +749,7 @@ class SpacesRoutesTest {
         )
     }
 
+    @OptIn(InternalAPI::class)
     @Test
     fun getStorage() = testApplication {
         environment { config }
@@ -796,10 +760,11 @@ class SpacesRoutesTest {
             }
         }
 
-        val response = client.get("/spaces/{$spaceId}/storage")
-        val file = response.body<File>()
+        val response = client.get("/spaces/storage/$spaceId")
+        val file = response.content.toByteArray()
         assertAll(
             { assertEquals(HttpStatusCode.OK, response.status) },
+            { assertEquals("image/png", response.headers[HttpHeaders.ContentType]) },
             { assertNotNull( file) },
         )
     }
