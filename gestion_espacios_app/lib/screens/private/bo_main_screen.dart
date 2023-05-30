@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
+import 'package:gestion_espacios_app/screens/private/bo_add_espacio_dialog.dart';
+import 'package:gestion_espacios_app/screens/private/bo_add_usuario_dialog.dart';
 import 'package:gestion_espacios_app/screens/private/bo_espacios_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_reservas_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_usuarios_screen.dart';
@@ -17,8 +19,7 @@ class _BOMainScreenState extends State<BOMainScreen>
     with SingleTickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   // String _searchText = '';
-  bool _showNewButton = false;
-  bool _sortByUsers = false;
+  bool _sortBySpaces = true;
 
   late TabController _tabController;
 
@@ -26,15 +27,6 @@ class _BOMainScreenState extends State<BOMainScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(() {
-      setState(() {
-        if (_tabController.index == 0) {
-          _showNewButton = false;
-        } else {
-          _showNewButton = true;
-        }
-      });
-    });
   }
 
   void _handleSortBy(bool sortByUsers) {
@@ -124,7 +116,7 @@ class _BOMainScreenState extends State<BOMainScreen>
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.logout),
+              icon: const Icon(Icons.logout_rounded),
               color: theme.colorScheme.surface,
               iconSize: 25,
               onPressed: () {
@@ -164,7 +156,7 @@ class _BOMainScreenState extends State<BOMainScreen>
                           color: theme.colorScheme.secondary,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        prefixIcon: Icon(Icons.search,
+                        prefixIcon: Icon(Icons.search_rounded,
                             color: theme.colorScheme.secondary, size: 30),
                       ),
                       onChanged: (value) {
@@ -175,51 +167,87 @@ class _BOMainScreenState extends State<BOMainScreen>
                     ),
                   ),
                   const SizedBox(width: 20),
-                  Visibility(
-                    visible: _showNewButton,
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: Icon(Icons.add, color: theme.colorScheme.onSecondary),
-                      label: Text(
-                        'Nuevo',
-                        style: TextStyle(
-                          color: theme.colorScheme.onSecondary,
-                          overflow: TextOverflow.ellipsis,
-                          fontFamily: 'KoHo',
-                          fontSize: 20,
+                  Column(
+                    children: [
+                      Visibility(
+                        visible: _tabController.index == 0,
+                        child: Row(
+                          children: [
+                            Icon(Icons.person_rounded,
+                                color: theme.colorScheme.onBackground),
+                            Switch(
+                              focusColor: theme.colorScheme.secondary,
+                              activeColor: theme.colorScheme.secondary,
+                              inactiveTrackColor: theme.colorScheme.onBackground
+                                  .withOpacity(0.2),
+                              inactiveThumbColor:
+                                  theme.colorScheme.onBackground,
+                              value: _sortBySpaces,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortBySpaces = value;
+                                  _handleSortBy(_sortBySpaces);
+                                });
+                              },
+                            ),
+                            Icon(Icons.calendar_today,
+                                color: theme.colorScheme.secondary),
+                          ],
                         ),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        backgroundColor: theme.colorScheme.secondary,
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: _tabController.index == 0,
-                    child: Row(
-                      children: [
-                        Icon(Icons.person,
-                            color: theme.colorScheme.onBackground),
-                        Switch(
-                          focusColor: theme.colorScheme.secondary,
-                          activeColor: theme.colorScheme.secondary,
-                          inactiveTrackColor: theme.colorScheme.onBackground.withOpacity(0.2),
-                          inactiveThumbColor: theme.colorScheme.onBackground,
-                          value: _sortByUsers,
-                          onChanged: (value) {
-                            setState(() {
-                              _sortByUsers = value;
-                              _handleSortBy(_sortByUsers);
-                            });
+                      Visibility(
+                          visible: _tabController.index != 0,
+                          child: const SizedBox(height: 10)),
+                      Visibility(
+                        visible: _tabController.index != 0,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            switch (_tabController.index) {
+                              case 0:
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return const NuevoEspacioBODialog();
+                                    });
+                                break;
+                              case 1:
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return const NuevoEspacioBODialog();
+                                    });
+                                break;
+                              case 2:
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return const NuevoUsuarioBODialog();
+                                    });
+                                break;
+                              default:
+                                break;
+                            }
                           },
+                          icon: Icon(Icons.add_rounded,
+                              color: theme.colorScheme.onSecondary),
+                          label: Text(
+                            'Nuevo',
+                            style: TextStyle(
+                              color: theme.colorScheme.onSecondary,
+                              overflow: TextOverflow.ellipsis,
+                              fontFamily: 'KoHo',
+                              fontSize: 20,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            backgroundColor: theme.colorScheme.secondary,
+                          ),
                         ),
-                        Icon(Icons.calendar_today,
-                            color: theme.colorScheme.secondary),
-                      ],
-                    ),
+                      ),
+                    ],
                   )
                 ],
               ),

@@ -42,7 +42,8 @@ class EspaciosProvider with ChangeNotifier {
             .toList();
         notifyListeners();
       } else {
-        throw Exception('Error al obtener los espacios.');
+        _espacios = [];
+        notifyListeners();
       }
     } catch (e) {
       _espacios = [];
@@ -75,7 +76,8 @@ class EspaciosProvider with ChangeNotifier {
             .toList();
         notifyListeners();
       } else {
-        throw Exception('Error al obtener los espacios.');
+        _espaciosReservables = [];
+        notifyListeners();
       }
     } catch (e) {
       _espaciosReservables = [];
@@ -104,10 +106,10 @@ class EspaciosProvider with ChangeNotifier {
           description: data['description'],
         );
       } else {
-        throw Exception('Error al obtener el espacio.');
+        return null;
       }
     } catch (e) {
-      return null;
+      throw Exception('Error al obtener el espacio.');
     }
   }
 
@@ -132,10 +134,10 @@ class EspaciosProvider with ChangeNotifier {
           description: data['description'],
         );
       } else {
-        throw Exception('Error al obtener el espacio.');
+        return null;
       }
     } catch (e) {
-      return null;
+      throw Exception('Error al obtener el espacio.');
     }
   }
 
@@ -147,7 +149,7 @@ class EspaciosProvider with ChangeNotifier {
           'Authorization': 'Bearer $_token',
           'Content-Type': 'application/json'
         },
-        body: jsonEncode(espacio),
+        body: jsonEncode(espacio.toJson()),
       );
 
       if (response.statusCode == 201) {
@@ -168,7 +170,7 @@ class EspaciosProvider with ChangeNotifier {
         throw Exception('Error al añadir el espacio.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al añadir el espacio.');
     }
   }
 
@@ -180,7 +182,7 @@ class EspaciosProvider with ChangeNotifier {
           'Authorization': 'Bearer $_token',
           'Content-Type': 'application/json'
         },
-        body: jsonEncode(espacio),
+        body: jsonEncode(espacio.toJson()),
       );
 
       if (response.statusCode == 200) {
@@ -202,7 +204,7 @@ class EspaciosProvider with ChangeNotifier {
         throw Exception('Error al actualizar el espacio.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al actualizar el espacio.');
     }
   }
 
@@ -220,7 +222,7 @@ class EspaciosProvider with ChangeNotifier {
         throw Exception('Error al eliminar el espacio.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al eliminar el espacio.');
     }
   }
 }

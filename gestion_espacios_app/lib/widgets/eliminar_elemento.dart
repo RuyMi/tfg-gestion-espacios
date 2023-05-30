@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
 import 'package:gestion_espacios_app/models/reserva.dart';
-import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/espacios_provider.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
@@ -26,14 +25,12 @@ class MyDeleteAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final espaciosProvider =
         Provider.of<EspaciosProvider>(context, listen: false);
     final reservasProvider =
         Provider.of<ReservasProvider>(context, listen: false);
     final usuariosProvider =
         Provider.of<UsuariosProvider>(context, listen: false);
-    final usuario = authProvider.usuario;
 
     return AlertDialog(
       shape: const RoundedRectangleBorder(
@@ -43,7 +40,7 @@ class MyDeleteAlert extends StatelessWidget {
       title: Column(
         children: [
           Icon(
-            Icons.info,
+            Icons.info_rounded,
             size: 60,
             color: theme.colorScheme.onError,
           ),
@@ -79,7 +76,7 @@ class MyDeleteAlert extends StatelessWidget {
           onPressed: () {
             if (elemento is Espacio) {
               espaciosProvider.deleteEspacio(elemento.uuid).then((result) {
-                Navigator.pushNamed(context, '/mis-reservas');
+                Navigator.pushNamed(context, ruta);
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -103,9 +100,9 @@ class MyDeleteAlert extends StatelessWidget {
               });
             } else if (elemento is Reserva) {
               reservasProvider
-                  .deleteReserva(elemento.uuid, usuario.uuid)
+                  .deleteReserva(elemento.uuid)
                   .then((result) {
-                Navigator.pushNamed(context, '/mis-reservas');
+                Navigator.pushNamed(context, ruta);
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -129,7 +126,7 @@ class MyDeleteAlert extends StatelessWidget {
               });
             } else if (elemento is Usuario) {
               usuariosProvider.deleteUsuario(elemento.uuid).then((result) {
-                Navigator.pushNamed(context, '/mis-reservas');
+                Navigator.pushNamed(context, ruta);
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {

@@ -54,7 +54,8 @@ class ReservasProvider with ChangeNotifier {
 
         notifyListeners();
       } else {
-        throw Exception('Error al obtener las reservas.');
+        _reservas = [];
+        notifyListeners();
       }
     } catch (e) {
       _reservas = [];
@@ -84,10 +85,10 @@ class ReservasProvider with ChangeNotifier {
           image: data['image'],
         );
       } else {
-        throw Exception('Error al obtener la reserva.');
+        return null;
       }
     } catch (e) {
-      return null;
+      throw Exception('Error al obtener la reserva.');
     }
   }
 
@@ -118,7 +119,8 @@ class ReservasProvider with ChangeNotifier {
 
         notifyListeners();
       } else {
-        throw Exception('Error al obtener las reservas.');
+        _misReservas = [];
+        notifyListeners();
       }
     } catch (e) {
       _misReservas = [];
@@ -153,7 +155,8 @@ class ReservasProvider with ChangeNotifier {
 
         notifyListeners();
       } else {
-        throw Exception('Error al obtener las reservas.');
+        _reservasByUser = [];
+        notifyListeners();
       }
     } catch (e) {
       _reservasByUser = [];
@@ -188,7 +191,8 @@ class ReservasProvider with ChangeNotifier {
 
         notifyListeners();
       } else {
-        throw Exception('Error al obtener las reservas.');
+        _reservasBySpace = [];
+        notifyListeners();
       }
     } catch (e) {
       _reservasBySpace = [];
@@ -223,7 +227,8 @@ class ReservasProvider with ChangeNotifier {
 
         notifyListeners();
       } else {
-        throw Exception('Error al obtener las reservas.');
+        _reservasByStatus = [];
+        notifyListeners();
       }
     } catch (e) {
       _reservasByStatus = [];
@@ -258,7 +263,8 @@ class ReservasProvider with ChangeNotifier {
 
         notifyListeners();
       } else {
-        throw Exception('Error al obtener las reservas.');
+        _reservasByTime = [];
+        notifyListeners();
       }
     } catch (e) {
       _reservasByTime = [];
@@ -273,7 +279,7 @@ class ReservasProvider with ChangeNotifier {
             'Authorization': 'Bearer $_token',
             'Content-Type': 'application/json'
           },
-          body: jsonEncode(reserva));
+          body: jsonEncode(reserva.toJson()));
 
       if (response.statusCode == 201) {
         final data = jsonDecode(response.body);
@@ -307,7 +313,7 @@ class ReservasProvider with ChangeNotifier {
             'Authorization': 'Bearer $_token',
             'Content-Type': 'application/json'
           },
-          body: jsonEncode(reserva));
+          body: jsonEncode(reserva.toJson()));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -330,14 +336,14 @@ class ReservasProvider with ChangeNotifier {
         throw Exception('Error al actualizar la reserva.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al actualizar la reserva.');
     }
   }
 
-  Future<void> deleteReserva(String uuid, String userId) async {
+  Future<void> deleteReserva(String uuid) async {
     try {
       final response = await http.delete(
-          Uri.parse('$baseUrl/bookings/$uuid/$userId'),
+          Uri.parse('$baseUrl/bookings/$uuid'),
           headers: {'Authorization': 'Bearer $_token'});
 
       if (response.statusCode == 204) {
@@ -348,7 +354,7 @@ class ReservasProvider with ChangeNotifier {
         throw Exception('Error al eliminar la reserva.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al eliminar la reserva.');
     }
   }
 }

@@ -48,7 +48,7 @@ class MyDrawer extends StatelessWidget {
             color: theme.colorScheme.onPrimary,
           ),
           ListTile(
-            leading: const Icon(Icons.person),
+            leading: const Icon(Icons.person_rounded),
             iconColor: theme.colorScheme.onPrimary,
             title: Text('Perfil',
                 style: TextStyle(
@@ -59,7 +59,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.bookmark_added),
+            leading: const Icon(Icons.bookmark_added_rounded),
             iconColor: theme.colorScheme.onPrimary,
             title: Text('Mis reservas',
                 style: TextStyle(
@@ -70,7 +70,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.settings),
+            leading: const Icon(Icons.settings_rounded),
             iconColor: theme.colorScheme.onPrimary,
             title: Text('Ajustes',
                 style: TextStyle(
@@ -83,8 +83,8 @@ class MyDrawer extends StatelessWidget {
           ListTile(
             iconColor: theme.colorScheme.onPrimary,
             leading: themeProvider.isDarkMode
-                ? const Icon(Icons.wb_sunny)
-                : const Icon(Icons.nightlight_round),
+                ? const Icon(Icons.wb_sunny_rounded)
+                : const Icon(Icons.nightlight_round_rounded),
             title: themeProvider.isDarkMode
                 ? Text('Cambiar a tema claro',
                     style: TextStyle(

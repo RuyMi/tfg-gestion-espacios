@@ -105,7 +105,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
             ),
             const SizedBox(height: 20),
             SizedBox(
-              width: 150,
+              width: 200,
               child: Column(
                 children: [
                   TextButton(
@@ -113,12 +113,33 @@ class _PerfilScreenState extends State<PerfilScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.settings,
+                          Icons.settings_rounded,
                           color: theme.colorScheme.onBackground,
                         ),
                         const SizedBox(width: 10),
                         Text(
                           'Ajustes',
+                          style: TextStyle(
+                              fontFamily: 'KoHo',
+                              color: theme.colorScheme.surface,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    onPressed: () {},
+                  ),
+                  const SizedBox(height: 10),
+                  TextButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.lock_rounded,
+                          color: theme.colorScheme.onBackground,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Cambiar contraseña',
                           style: TextStyle(
                               fontFamily: 'KoHo',
                               color: theme.colorScheme.surface,
@@ -142,7 +163,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.logout,
+                          Icons.logout_rounded,
                           color: theme.colorScheme.onBackground,
                         ),
                         const SizedBox(width: 10),

@@ -37,6 +37,7 @@ class BOLoginScreen extends StatelessWidget {
                 width: 400,
                 child: TextField(
                   onChanged: (value) => username = value,
+                  cursorColor: theme.colorScheme.secondary,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -53,8 +54,8 @@ class BOLoginScreen extends StatelessWidget {
                     labelText: 'Nombre de usuario',
                     labelStyle: TextStyle(
                         fontFamily: 'KoHo', color: theme.colorScheme.surface),
-                    prefixIcon:
-                        Icon(Icons.person, color: theme.colorScheme.surface),
+                    prefixIcon: Icon(Icons.person_rounded,
+                        color: theme.colorScheme.surface),
                   ),
                 ),
               ),
@@ -63,6 +64,7 @@ class BOLoginScreen extends StatelessWidget {
                 width: 400,
                 child: TextField(
                   onChanged: (value) => password = value,
+                  cursorColor: theme.colorScheme.secondary,
                   obscureText: true,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
@@ -80,8 +82,8 @@ class BOLoginScreen extends StatelessWidget {
                     labelText: 'Contraseña',
                     labelStyle: TextStyle(
                         fontFamily: 'KoHo', color: theme.colorScheme.surface),
-                    prefixIcon:
-                        Icon(Icons.lock, color: theme.colorScheme.surface),
+                    prefixIcon: Icon(Icons.lock_rounded,
+                        color: theme.colorScheme.surface),
                   ),
                 ),
               ),
@@ -92,7 +94,7 @@ class BOLoginScreen extends StatelessWidget {
                     (usuario) {
                       final loginSucceed = authProvider.loginSucceed;
                       final roles = authProvider.usuario.userRole;
-        
+
                       if (loginSucceed && roles.contains('ADMINISTRATOR')) {
                         Navigator.pushNamed(context, '/home-bo');
                       } else {
@@ -105,7 +107,17 @@ class BOLoginScreen extends StatelessWidget {
                         );
                       }
                     },
-                  );
+                  ).catchError((error) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const MyErrorMessageDialog(
+                            title: 'Error al iniciar sesión',
+                            description:
+                                'Usuario o contraseña incorrectos.',
+                          );
+                        });
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(

@@ -28,7 +28,6 @@ class ReservaEspacioScreen extends StatefulWidget {
   _ReservaSala createState() => _ReservaSala();
 }
 
-// ignore: must_be_immutable
 class _ReservaSala extends State<ReservaEspacioScreen> {
   bool _isDaySelected = false;
   bool _isHourSelected = false;
@@ -161,8 +160,10 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                 SizedBox(
                   width: 250,
                   child: TextField(
-                    keyboardType: TextInputType.text,
                     onChanged: (value) => observations = value,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 3,
+                    cursorColor: theme.colorScheme.secondary,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -180,7 +181,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                       labelStyle: TextStyle(
                           fontFamily: 'KoHo',
                           color: theme.colorScheme.secondary),
-                      prefixIcon: Icon(Icons.message,
+                      prefixIcon: Icon(Icons.message_rounded,
                           color: theme.colorScheme.secondary),
                     ),
                   ),
@@ -192,7 +193,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
-                      color: theme.colorScheme.secondary,
+                      color: theme.colorScheme.onPrimary,
                       width: 2,
                     ),
                   ),
@@ -206,11 +207,11 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                       ),
                       formatButtonVisible: false,
                       leftChevronIcon: Icon(
-                        Icons.chevron_left,
+                        Icons.chevron_left_rounded,
                         color: theme.colorScheme.secondary,
                       ),
                       rightChevronIcon: Icon(
-                        Icons.chevron_right,
+                        Icons.chevron_right_rounded,
                         color: theme.colorScheme.secondary,
                       ),
                     ),
@@ -328,7 +329,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Icon(
-                                      Icons.access_time,
+                                      Icons.access_time_rounded,
                                       color: theme.colorScheme.surface,
                                     ),
                                     const SizedBox(width: 10),
@@ -374,19 +375,21 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       startTime =
-                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:00';
+                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:01';
                       endTime =
-                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:00';
+                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:01';
 
                       final reserva = Reserva(
-                        userId: userId,
-                        spaceId: spaceId,
+                        userId: userId!,
+                        spaceId: spaceId!,
                         startTime: startTime,
                         endTime: endTime,
                         userName: userName,
                         spaceName: spaceName,
                         observations: observations,
-                        status: 'PENDING',
+                        status: espacio.requiresAuthorization
+                            ? 'PENDING'
+                            : 'APPROVED',
                         image: espacio.image,
                       );
 

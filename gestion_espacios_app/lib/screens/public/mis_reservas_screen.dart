@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
+import 'package:gestion_espacios_app/screens/screens.dart';
 import 'package:gestion_espacios_app/widgets/image_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -101,10 +102,13 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                 final reserva = misReservas[index];
                 return InkWell(
                   onTap: () {
-                    Navigator.pushNamed(
+                    Navigator.push(
                       context,
-                      '/editar-reserva',
-                      arguments: reserva,
+                      MaterialPageRoute(
+                        builder: (context) => EditarReservaScreen(
+                          reserva: reserva,
+                        ),
+                      ),
                     );
                   },
                   child: Card(
@@ -177,7 +181,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                                 padding: EdgeInsets.zero,
                                                 constraints:
                                                     const BoxConstraints(),
-                                                icon: Icon(Icons.share,
+                                                icon: Icon(Icons.share_rounded,
                                                     color: theme
                                                         .colorScheme.surface,
                                                     size: 20),
@@ -190,7 +194,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                                 padding: EdgeInsets.zero,
                                                 constraints:
                                                     const BoxConstraints(),
-                                                icon: Icon(Icons.bookmark,
+                                                icon: Icon(Icons.bookmark_rounded,
                                                     color: theme.colorScheme
                                                         .onBackground,
                                                     size: 20),

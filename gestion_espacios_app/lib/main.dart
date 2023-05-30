@@ -4,6 +4,10 @@ import 'package:gestion_espacios_app/providers/espacios_provider.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/providers/theme_provider.dart';
 import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
+import 'package:gestion_espacios_app/screens/private/bo_add_espacio_dialog.dart';
+import 'package:gestion_espacios_app/screens/private/bo_espacios_screen.dart';
+import 'package:gestion_espacios_app/screens/private/bo_reservas_screen.dart';
+import 'package:gestion_espacios_app/screens/private/bo_usuarios_screen.dart';
 import 'package:gestion_espacios_app/screens/public/reservar_espacios_screen.dart';
 import 'package:gestion_espacios_app/screens/screens.dart';
 import 'package:gestion_espacios_app/theme/app_theme.dart';
@@ -61,11 +65,17 @@ class MyApp extends StatelessWidget {
         '/buzon': (context) => const BuzonScreen(),
         '/perfil': (context) => const PerfilScreen(),
         '/reservar-espacio': (context) => const ReservaEspacioScreen(),
-        '/editar-reserva': (context) => const EditarReservaScreen(),
+        // '/editar-reserva': (context) => const EditarReservaScreen(),
 
         // Private
         '/login-bo': (context) => const BOLoginScreen(),
         '/home-bo': (context) => const BOMainScreen(),
+        '/espacios-bo': (context) => const EspaciosBOScreen(),
+        '/reservas-bo': (context) => const ReservasBOScreen(),
+        '/usuarios-bo': (context) => const UsuariosBOScreen(),
+        '/nuevo-espacio': (context) => const NuevoEspacioBODialog(),
+        // '/editar-espacio': (context) => const EditarEspacioBODialog(),
+        // '/editar-usuario': (context) => const EditarUsuarioBODialog(),
       },
     );
   }

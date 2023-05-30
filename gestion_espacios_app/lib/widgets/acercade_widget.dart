@@ -43,7 +43,7 @@ class AcercaDeWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.location_on, color: theme.colorScheme.onSecondary, size: 24),
+                Icon(Icons.location_on_rounded, color: theme.colorScheme.onSecondary, size: 24),
                 const SizedBox(width: 8),
                 Text('P.º de la Ermita, 15, \n28918 Leganés, Madrid',
                     textAlign: TextAlign.center,
@@ -57,7 +57,7 @@ class AcercaDeWidget extends StatelessWidget {
              Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.phone, color: theme.colorScheme.onSecondary, size: 24),
+                Icon(Icons.phone_rounded, color: theme.colorScheme.onSecondary, size: 24),
                 const SizedBox(width: 8),
                 Text('916 80 77 12',
                     textAlign: TextAlign.center,
@@ -71,7 +71,7 @@ class AcercaDeWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.language, color: theme.colorScheme.onSecondary, size: 24),
+                Icon(Icons.language_rounded, color: theme.colorScheme.onSecondary, size: 24),
                 const SizedBox(width: 8),
                 GestureDetector(
                   onTap: () async {
@@ -95,7 +95,7 @@ class AcercaDeWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.people, color: theme.colorScheme.onSecondary, size: 24),
+                Icon(Icons.people_rounded, color: theme.colorScheme.onSecondary, size: 24),
                 const SizedBox(width: 8),
                 GestureDetector(
                   onTap: () async {

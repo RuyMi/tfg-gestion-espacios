@@ -1,6 +1,6 @@
 class Usuario {
   Usuario({
-    required this.uuid,
+    this.uuid,
     required this.name,
     required this.username,
     required this.email,
@@ -12,7 +12,7 @@ class Usuario {
     this.token,
   });
 
-  String uuid;
+  String? uuid;
   String name;
   String username;
   String email;

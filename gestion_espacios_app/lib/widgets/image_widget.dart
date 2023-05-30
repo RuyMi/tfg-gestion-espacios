@@ -10,6 +10,8 @@ class MyImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return Image.network(
       image != null && image != ''
           ? 'http://magarcia.asuscomm.com:25546/spaces/storage/$image.png'
@@ -19,11 +21,18 @@ class MyImageWidget extends StatelessWidget {
       fit: BoxFit.cover,
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) return child;
-        return const SizedBox(
+        return SizedBox(
           height: 100,
           width: 100,
           child: Center(
-            child: CircularProgressIndicator.adaptive(),
+            child: CircularProgressIndicator.adaptive(
+              valueColor:
+                  AlwaysStoppedAnimation<Color>(theme.colorScheme.surface),
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      loadingProgress.expectedTotalBytes!
+                  : null,
+            ),
           ),
         );
       },

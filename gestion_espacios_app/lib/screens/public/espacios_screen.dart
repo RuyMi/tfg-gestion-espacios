@@ -206,7 +206,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                   padding: EdgeInsets.zero,
                                                   constraints:
                                                       const BoxConstraints(),
-                                                  icon: Icon(Icons.share,
+                                                  icon: Icon(Icons.share_rounded,
                                                       color: theme
                                                           .colorScheme.surface,
                                                       size: 20),

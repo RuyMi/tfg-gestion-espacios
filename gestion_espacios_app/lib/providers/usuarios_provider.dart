@@ -55,7 +55,8 @@ class UsuariosProvider with ChangeNotifier {
 
         notifyListeners();
       } else {
-        throw Exception('Error al obtener los usuarios.');
+        _usuarios = [];
+        notifyListeners();
       }
     } catch (e) {
       _usuarios = [];
@@ -85,10 +86,10 @@ class UsuariosProvider with ChangeNotifier {
         notifyListeners();
         return _actualUsuario;
       } else {
-        throw Exception('Error al obtener el usuario.');
+        return null;
       }
     } catch (e) {
-      return null;
+      throw Exception('Error al obtener el usuario.');
     }
   }
 
@@ -114,19 +115,19 @@ class UsuariosProvider with ChangeNotifier {
         notifyListeners();
         return usuario;
       } else {
-        throw Exception('Error al obtener el usuario.');
+        return null;
       }
     } catch (e) {
-      return null;
+      throw Exception('Error al obtener el usuario.');
     }
   }
 
-  Future<Usuario?> register(Usuario usuario) async {
+  Future<void> register(Usuario usuario) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/users/register'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(usuario),
+        body: jsonEncode(usuario.toJson()),
       );
 
       if (response.statusCode == 201) {
@@ -149,10 +150,8 @@ class UsuariosProvider with ChangeNotifier {
         throw Exception('Error al registrar el usuario.');
       }
     } catch (e) {
-      return null;
+      throw Exception('Error al registrar el usuario.');
     }
-
-    return usuario;
   }
 
   Future<void> updateUsuario(String uuid, Usuario usuario) async {
@@ -163,7 +162,7 @@ class UsuariosProvider with ChangeNotifier {
           'Authorization': 'Bearer $_token',
           'Content-Type': 'application/json'
         },
-        body: jsonEncode(usuario),
+        body: jsonEncode(usuario.toJson()),
       );
 
       if (response.statusCode == 200) {
@@ -185,7 +184,7 @@ class UsuariosProvider with ChangeNotifier {
         throw Exception('Error al actualizar el usuario.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al actualizar el usuario.');
     }
   }
 
@@ -205,7 +204,7 @@ class UsuariosProvider with ChangeNotifier {
         throw Exception('Error al actualizar el usuario.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al actualizar el usuario.');
     }
   }
 
@@ -225,7 +224,7 @@ class UsuariosProvider with ChangeNotifier {
         throw Exception('Error al actualizar el usuario.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al actualizar el usuario.');
     }
   }
 
@@ -237,7 +236,7 @@ class UsuariosProvider with ChangeNotifier {
           'Authorization': 'Bearer $_token',
           'Content-Type': 'application/json'
         },
-        body: jsonEncode(usuario),
+        body: jsonEncode(usuario.toJson()),
       );
 
       if (response.statusCode == 200) {
@@ -259,7 +258,7 @@ class UsuariosProvider with ChangeNotifier {
         throw Exception('Error al actualizar el usuario.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al actualizar el usuario.');
     }
   }
 
@@ -277,7 +276,7 @@ class UsuariosProvider with ChangeNotifier {
         throw Exception('Error al eliminar el usuario.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al eliminar el usuario.');
     }
   }
 }
