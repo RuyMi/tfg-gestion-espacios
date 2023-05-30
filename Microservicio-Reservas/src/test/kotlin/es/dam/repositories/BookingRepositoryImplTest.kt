@@ -28,7 +28,9 @@ class BookingRepositoryImplTest {
         status = Booking.Status.PENDING,
         startTime = LocalDateTime.now(),
         endTime = LocalDateTime.now(),
-        phone = "123456789",
+        observations =  "test",
+        userName = "test",
+        spaceName = "test"
     )
 
 
@@ -58,7 +60,9 @@ class BookingRepositoryImplTest {
             { assertEquals(booking.status, bookings[0].status) },
             { assertEquals(startTimeReduced, bookings[0].startTime.toString()) },
             { assertEquals(endTimeReduced, bookings[0].endTime.toString()) },
-            { assertEquals(booking.phone, bookings[0].phone) }
+            { assertEquals(booking.observations, bookings[0].observations) },
+            { assertEquals(booking.spaceName, bookings[0].spaceName) },
+            { assertEquals(booking.userName, bookings[0].userName) },
         )
     }
 
@@ -77,8 +81,10 @@ class BookingRepositoryImplTest {
             { assertEquals(booking.status, bookings[0].status) },
             { assertEquals(startTimeReduced, bookings[0].startTime.toString()) },
             { assertEquals(endTimeReduced, bookings[0].endTime.toString()) },
-            { assertEquals(booking.phone, bookings[0].phone) }
-        )
+            { assertEquals(booking.observations, bookings[0].observations) },
+            { assertEquals(booking.spaceName, bookings[0].spaceName) },
+            { assertEquals(booking.userName, bookings[0].userName) },
+            )
     }
 
     @Test
@@ -96,8 +102,10 @@ class BookingRepositoryImplTest {
             { assertEquals(booking.status, bookings[0].status) },
             { assertEquals(startTimeReduced, bookings[0].startTime.toString()) },
             { assertEquals(endTimeReduced, bookings[0].endTime.toString()) },
-            { assertEquals(booking.phone, bookings[0].phone) }
-        )
+            { assertEquals(booking.observations, bookings[0].observations) },
+            { assertEquals(booking.spaceName, bookings[0].spaceName) },
+            { assertEquals(booking.userName, bookings[0].userName) },
+            )
     }
 
     @Test
@@ -115,8 +123,10 @@ class BookingRepositoryImplTest {
             { assertEquals(booking.status, bookings[0].status) },
             { assertEquals(startTimeReduced, bookings[0].startTime.toString()) },
             { assertEquals(endTimeReduced, bookings[0].endTime.toString()) },
-            { assertEquals(booking.phone, bookings[0].phone) }
-        )
+            { assertEquals(booking.observations, bookings[0].observations) },
+            { assertEquals(booking.spaceName, bookings[0].spaceName) },
+            { assertEquals(booking.userName, bookings[0].userName) },
+            )
     }
 
     @Test
@@ -133,8 +143,10 @@ class BookingRepositoryImplTest {
             { assertEquals(booking.status, bookingTest.status) },
             { assertEquals(startTimeReduced, bookingTest.startTime.toString()) },
             { assertEquals(endTimeReduced, bookingTest.endTime.toString()) },
-            { assertEquals(booking.phone, bookingTest.phone) }
-        )
+            { assertEquals(booking.observations, bookingTest.observations) },
+            { assertEquals(booking.spaceName, bookingTest.spaceName) },
+            { assertEquals(booking.userName, bookingTest.userName) },
+            )
     }
 
     @Test
@@ -149,8 +161,10 @@ class BookingRepositoryImplTest {
             { assertEquals(booking.status, bookingTest.status) },
             { assertEquals(booking.startTime, bookingTest.startTime) },
             { assertEquals(booking.endTime, bookingTest.endTime) },
-            { assertEquals(booking.phone, bookingTest.phone) }
-        )
+            { assertEquals(booking.observations, bookingTest.observations) },
+            { assertEquals(booking.spaceName, bookingTest.spaceName) },
+            { assertEquals(booking.userName, bookingTest.userName) },
+            )
     }
 
     @Test
@@ -159,7 +173,7 @@ class BookingRepositoryImplTest {
             status = Booking.Status.APPROVED,
             startTime = LocalDateTime.now().plusHours(1),
             endTime = LocalDateTime.now().plusHours(2),
-            phone = "987654321"
+            observations = "updated"
         )
         val updatedBooking = repository.update(bookingTest)
 
@@ -171,8 +185,11 @@ class BookingRepositoryImplTest {
             { assertEquals(updatedBooking.status, bookingTest.status) },
             { assertEquals(updatedBooking.startTime, bookingTest.startTime) },
             { assertEquals(updatedBooking.endTime, bookingTest.endTime) },
-            { assertEquals(updatedBooking.phone, bookingTest.phone) }
+            { assertEquals(updatedBooking.observations, bookingTest.observations) },
+            { assertEquals(updatedBooking.spaceName, bookingTest.spaceName) },
+            { assertEquals(updatedBooking.userName, bookingTest.userName) },
         )
+
     }
 
     @Test

@@ -31,6 +31,7 @@ data class UserRegisterDTO(
     val email: String,
     val password: String,
     val avatar: String? = null,
+    val isActive: Boolean,
     val userRole: Set<String>
 )
 
@@ -38,9 +39,8 @@ data class UserRegisterDTO(
 data class UserUpdateDTO(
     val name: String,
     val username: String,
-    val email: String,
-    val password: String,
     val avatar: String? = null,
+    val isActive: Boolean,
     val userRole: Set<String>,
     val credits: Int,
 )
@@ -67,7 +67,7 @@ data class UserResponseDTO(
     val avatar: String? = null,
     val userRole: Set<String>,
     val credits: Int,
-    val isActive: Boolean,
+    val isActive: Boolean
 )
 
 @Serializable

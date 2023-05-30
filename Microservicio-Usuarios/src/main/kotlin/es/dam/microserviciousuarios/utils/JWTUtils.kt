@@ -13,7 +13,7 @@ class JWTUtils {
         return JWT.create()
             .withSubject(user.uuid.toString())
             .withIssuer("luisvives")
-            .withExpiresAt(Date(System.currentTimeMillis() + (60 * 60 * 1000)))
+            .withExpiresAt(Date(System.currentTimeMillis() + (4 * 60 * 60 * 1000)))
             .withClaim("username", user.username)
             .withClaim("role", user.userRole.split(",").toSet().toString())
             .sign(Algorithm.HMAC512("reservas-luisvives"))

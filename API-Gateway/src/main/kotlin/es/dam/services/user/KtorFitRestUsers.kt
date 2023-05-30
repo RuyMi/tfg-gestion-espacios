@@ -15,7 +15,13 @@ interface KtorFitRestUsers {
         @Path("id") id: String
     ): UserResponseDTO
 
-    @GET("users/{username}")
+    @GET("users/me/{id}")
+    suspend fun findMe(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): UserResponseDTO
+
+    @GET("users/isActive/{username}")
     suspend fun isActive(
             @Path("username") username: String
     ): Boolean
@@ -27,6 +33,13 @@ interface KtorFitRestUsers {
 
     @PUT("users/credits/{id}/{creditsAmount}")
     suspend fun updateCredits(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+        @Path("creditsAmount") creditsAmount: Int
+    ): UserResponseDTO
+
+    @PUT("users/credits/me/{id}/{creditsAmount}")
+    suspend fun updateCreditsMe(
         @Header("Authorization") token: String,
         @Path("id") id: String,
         @Path("creditsAmount") creditsAmount: Int

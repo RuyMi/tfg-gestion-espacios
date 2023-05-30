@@ -41,6 +41,7 @@ dependencies {
     implementation("io.ktor:ktor-server-openapi:$ktor_version")
     implementation("io.ktor:ktor-server-websockets-jvm:$ktor_version")
     implementation("io.ktor:ktor-network-tls-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-cors:$ktor_version")
 
     //Tests
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
@@ -79,6 +80,10 @@ dependencies {
     //Auth
     implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktor_version")
+
+    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.2")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.11.2")
 }
 
 sourceSets.main {

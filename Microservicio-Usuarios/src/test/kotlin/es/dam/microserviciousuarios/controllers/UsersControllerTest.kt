@@ -128,7 +128,7 @@ class UsersControllerTest {
             usersController.login(userLogin)
         }
 
-        assertEquals("401 UNAUTHORIZED", exception.message)
+        assertEquals("401 UNAUTHORIZED \"Invalid username or password\"", exception.message)
     }
 
 
@@ -159,8 +159,7 @@ class UsersControllerTest {
             usersController.register(userRegister)
         }
 
-        assertEquals("400 BAD_REQUEST \"es.dam.microserviciousuarios.exceptions.UserBadRequestException: Email already exists.\n" +
-                "\t", exception.message.split("at")[0])
+        assertEquals("400 BAD_REQUEST \"User already exists with that username or email\"", exception.message)
     }
 
     @Test
@@ -172,8 +171,7 @@ class UsersControllerTest {
             usersController.register(userRegister)
         }
 
-        assertEquals("400 BAD_REQUEST \"es.dam.microserviciousuarios.exceptions.UserBadRequestException: Username already exists.\n" +
-                "\t", exception.message.split("at")[0])
+        assertEquals("400 BAD_REQUEST \"User already exists with that username or email\"", exception.message)
     }
 
     @Test
@@ -185,7 +183,7 @@ class UsersControllerTest {
             usersController.register(userRegisterWrong)
         }
 
-        assertEquals("400 BAD_REQUEST \"es.dam.microserviciousuarios.exceptions.UserBadRequestException: Error creating the user. ->", exception.message.split(">")[0] + ">")
+        assertEquals("400 BAD_REQUEST \"User already exists with that username or email\"", exception.message)
     }
 
     @Test
@@ -271,8 +269,7 @@ class UsersControllerTest {
             usersController.update(user, userUpdate)
         }
 
-        assertEquals("400 BAD_REQUEST \"es.dam.microserviciousuarios.exceptions.UserBadRequestException: Error updating the user.\n" +
-                "\t", exception.message.split("at ")[0])
+        assertEquals("400 BAD_REQUEST \"Invalid UUID string: c060c959-8462-4a0f-9265-9af4f54d166c\"" , exception.message)
     }
 
     @Test
@@ -284,8 +281,7 @@ class UsersControllerTest {
             usersController.update(user, userUpdate)
         }
 
-        assertEquals("404 NOT_FOUND \"es.dam.microserviciousuarios.exceptions.UserNotFoundException: Error updating the user.\n" +
-                "\t", exception.message.split("at ")[0])
+        assertEquals("404 NOT_FOUND \"User not found with uuid: ${user.uuid}\"", exception.message)
     }
 
     @Test
@@ -315,8 +311,7 @@ class UsersControllerTest {
             usersController.update(user.uuid.toString(), userUpdate)
         }
 
-        assertEquals("400 BAD_REQUEST \"es.dam.microserviciousuarios.exceptions.UserBadRequestException: Error updating the user.\n" +
-                "\t", exception.message.split("at ")[0])
+        assertEquals("400 BAD_REQUEST \"Invalid UUID string: ${user.uuid}\"", exception.message)
     }
 
     @Test
@@ -328,8 +323,7 @@ class UsersControllerTest {
             usersController.update(user.uuid.toString(), userUpdate)
         }
 
-        assertEquals("404 NOT_FOUND \"es.dam.microserviciousuarios.exceptions.UserNotFoundException: User with uuid ${user.uuid} not found.\n" +
-                "\t", exception.message.split("at ")[0])
+        assertEquals("404 NOT_FOUND \"User not found with uuid: ${user.uuid}\"", exception.message)
     }
 
     @Test
@@ -352,8 +346,7 @@ class UsersControllerTest {
             usersController.delete(uuidWrong.toString())
         }
 
-        assertEquals("400 BAD_REQUEST \"es.dam.microserviciousuarios.exceptions.UserBadRequestException: Invalid UUID string: ${uuidWrong}\n" +
-                "\t", exception.message.split("at ")[0])
+        assertEquals("400 BAD_REQUEST \"Invalid UUID string: ${uuidWrong}\"" , exception.message)
     }
 
     @Test
@@ -365,7 +358,6 @@ class UsersControllerTest {
             usersController.delete(user.uuid.toString())
         }
 
-        assertEquals("404 NOT_FOUND \"es.dam.microserviciousuarios.exceptions.UserNotFoundException: User with uuid ${user.uuid} not found.\n" +
-                "\t", exception.message.split("at ")[0])
+        assertEquals("404 NOT_FOUND \"User not found with uuid: ${user.uuid}\"", exception.message)
     }
 }

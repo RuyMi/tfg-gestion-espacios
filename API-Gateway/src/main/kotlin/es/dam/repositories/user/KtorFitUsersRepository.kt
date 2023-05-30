@@ -49,6 +49,15 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    override suspend fun findMe(token: String, id: String): UserResponseDTO = withContext(Dispatchers.IO)  {
+        val call = async { client.findMe(token, id) }
+        try {
+            return@withContext call.await()
+        } catch (e: Exception) {
+            throw Exception("Error getting user data ${e.message}")
+        }
+    }
+
     override suspend fun isActive(username: String): Boolean = withContext(Dispatchers.IO)  {
         val call = async { client.isActive(username) }
         try {
@@ -73,6 +82,15 @@ class KtorFitUsersRepository: IUsersRepository {
             return@withContext call.await()
         } catch (e: Exception) {
             throw Exception("Error updating user with id $id: ${e.message}")
+        }
+    }
+
+    override suspend fun updateCreditsMe(token: String, id: String, creditsAmount: Int): UserResponseDTO = withContext(Dispatchers.IO)  {
+        val call = async { client.updateCreditsMe(token, id, creditsAmount) }
+        try {
+            return@withContext call.await()
+        } catch (e: Exception) {
+            throw Exception("Error updating me: ${e.message}")
         }
     }
 

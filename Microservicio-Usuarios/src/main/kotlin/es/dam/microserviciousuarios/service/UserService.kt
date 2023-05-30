@@ -99,7 +99,7 @@ class UserService
         }
     }
 
-    suspend fun deleteByUuid(uuid: String): Boolean = withContext(Dispatchers.IO) {
+    suspend fun deleteByUuid(uuid: String): Int = withContext(Dispatchers.IO) {
         try {
             UUID.fromString(uuid)
         }catch(e: Exception){

@@ -75,9 +75,21 @@ class UsersController @Autowired constructor(
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
+    //@PreAuthorize("hasAnyRole('ADMINISTRATOR')")
     @GetMapping("/{id}")
     suspend fun findById(@PathVariable id: String): ResponseEntity<UserResponseDTO> {
+        try {
+            val res = userService.findByUuid(id).toDTO()
+            return ResponseEntity.ok(res)
+        } catch (e: UserNotFoundException) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with uuid: $id")
+        } catch (e: UserBadRequestException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID string: $id")
+        }
+    }
+
+    @GetMapping("/me/{id}")
+    suspend fun findMe(@PathVariable id: String): ResponseEntity<UserResponseDTO> {
         try {
             val res = userService.findByUuid(id).toDTO()
             return ResponseEntity.ok(res)
@@ -134,6 +146,23 @@ class UsersController @Autowired constructor(
         }
     }
 
+    @PutMapping("/credits/me/{id}/{creditsAmount}")
+    suspend fun updateCreditsMe(
+        @PathVariable id: String,
+        @PathVariable creditsAmount: Int
+    ): ResponseEntity<UserResponseDTO> {
+        try {
+            val updated = userService.findByUuid(id)
+            val updatedCredits = updated.credits - creditsAmount
+            val res = userService.update(updated.copy(credits = updatedCredits))
+            return ResponseEntity.status(HttpStatus.OK).body(res?.toDTO())
+        } catch (e: UserNotFoundException) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND,"User not found with uuid: $id")
+        } catch (e: UserBadRequestException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID or credits amount")
+        }
+    }
+
     @PutMapping("/credits/{id}/{creditsAmount}")
     @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
     suspend fun updateCredits(
@@ -162,8 +191,9 @@ class UsersController @Autowired constructor(
             val updated = userService.findByUuid(id).copy(
                 name = userDTO.name,
                 username = userDTO.username,
-                password = userDTO.password,
-                email = userDTO.email,
+                isActive = userDTO.isActive,
+                credits = userDTO.credits,
+                userRole = userDTO.userRole.toString().replace("[" , "").replace("]" , ""),
                 avatar = userDTO.avatar
             )
             val res = userService.update(updated)
