@@ -278,7 +278,7 @@ fun Application.bookingsRoutes() {
                             }
 
                             if (booking.isSuccess) {
-                                call.respond(HttpStatusCode.OK, booking.getOrNull()!!)
+                                call.respond(HttpStatusCode.Created, booking.getOrNull()!!)
                             } else {
                                 throw booking.exceptionOrNull()!!
                             }
@@ -300,7 +300,7 @@ fun Application.bookingsRoutes() {
                             }
 
                             if (booking.isSuccess) {
-                                call.respond(HttpStatusCode.OK, booking.getOrNull()!!)
+                                call.respond(HttpStatusCode.Created, booking.getOrNull()!!)
                             } else {
                                 throw booking.exceptionOrNull()!!
                             }
