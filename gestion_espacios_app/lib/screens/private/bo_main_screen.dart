@@ -19,8 +19,7 @@ class _BOMainScreenState extends State<BOMainScreen>
     with SingleTickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   // String _searchText = '';
-  bool _showNewButton = true;
-  bool _sortByUsers = false;
+  bool _sortBySpaces = true;
 
   late TabController _tabController;
 
@@ -28,15 +27,6 @@ class _BOMainScreenState extends State<BOMainScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(() {
-      setState(() {
-        // if (_tabController.index == 2) {
-        //   _showNewButton = false;
-        // } else {
-        //   _showNewButton = true;
-        // }
-      });
-    });
   }
 
   void _handleSortBy(bool sortByUsers) {
@@ -192,11 +182,11 @@ class _BOMainScreenState extends State<BOMainScreen>
                                   .withOpacity(0.2),
                               inactiveThumbColor:
                                   theme.colorScheme.onBackground,
-                              value: _sortByUsers,
+                              value: _sortBySpaces,
                               onChanged: (value) {
                                 setState(() {
-                                  _sortByUsers = value;
-                                  _handleSortBy(_sortByUsers);
+                                  _sortBySpaces = value;
+                                  _handleSortBy(_sortBySpaces);
                                 });
                               },
                             ),
@@ -206,10 +196,10 @@ class _BOMainScreenState extends State<BOMainScreen>
                         ),
                       ),
                       Visibility(
-                          visible: _tabController.index == 0,
+                          visible: _tabController.index != 0,
                           child: const SizedBox(height: 10)),
                       Visibility(
-                        visible: _showNewButton,
+                        visible: _tabController.index != 0,
                         child: ElevatedButton.icon(
                           onPressed: () {
                             switch (_tabController.index) {

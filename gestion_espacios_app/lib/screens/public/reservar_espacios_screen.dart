@@ -35,8 +35,6 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
   String? selectedHour;
   final ScrollController _scrollController = ScrollController();
 
-  String observations = '';
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -49,6 +47,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
     final userName = authProvider.usuario.name;
     final spaceId = espacio.uuid;
     final spaceName = espacio.name;
+    String observations = '';
     String startTime;
     String endTime;
 

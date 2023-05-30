@@ -58,7 +58,7 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
   void initState() {
     super.initState();
     observationsController = TextEditingController(
-        text: widget.reserva.observations ?? 'Sin observaciones');
+        text: widget.reserva.observations ?? '');
   }
 
   @override
@@ -74,7 +74,7 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
     final Reserva reserva = widget.reserva;
     String spaceName = reserva.spaceName;
     String userName = reserva.userName;
-    String observations = reserva.observations ?? 'Sin observaciones';
+    String observations = reserva.observations ?? '';
     String? image = reserva.image;
     String startTime = reserva.startTime;
     String endTime = reserva.endTime;

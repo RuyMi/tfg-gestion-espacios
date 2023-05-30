@@ -90,7 +90,7 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
                               color: theme.colorScheme.onPrimary,
                             ),
                           ),
-                          Text('@${reserva.userName}',
+                          Text(reserva.userName,
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
