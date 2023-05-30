@@ -76,8 +76,8 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
     String userName = reserva.userName;
     String observations = reserva.observations ?? 'Sin observaciones';
     String? image = reserva.image;
-    String? startTime = reserva.startTime;
-    String? endTime = reserva.endTime;
+    String startTime = reserva.startTime;
+    String endTime = reserva.endTime;
 
     String myHour =
         '${startTimeFromLocalDateTime(startTime)} - ${endTimeFromLocalDateTime(endTime)}';
@@ -311,6 +311,21 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
                                               });
                                             },
                                             style: ButtonStyle(
+                                              backgroundColor: hora ==
+                                                      selectedHour
+                                                  ? MaterialStateProperty.all<Color>(
+                                                      theme
+                                                          .colorScheme.secondary
+                                                          .withOpacity(0.5))
+                                                  : hora == myHour
+                                                      ? MaterialStateProperty
+                                                          .all<Color>(theme
+                                                              .colorScheme
+                                                              .surface
+                                                              .withOpacity(0.5))
+                                                      : MaterialStateProperty
+                                                          .all<Color>(Colors
+                                                              .transparent),
                                               overlayColor:
                                                   MaterialStateProperty
                                                       .resolveWith<Color>(
@@ -334,30 +349,21 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
                                               children: [
                                                 Icon(
                                                   Icons.access_time_rounded,
-                                                  color: hora == selectedHour ||
-                                                          hora == myHour
-                                                      ? theme
-                                                          .colorScheme.surface
-                                                      : theme.colorScheme
-                                                          .onPrimary,
+                                                  color: theme
+                                                      .colorScheme.onPrimary,
                                                 ),
                                                 const SizedBox(width: 10),
                                                 Text(
                                                   hora,
                                                   textAlign: TextAlign.right,
                                                   style: TextStyle(
-                                                    color:
+                                                    color: theme
+                                                        .colorScheme.onPrimary,
+                                                    fontWeight:
                                                         hora == selectedHour ||
                                                                 hora == myHour
-                                                            ? theme.colorScheme
-                                                                .surface
-                                                            : theme.colorScheme
-                                                                .onPrimary,
-                                                    fontWeight: hora ==
-                                                                myHour ||
-                                                            hora == selectedHour
-                                                        ? FontWeight.bold
-                                                        : FontWeight.normal,
+                                                            ? FontWeight.bold
+                                                            : FontWeight.normal,
                                                     fontFamily: 'KoHo',
                                                   ),
                                                 ),
@@ -408,10 +414,25 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 ElevatedButton.icon(
                   onPressed: () {
-                    startTime =
-                        '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:01';
-                    endTime =
-                        '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:01';
+                    if (selectedDay == null && selectedHour == null) {
+                      startTime = reserva.startTime;
+                      endTime = reserva.endTime;
+                    } else if (selectedDay == null) {
+                      startTime =
+                          '${reserva.startTime.split('T')[0]}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:01';
+                      endTime =
+                          '${reserva.startTime.split('T')[0]}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:01';
+                    } else if (selectedHour == null) {
+                      startTime =
+                          '${selectedDay!.year}-${selectedDay!.month.toString().padLeft(2, '0')}-${selectedDay!.day.toString().padLeft(2, '0')}T${reserva.startTime.split('T')[1]}';
+                      endTime =
+                          '${selectedDay!.year}-${selectedDay!.month.toString().padLeft(2, '0')}-${selectedDay!.day.toString().padLeft(2, '0')}T${reserva.endTime.split('T')[1]}';
+                    } else {
+                      startTime =
+                          '${selectedDay!.year}-${selectedDay!.month.toString().padLeft(2, '0')}-${selectedDay!.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:01';
+                      endTime =
+                          '${selectedDay!.year}-${selectedDay!.month.toString().padLeft(2, '0')}-${selectedDay!.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:01';
+                    }
 
                     Reserva reservaActualizada = Reserva(
                         uuid: reserva.uuid,
@@ -421,8 +442,8 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
                         userName: userName,
                         observations: observations,
                         image: image,
-                        startTime: startTime ?? reserva.startTime,
-                        endTime: endTime ?? reserva.endTime,
+                        startTime: startTime,
+                        endTime: endTime,
                         status: reserva.status);
 
                     reservasProvider

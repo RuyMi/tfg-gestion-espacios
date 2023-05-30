@@ -54,8 +54,8 @@ class BOLoginScreen extends StatelessWidget {
                     labelText: 'Nombre de usuario',
                     labelStyle: TextStyle(
                         fontFamily: 'KoHo', color: theme.colorScheme.surface),
-                    prefixIcon:
-                        Icon(Icons.person_rounded, color: theme.colorScheme.surface),
+                    prefixIcon: Icon(Icons.person_rounded,
+                        color: theme.colorScheme.surface),
                   ),
                 ),
               ),
@@ -82,8 +82,8 @@ class BOLoginScreen extends StatelessWidget {
                     labelText: 'Contraseña',
                     labelStyle: TextStyle(
                         fontFamily: 'KoHo', color: theme.colorScheme.surface),
-                    prefixIcon:
-                        Icon(Icons.lock_rounded, color: theme.colorScheme.surface),
+                    prefixIcon: Icon(Icons.lock_rounded,
+                        color: theme.colorScheme.surface),
                   ),
                 ),
               ),
@@ -107,7 +107,17 @@ class BOLoginScreen extends StatelessWidget {
                         );
                       }
                     },
-                  );
+                  ).catchError((error) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const MyErrorMessageDialog(
+                            title: 'Error al iniciar sesión',
+                            description:
+                                'Usuario o contraseña incorrectos.',
+                          );
+                        });
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(

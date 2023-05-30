@@ -106,7 +106,16 @@ class LoginScreen extends StatelessWidget {
                         );
                       }
                     },
-                  );
+                  ).catchError((error) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const MyErrorMessageDialog(
+                            title: 'Error al iniciar sesión',
+                            description: 'Usuario o contraseña incorrectos.',
+                          );
+                        });
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
