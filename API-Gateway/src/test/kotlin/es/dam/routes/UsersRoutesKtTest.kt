@@ -112,7 +112,7 @@ class UsersRoutesKtTest{
 
         userDeleteId = json.decodeFromString<UserTokenDTO>(register2.bodyAsText()).user.uuid
 
-        client.post("/users/register") {
+        val registerInactive = client.post("/users/register") {
             contentType(ContentType.Application.Json)
             setBody(registerInactiveDTO)
         }
@@ -125,6 +125,18 @@ class UsersRoutesKtTest{
         val userTokenDTO = json.decodeFromString<UserTokenDTO>(loginAdmin.bodyAsText())
 
         userAdminId = userTokenDTO.user.uuid
+
+        client.put("/users/${json.decodeFromString<UserTokenDTO>(registerInactive.bodyAsText()).user.uuid}") {
+            header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
+            contentType(ContentType.Application.Json)
+            setBody(UserUpdateDTO(
+                name = "inactive",
+                username = "inactive",
+                userRole = setOf("USER"),
+                isActive = false,
+                credits = 0
+            ))
+        }
 
         val loginNotAdmin = client.post("/users/login") {
             contentType(ContentType.Application.Json)
@@ -189,7 +201,7 @@ class UsersRoutesKtTest{
     }
 
     @Test
-    fun login401() = testApplication {
+    fun  login401() = testApplication {
         environment { config }
 
         val client = createClient {
@@ -257,7 +269,7 @@ class UsersRoutesKtTest{
         assertEquals(HttpStatusCode.Created, result.status)
     }
 
-    /*@Test
+    @Test
     fun register400() = testApplication {
         environment { config }
 
@@ -267,27 +279,13 @@ class UsersRoutesKtTest{
             }
         }
 
-        val registerTest = UserRegisterDTO(
-            name = "registerTest",
-            username = "registerTest",
-            email = "registerTest",
-            password = "1",
-            userRole = setOf("ADMIN"),
-            isActive = true
-        )
-
-
         val result = client.post("/users/register") {
             contentType(ContentType.Application.Json)
-            setBody(registerTest)
+            setBody(loginAdminDTO)
         }
-
-        registerTestId = json.decodeFromString<UserTokenDTO>(result.bodyAsText()).user.uuid
 
         assertEquals(HttpStatusCode.BadRequest, result.status)
     }
-
-     */
 
     @Test
     fun getAll() = testApplication {
@@ -501,12 +499,9 @@ class UsersRoutesKtTest{
 
         val dto = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
 
-        //TODO: la contraseña se cifra?
         val userUpdateDTO = UserUpdateDTO(
             name = "updated",
             username = "TesTiNg-admin",
-            email = "TesTiNgadmin@email.com",
-            password = "admin1234",
             avatar = "",
             userRole = setOf("ADMINISTRATOR"),
             credits = 20,
@@ -522,7 +517,7 @@ class UsersRoutesKtTest{
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
-    /*@Test
+    @Test
     fun put401() = testApplication {
         environment { config }
 
@@ -539,12 +534,9 @@ class UsersRoutesKtTest{
 
         val dto = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
 
-        //TODO: la contraseña se cifra?
         val userUpdateDTO = UserUpdateDTO(
             name = "updated",
             username = "TesTiNg-admin",
-            email = "TesTiNgadmin@email.com",
-            password = "admin1234",
             avatar = "",
             userRole = setOf("ADMINISTRATOR"),
             credits = 20,
@@ -559,8 +551,6 @@ class UsersRoutesKtTest{
 
         assertEquals(HttpStatusCode.Unauthorized, response.status)
     }
-
-     */
 
     @Test
     fun put404() = testApplication {
@@ -579,12 +569,9 @@ class UsersRoutesKtTest{
 
         val dto = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
 
-        //TODO: la contraseña se cifra?
         val userUpdateDTO = UserUpdateDTO(
             name = "updated",
             username = "TesTiNg-admin",
-            email = "TesTiNgadmin@email.com",
-            password = "admin1234",
             avatar = "",
             userRole = setOf("ADMINISTRATOR"),
             credits = 20,
@@ -617,12 +604,9 @@ class UsersRoutesKtTest{
 
         val dto = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
 
-        //TODO: la contraseña se cifra?
         val userUpdateDTO = UserUpdateDTO(
             name = "updated",
             username = "TesTiNg-admin",
-            email = "TesTiNgadmin@email.com",
-            password = "admin1234",
             avatar = "",
             userRole = setOf("ADMINISTRATOR"),
             credits = 20,
@@ -655,12 +639,9 @@ class UsersRoutesKtTest{
 
         val dto = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
 
-        //TODO: la contraseña se cifra?
         val userUpdateDTO = UserUpdateDTO(
             name = "updated",
             username = "TesTiNg-admin",
-            email = "TesTiNgadmin@email.com",
-            password = "admin1234",
             avatar = "",
             userRole = setOf("ADMINISTRATOR"),
             credits = 20,
@@ -693,12 +674,9 @@ class UsersRoutesKtTest{
 
         val dto = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
 
-        //TODO: la contraseña se cifra?
         val userUpdateDTO = UserUpdateDTO(
             name = "updated",
             username = "TesTiNg-user",
-            email = "TesTiNguser@email.com",
-            password = "user1234",
             avatar = "",
             userRole = setOf("USER"),
             credits = 20,
@@ -818,7 +796,7 @@ class UsersRoutesKtTest{
         assertEquals(HttpStatusCode.BadRequest, response.status)
     }
 
-    /*@Test
+    @Test
     fun putCredits400B() = testApplication {
         environment { config }
 
@@ -843,8 +821,6 @@ class UsersRoutesKtTest{
 
         assertEquals(HttpStatusCode.BadRequest, response.status)
     }
-
-     */
 
     @Test
     fun putActive() = testApplication {
@@ -947,7 +923,7 @@ class UsersRoutesKtTest{
             contentType(ContentType.Application.Json)
         }
 
-        assertEquals(HttpStatusCode.NotFound, response.status)
+        assertEquals(HttpStatusCode.BadRequest, response.status)
     }
 
     @Test
@@ -968,12 +944,11 @@ class UsersRoutesKtTest{
         val dto = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
 
 
-        val response = client.put("/users/active/$userNotAdminId/verdadero") {
+        val response = client.put("/users/active/$userNotAdminId/asereje") {
             header(HttpHeaders.Authorization, "Bearer " + dto.token)
-            contentType(ContentType.Application.Json)
         }
 
-        assertEquals(HttpStatusCode.NotFound, response.status)
+        assertEquals(HttpStatusCode.BadRequest, response.status)
     }
 
     @Test
@@ -1026,7 +1001,7 @@ class UsersRoutesKtTest{
         assertEquals(HttpStatusCode.Unauthorized, response.status)
     }
 
-    /*@Test
+    @Test
     fun delete400() = testApplication {
         environment { config }
 
@@ -1050,8 +1025,6 @@ class UsersRoutesKtTest{
 
         assertEquals(HttpStatusCode.BadRequest, response.status)
     }
-
-     */
 
     @Test
     fun delete404() = testApplication {

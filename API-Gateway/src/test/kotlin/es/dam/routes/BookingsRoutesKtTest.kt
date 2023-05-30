@@ -66,7 +66,6 @@ class BookingsRoutesKtTest{
             password = "admin1234",
             isActive = true,
             userRole = setOf("ADMINISTRATOR")
-
         )
 
         val registerNotAdminDTO = UserRegisterDTO(
