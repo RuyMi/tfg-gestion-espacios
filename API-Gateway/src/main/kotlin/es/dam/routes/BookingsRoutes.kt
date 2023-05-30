@@ -73,6 +73,7 @@ fun Application.bookingsRoutes() {
                             UUID.fromString(id)
                         } catch (e: IllegalArgumentException) {
                             call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
+                            return@get
                         }
 
                         val bookingResult = runCatching {
@@ -109,6 +110,7 @@ fun Application.bookingsRoutes() {
                             UUID.fromString(id)
                         }catch (e: IllegalArgumentException) {
                             call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
+                            return@get
                         }
 
                         val res = runCatching {
@@ -145,6 +147,7 @@ fun Application.bookingsRoutes() {
                             UUID.fromString(id)
                         }catch (e: IllegalArgumentException) {
                             call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
+                            return@get
                         }
 
                         val res = runCatching {
@@ -203,7 +206,6 @@ fun Application.bookingsRoutes() {
                     }
                 }
 
-                //TODO: en esta no hace falta ser administrador no?
                 get("/time/{idSpace}/{date}"){
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
@@ -214,14 +216,6 @@ fun Application.bookingsRoutes() {
                         val res = async {
                             bookingsRepository.findByTime("Bearer $token", id!!, date!!)
                         }
-
-                        /*if (res.isSuccess) {
-                            call.respond(HttpStatusCode.OK, res.getOrNull()!!)
-                        } else {
-                            throw res.exceptionOrNull()!!
-                        }
-
-                         */
 
                         call.respond(HttpStatusCode.OK, res.await())
 
@@ -329,13 +323,14 @@ fun Application.bookingsRoutes() {
                             UUID.fromString(id)
                         }catch (e: IllegalArgumentException) {
                             call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
+                            return@put
                         }
 
                         val booking = call.receive<BookingUpdateDTO>()
 
                         if(!userRole.contains("ADMINISTRATOR")){
                             require(bookingsRepository.findByUser("Bearer $token", booking.userId).data.filter{it.userId == subject}.isNotEmpty()){"La reserva que se quiere actualizar no está guardada bajo el mismo usuario."}
-                            require(LocalDateTime.parse(booking.startTime) > LocalDateTime.now())
+                            require(LocalDateTime.parse(booking.startTime).isAfter(LocalDateTime.now()))
                             {"No se ha podido guardar la reserva fecha introducida es anterior a la actual."}
                             require(Period.between(LocalDate.now(),LocalDate.parse(booking.startTime.split("T")[0])).days <=
                                     spaceRepository.findById("Bearer $token", booking.spaceId).bookingWindow.toInt())
@@ -345,7 +340,6 @@ fun Application.bookingsRoutes() {
                                 .filter { it.startTime == booking.startTime }.none { it.uuid != id }
                             )
                             {"Franja horaria no disponible."}
-                            //TODO: en la actualización no puede haber un cambio de precio no?
 
                             val updatingResult: Result<BookingResponseDTO>
 
@@ -390,7 +384,6 @@ fun Application.bookingsRoutes() {
                             }
                         }
 
-
                     } catch (e: IllegalArgumentException) {
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: BookingNotFoundException) {
@@ -416,6 +409,7 @@ fun Application.bookingsRoutes() {
                             UUID.fromString(id)
                         }catch (e: IllegalArgumentException){
                             call.respond(HttpStatusCode.BadRequest,"El id introducido no es válido: ${e.message}")
+                            return@delete
                         }
 
                         if(!userRole.contains("ADMINISTRATOR")){
@@ -436,13 +430,12 @@ fun Application.bookingsRoutes() {
 
                             call.respond(HttpStatusCode.NoContent)
                         } else {
-                            val spaceId = bookingsRepository.findById("Bearer $token", id!!).spaceId
+                            bookingsRepository.findById("Bearer $token", id!!).spaceId
                             bookingsRepository.delete("Bearer $token", id!!)
 
                             call.respond(HttpStatusCode.NoContent)
                         }
 
-                        //TODO: todas las excepciones de los require salen como bad request, si salta excepcion porque no es admin deberia ser 401
                     } catch (e: IllegalArgumentException) {
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: BookingNotFoundException) {

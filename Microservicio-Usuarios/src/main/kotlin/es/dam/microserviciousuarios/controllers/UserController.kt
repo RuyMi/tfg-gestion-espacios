@@ -191,8 +191,6 @@ class UsersController @Autowired constructor(
             val updated = userService.findByUuid(id).copy(
                 name = userDTO.name,
                 username = userDTO.username,
-                password = userDTO.password,
-                email = userDTO.email,
                 isActive = userDTO.isActive,
                 credits = userDTO.credits,
                 userRole = userDTO.userRole.toString().replace("[" , "").replace("]" , ""),

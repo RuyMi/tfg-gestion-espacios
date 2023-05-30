@@ -9,5 +9,5 @@ interface UsersRepository : MongoRepository<User, ObjectId> {
     fun findUserByEmail(email: String): List<User>
     fun findUserByUuid(uuid: UUID): List<User>
     fun findUserByUsername(username: String): List<User>
-    fun deleteByUuid(uuid: UUID): Boolean
+    fun deleteByUuid(uuid: UUID): Int
 }
