@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/reserva.dart';
-import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/eliminar_elemento.dart';
@@ -21,6 +20,18 @@ final List<String> horas = [
   '14:20 - 15:15',
 ];
 
+String startTimeFromLocalDateTime(String localDateTimeString) {
+  return '${localDateTimeString.split('T')[1].split(':')[0]}:${localDateTimeString.split('T')[1].split(':')[1]}';
+}
+
+String endTimeFromLocalDateTime(String localDateTimeString) {
+  return '${localDateTimeString.split('T')[1].split(':')[0]}:${localDateTimeString.split('T')[1].split(':')[1]}';
+}
+
+String dateFromLocalDateTime(String localDateTimeString) {
+  return '${localDateTimeString.split('T')[0].split('-')[2]}/${localDateTimeString.split('T')[0].split('-')[1]}/${localDateTimeString.split('T')[0].split('-')[0].replaceAll('-', '/')}';
+}
+
 class EditarReservaScreen extends StatefulWidget {
   final Reserva reserva;
 
@@ -34,8 +45,6 @@ class EditarReservaScreen extends StatefulWidget {
 
 // ignore: must_be_immutable
 class _ReservaSala extends State<EditarReservaScreen> {
-  bool _isDaySelected = false;
-  bool _isHourSelected = false;
   DateTime? selectedDay;
   String? selectedHour;
   final ScrollController _scrollController = ScrollController();
@@ -45,8 +54,8 @@ class _ReservaSala extends State<EditarReservaScreen> {
   @override
   void initState() {
     super.initState();
-    observationsController =
-        TextEditingController(text: widget.reserva.observations);
+    observationsController = TextEditingController(
+        text: widget.reserva.observations ?? 'Sin obsevaciones.');
   }
 
   @override
@@ -58,15 +67,18 @@ class _ReservaSala extends State<EditarReservaScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-
-    final Reserva reserva = widget.reserva;
     final reservasProvider = Provider.of<ReservasProvider>(context);
-    final authProvider = Provider.of<AuthProvider>(context);
-    final userName = authProvider.usuario.name;
-    final spaceName = reserva.spaceName;
-    String observations = reserva.observations ?? '';
+    final Reserva reserva = widget.reserva;
+    String spaceName = reserva.spaceName;
+    String userName = reserva.userName;
+    String observations = reserva.observations ?? 'Sin observaciones';
+    String? image = reserva.image;
     String startTime = reserva.startTime;
     String endTime = reserva.endTime;
+
+    String myHour =
+        '${startTimeFromLocalDateTime(startTime)} - ${endTimeFromLocalDateTime(endTime)}';
+    String myDate = dateFromLocalDateTime(startTime);
 
     observationsController = TextEditingController(text: reserva.observations);
 
@@ -319,7 +331,6 @@ class _ReservaSala extends State<EditarReservaScreen> {
                         );
                       } else {
                         setState(() {
-                          _isDaySelected = true;
                           this.selectedDay = selectedDay;
                         });
                         _scrollController.animateTo(
@@ -331,107 +342,133 @@ class _ReservaSala extends State<EditarReservaScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Visibility(
-                  visible: _isDaySelected,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: horas
-                        .map((hora) => SizedBox(
-                              width: 150,
-                              child: TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isHourSelected = true;
-                                    selectedHour = hora;
-                                  });
-                                  _scrollController.animateTo(
-                                      _scrollController
-                                          .position.viewportDimension,
-                                      duration:
-                                          const Duration(milliseconds: 1000),
-                                      curve: Curves.easeInOut);
-                                },
-                                style: ButtonStyle(
-                                  overlayColor:
-                                      MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                      if (states
-                                          .contains(MaterialState.hovered)) {
-                                        return theme.colorScheme.secondary
-                                            .withOpacity(0.2);
-                                      }
-                                      return Colors.transparent;
-                                    },
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.access_time,
-                                      color: theme.colorScheme.surface,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      hora,
-                                      textAlign: TextAlign.right,
-                                      style: TextStyle(
-                                        color: theme.colorScheme.surface,
-                                        fontFamily: 'KoHo',
-                                      ),
-                                    ),
-                                  ],
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: horas
+                      .map((hora) => SizedBox(
+                            width: 150,
+                            child: TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  selectedHour = hora;
+                                });
+                              },
+                              style: ButtonStyle(
+                                backgroundColor: hora == selectedHour
+                                    ? MaterialStateProperty.all<Color>(theme
+                                        .colorScheme.secondary
+                                        .withOpacity(0.5))
+                                    : hora == myHour
+                                        ? MaterialStateProperty.all<Color>(theme
+                                            .colorScheme.surface
+                                            .withOpacity(0.5))
+                                        : MaterialStateProperty.all<Color>(
+                                            Colors.transparent),
+                                overlayColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                    if (states
+                                        .contains(MaterialState.hovered)) {
+                                      return theme.colorScheme.secondary
+                                          .withOpacity(0.2);
+                                    }
+                                    return Colors.transparent;
+                                  },
                                 ),
                               ),
-                            ))
-                        .toList(),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.access_time_rounded,
+                                    color: theme.colorScheme.surface,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    hora,
+                                    textAlign: TextAlign.right,
+                                    style: TextStyle(
+                                      color: theme.colorScheme.surface,
+                                      fontWeight:
+                                          hora == selectedHour || hora == myHour
+                                              ? FontWeight.bold
+                                              : FontWeight.normal,
+                                      fontFamily: 'KoHo',
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: theme.colorScheme.secondary,
+                      width: 2,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Fecha elegida: ${selectedDay != null ? DateFormat('dd/MM/yyyy').format(selectedDay!) : myDate}',
+                        style: TextStyle(
+                          color: theme.colorScheme.secondary,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'KoHo',
+                        ),
+                      ),
+                      Text(
+                        'Hora elegida: ${selectedHour ?? myHour}',
+                        style: TextStyle(
+                          color: theme.colorScheme.secondary,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'KoHo',
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 20),
-                Visibility(
-                    visible: _isDaySelected,
-                    child: Text(
-                      'Fecha elegida: ${selectedDay?.day}/${selectedDay?.month}/${selectedDay?.year}',
-                      style: TextStyle(
-                        color: theme.colorScheme.secondary,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'KoHo',
-                      ),
-                    )),
-                Visibility(
-                    visible: _isHourSelected,
-                    child: Text(
-                      'Hora elegida: $selectedHour',
-                      style: TextStyle(
-                        color: theme.colorScheme.secondary,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'KoHo',
-                      ),
-                    )),
-                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    if (selectedDay != null && selectedHour != null) {
+                    if (selectedDay == null && selectedHour == null) {
+                      startTime = reserva.startTime;
+                      endTime = reserva.endTime;
+                    } else if (selectedDay == null) {
                       startTime =
-                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:00';
+                          '${reserva.startTime.split('T')[0]}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:01';
                       endTime =
-                          '${selectedDay?.year}-${selectedDay?.month.toString().padLeft(2, '0')}-${selectedDay?.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:00';
+                          '${reserva.startTime.split('T')[0]}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:01';
+                    } else if (selectedHour == null) {
+                      startTime =
+                          '${selectedDay!.year}-${selectedDay!.month.toString().padLeft(2, '0')}-${selectedDay!.day.toString().padLeft(2, '0')}T${reserva.startTime.split('T')[1]}';
+                      endTime =
+                          '${selectedDay!.year}-${selectedDay!.month.toString().padLeft(2, '0')}-${selectedDay!.day.toString().padLeft(2, '0')}T${reserva.endTime.split('T')[1]}';
+                    } else {
+                      startTime =
+                          '${selectedDay!.year}-${selectedDay!.month.toString().padLeft(2, '0')}-${selectedDay!.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[0].padLeft(2, '0')}:01';
+                      endTime =
+                          '${selectedDay!.year}-${selectedDay!.month.toString().padLeft(2, '0')}-${selectedDay!.day.toString().padLeft(2, '0')}T${selectedHour?.split(' ')[2].padLeft(2, '0')}:01';
                     }
 
-                    final reservaActualizada = Reserva(
-                      uuid: reserva.uuid,
-                      userId: reserva.userId,
-                      spaceId: reserva.spaceId,
-                      startTime: startTime,
-                      endTime: endTime,
-                      userName: reserva.userName,
-                      spaceName: reserva.spaceName,
-                      observations: observations,
-                      status: reserva.status,
-                      image: reserva.image,
-                    );
+                    Reserva reservaActualizada = Reserva(
+                        uuid: reserva.uuid,
+                        userId: reserva.userId,
+                        spaceId: reserva.spaceId,
+                        spaceName: spaceName,
+                        userName: userName,
+                        observations: observations,
+                        image: image,
+                        startTime: startTime,
+                        endTime: endTime,
+                        status: reserva.status);
 
                     reservasProvider
                         .updateReserva(reservaActualizada)

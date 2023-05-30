@@ -54,6 +54,9 @@ class UsuariosProvider with ChangeNotifier {
             .toList();
 
         notifyListeners();
+      } else {
+        _usuarios = [];
+        notifyListeners();
       }
     } catch (e) {
       _usuarios = [];
@@ -144,6 +147,8 @@ class UsuariosProvider with ChangeNotifier {
         _token = data['token'];
 
         notifyListeners();
+      } else {
+        throw Exception('Error al registrar el usuario.');
       }
     } catch (e) {
       throw Exception('Error al registrar el usuario.');
@@ -176,6 +181,8 @@ class UsuariosProvider with ChangeNotifier {
           isActive: data['isActive'],
         );
         notifyListeners();
+      } else {
+        throw Exception('Error al actualizar el usuario.');
       }
     } catch (e) {
       throw Exception('Error al actualizar el usuario.');
@@ -194,9 +201,11 @@ class UsuariosProvider with ChangeNotifier {
         _usuarios.firstWhere((element) => element.uuid == uuid).isActive =
             data['isActive'];
         notifyListeners();
+      } else {
+        throw Exception('Error al actualizar el usuario.');
       }
     } catch (e) {
-      return;
+      throw Exception('Error al actualizar el usuario.');
     }
   }
 
@@ -212,6 +221,8 @@ class UsuariosProvider with ChangeNotifier {
         _usuarios.firstWhere((element) => element.uuid == uuid).credits =
             data['credits'];
         notifyListeners();
+      } else {
+        throw Exception('Error al actualizar el usuario.');
       }
     } catch (e) {
       throw Exception('Error al actualizar el usuario.');
@@ -244,6 +255,8 @@ class UsuariosProvider with ChangeNotifier {
           isActive: data['isActive'],
         );
         notifyListeners();
+      } else {
+        throw Exception('Error al actualizar el usuario.');
       }
     } catch (e) {
       throw Exception('Error al actualizar el usuario.');
@@ -260,6 +273,8 @@ class UsuariosProvider with ChangeNotifier {
       if (response.statusCode == 204) {
         _usuarios.removeWhere((element) => element.uuid == uuid);
         notifyListeners();
+      } else {
+        throw Exception('Error al eliminar el usuario.');
       }
     } catch (e) {
       throw Exception('Error al eliminar el usuario.');

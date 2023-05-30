@@ -41,6 +41,9 @@ class EspaciosProvider with ChangeNotifier {
                 ))
             .toList();
         notifyListeners();
+      } else {
+        _espacios = [];
+        notifyListeners();
       }
     } catch (e) {
       _espacios = [];
@@ -72,6 +75,9 @@ class EspaciosProvider with ChangeNotifier {
                   description: json['description'],
                 ))
             .toList();
+        notifyListeners();
+      } else {
+        _espaciosReservables = [];
         notifyListeners();
       }
     } catch (e) {
@@ -162,6 +168,8 @@ class EspaciosProvider with ChangeNotifier {
           description: data['description'],
         ));
         notifyListeners();
+      } else {
+        throw Exception('Error al añadir el espacio.');
       }
     } catch (e) {
       throw Exception('Error al añadir el espacio.');
@@ -194,6 +202,8 @@ class EspaciosProvider with ChangeNotifier {
           description: data['description'],
         );
         notifyListeners();
+      } else {
+        throw Exception('Error al actualizar el espacio.');
       }
     } catch (e) {
       throw Exception('Error al actualizar el espacio.');
@@ -210,6 +220,8 @@ class EspaciosProvider with ChangeNotifier {
       if (response.statusCode == 204) {
         _espacios.removeWhere((element) => element.uuid == uuid);
         notifyListeners();
+      } else {
+        throw Exception('Error al eliminar el espacio.');
       }
     } catch (e) {
       throw Exception('Error al eliminar el espacio.');

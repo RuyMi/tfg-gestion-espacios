@@ -82,12 +82,11 @@ class AuthProvider with ChangeNotifier {
       } else {
         loginSucceed = false;
         notifyListeners();
-        return null;
+        throw Exception('Error al iniciar sesión');
       }
     } catch (e) {
       loginSucceed = false;
       notifyListeners();
-      print(e.toString());
       throw Exception('Error al iniciar sesión');
     }
   }

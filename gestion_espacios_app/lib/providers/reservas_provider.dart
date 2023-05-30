@@ -53,6 +53,9 @@ class ReservasProvider with ChangeNotifier {
             .toList();
 
         notifyListeners();
+      } else {
+        _reservas = [];
+        notifyListeners();
       }
     } catch (e) {
       _reservas = [];
@@ -116,6 +119,9 @@ class ReservasProvider with ChangeNotifier {
             .toList();
 
         notifyListeners();
+      } else {
+        _misReservas = [];
+        notifyListeners();
       }
     } catch (e) {
       _misReservas = [];
@@ -149,6 +155,9 @@ class ReservasProvider with ChangeNotifier {
                 ))
             .toList();
 
+        notifyListeners();
+      } else {
+        _reservasByUser = [];
         notifyListeners();
       }
     } catch (e) {
@@ -184,6 +193,9 @@ class ReservasProvider with ChangeNotifier {
             .toList();
 
         notifyListeners();
+      } else {
+        _reservasBySpace = [];
+        notifyListeners();
       }
     } catch (e) {
       _reservasBySpace = [];
@@ -217,6 +229,9 @@ class ReservasProvider with ChangeNotifier {
                 ))
             .toList();
 
+        notifyListeners();
+      } else {
+        _reservasByStatus = [];
         notifyListeners();
       }
     } catch (e) {
@@ -252,6 +267,9 @@ class ReservasProvider with ChangeNotifier {
             .toList();
 
         notifyListeners();
+      } else {
+        _reservasByTime = [];
+        notifyListeners();
       }
     } catch (e) {
       _reservasByTime = [];
@@ -285,6 +303,8 @@ class ReservasProvider with ChangeNotifier {
         ));
 
         notifyListeners();
+      } else {
+        throw Exception('Error al crear la reserva.');
       }
     } catch (e) {
       throw Exception('Error al crear la reserva.');
@@ -318,6 +338,8 @@ class ReservasProvider with ChangeNotifier {
         );
 
         notifyListeners();
+      } else {
+        throw Exception('Error al actualizar la reserva.');
       }
     } catch (e) {
       throw Exception('Error al actualizar la reserva.');
@@ -334,6 +356,8 @@ class ReservasProvider with ChangeNotifier {
         _reservas.removeWhere((element) => element.uuid == uuid);
 
         notifyListeners();
+      } else {
+        throw Exception('Error al eliminar la reserva.');
       }
     } catch (e) {
       throw Exception('Error al eliminar la reserva.');
