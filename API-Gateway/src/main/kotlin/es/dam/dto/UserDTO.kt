@@ -39,8 +39,6 @@ data class UserRegisterDTO(
 data class UserUpdateDTO(
     val name: String,
     val username: String,
-    val email: String,
-    val password: String,
     val avatar: String? = null,
     val isActive: Boolean,
     val userRole: Set<String>,
