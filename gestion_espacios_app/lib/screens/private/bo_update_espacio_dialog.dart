@@ -447,6 +447,33 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                             .uploadSpaceImage(selectedImage!)
                             .then((imageUrl) {
                           espacioActualizado.image = imageUrl;
+
+                          espaciosProvider
+                              .updateEspacio(espacioActualizado)
+                              .then((_) {
+                            Navigator.pushNamed(context, '/home-bo');
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const MyMessageDialog(
+                                  title: 'Espacio actualizado',
+                                  description:
+                                      'Se ha actualizado el espacio correctamente.',
+                                );
+                              },
+                            );
+                          }).catchError((error) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const MyErrorMessageDialog(
+                                  title: 'Error',
+                                  description:
+                                      'Ha ocurrido un error al subir la imagen.',
+                                );
+                              },
+                            );
+                          });
                         }).catchError((error) {
                           showDialog(
                             context: context,
@@ -454,29 +481,28 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                               return const MyErrorMessageDialog(
                                 title: 'Error',
                                 description:
-                                    'Ha ocurrido un error al subir la imagen.',
+                                    'Ha ocurrido un error al actualizar el espacio.',
                               );
                             },
                           );
                         });
-                      }
-
-                      espaciosProvider
-                          .updateEspacio(espacioActualizado)
-                          .then((_) {
-                        Navigator.pushNamed(context, '/home-bo');
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return const MyMessageDialog(
-                              title: 'Espacio actualizado',
-                              description:
-                                  'Se ha actualizado el espacio correctamente.',
-                            );
-                          },
-                        );
-                      }).catchError((error) {
-                        showDialog(
+                      } else {
+                        espaciosProvider
+                            .updateEspacio(espacioActualizado)
+                            .then((_) {
+                          Navigator.pushNamed(context, '/home-bo');
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const MyMessageDialog(
+                                title: 'Espacio actualizado',
+                                description:
+                                    'Se ha actualizado el espacio correctamente.',
+                              );
+                            },
+                          );
+                        }).catchError((error) {
+                          showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return const MyErrorMessageDialog(
@@ -484,8 +510,10 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                                 description:
                                     'Ha ocurrido un error al actualizar el espacio.',
                               );
-                            });
-                      });
+                            },
+                          );
+                        });
+                      }
                     },
                     icon: Icon(Icons.edit_rounded,
                         color: theme.colorScheme.onSecondary),
