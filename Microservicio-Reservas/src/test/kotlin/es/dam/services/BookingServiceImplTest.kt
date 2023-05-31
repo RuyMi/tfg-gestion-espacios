@@ -40,7 +40,8 @@ class BookingServiceImplTest {
         endTime = LocalDateTime.now(),
         observations =  "test",
         userName = "test",
-        spaceName = "test"
+        spaceName = "test",
+        image = ""
     )
 
 
@@ -244,6 +245,7 @@ class BookingServiceImplTest {
 
     @Test
     fun delete() = runTest {
+        coEvery { bookingRepository.findById(UUID.fromString(booking.uuid)) } returns booking
         coEvery { bookingRepository.delete(UUID.fromString(booking.uuid)) } returns true
 
         val result = bookingService.delete(booking.uuid)
@@ -253,6 +255,7 @@ class BookingServiceImplTest {
 
     @Test
     fun failDelete() = runTest {
+        coEvery { bookingRepository.findById(UUID.fromString(booking.uuid)) } returns booking
         coEvery { bookingRepository.delete(UUID.fromString(booking.uuid))} returns false
 
         val result = bookingService.delete(booking.uuid)

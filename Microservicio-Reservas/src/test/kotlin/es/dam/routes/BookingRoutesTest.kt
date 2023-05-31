@@ -41,7 +41,8 @@ class BookingRoutesTest {
         endTime = LocalDateTime.parse("2023-05-30T22:23:23.542295200"),
         observations =  "test",
         userName = "test",
-        spaceName = "test"
+        spaceName = "test",
+        image = ""
     )
     val bookingDto = booking.toDTO()
 
@@ -71,7 +72,6 @@ class BookingRoutesTest {
         assertAll(
             { assertEquals(HttpStatusCode.OK, response.status)},
             { assertEquals(1, responseData.size) },
-            { assertEquals(responseData[0].id, responseData[0].id) },
             { assertEquals(responseData[0].uuid, responseData[0].uuid) },
             { assertEquals(responseData[0].userId, responseData[0].userId) },
             { assertEquals(responseData[0].spaceId, responseData[0].spaceId) },
@@ -96,7 +96,6 @@ class BookingRoutesTest {
 
         assertAll(
             {assertEquals(HttpStatusCode.OK, response.status)},
-            { assertEquals(bookingDto.id, responseData.id) },
             { assertEquals(bookingDto.uuid, responseData.uuid) },
             { assertEquals(bookingDto.userId, responseData.userId) },
             { assertEquals(bookingDto.spaceId, responseData.spaceId) },
@@ -147,7 +146,6 @@ class BookingRoutesTest {
         assertAll(
             {assertEquals(HttpStatusCode.OK, response.status)},
             { assertEquals(1, responseData.size) },
-            { assertEquals(responseData[0].id, responseData[0].id) },
             { assertEquals(responseData[0].uuid, responseData[0].uuid) },
             { assertEquals(responseData[0].userId, responseData[0].userId) },
             { assertEquals(responseData[0].spaceId, responseData[0].spaceId) },
@@ -203,7 +201,6 @@ class BookingRoutesTest {
         assertAll(
             {assertEquals(HttpStatusCode.OK, response.status)},
             { assertEquals(1, responseData.size) },
-            { assertEquals(responseData[0].id, responseData[0].id) },
             { assertEquals(responseData[0].uuid, responseData[0].uuid) },
             { assertEquals(responseData[0].userId, responseData[0].userId) },
             { assertEquals(responseData[0].spaceId, responseData[0].spaceId) },
@@ -284,7 +281,6 @@ class BookingRoutesTest {
         assertAll(
             {assertEquals(HttpStatusCode.OK, response.status)},
             { assertEquals(1, responseData.size) },
-            { assertEquals(responseData[0].id, responseData[0].id) },
             { assertEquals(responseData[0].uuid, responseData[0].uuid) },
             { assertEquals(responseData[0].userId, responseData[0].userId) },
             { assertEquals(responseData[0].spaceId, responseData[0].spaceId) },
@@ -305,8 +301,8 @@ class BookingRoutesTest {
         val response = client.get("/bookings/space/$uuidTest")
         val body =  response.content.readUTF8Line()!!
         assertAll(
-            {assertEquals(HttpStatusCode.NotFound, response.status)},
-            { assertEquals("No se ha encontrado ninguna reserva con el id de espacio: $uuidTest", body) }
+            {assertEquals(HttpStatusCode.OK, response.status)},
+            { assertEquals("{\"data\":[]}", body) }
         )
     }
 
@@ -336,7 +332,6 @@ class BookingRoutesTest {
         assertAll(
             {assertEquals(HttpStatusCode.OK, response.status)},
             { assertEquals(1, responseData.size) },
-            { assertEquals(responseData[0].id, responseData[0].id) },
             { assertEquals(responseData[0].uuid, responseData[0].uuid) },
             { assertEquals(responseData[0].userId, responseData[0].userId) },
             { assertEquals(responseData[0].spaceId, responseData[0].spaceId) },
@@ -353,8 +348,8 @@ class BookingRoutesTest {
         val response = client.get("/bookings/user/b4443487-b2cc-48b6-af53-0820be683b24")
         val body =  response.content.readUTF8Line()!!
         assertAll(
-            {assertEquals(HttpStatusCode.NotFound, response.status)},
-            { assertEquals("No se ha encontrado ninguna reserva con el id de usuario: b4443487-b2cc-48b6-af53-0820be683b24", body) }
+            {assertEquals(HttpStatusCode.OK, response.status)},
+            { assertEquals("{\"data\":[]}", body) }
         )
     }
 
@@ -386,7 +381,6 @@ class BookingRoutesTest {
         val responseData = jsonPerso.decodeFromString<BookingDto>(response.content.readUTF8Line()!!)
         assertAll(
             {assertEquals(HttpStatusCode.Created, response.status)},
-            { assertNotNull(responseData.id) },
             { assertNotNull(responseData.uuid) },
             { assertEquals(bookingDtoCreate.userId, responseData.userId) },
             { assertEquals(bookingDtoCreate.spaceId, responseData.spaceId) },
@@ -415,7 +409,6 @@ class BookingRoutesTest {
         val responseData = jsonPerso.decodeFromString<BookingDto>(response.content.readUTF8Line()!!)
         assertAll(
             {assertEquals(HttpStatusCode.OK, response.status)},
-            { assertEquals(bookingDto.id, responseData.id) },
             { assertEquals(bookingDto.uuid, responseData.uuid) },
             { assertEquals(bookingDtoCreate.userId, responseData.userId) },
             { assertEquals(bookingDtoCreate.spaceId, responseData.spaceId) },
@@ -481,8 +474,7 @@ class BookingRoutesTest {
         )
     }
 
-    //TODO: Problemo
-    /*@Test
+    @Test
     fun deleteNotFound() = testApplication {
         environment { config }
         val client = createClient {
@@ -490,13 +482,11 @@ class BookingRoutesTest {
                 json()
             }
         }
-        val response = client.delete("/bookings/1cca337f-9dbc-4e53-8904-58961235b7df")
+        val response = client.delete("/bookings/00000000-0000-0000-0000-000000000000")
         assertAll(
             {assertEquals(HttpStatusCode.NotFound, response.status)},
         )
     }
-
-     */
 
     companion object {
         @JvmStatic
@@ -512,7 +502,8 @@ class BookingRoutesTest {
                 endTime = LocalDateTime.parse("2023-05-10T22:23:23.542295200"),
                 observations =  "test",
                 userName = "test",
-                spaceName = "test"
+                spaceName = "test",
+                image = ""
             )
             BookingRepositoryImpl().deleteAll()
             BookingRepositoryImpl().save(booking)

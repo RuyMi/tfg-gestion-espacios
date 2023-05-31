@@ -391,8 +391,7 @@ class BookingsRoutesKtTest{
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
-    //TODO: Da 404 watefak
-    /*@Test
+    @Test
     fun getById400() = testApplication {
         environment { config }
 
@@ -415,8 +414,6 @@ class BookingsRoutesKtTest{
 
         assertEquals(HttpStatusCode.BadRequest, response.status)
     }
-
-     */
 
     @Test
     fun getBySpaceId() = testApplication {
@@ -1027,7 +1024,8 @@ class BookingsRoutesKtTest{
             startTime = fechaActual.toString(),
             endTime = fechaActual.plusHours(1).toString(),
             observations = "testingUpdate",
-            status = "APPROVED"
+            status = "APPROVED",
+            image = ""
         )
 
         val response = client.put("/bookings/${bookingId}") {
@@ -1064,7 +1062,8 @@ class BookingsRoutesKtTest{
             startTime = fechaActual.toString(),
             endTime = fechaActual.plusHours(1).toString(),
             observations = "testingUpdate1",
-            status = "APPROVED"
+            status = "APPROVED",
+            image = ""
         )
 
         val response = client.put("/bookings/${bookingId}") {
@@ -1102,7 +1101,8 @@ class BookingsRoutesKtTest{
             startTime = fechaActual.toString(),
             endTime = fechaActual.plusHours(1).toString(),
             observations = "testingUpdate2",
-            status = "APPROVED"
+            status = "APPROVED",
+            image = ""
         )
 
         val response = client.put("/bookings/${bookingId}") {
@@ -1139,7 +1139,8 @@ class BookingsRoutesKtTest{
             startTime = fechaActual.toString(),
             endTime = fechaActual.plusHours(1).toString(),
             observations = "testingUpdate3",
-            status = "APPROVED"
+            status = "APPROVED",
+            image = ""
         )
 
         val response = client.put("/bookings/${bookingId}") {
@@ -1214,7 +1215,8 @@ class BookingsRoutesKtTest{
             startTime = fechaActual.plusDays(6).toString(),
             endTime = fechaActual.plusHours(1).plusDays(6).toString(),
             observations = "testingUpdate",
-            status = "APPROVED"
+            status = "APPROVED",
+            image = ""
         )
 
         val response = client.put("/bookings/123") {
@@ -1351,9 +1353,7 @@ class BookingsRoutesKtTest{
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
-
-    //TODO: Da 404 watefak
-    /*@Test
+    @Test
     fun delete400() = testApplication {
         environment { config }
 
@@ -1376,6 +1376,4 @@ class BookingsRoutesKtTest{
 
         assertEquals(HttpStatusCode.BadRequest, response.status)
     }
-
-     */
 }
