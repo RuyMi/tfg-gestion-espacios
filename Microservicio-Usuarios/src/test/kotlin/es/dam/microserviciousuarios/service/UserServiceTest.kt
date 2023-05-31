@@ -293,14 +293,14 @@ class UserServiceTest {
     @Test
     fun deleteByUuid() = runTest {
         coEvery { usersRepository.findUserByUuid(user.uuid) } returns listOf(user)
-        coEvery { usersRepository.deleteByUuid(user.uuid) } returns true
-        assertTrue(usersService.deleteByUuid(user.uuid.toString()))
+        coEvery { usersRepository.deleteByUuid(user.uuid) } returns 1
+        assertEquals(usersService.deleteByUuid(user.uuid.toString()) , 1)
     }
 
     @Test
     fun deleteByUuidFailed404() = runTest {
         coEvery { usersRepository.findUserByUuid(user.uuid) } returns listOf()
-        coEvery { usersRepository.deleteByUuid(user.uuid) } returns false
+        coEvery { usersRepository.deleteByUuid(user.uuid) } returns 0
 
         val exception = assertThrows<UserNotFoundException> {
             usersService.deleteByUuid(user.uuid.toString())

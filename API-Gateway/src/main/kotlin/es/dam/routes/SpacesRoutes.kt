@@ -16,6 +16,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.response.respond
 import io.ktor.server.routing.*
+import io.ktor.utils.io.core.*
 import io.ktor.utils.io.streams.*
 import kotlinx.coroutines.async
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -43,13 +44,15 @@ fun Application.spacesRoutes() {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
 
-
-                        val res = async {
+                        val res = runCatching {
                             spacesRepository.findAll("Bearer $token")
                         }
-                        val spaces = res.await()
 
-                        call.respond(HttpStatusCode.OK, spaces)
+                        if (res.isSuccess) {
+                            call.respond(HttpStatusCode.OK, res.getOrNull()!!)
+                        } else {
+                            call.respond(HttpStatusCode.NotFound, "${res.exceptionOrNull()?.message}")
+                        }
 
                     } catch (e: SpaceNotFoundException) {
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
@@ -144,9 +147,13 @@ fun Application.spacesRoutes() {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
                         val entity = call.receive<SpaceCreateDTO>()
-                        val space = async { spacesRepository.create(token,  entity) }
-                        call.respond(HttpStatusCode.Created, space.await())
+                        val space = runCatching { spacesRepository.create(token,  entity) }
 
+                        if (space.isSuccess) {
+                            call.respond(HttpStatusCode.Created, space.getOrNull()!!)
+                        } else {
+                            call.respond(HttpStatusCode.NotFound, "${space.exceptionOrNull()?.message}")
+                        }
                     } catch (e: SpaceNotFoundException) {
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: SpaceBadRequestException) {
@@ -163,15 +170,40 @@ fun Application.spacesRoutes() {
                         var spacePhotoDto: SpacePhotoDTO? = null
 
                         multipart.forEachPart { part ->
+                            println(part.contentType)
+                            println(part.contentDisposition)
+                            println(part.headers)
                             when (part) {
                                 is PartData.FileItem  -> {
+                                    println("He entrado a fileItem")
                                     val inputStream = part.streamProvider()
                                     val fileBytes = inputStream.readBytes()
                                     val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
                                     val multipartBody = MultipartBody.Part.createFormData("file", "${UUID.randomUUID()}.png", requestBody)
                                     spacePhotoDto = spacesRepository.uploadFile(token, multipartBody).await()
                                 }
+                                is PartData.BinaryItem -> {
+                                    println("He entrado a BinaryItem")
+                                    val inputStream = part.provider()
+                                    val fileBytes = inputStream.readBytes()
+                                    val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
+                                    val multipartBody = MultipartBody.Part.createFormData("file", "${UUID.randomUUID()}.png", requestBody)
+                                    spacePhotoDto = spacesRepository.uploadFile(token, multipartBody).await()
+                                }
+                                is PartData.BinaryChannelItem -> {
+                                    println("He entrado a BinaryChannelItem")
+                                    val inputStream = part.provider()
+                                    val fileBytes = inputStream.readRemaining().readBytes()
+                                    val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
+                                    val multipartBody = MultipartBody.Part.createFormData("file", "${UUID.randomUUID()}.png", requestBody)
+                                    spacePhotoDto = spacesRepository.uploadFile(token, multipartBody).await()
+                                }
+                                 is PartData.FormItem -> {
+                                     println()
+                                     throw BookingMediaNotSupportedException("Este tipo de archivo no está soportado (FileItem)")
+                                }
                                 else -> {
+                                    println("He entrado a else")
                                     throw BookingMediaNotSupportedException("Este tipo de archivo no está soportado")
                                 }
                             }
@@ -179,12 +211,22 @@ fun Application.spacesRoutes() {
                         }
                         call.respond(HttpStatusCode.Created, spacePhotoDto!!)
                     } catch (e: SpaceNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: SpaceBadRequestException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: SpaceInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     } catch (e: BookingMediaNotSupportedException) {
+                        println("Error: ${e.message}")
+                        call.respond(HttpStatusCode.UnsupportedMediaType, "${e.message}")
+                    } catch (e: Exception) {
+                        println("Error: ${e.message}")
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    } catch (e: ContentTransformationException){
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.UnsupportedMediaType, "${e.message}")
                     }
                 }
@@ -246,10 +288,15 @@ fun Application.spacesRoutes() {
                 try {
                     val uuid = call.parameters["uuid"]
 
-                    val spacePhotoDto = async {
+                    val spacePhotoDto = runCatching {
                         spacesRepository.downloadFile(uuid!!)
-                    }.await()
-                    call.respondFile(spacePhotoDto)
+                    }
+
+                    if (spacePhotoDto.isSuccess) {
+                        call.respondFile(spacePhotoDto.getOrNull()!!)
+                    } else {
+                        call.respond(HttpStatusCode.NotFound, "${spacePhotoDto.exceptionOrNull()?.message}")
+                    }
                 } catch (e: SpaceNotFoundException) {
                     call.respond(HttpStatusCode.NotFound, "${e.message}")
                 } catch (e: SpaceBadRequestException) {

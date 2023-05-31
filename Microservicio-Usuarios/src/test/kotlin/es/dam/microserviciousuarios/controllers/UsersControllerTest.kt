@@ -62,8 +62,6 @@ class UsersControllerTest {
     val userUpdate = UserUpdateDTO(
             name= "updated",
             username = "updated",
-            email = "updted@test.com",
-            password = "updated1234",
             avatar = null,
             credits = 20,
             userRole = setOf("USER"),
@@ -76,7 +74,8 @@ class UsersControllerTest {
             email = "updted@test.com",
             password = "updated1234",
             avatar = null,
-            userRole = setOf("USER")
+            userRole = setOf("USER"),
+            isActive = true
     )
 
     val uuidWrong = UUID.fromString("c060c959-8462-4a0f-9265-9af4f54d1")
@@ -94,7 +93,8 @@ class UsersControllerTest {
             email = "",
             password = "",
             avatar = null,
-            userRole = setOf("")
+            userRole = setOf(""),
+            isActive = true
     )
 
     @Test
@@ -328,7 +328,7 @@ class UsersControllerTest {
 
     @Test
     fun delete() = runTest {
-        coEvery { userService.deleteByUuid(any()) } returns true
+        coEvery { userService.deleteByUuid(any()) } returns 1
 
         val result = usersController.delete(user.id.toString())
 

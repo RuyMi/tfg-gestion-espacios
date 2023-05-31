@@ -1,6 +1,9 @@
 package es.dam.repositories.user
 
 import es.dam.dto.*
+import retrofit2.Call
+import okhttp3.MultipartBody
+import java.io.File
 
 interface IUsersRepository {
     suspend fun findAll(token: String): UserDataDTO
@@ -15,4 +18,6 @@ interface IUsersRepository {
     suspend fun me(token: String, entity: UserUpdateDTO): UserResponseDTO
     suspend fun login(entity: UserLoginDTO): UserTokenDTO
     suspend fun register(entity: UserRegisterDTO): UserTokenDTO
+    suspend fun downloadFile(uuid: String): File
+    suspend fun uploadFile(token: String, file: MultipartBody.Part): Call<UserPhotoDTO>
 }

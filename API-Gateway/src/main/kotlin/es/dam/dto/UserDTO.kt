@@ -75,3 +75,8 @@ data class UserDataDTO(
     val data: List<UserResponseDTO>?
 )
 
+@Serializable
+data class UserPhotoDTO(
+    val data: Map<String, String>
+)
+

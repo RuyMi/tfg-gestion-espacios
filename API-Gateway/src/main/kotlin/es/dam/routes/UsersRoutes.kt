@@ -1,25 +1,27 @@
 package es.dam.routes
 
-import es.dam.dto.UserLoginDTO
-import es.dam.dto.UserRegisterDTO
+import es.dam.dto.*
 import es.dam.services.token.TokensService
-import es.dam.dto.UserUpdateDTO
-import es.dam.exceptions.UserBadRequestException
-import es.dam.exceptions.UserInternalErrorException
-import es.dam.exceptions.UserNotFoundException
-import es.dam.exceptions.UserUnauthorizedException
+import es.dam.exceptions.*
 import es.dam.repositories.booking.KtorFitBookingsRepository
 import es.dam.repositories.user.KtorFitUsersRepository
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.utils.io.core.*
 import jdk.jshell.spi.ExecutionControl.UserException
 import kotlinx.coroutines.async
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.ktor.ext.inject
+import retrofit2.await
+import java.io.File
 import java.time.LocalDateTime
 import java.util.*
 
@@ -46,14 +48,19 @@ fun Application.usersRoutes() {
                     call.respond(HttpStatusCode.OK, user.await())
 
                 } catch (e: UserNotFoundException) {
+                    println("Error: ${e.message}")
                     call.respond(HttpStatusCode.NotFound, "${e.message}")
                 } catch (e: UserBadRequestException) {
+                    println("Error: ${e.message}")
                     call.respond(HttpStatusCode.BadRequest, "${e.message}")
                 } catch (e: UserUnauthorizedException){
+                    println("Error: ${e.message}")
                     call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                 } catch (e: UserInternalErrorException) {
+                    println("Error: ${e.message}")
                     call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                 } catch (e: IllegalArgumentException) {
+                    println("Error: ${e.message}")
                     call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                 }
             }
@@ -69,11 +76,43 @@ fun Application.usersRoutes() {
                     call.respond(HttpStatusCode.Created, user.await())
 
                 } catch (e: UserNotFoundException) {
+                    println("Error: ${e.message}")
                     call.respond(HttpStatusCode.NotFound, "${e.message}")
                 } catch (e: UserBadRequestException) {
+                    println("Error: ${e.message}")
                     call.respond(HttpStatusCode.BadRequest, "${e.message}")
                 } catch (e: UserInternalErrorException) {
+                    println("Error: ${e.message}")
                     call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                }
+            }
+
+            get("/storage/{uuid}") {
+                try {
+                    val originalToken = call.principal<JWTPrincipal>()!!
+                    val token = tokenService.generateToken(originalToken)
+                    val uuid = call.parameters["uuid"]
+
+                    val res = runCatching {
+                        userRepository.downloadFile(uuid!!)
+                    }
+
+                    if (res.isSuccess) {
+                        val file = res.getOrNull()!!
+                        call.respondFile(file)
+                    } else {
+                        throw res.exceptionOrNull()!!
+                    }
+
+                } catch (e: UserNotFoundException) {
+                    println("Error: ${e.message}")
+                    call.respond(HttpStatusCode.NotFound, "${e.message}")
+                }  catch (e: UserInternalErrorException) {
+                    println("Error: ${e.message}")
+                    call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                } catch (e: IllegalArgumentException){
+                    println("Error: ${e.message}")
+                    call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                 }
             }
 
@@ -93,10 +132,13 @@ fun Application.usersRoutes() {
                         call.respond(HttpStatusCode.OK, users)
 
                     } catch (e: UserNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     }  catch (e: UserInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     } catch (e: IllegalArgumentException){
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                     }
                 }
@@ -129,12 +171,16 @@ fun Application.usersRoutes() {
                         }
 
                     } catch (e: UserNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: UserBadRequestException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: UserInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     } catch (e: IllegalArgumentException){
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                     }
                 }
@@ -152,10 +198,75 @@ fun Application.usersRoutes() {
                         call.respond(HttpStatusCode.OK, user.await())
 
                     } catch (e: UserNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: UserBadRequestException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: UserInternalErrorException) {
+                        println("Error: ${e.message}")
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    }
+                }
+
+                post("/storage") {
+                    try {
+                        val originalToken = call.principal<JWTPrincipal>()!!
+                        val token = tokenService.generateToken(originalToken)
+                        val multipart = call.receiveMultipart()
+
+                        var userPhotoDTO: UserPhotoDTO? = null
+
+                        multipart.forEachPart { part ->
+                            println(part.contentType)
+                            println(part.contentDisposition)
+                            println(part.headers)
+                            when (part) {
+                                is PartData.FileItem  -> {
+                                    println("He entrado a fileItem")
+                                    val inputStream = part.streamProvider()
+                                    val fileBytes = inputStream.readBytes()
+                                    val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
+                                    val multipartBody = MultipartBody.Part.createFormData("file", "${UUID.randomUUID()}.png", requestBody)
+                                    userPhotoDTO = userRepository.uploadFile(token, multipartBody).await()
+                                }
+                                is PartData.BinaryItem -> {
+                                    println("He entrado a BinaryItem")
+                                    val inputStream = part.provider()
+                                    val fileBytes = inputStream.readBytes()
+                                    val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
+                                    val multipartBody = MultipartBody.Part.createFormData("file", "${UUID.randomUUID()}.png", requestBody)
+                                    userPhotoDTO = userRepository.uploadFile(token, multipartBody).await()
+                                }
+                                is PartData.BinaryChannelItem -> {
+                                    println("He entrado a BinaryChannelItem")
+                                    val inputStream = part.provider()
+                                    val fileBytes = inputStream.readRemaining().readBytes()
+                                    val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
+                                    val multipartBody = MultipartBody.Part.createFormData("file", "${UUID.randomUUID()}.png", requestBody)
+                                    userPhotoDTO = userRepository.uploadFile(token, multipartBody).await()
+                                }
+                                is PartData.FormItem -> {
+                                    println()
+                                    throw BookingMediaNotSupportedException("Este tipo de archivo no está soportado (FileItem)")
+                                }
+                                else -> {
+                                    println("He entrado a else")
+                                    throw BookingMediaNotSupportedException("Este tipo de archivo no está soportado")
+                                }
+                            }
+                            part.dispose()
+                        }
+                        call.respond(HttpStatusCode.Created, userPhotoDTO!!)
+
+                    } catch (e: UserNotFoundException) {
+                        println("Error: ${e.message}")
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: UserBadRequestException) {
+                        println("Error: ${e.message}")
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: UserInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
@@ -188,12 +299,16 @@ fun Application.usersRoutes() {
 
 
                     } catch (e: UserNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: UserBadRequestException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: UserInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     } catch (e: IllegalArgumentException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                     }
                 }
@@ -215,10 +330,13 @@ fun Application.usersRoutes() {
                         call.respond(HttpStatusCode.OK, updatedUser.await())
 
                     } catch (e: UserNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: UserBadRequestException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: UserInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }
                 }
@@ -258,12 +376,16 @@ fun Application.usersRoutes() {
                         call.respond(HttpStatusCode.OK, updatedUser.await())
 
                     } catch (e: UserNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: UserBadRequestException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: UserInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     } catch (e: IllegalArgumentException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                     }
                 }
@@ -302,12 +424,16 @@ fun Application.usersRoutes() {
                         call.respond(HttpStatusCode.OK, updatedUser.await())
 
                     } catch (e: UserNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: UserBadRequestException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: UserInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     } catch (e: IllegalArgumentException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.Unauthorized, "${e.message}")
                     }
                 }
@@ -340,12 +466,16 @@ fun Application.usersRoutes() {
                         }
 
                     } catch (e: UserNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: UserBadRequestException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: UserInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     } catch (e: IllegalArgumentException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     }
                 }
