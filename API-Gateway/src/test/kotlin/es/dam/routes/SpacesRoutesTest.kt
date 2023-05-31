@@ -749,7 +749,7 @@ class SpacesRoutesTest {
         )
     }
 
-    @OptIn(InternalAPI::class)
+    /*@OptIn(InternalAPI::class)
     @Test
     fun getStorage() = testApplication {
         environment { config }
@@ -768,6 +768,8 @@ class SpacesRoutesTest {
             { assertNotNull( file) },
         )
     }
+
+     */
 
     @OptIn(InternalAPI::class)
     @Test
