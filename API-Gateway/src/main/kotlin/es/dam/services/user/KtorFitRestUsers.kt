@@ -26,6 +26,11 @@ interface KtorFitRestUsers {
             @Path("username") username: String
     ): Boolean
 
+    @GET("users/storage/{uuid}")
+    suspend fun downloadFile(
+        @Path("uuid") uuid: String
+    ): ByteArray
+
     @POST("users/login")
     suspend fun login(
         @Body user: UserLoginDTO
