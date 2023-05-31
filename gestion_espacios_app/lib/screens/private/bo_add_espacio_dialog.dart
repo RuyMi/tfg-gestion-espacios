@@ -25,7 +25,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
   bool isReservable = false;
   bool requiresAuthorization = false;
   List<String> authorizedRoles = [];
-  String bookingWindow = '';
+  int bookingWindow = 0;
   Uint8List? selectedImage;
 
   @override
@@ -33,6 +33,16 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
     var theme = Theme.of(context);
     final espaciosProvider = Provider.of<EspaciosProvider>(context);
     final storageProvider = Provider.of<StorageProvider>(context);
+
+    int tryParseInt(String value, {int fallbackValue = 0}) {
+      int result;
+      try {
+        result = int.parse(value);
+      } catch (e) {
+        result = fallbackValue;
+      }
+      return result;
+    }
 
     return AlertDialog(
       backgroundColor: theme.colorScheme.onBackground,
@@ -334,8 +344,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
               ),
               const SizedBox(height: 16),
               TextField(
-                // onChanged: (value) => bookingWindow = tryParseInt(value),
-                onChanged: (value) => bookingWindow = value,
+                onChanged: (value) => bookingWindow = tryParseInt(value),
                 cursorColor: theme.colorScheme.secondary,
                 keyboardType: TextInputType.number,
                 style: TextStyle(
@@ -367,18 +376,56 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                     name: name,
                     description: description,
                     price: price,
-                    image: '',
+                    image: 'image_placeholder',
                     isReservable: isReservable,
                     requiresAuthorization: requiresAuthorization,
                     authorizedRoles: authorizedRoles,
-                    bookingWindow: tryParseInt(bookingWindow),
+                    bookingWindow: bookingWindow,
                   );
 
-                  storageProvider
-                      .uploadSpaceImage(selectedImage!)
-                      .then((imageUrl) {
-                    espacio.image = imageUrl;
+                  if (selectedImage != null) {
+                    storageProvider
+                        .uploadSpaceImage(selectedImage!)
+                        .then((imageUrl) {
+                      espacio.image = imageUrl;
 
+                      espaciosProvider.addEspacio(espacio).then((_) {
+                        Navigator.pushNamed(context, '/home-bo');
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const MyMessageDialog(
+                              title: 'Espacio creado',
+                              description:
+                                  'Se ha creado el espacio correctamente.',
+                            );
+                          },
+                        );
+                      }).catchError((error) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const MyErrorMessageDialog(
+                              title: 'Error',
+                              description:
+                                  'Ha ocurrido un error al crear el espacio.',
+                            );
+                          },
+                        );
+                      });
+                    }).catchError((error) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const MyErrorMessageDialog(
+                            title: 'Error',
+                            description:
+                                'Ha ocurrido un error al subir la imagen.',
+                          );
+                        },
+                      );
+                    });
+                  } else {
                     espaciosProvider.addEspacio(espacio).then((_) {
                       Navigator.pushNamed(context, '/home-bo');
                       showDialog(
@@ -398,23 +445,12 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                           return const MyErrorMessageDialog(
                             title: 'Error',
                             description:
-                                'Ha ocurrido un error al subir la imagen.',
+                                'Ha ocurrido un error al crear el espacio.',
                           );
                         },
                       );
                     });
-                  }).catchError((error) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const MyErrorMessageDialog(
-                          title: 'Error',
-                          description:
-                              'Ha ocurrido un error al crear el espacio.',
-                        );
-                      },
-                    );
-                  });
+                  }
                 },
                 icon: Icon(Icons.add_rounded,
                     color: theme.colorScheme.onSecondary),
@@ -440,14 +476,4 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
       ),
     );
   }
-}
-
-int tryParseInt(String value, {int fallbackValue = 0}) {
-  int result;
-  try {
-    result = int.parse(value);
-  } catch (e) {
-    result = fallbackValue;
-  }
-  return result;
 }

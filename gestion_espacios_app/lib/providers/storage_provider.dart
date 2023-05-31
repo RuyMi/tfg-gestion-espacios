@@ -46,7 +46,7 @@ class StorageProvider with ChangeNotifier {
     }
   }
 
-  Future<void> uploadUserImage(Uint8List imageBytes) async {
+  Future<String> uploadUserImage(Uint8List imageBytes) async {
     try {
       final request = http.MultipartRequest(
         'POST',

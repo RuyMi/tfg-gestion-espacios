@@ -469,7 +469,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                                 return const MyErrorMessageDialog(
                                   title: 'Error',
                                   description:
-                                      'Ha ocurrido un error al subir la imagen.',
+                                      'Ha ocurrido un error al actualizar el espacio.',
                                 );
                               },
                             );
@@ -481,7 +481,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                               return const MyErrorMessageDialog(
                                 title: 'Error',
                                 description:
-                                    'Ha ocurrido un error al actualizar el espacio.',
+                                    'Ha ocurrido un error al subir la imagen.',
                               );
                             },
                           );

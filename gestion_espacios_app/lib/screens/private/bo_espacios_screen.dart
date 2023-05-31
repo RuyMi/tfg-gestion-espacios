@@ -66,10 +66,6 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: theme.colorScheme.surface,
-                          width: 2,
-                        ),
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
