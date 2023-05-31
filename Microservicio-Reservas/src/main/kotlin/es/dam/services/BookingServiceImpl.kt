@@ -60,6 +60,7 @@ class BookingServiceImpl(
     }
 
     override suspend fun delete(id: String): Boolean {
+        repository.findById(UUID.fromString(id))
         return repository.delete(UUID.fromString(id))
     }
 }
