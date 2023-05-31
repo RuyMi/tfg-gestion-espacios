@@ -1,8 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
 import 'package:gestion_espacios_app/providers/espacios_provider.dart';
+import 'package:gestion_espacios_app/providers/storage_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:provider/provider.dart';
 
 class NuevoEspacioBODialog extends StatefulWidget {
@@ -22,11 +26,13 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
   bool requiresAuthorization = false;
   List<String> authorizedRoles = [];
   String bookingWindow = '';
+  Uint8List? selectedImage;
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     final espaciosProvider = Provider.of<EspaciosProvider>(context);
+    final storageProvider = Provider.of<StorageProvider>(context);
 
     return AlertDialog(
       backgroundColor: theme.colorScheme.onBackground,
@@ -36,95 +42,155 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
       title: Text(
         'Nuevo espacio',
         style: TextStyle(
-            fontWeight: FontWeight.bold, color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
+            fontWeight: FontWeight.bold,
+            color: theme.colorScheme.onPrimary,
+            fontFamily: 'KoHo'),
       ),
       content: SingleChildScrollView(
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.5,
           child: Column(
             children: [
-              TextField(
-                onChanged: (value) => name = value,
-                cursorColor: theme.colorScheme.secondary,
-                style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onPrimary,
+              Row(
+                children: [
+                  Column(children: [
+                    if (selectedImage != null)
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Image.memory(
+                          selectedImage!,
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final image = await ImagePickerWeb.getImageAsBytes();
+                        if (image != null) {
+                          setState(() {
+                            selectedImage = image;
+                          });
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.colorScheme.secondary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                      ),
+                      child: Text('Seleccionar imagen',
+                          style: TextStyle(
+                              fontFamily: 'KoHo',
+                              color: theme.colorScheme.onPrimary),
+                          textAlign: TextAlign.center),
+                    ),
+                  ]),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          TextField(
+                            onChanged: (value) => name = value,
+                            cursorColor: theme.colorScheme.secondary,
+                            style: TextStyle(
+                                color: theme.colorScheme.onPrimary,
+                                fontFamily: 'KoHo'),
+                            keyboardType: TextInputType.name,
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                  color: theme.colorScheme.onPrimary,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                  color: theme.colorScheme.onPrimary,
+                                ),
+                              ),
+                              labelText: 'Nombre del espacio',
+                              labelStyle: TextStyle(
+                                  fontFamily: 'KoHo',
+                                  color: theme.colorScheme.onPrimary),
+                              prefixIcon: Icon(Icons.edit_rounded,
+                                  color: theme.colorScheme.onPrimary),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          TextField(
+                            onChanged: (value) => description = value,
+                            cursorColor: theme.colorScheme.secondary,
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            style: TextStyle(
+                                color: theme.colorScheme.onPrimary,
+                                fontFamily: 'KoHo'),
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                  color: theme.colorScheme.onPrimary,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                  color: theme.colorScheme.onPrimary,
+                                ),
+                              ),
+                              labelText: 'Descripción del espacio',
+                              labelStyle: TextStyle(
+                                  fontFamily: 'KoHo',
+                                  color: theme.colorScheme.onPrimary),
+                              prefixIcon: Icon(Icons.edit_rounded,
+                                  color: theme.colorScheme.onPrimary),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          TextField(
+                            onChanged: (value) => price = tryParseInt(value),
+                            cursorColor: theme.colorScheme.secondary,
+                            keyboardType: TextInputType.number,
+                            style: TextStyle(
+                                color: theme.colorScheme.onPrimary,
+                                fontFamily: 'KoHo'),
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                  color: theme.colorScheme.onPrimary,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                  color: theme.colorScheme.onPrimary,
+                                ),
+                              ),
+                              labelText: 'Valor del espacio',
+                              labelStyle: TextStyle(
+                                  fontFamily: 'KoHo',
+                                  color: theme.colorScheme.onPrimary),
+                              prefixIcon: Icon(Icons.monetization_on_outlined,
+                                  color: theme.colorScheme.onPrimary),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                  ),
-                  labelText: 'Nombre del espacio',
-                  labelStyle: TextStyle(
-                      fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                  prefixIcon: Icon(Icons.edit_rounded,
-                      color: theme.colorScheme.onPrimary),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                onChanged: (value) => description = value,
-                cursorColor: theme.colorScheme.secondary,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                  ),
-                  labelText: 'Descripción del espacio',
-                  labelStyle: TextStyle(
-                      fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                  prefixIcon: Icon(Icons.edit_rounded,
-                      color: theme.colorScheme.onPrimary),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                onChanged: (value) => price = tryParseInt(value),
-                cursorColor: theme.colorScheme.secondary,
-                keyboardType: TextInputType.number,
-                style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                  ),
-                  labelText: 'Valor del espacio',
-                  labelStyle: TextStyle(
-                      fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                  prefixIcon: Icon(Icons.monetization_on_outlined,
-                      color: theme.colorScheme.onPrimary),
-                ),
+                ],
               ),
               const SizedBox(height: 16),
               CheckboxListTile(
                 title: Text("Reservable",
-                    style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo')),
+                    style: TextStyle(
+                        color: theme.colorScheme.onPrimary,
+                        fontFamily: 'KoHo')),
                 value: isReservable,
                 onChanged: (bool? newValue) {
                   setState(() {
@@ -141,7 +207,8 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
               CheckboxListTile(
                 title: Text(
                   'Autorización requerida',
-                  style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
+                  style: TextStyle(
+                      color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                 ),
                 value: requiresAuthorization,
                 onChanged: (bool? newValue) {
@@ -161,7 +228,9 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                   Text(
                     'Roles autorizados',
                     style: TextStyle(
-                        color: theme.colorScheme.onPrimary, fontSize: 18, fontFamily: 'KoHo'),
+                        color: theme.colorScheme.onPrimary,
+                        fontSize: 18,
+                        fontFamily: 'KoHo'),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -172,8 +241,9 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                           children: [
                             Text(
                               'Administrador',
-                              style:
-                                  TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
+                              style: TextStyle(
+                                  color: theme.colorScheme.onPrimary,
+                                  fontFamily: 'KoHo'),
                             ),
                             Checkbox(
                               value: authorizedRoles.contains('ADMINISTRATOR'),
@@ -202,8 +272,9 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                           children: [
                             Text(
                               'Profesor',
-                              style:
-                                  TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
+                              style: TextStyle(
+                                  color: theme.colorScheme.onPrimary,
+                                  fontFamily: 'KoHo'),
                             ),
                             Checkbox(
                               value: authorizedRoles.contains('TEACHER'),
@@ -232,8 +303,9 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                           children: [
                             Text(
                               'Usuario',
-                              style:
-                                  TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
+                              style: TextStyle(
+                                  color: theme.colorScheme.onPrimary,
+                                  fontFamily: 'KoHo'),
                             ),
                             Checkbox(
                               value: authorizedRoles.contains('USER'),
@@ -266,7 +338,8 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                 onChanged: (value) => bookingWindow = value,
                 cursorColor: theme.colorScheme.secondary,
                 keyboardType: TextInputType.number,
-                style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
+                style: TextStyle(
+                    color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -301,19 +374,25 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                     bookingWindow: bookingWindow,
                   );
 
-                  espaciosProvider.addEspacio(espacio).then((_) {
-                    Navigator.pushNamed(context, '/home-bo');
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const MyMessageDialog(
-                          title: 'Espacio creado',
-                          description: 'Se ha creado el espacio correctamente.',
-                        );
-                      },
-                    );
-                  }).catchError((error) {
-                    showDialog(
+                  storageProvider
+                      .uploadSpaceImage(selectedImage!)
+                      .then((imageUrl) {
+                    espacio.image = imageUrl;
+
+                    espaciosProvider.addEspacio(espacio).then((_) {
+                      Navigator.pushNamed(context, '/home-bo');
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const MyMessageDialog(
+                            title: 'Espacio creado',
+                            description:
+                                'Se ha creado el espacio correctamente.',
+                          );
+                        },
+                      );
+                    }).catchError((error) {
+                      showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return const MyErrorMessageDialog(
@@ -321,7 +400,20 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                             description:
                                 'Ha ocurrido un error al crear el espacio.',
                           );
-                        });
+                        },
+                      );
+                    });
+                  }).catchError((error) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const MyErrorMessageDialog(
+                          title: 'Error',
+                          description:
+                              'Ha ocurrido un error al crear el espacio.',
+                        );
+                      },
+                    );
                   });
                 },
                 icon: Icon(Icons.add_rounded,
