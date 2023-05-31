@@ -371,7 +371,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                     isReservable: isReservable,
                     requiresAuthorization: requiresAuthorization,
                     authorizedRoles: authorizedRoles,
-                    bookingWindow: bookingWindow,
+                    bookingWindow: tryParseInt(bookingWindow),
                   );
 
                   storageProvider
@@ -398,7 +398,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                           return const MyErrorMessageDialog(
                             title: 'Error',
                             description:
-                                'Ha ocurrido un error al crear el espacio.',
+                                'Ha ocurrido un error al subir la imagen.',
                           );
                         },
                       );
