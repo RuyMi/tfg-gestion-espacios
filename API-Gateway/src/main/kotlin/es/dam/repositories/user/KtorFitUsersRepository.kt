@@ -2,16 +2,22 @@ package es.dam.repositories.user
 
 import es.dam.dto.*
 import es.dam.services.user.KtorFitClientUsers
+import es.dam.services.user.RetroFitClientUsers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
 import org.koin.core.annotation.Single
+import retrofit2.Call
+import java.io.File
+import java.nio.file.Files
 
 //TODO Quitar mensajes excepciones kotlin
 @Single
 class KtorFitUsersRepository: IUsersRepository {
 
     private val client by lazy { KtorFitClientUsers.instance }
+    private val retrofit by lazy { RetroFitClientUsers.retrofit}
 
     override suspend fun login(entity: UserLoginDTO): UserTokenDTO = withContext(Dispatchers.IO) {
         val call = async { client.login(entity) }
@@ -28,6 +34,27 @@ class KtorFitUsersRepository: IUsersRepository {
             return@withContext call.await()
         } catch (e: Exception) {
             throw Exception("Error registering user: ${e.message}")
+        }
+    }
+
+    override suspend fun downloadFile(uuid: String): File = withContext(Dispatchers.IO){
+        val call = runCatching { client.downloadFile(uuid) }
+        try {
+            val response = call.getOrThrow()
+            val tempFile = Files.createTempFile("temp", ".png").toFile()
+            tempFile.writeBytes(response)
+            return@withContext tempFile
+        } catch (e: Exception) {
+            throw Exception("Error downloading file with uuid $uuid: ${e.message}")
+        }
+    }
+
+    override suspend fun uploadFile(token: String, file: MultipartBody.Part): Call<UserPhotoDTO> {
+        val call = runCatching { retrofit.uploadFile(file, token) }
+        try {
+            return call.getOrThrow()
+        } catch (e: Exception) {
+            throw Exception("Error uploading file: ${e.message}")
         }
     }
 
