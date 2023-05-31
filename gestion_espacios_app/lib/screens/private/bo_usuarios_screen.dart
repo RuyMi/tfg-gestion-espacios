@@ -65,10 +65,6 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        border: Border.all(
-                          color: theme.colorScheme.surface,
-                          width: 2,
-                        ),
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),

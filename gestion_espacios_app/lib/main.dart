@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/providers/auth_provider.dart';
-import 'package:gestion_espacios_app/providers/espacios_provider.dart';
-import 'package:gestion_espacios_app/providers/reservas_provider.dart';
-import 'package:gestion_espacios_app/providers/theme_provider.dart';
-import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
+import 'package:gestion_espacios_app/providers/providers.dart';
 import 'package:gestion_espacios_app/screens/private/bo_add_espacio_dialog.dart';
 import 'package:gestion_espacios_app/screens/private/bo_espacios_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_reservas_screen.dart';
@@ -28,6 +24,11 @@ void main() {
           create: (context) => EspaciosProvider(null),
           update: (context, authProvider, _) =>
               EspaciosProvider(authProvider.token),
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, StorageProvider>(
+          create: (context) => StorageProvider(null),
+          update: (context, authProvider, _) =>
+              StorageProvider(authProvider.token),
         ),
         ChangeNotifierProxyProvider<AuthProvider, ReservasProvider>(
           create: (context) => ReservasProvider(null, null),
