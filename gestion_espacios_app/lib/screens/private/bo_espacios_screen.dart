@@ -34,6 +34,12 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
         }));
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
+  }
+
   Future<List<Espacio>> filterEspacios(String query) async {
     final espaciosProvider =
         Provider.of<EspaciosProvider>(context, listen: false);

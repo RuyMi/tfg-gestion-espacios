@@ -34,7 +34,13 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
         }));
   }
 
-  Future<List<Usuario>> filterEspacios(String query) async {
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
+  }
+
+  Future<List<Usuario>> filterUsuarios(String query) async {
     final usuariosProvider =
         Provider.of<UsuariosProvider>(context, listen: false);
     List<Usuario> usuarios = usuariosProvider.usuarios;
@@ -81,7 +87,7 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
                       color: theme.colorScheme.secondary, size: 30),
                 ),
                 onChanged: (value) {
-                  filterEspacios(value).then((usuarios) {
+                  filterUsuarios(value).then((usuarios) {
                     setState(() {
                       usuariosFiltrados = usuarios;
                     });

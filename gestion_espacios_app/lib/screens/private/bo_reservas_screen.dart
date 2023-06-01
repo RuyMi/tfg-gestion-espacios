@@ -37,6 +37,12 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
         }));
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
+  }
+
   void _handleSortBy(bool sortByUsers) {
     setState(() {
       if (sortByUsers) {
@@ -47,7 +53,7 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
     });
   }
 
-  Future<List<Reserva>> filterEspacios(String query) async {
+  Future<List<Reserva>> filterReservas(String query) async {
     final reservasProvider =
         Provider.of<ReservasProvider>(context, listen: false);
     List<Reserva> reservas = reservasProvider.reservas;
@@ -98,7 +104,7 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
                         color: theme.colorScheme.secondary, size: 30),
                   ),
                   onChanged: (value) {
-                    filterEspacios(value).then((value) => setState(() {
+                    filterReservas(value).then((value) => setState(() {
                           reservasFiltradas = value;
                         }));
                   },
