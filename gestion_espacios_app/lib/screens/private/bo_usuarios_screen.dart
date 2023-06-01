@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:gestion_espacios_app/models/usuario.dart';
 import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
 import 'package:gestion_espacios_app/screens/private/bo_add_usuario_dialog.dart';
 import 'package:gestion_espacios_app/screens/private/bo_update_usuario_dialog.dart';
@@ -18,7 +19,6 @@ class UsuariosBOScreen extends StatefulWidget {
 
 class _UsuariosBOScreen extends State<UsuariosBOScreen> {
   final TextEditingController _searchController = TextEditingController();
-  // String _searchText = '';
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
     var theme = Theme.of(context);
 
     final usuariosProvider = Provider.of<UsuariosProvider>(context);
-    final usuarios = usuariosProvider.usuarios;
+    List<Usuario> usuarios = usuariosProvider.usuarios;
 
     if (usuarios.isEmpty) {
       return const Center(
@@ -48,6 +48,9 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
               Expanded(
                 child: TextField(
                   controller: _searchController,
+                  cursorColor: theme.colorScheme.secondary,
+                  style: TextStyle(
+                      color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: MyColors.pinkApp.shade100,
@@ -70,7 +73,11 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
                   ),
                   onChanged: (value) {
                     setState(() {
-                      // _searchText = value;
+                      usuarios = usuariosProvider.usuarios
+                          .where((usuario) => usuario.name
+                              .toLowerCase()
+                              .contains(value.toLowerCase()))
+                          .toList();
                     });
                   },
                 ),

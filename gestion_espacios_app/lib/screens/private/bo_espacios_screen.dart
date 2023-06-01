@@ -6,6 +6,7 @@ import 'package:gestion_espacios_app/widgets/space_image_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/colors.dart';
+import '../../models/espacio.dart';
 import 'bo_add_espacio_dialog.dart';
 
 class EspaciosBOScreen extends StatefulWidget {
@@ -18,7 +19,6 @@ class EspaciosBOScreen extends StatefulWidget {
 
 class _EspaciosBOScreen extends State<EspaciosBOScreen> {
   final TextEditingController _searchController = TextEditingController();
-  // String _searchText = '';
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
     var theme = Theme.of(context);
 
     final espaciosProvider = Provider.of<EspaciosProvider>(context);
-    final espacios = espaciosProvider.espacios;
+    List<Espacio> espacios = espaciosProvider.espacios;
 
     if (espacios.isEmpty) {
       return const Center(
@@ -49,6 +49,9 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
                 Expanded(
                   child: TextField(
                     controller: _searchController,
+                    cursorColor: theme.colorScheme.secondary,
+                    style: TextStyle(
+                        color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: MyColors.pinkApp.shade100,
@@ -71,7 +74,11 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        // _searchText = value;
+                        espacios = espaciosProvider.espacios
+                            .where((espacio) => espacio.name
+                                .toLowerCase()
+                                .contains(value.toLowerCase()))
+                            .toList();
                       });
                     },
                   ),

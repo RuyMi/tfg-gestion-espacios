@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:gestion_espacios_app/models/reserva.dart';
 import 'package:gestion_espacios_app/models/usuario.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/screens/private/bo_update_reserva_dialog.dart';
@@ -20,7 +21,6 @@ class ReservasBOScreen extends StatefulWidget {
 
 class _ReservasBOScreen extends State<ReservasBOScreen> {
   final TextEditingController _searchController = TextEditingController();
-  // String _searchText = '';
   bool _sortBySpaces = true;
 
   @override
@@ -48,7 +48,7 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
     final reservasProvider = Provider.of<ReservasProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
     final Usuario usuario = authProvider.usuario;
-    final reservas = reservasProvider.reservas;
+    List<Reserva> reservas = reservasProvider.reservas;
 
     if (reservas.isEmpty) {
       return const Center(
@@ -64,6 +64,9 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
                 Expanded(
                   child: TextField(
                     controller: _searchController,
+                    cursorColor: theme.colorScheme.secondary,
+                    style: TextStyle(
+                        color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: MyColors.pinkApp.shade100,
@@ -86,7 +89,11 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        // _searchText = value;
+                        reservas = reservasProvider.reservas
+                            .where((reserva) => reserva.spaceName
+                                .toLowerCase()
+                                .contains(value.toLowerCase()))
+                            .toList();
                       });
                     },
                   ),
