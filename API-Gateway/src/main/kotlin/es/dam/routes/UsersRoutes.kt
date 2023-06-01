@@ -89,10 +89,7 @@ fun Application.usersRoutes() {
 
             get("/storage/{uuid}") {
                 try {
-                    val originalToken = call.principal<JWTPrincipal>()!!
-                    val token = tokenService.generateToken(originalToken)
                     val uuid = call.parameters["uuid"]
-
                     val res = runCatching {
                         userRepository.downloadFile(uuid!!)
                     }
@@ -113,6 +110,9 @@ fun Application.usersRoutes() {
                 } catch (e: IllegalArgumentException){
                     println("Error: ${e.message}")
                     call.respond(HttpStatusCode.Unauthorized, "${e.message}")
+                } catch (e: Exception){
+                    println("Error: ${e.message}")
+                    call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                 }
             }
 
@@ -266,6 +266,9 @@ fun Application.usersRoutes() {
                         println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: UserInternalErrorException) {
+                        println("Error: ${e.message}")
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    }catch (e: Exception){
                         println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }

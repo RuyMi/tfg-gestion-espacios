@@ -25,7 +25,7 @@ data class Space(
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,
     val authorizedRoles: Set<UserRole>,
-    val bookingWindow: String
+    val bookingWindow: Int
 ) {
     enum class UserRole {
         ADMINISTRATOR, TEACHER, USER

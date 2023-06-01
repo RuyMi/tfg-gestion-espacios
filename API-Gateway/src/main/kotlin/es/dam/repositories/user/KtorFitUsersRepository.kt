@@ -49,10 +49,10 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
-    override suspend fun uploadFile(token: String, file: MultipartBody.Part): Call<UserPhotoDTO> {
-        val call = runCatching { retrofit.uploadFile(file, token) }
+    override suspend fun uploadFile(token: String, file: MultipartBody.Part): Call<UserPhotoDTO> = withContext(Dispatchers.IO) {
+        val call = async { retrofit.uploadFile(file) }
         try {
-            return call.getOrThrow()
+            return@withContext call.await()
         } catch (e: Exception) {
             throw Exception("Error uploading file: ${e.message}")
         }

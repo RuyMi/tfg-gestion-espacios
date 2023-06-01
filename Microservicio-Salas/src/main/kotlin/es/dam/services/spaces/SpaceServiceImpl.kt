@@ -21,7 +21,10 @@ class SpaceServiceImpl(
         val spaceOriginal = repo.findById(UUID.fromString(id))
         val spaceUpdated = spaceOriginal.copy(
             name = space.name,
+            description = space.description,
+            image = space.image,
             isReservable = space.isReservable,
+            price = space.price,
             requiresAuthorization = space.requiresAuthorization,
             authorizedRoles = space.authorizedRoles,
             bookingWindow = space.bookingWindow

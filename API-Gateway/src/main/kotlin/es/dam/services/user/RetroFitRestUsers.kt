@@ -15,8 +15,7 @@ interface RetroFitRestUsers {
     @Multipart
     @POST("users/storage")
     fun uploadFile(
-        @Part file: MultipartBody.Part,
-        @Header("Authorization") token: String
+        @Part file: MultipartBody.Part
     ): Call<UserPhotoDTO>
 
 

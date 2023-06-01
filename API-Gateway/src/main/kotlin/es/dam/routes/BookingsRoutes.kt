@@ -258,7 +258,7 @@ fun Application.bookingsRoutes() {
 
                             require(LocalDateTime.parse(entity.startTime).isAfter( LocalDateTime.now()))
                             {"No se ha podido guardar la reserva fecha introducida es anterior a la actual."}
-                            require(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(entity.startTime.split("T")[0])) <= space.bookingWindow.toInt())
+                            require(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(entity.startTime.split("T")[0])) <= space.bookingWindow)
                             {"No se puede reservar con tanta anterioridad."}
                             require(bookingsRepository.findByTime("Bearer $token", entity.spaceId, entity.startTime.split("T")[0])
                                 .data
@@ -288,7 +288,7 @@ fun Application.bookingsRoutes() {
                         }else{
                             require(LocalDateTime.parse(entity.startTime).isAfter( LocalDateTime.now()))
                             {"No se ha podido guardar la reserva fecha introducida es anterior a la actual."}
-                            require(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(entity.startTime.split("T")[0])) <= space.bookingWindow.toInt())
+                            require(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(entity.startTime.split("T")[0])) <= space.bookingWindow)
                             {"No se puede reservar con tanta anterioridad."}
                             require(bookingsRepository.findByTime("Bearer $token", entity.spaceId, entity.startTime.split("T")[0])
                                 .data

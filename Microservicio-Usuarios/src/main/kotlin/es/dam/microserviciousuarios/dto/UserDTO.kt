@@ -78,3 +78,8 @@ data class UserResponseDTO(
 data class UserDataDTO(
     val data: List<UserResponseDTO>
 )
+
+@Serializable
+data class SpacePhotoDTO(
+    val data: Map<String, String>
+)
