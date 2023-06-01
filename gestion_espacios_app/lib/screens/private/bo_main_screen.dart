@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_espacios_app/models/colors.dart';
-import 'package:gestion_espacios_app/screens/private/bo_add_espacio_dialog.dart';
-import 'package:gestion_espacios_app/screens/private/bo_add_usuario_dialog.dart';
 import 'package:gestion_espacios_app/screens/private/bo_espacios_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_reservas_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_usuarios_screen.dart';
@@ -17,36 +14,12 @@ class BOMainScreen extends StatefulWidget {
 
 class _BOMainScreenState extends State<BOMainScreen>
     with SingleTickerProviderStateMixin {
-  final TextEditingController _searchController = TextEditingController();
-  // String _searchText = '';
-  bool _sortBySpaces = true;
-  bool _showNewButton = false;
-
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(() {
-      setState(() {
-        if (_tabController.index == 0) {
-          _showNewButton = false;
-        } else {
-          _showNewButton = true;
-        }
-      });
-    });
-  }
-
-  void _handleSortBy(bool sortByUsers) {
-    setState(() {
-      if (sortByUsers) {
-        //TODO: Ordenar por usuarios.
-      } else {
-        //TODO: Ordenar por reservas.
-      }
-    });
   }
 
   @override
@@ -142,123 +115,6 @@ class _BOMainScreenState extends State<BOMainScreen>
         ),
         body: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: MyColors.pinkApp.shade100,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none,
-                        ),
-                        hintText: 'Buscar',
-                        hintStyle: TextStyle(
-                          fontFamily: 'KoHo',
-                          color: theme.colorScheme.secondary,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        prefixIcon: Icon(Icons.search_rounded,
-                            color: theme.colorScheme.secondary, size: 30),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          // _searchText = value;
-                        });
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Column(
-                    children: [
-                      Visibility(
-                        visible: _tabController.index == 0,
-                        child: Row(
-                          children: [
-                            Icon(Icons.person_rounded,
-                                color: theme.colorScheme.onBackground),
-                            Switch(
-                              focusColor: theme.colorScheme.secondary,
-                              activeColor: theme.colorScheme.secondary,
-                              inactiveTrackColor: theme.colorScheme.onBackground
-                                  .withOpacity(0.2),
-                              inactiveThumbColor:
-                                  theme.colorScheme.onBackground,
-                              value: _sortBySpaces,
-                              onChanged: (value) {
-                                setState(() {
-                                  _sortBySpaces = value;
-                                  _handleSortBy(_sortBySpaces);
-                                });
-                              },
-                            ),
-                            Icon(Icons.calendar_today,
-                                color: theme.colorScheme.secondary),
-                          ],
-                        ),
-                      ),
-                      Visibility(
-                        visible: _showNewButton,
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            switch (_tabController.index) {
-                              case 0:
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return const NuevoEspacioBODialog();
-                                    });
-                                break;
-                              case 1:
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return const NuevoEspacioBODialog();
-                                    });
-                                break;
-                              case 2:
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return const NuevoUsuarioBODialog();
-                                    });
-                                break;
-                              default:
-                                break;
-                            }
-                          },
-                          icon: Icon(Icons.add_rounded,
-                              color: theme.colorScheme.onSecondary),
-                          label: Text(
-                            'Nuevo',
-                            style: TextStyle(
-                              color: theme.colorScheme.onSecondary,
-                              overflow: TextOverflow.ellipsis,
-                              fontFamily: 'KoHo',
-                              fontSize: 20,
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            backgroundColor: theme.colorScheme.secondary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
             Expanded(
               child: TabBarView(
                 controller: _tabController,

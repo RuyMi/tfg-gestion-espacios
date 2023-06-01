@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/providers.dart';
 import 'package:gestion_espacios_app/screens/private/bo_add_espacio_dialog.dart';
+import 'package:gestion_espacios_app/screens/private/bo_add_usuario_dialog.dart';
 import 'package:gestion_espacios_app/screens/private/bo_espacios_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_reservas_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_usuarios_screen.dart';
@@ -16,9 +17,9 @@ void main() {
         ChangeNotifierProvider.value(value: ThemeProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProxyProvider<AuthProvider, UsuariosProvider>(
-          create: (context) => UsuariosProvider(null, null),
+          create: (context) => UsuariosProvider(null),
           update: (context, authProvider, _) =>
-              UsuariosProvider(authProvider.token, authProvider.userId),
+              UsuariosProvider(authProvider.token),
         ),
         ChangeNotifierProxyProvider<AuthProvider, EspaciosProvider>(
           create: (context) => EspaciosProvider(null),
@@ -75,8 +76,11 @@ class MyApp extends StatelessWidget {
         '/reservas-bo': (context) => const ReservasBOScreen(),
         '/usuarios-bo': (context) => const UsuariosBOScreen(),
         '/nuevo-espacio': (context) => const NuevoEspacioBODialog(),
+        '/nuevo-usuario': (context) => const NuevoUsuarioBODialog(),
+        // 'nueva-reserva': (context) => const NuevaReservaBODialog(),
         // '/editar-espacio': (context) => const EditarEspacioBODialog(),
         // '/editar-usuario': (context) => const EditarUsuarioBODialog(),
+        // '/editar-reserva': (context) => const EditarReservaBODialog(),
       },
     );
   }

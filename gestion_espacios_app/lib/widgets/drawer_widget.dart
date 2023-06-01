@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/theme_provider.dart';
+import 'package:gestion_espacios_app/widgets/user_image_widget.dart';
 import 'package:provider/provider.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -38,10 +39,21 @@ class MyDrawer extends StatelessWidget {
                   fontFamily: 'KoHo',
                   color: theme.colorScheme.onPrimary,
                 )),
-            currentAccountPicture: CircleAvatar(
-              backgroundImage:
-                  const AssetImage('assets/images/profile_pic.png'),
-              backgroundColor: theme.colorScheme.onPrimary,
+            currentAccountPicture: Builder(
+              builder: (BuildContext context) {
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: theme.colorScheme.onPrimary,
+                      width: 2,
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: ClipOval(
+                    child: MyUserImageWidget(image: usuario.avatar),
+                  ),
+                );
+              },
             ),
           ),
           Divider(

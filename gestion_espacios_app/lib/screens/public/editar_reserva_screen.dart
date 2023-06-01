@@ -4,7 +4,7 @@ import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/eliminar_elemento.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
-import 'package:gestion_espacios_app/widgets/image_widget.dart';
+import 'package:gestion_espacios_app/widgets/space_image_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -160,7 +160,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                           radius: 35,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(75),
-                            child: MyImageWidget(image: reserva.image),
+                            child: MySpaceImageWidget(image: reserva.image),
                           ),
                         ),
                       ),
@@ -191,6 +191,8 @@ class _ReservaSala extends State<EditarReservaScreen> {
                     keyboardType: TextInputType.multiline,
                     maxLines: 3,
                     cursorColor: theme.colorScheme.secondary,
+                    style: TextStyle(
+                        color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),

@@ -8,7 +8,7 @@ import 'package:gestion_espacios_app/screens/private/bo_add_reserva_dialog.dart'
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/eliminar_elemento.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
-import 'package:gestion_espacios_app/widgets/image_widget.dart';
+import 'package:gestion_espacios_app/widgets/user_image_widget.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:provider/provider.dart';
 
@@ -112,7 +112,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
                   if (selectedImage == null && avatar != null)
                     ClipRRect(
                         borderRadius: BorderRadius.circular(30),
-                        child: MyImageWidget(image: usuario.avatar)),
+                        child: MyUserImageWidget(image: usuario.avatar)),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () async {
