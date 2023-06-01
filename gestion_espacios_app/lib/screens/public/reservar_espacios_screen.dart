@@ -164,6 +164,8 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                     keyboardType: TextInputType.multiline,
                     maxLines: 3,
                     cursorColor: theme.colorScheme.secondary,
+                    style: TextStyle(
+                        color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
