@@ -19,8 +19,7 @@ class Espacio {
   bool isReservable;
   bool requiresAuthorization;
   List<String> authorizedRoles;
-  String bookingWindow;
-  // int bookingWindowInt;
+  int bookingWindow;
 
   Map<String, dynamic> toJson() {
     return {

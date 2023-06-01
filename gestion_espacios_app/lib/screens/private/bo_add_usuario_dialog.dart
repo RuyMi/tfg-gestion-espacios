@@ -1,8 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/usuario.dart';
+import 'package:gestion_espacios_app/providers/storage_provider.dart';
 import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:provider/provider.dart';
 
 class NuevoUsuarioBODialog extends StatefulWidget {
@@ -22,11 +26,13 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
   String? avatar;
   int credits = 0;
   bool isActive = true;
+  Uint8List? selectedImage;
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     final usuariosProvider = Provider.of<UsuariosProvider>(context);
+    final storageProvider = Provider.of<StorageProvider>(context);
 
     return AlertDialog(
         backgroundColor: theme.colorScheme.onBackground,
@@ -36,120 +42,182 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
         title: Text(
           'Nuevo usuario',
           style: TextStyle(
-              fontWeight: FontWeight.bold, color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onPrimary,
+              fontFamily: 'KoHo'),
         ),
         content: SingleChildScrollView(
             child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.5,
           child: Column(children: [
-            TextField(
-              onChanged: (value) => name = value,
-              cursorColor: theme.colorScheme.secondary,
-              style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
-              keyboardType: TextInputType.name,
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
+            Row(
+              children: [
+                Column(children: [
+                  if (selectedImage != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(30),
+                      child: Image.memory(
+                        selectedImage!,
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final image = await ImagePickerWeb.getImageAsBytes();
+                      if (image != null) {
+                        setState(() {
+                          selectedImage = image;
+                        });
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: theme.colorScheme.secondary,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
+                    child: Text('Seleccionar imagen',
+                        style: TextStyle(
+                            fontFamily: 'KoHo',
+                            color: theme.colorScheme.onPrimary),
+                        textAlign: TextAlign.center),
+                  ),
+                ]),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      children: [
+                        TextField(
+                          onChanged: (value) => name = value,
+                          cursorColor: theme.colorScheme.secondary,
+                          style: TextStyle(
+                              color: theme.colorScheme.onPrimary,
+                              fontFamily: 'KoHo'),
+                          keyboardType: TextInputType.name,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            labelText: 'Nombre',
+                            labelStyle: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onPrimary),
+                            prefixIcon: Icon(Icons.person_rounded,
+                                color: theme.colorScheme.onPrimary),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          onChanged: (value) => username = value,
+                          cursorColor: theme.colorScheme.secondary,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          style: TextStyle(
+                              color: theme.colorScheme.onPrimary,
+                              fontFamily: 'KoHo'),
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            labelText: 'Nombre de usuario',
+                            labelStyle: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onPrimary),
+                            prefixIcon: Icon(Icons.edit_rounded,
+                                color: theme.colorScheme.onPrimary),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          onChanged: (value) => email = value,
+                          cursorColor: theme.colorScheme.secondary,
+                          keyboardType: TextInputType.number,
+                          style: TextStyle(
+                              color: theme.colorScheme.onPrimary,
+                              fontFamily: 'KoHo'),
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            labelText: 'Correo electrónico',
+                            labelStyle: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onPrimary),
+                            prefixIcon: Icon(Icons.edit_rounded,
+                                color: theme.colorScheme.onPrimary),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          onChanged: (value) => credits = tryParseInt(value),
+                          cursorColor: theme.colorScheme.secondary,
+                          keyboardType: TextInputType.number,
+                          style: TextStyle(
+                              color: theme.colorScheme.onPrimary,
+                              fontFamily: 'KoHo'),
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            labelText: 'Créditos disponibles',
+                            labelStyle: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onPrimary),
+                            prefixIcon: Icon(Icons.monetization_on_outlined,
+                                color: theme.colorScheme.onPrimary),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                labelText: 'Nombre',
-                labelStyle: TextStyle(
-                    fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                prefixIcon: Icon(Icons.person_rounded,
-                    color: theme.colorScheme.onPrimary),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              onChanged: (value) => username = value,
-              cursorColor: theme.colorScheme.secondary,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                labelText: 'Nombre de usuario',
-                labelStyle: TextStyle(
-                    fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                prefixIcon: Icon(Icons.edit_rounded,
-                    color: theme.colorScheme.onPrimary),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              onChanged: (value) => email = value,
-              cursorColor: theme.colorScheme.secondary,
-              keyboardType: TextInputType.number,
-              style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                labelText: 'Correo electrónico',
-                labelStyle: TextStyle(
-                    fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                prefixIcon: Icon(Icons.edit_rounded,
-                    color: theme.colorScheme.onPrimary),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              onChanged: (value) => credits = tryParseInt(value),
-              cursorColor: theme.colorScheme.secondary,
-              keyboardType: TextInputType.number,
-              style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                labelText: 'Créditos disponibles',
-                labelStyle: TextStyle(
-                    fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                prefixIcon: Icon(Icons.monetization_on_outlined,
-                    color: theme.colorScheme.onPrimary),
-              ),
+              ],
             ),
             const SizedBox(height: 16),
             CheckboxListTile(
               title: Text('Activo',
-                  style: TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo')),
+                  style: TextStyle(
+                      color: theme.colorScheme.onPrimary, fontFamily: 'KoHo')),
               value: isActive,
               onChanged: (bool? newValue) {
                 setState(() {
@@ -168,7 +236,9 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                 Text(
                   'Roles del usuario',
                   style: TextStyle(
-                      color: theme.colorScheme.onPrimary, fontSize: 18, fontFamily: 'KoHo'),
+                      color: theme.colorScheme.onPrimary,
+                      fontSize: 18,
+                      fontFamily: 'KoHo'),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -179,8 +249,9 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                         children: [
                           Text(
                             'Administrador',
-                            style:
-                                TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
+                            style: TextStyle(
+                                color: theme.colorScheme.onPrimary,
+                                fontFamily: 'KoHo'),
                           ),
                           Checkbox(
                             value: userRole.contains('ADMINISTRATOR'),
@@ -209,8 +280,9 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                         children: [
                           Text(
                             'Profesor',
-                            style:
-                                TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
+                            style: TextStyle(
+                                color: theme.colorScheme.onPrimary,
+                                fontFamily: 'KoHo'),
                           ),
                           Checkbox(
                             value: userRole.contains('TEACHER'),
@@ -239,8 +311,9 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                         children: [
                           Text(
                             'Usuario',
-                            style:
-                                TextStyle(color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
+                            style: TextStyle(
+                                color: theme.colorScheme.onPrimary,
+                                fontFamily: 'KoHo'),
                           ),
                           Checkbox(
                             value: userRole.contains('USER'),
@@ -276,24 +349,66 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                   email: email,
                   password: password,
                   credits: credits,
-                  avatar: avatar,
+                  avatar: 'profile_pic',
                   isActive: isActive,
                   userRole: userRole,
                 );
 
-                usuariosProvider.register(usuario).then((_) {
-                  Navigator.pushNamed(context, '/home-bo');
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const MyMessageDialog(
-                        title: 'Usuario creado',
-                        description: 'Se ha creado el usuario correctamente.',
+                if (selectedImage != null) {
+                  storageProvider
+                      .uploadUserImage(selectedImage!)
+                      .then((imageUrl) {
+                    usuario.avatar = imageUrl;
+
+                    usuariosProvider.register(usuario).then((_) {
+                      Navigator.pushNamed(context, '/home-bo');
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const MyMessageDialog(
+                            title: 'Usuario creado',
+                            description:
+                                'Se ha creado el usuario correctamente.',
+                          );
+                        },
                       );
-                    },
-                  );
-                }).catchError((error) {
-                  showDialog(
+                    }).catchError((error) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const MyErrorMessageDialog(
+                              title: 'Error',
+                              description:
+                                  'Ha ocurrido un error al crear el usuario.',
+                            );
+                          });
+                    });
+                  }).catchError((error) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const MyErrorMessageDialog(
+                          title: 'Error',
+                          description:
+                              'Ha ocurrido un error al subir la imagen.',
+                        );
+                      },
+                    );
+                  });
+                } else {
+                  usuariosProvider.register(usuario).then((_) {
+                    Navigator.pushNamed(context, '/home-bo');
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const MyMessageDialog(
+                          title: 'Usuario creado',
+                          description: 'Se ha creado el usuario correctamente.',
+                        );
+                      },
+                    );
+                  }).catchError((error) {
+                    showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return const MyErrorMessageDialog(
@@ -301,8 +416,10 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                           description:
                               'Ha ocurrido un error al crear el usuario.',
                         );
-                      });
-                });
+                      },
+                    );
+                  });
+                }
               },
               icon:
                   Icon(Icons.add_rounded, color: theme.colorScheme.onSecondary),

@@ -1,10 +1,15 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/usuario.dart';
+import 'package:gestion_espacios_app/providers/storage_provider.dart';
 import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
 import 'package:gestion_espacios_app/screens/private/bo_add_reserva_dialog.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/eliminar_elemento.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
+import 'package:gestion_espacios_app/widgets/image_widget.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:provider/provider.dart';
 
 class EditarUsuarioBODialog extends StatefulWidget {
@@ -25,6 +30,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
   late TextEditingController emailController;
   late TextEditingController creditsController;
   late TextEditingController isActiveController;
+  Uint8List? selectedImage;
 
   @override
   void initState() {
@@ -54,11 +60,13 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     final usuariosProvider = Provider.of<UsuariosProvider>(context);
+    final storageProvider = Provider.of<StorageProvider>(context);
     final Usuario usuario = widget.usuario;
     String name = usuario.name;
     String username = usuario.username;
     String password = usuario.password;
     String email = usuario.email;
+    String? avatar = usuario.avatar;
     List<String> userRole = usuario.userRole;
     int credits = usuario.credits;
 
@@ -88,120 +96,180 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
             child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.5,
           child: Column(children: [
-            TextField(
-              enabled: false,
-              controller: nameController,
-              onChanged: (value) => name = value,
-              cursorColor: theme.colorScheme.secondary,
-              style: TextStyle(
-                  color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
-              keyboardType: TextInputType.name,
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
+            Row(
+              children: [
+                Column(children: [
+                  if (selectedImage != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(30),
+                      child: Image.memory(
+                        selectedImage!,
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  if (selectedImage == null && avatar != null)
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: MyImageWidget(image: usuario.avatar)),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final image = await ImagePickerWeb.getImageAsBytes();
+                      if (image != null) {
+                        setState(() {
+                          selectedImage = image;
+                        });
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: theme.colorScheme.secondary,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
+                    child: Text('Seleccionar imagen',
+                        style: TextStyle(
+                            fontFamily: 'KoHo',
+                            color: theme.colorScheme.onPrimary),
+                        textAlign: TextAlign.center),
                   ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
+                ]),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      children: [
+                        TextField(
+                          enabled: false,
+                          controller: nameController,
+                          onChanged: (value) => name = value,
+                          cursorColor: theme.colorScheme.secondary,
+                          style: TextStyle(
+                              color: theme.colorScheme.onPrimary,
+                              fontFamily: 'KoHo'),
+                          keyboardType: TextInputType.name,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            labelText: 'Nombre',
+                            labelStyle: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onPrimary),
+                            prefixIcon: Icon(Icons.person_rounded,
+                                color: theme.colorScheme.onPrimary),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          enabled: false,
+                          controller: usernameController,
+                          onChanged: (value) => username = value,
+                          cursorColor: theme.colorScheme.secondary,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          style: TextStyle(
+                              color: theme.colorScheme.onPrimary,
+                              fontFamily: 'KoHo'),
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            labelText: 'Nombre de usuario',
+                            labelStyle: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onPrimary),
+                            prefixIcon: Icon(Icons.edit_rounded,
+                                color: theme.colorScheme.onPrimary),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          enabled: false,
+                          controller: emailController,
+                          onChanged: (value) => email = value,
+                          cursorColor: theme.colorScheme.secondary,
+                          keyboardType: TextInputType.number,
+                          style: TextStyle(
+                              color: theme.colorScheme.onPrimary,
+                              fontFamily: 'KoHo'),
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            labelText: 'Correo electrónico',
+                            labelStyle: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onPrimary),
+                            prefixIcon: Icon(Icons.edit_rounded,
+                                color: theme.colorScheme.onPrimary),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: creditsController,
+                          onChanged: (value) =>
+                              credits = tryParseInt(value, credits),
+                          cursorColor: theme.colorScheme.secondary,
+                          keyboardType: TextInputType.number,
+                          style: TextStyle(
+                              color: theme.colorScheme.onPrimary,
+                              fontFamily: 'KoHo'),
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            labelText: 'Créditos disponibles',
+                            labelStyle: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onPrimary),
+                            prefixIcon: Icon(Icons.monetization_on_outlined,
+                                color: theme.colorScheme.onPrimary),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                labelText: 'Nombre',
-                labelStyle: TextStyle(
-                    fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                prefixIcon: Icon(Icons.person_rounded,
-                    color: theme.colorScheme.onPrimary),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              enabled: false,
-              controller: usernameController,
-              onChanged: (value) => username = value,
-              cursorColor: theme.colorScheme.secondary,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              style: TextStyle(
-                  color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                labelText: 'Nombre de usuario',
-                labelStyle: TextStyle(
-                    fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                prefixIcon: Icon(Icons.edit_rounded,
-                    color: theme.colorScheme.onPrimary),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              enabled: false,
-              controller: emailController,
-              onChanged: (value) => email = value,
-              cursorColor: theme.colorScheme.secondary,
-              keyboardType: TextInputType.number,
-              style: TextStyle(
-                  color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                labelText: 'Correo electrónico',
-                labelStyle: TextStyle(
-                    fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                prefixIcon: Icon(Icons.edit_rounded,
-                    color: theme.colorScheme.onPrimary),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: creditsController,
-              onChanged: (value) => credits = tryParseInt(value, credits),
-              cursorColor: theme.colorScheme.secondary,
-              keyboardType: TextInputType.number,
-              style: TextStyle(
-                  color: theme.colorScheme.onPrimary, fontFamily: 'KoHo'),
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                labelText: 'Créditos disponibles',
-                labelStyle: TextStyle(
-                    fontFamily: 'KoHo', color: theme.colorScheme.onPrimary),
-                prefixIcon: Icon(Icons.monetization_on_outlined,
-                    color: theme.colorScheme.onPrimary),
-              ),
+                )
+              ],
             ),
             const SizedBox(height: 16),
             CheckboxListTile(
@@ -340,29 +408,73 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
                       username: username,
                       email: email,
                       password: password,
-                      avatar: usuario.avatar,
+                      avatar: avatar,
                       credits: creditsController.text == ''
                           ? usuario.credits
                           : credits,
                       isActive: isActiveController.text == 'true',
                       userRole: userRole);
 
-                  usuariosProvider
-                      .updateUsuario(usuario.uuid!, usuarioActualizado)
-                      .then((_) {
-                    Navigator.pushNamed(context, '/home-bo');
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const MyMessageDialog(
-                          title: 'Espacio actualizado',
-                          description:
-                              'Se ha actualizado el espacio correctamente.',
+                  if (selectedImage != null) {
+                    storageProvider
+                        .uploadUserImage(selectedImage!)
+                        .then((imageUrl) {
+                      usuarioActualizado.avatar = imageUrl;
+
+                      usuariosProvider
+                          .updateUsuario(usuario.uuid!, usuarioActualizado)
+                          .then((_) {
+                        Navigator.pushNamed(context, '/home-bo');
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const MyMessageDialog(
+                              title: 'Usuario actualizado',
+                              description:
+                                  'Se ha actualizado el usuario correctamente.',
+                            );
+                          },
                         );
-                      },
-                    );
-                  }).catchError((error) {
-                    showDialog(
+                      }).catchError((error) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const MyErrorMessageDialog(
+                                title: 'Error',
+                                description:
+                                    'Ha ocurrido un error al actualizar el usuario.',
+                              );
+                            });
+                      });
+                    }).catchError((error) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const MyErrorMessageDialog(
+                            title: 'Error',
+                            description:
+                                'Ha ocurrido un error al subir la imagen.',
+                          );
+                        },
+                      );
+                    });
+                  } else {
+                    usuariosProvider
+                        .updateUsuario(usuario.uuid!, usuarioActualizado)
+                        .then((_) {
+                      Navigator.pushNamed(context, '/home-bo');
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const MyMessageDialog(
+                            title: 'Usuario actualizado',
+                            description:
+                                'Se ha actualizado el usuario correctamente.',
+                          );
+                        },
+                      );
+                    }).catchError((error) {
+                      showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return const MyErrorMessageDialog(
@@ -370,8 +482,10 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
                             description:
                                 'Ha ocurrido un error al actualizar el usuario.',
                           );
-                        });
-                  });
+                        },
+                      );
+                    });
+                  }
                 },
                 icon: Icon(Icons.edit_rounded,
                     color: theme.colorScheme.onSecondary),

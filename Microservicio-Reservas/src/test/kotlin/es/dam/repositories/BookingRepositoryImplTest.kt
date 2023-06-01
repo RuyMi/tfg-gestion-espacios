@@ -13,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.litote.kmongo.id.toId
 import java.time.LocalDateTime
 import java.util.*
-import kotlin.test.assertContains
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BookingRepositoryImplTest {
@@ -30,7 +29,8 @@ class BookingRepositoryImplTest {
         endTime = LocalDateTime.now(),
         observations =  "test",
         userName = "test",
-        spaceName = "test"
+        spaceName = "test",
+        image = ""
     )
 
 
