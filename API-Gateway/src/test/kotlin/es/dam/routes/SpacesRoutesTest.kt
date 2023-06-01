@@ -41,7 +41,7 @@ class SpacesRoutesTest {
         isReservable = true,
         requiresAuthorization = false,
         authorizedRoles = setOf("USER"),
-        bookingWindow = "10"
+        bookingWindow = 10
     )
 
     private var bookingId = ""
@@ -438,7 +438,7 @@ class SpacesRoutesTest {
             isReservable = true,
             requiresAuthorization = false,
             authorizedRoles = setOf("USER"),
-            bookingWindow = "10"
+            bookingWindow = 10
         )
 
         val response = client.post("/spaces") {
@@ -510,7 +510,7 @@ class SpacesRoutesTest {
             isReservable = true,
             requiresAuthorization = false,
             authorizedRoles = setOf("USER"),
-            bookingWindow = "10"
+            bookingWindow = 10
         )
 
         val response = client.post("/spaces") {
@@ -547,7 +547,7 @@ class SpacesRoutesTest {
             isReservable = true,
             requiresAuthorization = false,
             authorizedRoles = setOf("USER"),
-            bookingWindow = "10"
+            bookingWindow = 10
         )
 
         val create = client.post("/spaces") {
@@ -595,7 +595,7 @@ class SpacesRoutesTest {
             isReservable = true,
             requiresAuthorization = false,
             authorizedRoles = setOf("USER"),
-            bookingWindow = "10"
+            bookingWindow = 10
         )
 
         val login = client.post("/users/login") {
@@ -633,7 +633,7 @@ class SpacesRoutesTest {
             isReservable = true,
             requiresAuthorization = false,
             authorizedRoles = setOf("USER"),
-            bookingWindow = "10"
+            bookingWindow = 10
         )
 
         val response = client.put("/spaces/1") {
@@ -670,7 +670,7 @@ class SpacesRoutesTest {
             isReservable = true,
             requiresAuthorization = false,
             authorizedRoles = setOf("USER"),
-            bookingWindow = "10"
+            bookingWindow = 10
         )
 
         val response = client.put("/spaces/ab3e47c3-016a-49b7-8616-262da0c86553") {
@@ -749,7 +749,7 @@ class SpacesRoutesTest {
         )
     }
 
-    /*@OptIn(InternalAPI::class)
+    @OptIn(InternalAPI::class)
     @Test
     fun getStorage() = testApplication {
         environment { config }
@@ -768,8 +768,6 @@ class SpacesRoutesTest {
             { assertNotNull( file) },
         )
     }
-
-     */
 
     @OptIn(InternalAPI::class)
     @Test

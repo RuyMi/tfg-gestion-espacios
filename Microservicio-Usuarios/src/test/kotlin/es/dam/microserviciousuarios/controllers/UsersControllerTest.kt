@@ -117,7 +117,7 @@ class UsersControllerTest {
         )
     }
 
-    //TODO: fallo login
+
     @Test
     fun loginFailedUnauthorized() = runTest {
         coEvery { authenticationManager.authenticate(UsernamePasswordAuthenticationToken(userLogin.username, userLogin.password)) } throws UserNotFoundException("User not found.")

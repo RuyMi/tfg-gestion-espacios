@@ -52,6 +52,7 @@ class KtorFitUsersRepository: IUsersRepository {
     override suspend fun uploadFile(token: String, file: MultipartBody.Part): Call<UserPhotoDTO> = withContext(Dispatchers.IO) {
         val call = async { retrofit.uploadFile(file) }
         try {
+            println("Dentro del repositorio")
             return@withContext call.await()
         } catch (e: Exception) {
             throw Exception("Error uploading file: ${e.message}")

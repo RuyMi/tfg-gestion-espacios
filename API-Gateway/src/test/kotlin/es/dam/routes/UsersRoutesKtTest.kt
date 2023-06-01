@@ -3,10 +3,12 @@ package es.dam.routes
 import es.dam.dto.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.testing.*
+import io.ktor.util.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.AfterAll
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.io.File
 
 private val json = Json {
     prettyPrint = true
@@ -1049,6 +1052,61 @@ class UsersRoutesKtTest{
         }
 
         assertEquals(HttpStatusCode.NotFound, response.status)
+    }
+
+    @OptIn(InternalAPI::class)
+    @Test
+    fun getStorage() = testApplication {
+        environment { config }
+
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+
+        val response = client.get("/users/storage/$wrongUUID")
+        val file = response.content.toByteArray()
+        assertAll(
+            { assertEquals(HttpStatusCode.OK, response.status) },
+            { assertEquals("image/png", response.headers[HttpHeaders.ContentType]) },
+            { assertNotNull(file) },
+        )
+    }
+
+    @OptIn(InternalAPI::class)
+    @Test
+    fun createStorage() = testApplication {
+        environment { config }
+
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+        val file = File("src/test/resources/test.jpeg")
+
+        val login = client.post("/users/login") {
+            contentType(ContentType.Application.Json)
+            setBody(loginAdminDTO)
+        }
+
+        val dto = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
+
+        val response = client.post("/users/storage") {
+            body = MultiPartFormDataContent(
+                formData {
+                    append("file", file.readBytes(), Headers.build {
+                        append(HttpHeaders.ContentType, "image/png")
+                        append(HttpHeaders.ContentDisposition, "filename=${file.name}")
+                    })
+                }
+            )
+            header(HttpHeaders.Authorization, "Bearer " + dto.token)
+        }
+        assertAll(
+            { kotlin.test.assertEquals(HttpStatusCode.Created, response.status) },
+        )
     }
 
 }

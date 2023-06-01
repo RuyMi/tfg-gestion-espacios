@@ -58,7 +58,7 @@ class StorageController @Autowired constructor(
                 val fileStored = myScope.async { storageService.storeFile(file) }.await()
                 val urlStored = storageService.getUrl(fileStored)
                 val response =
-                    mapOf("url" to urlStored, "name" to fileStored, "created_at" to LocalDateTime.now().toString())
+                    mapOf("url" to urlStored, "fileName" to fileStored, "created_at" to LocalDateTime.now().toString())
                 ResponseEntity.status(HttpStatus.CREATED).body(SpacePhotoDTO(response))
             } else {
                 throw StorageBadRequestException("No se puede subir un fichero vacío.")

@@ -84,7 +84,7 @@ class BookingsRoutesKtTest{
             isReservable = true,
             requiresAuthorization = false,
             authorizedRoles = setOf("USER"),
-            bookingWindow = "10"
+            bookingWindow = 10
         )
 
         environment { config }
@@ -391,13 +391,7 @@ class BookingsRoutesKtTest{
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
-<<<<<<< HEAD
-    //TODO: Da 404 watefak
-@Test
-=======
-
     @Test
->>>>>>> 176a519086c6988f364232fe19a58f0f55d05ad6
     fun getById400() = testApplication {
         environment { config }
 
@@ -421,12 +415,6 @@ class BookingsRoutesKtTest{
         assertEquals(HttpStatusCode.BadRequest, response.status)
     }
 
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> 176a519086c6988f364232fe19a58f0f55d05ad6
     @Test
     fun getBySpaceId() = testApplication {
         environment { config }
@@ -1365,13 +1353,7 @@ class BookingsRoutesKtTest{
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
-
-<<<<<<< HEAD
-    //TODO: Da 404 watefak
-@Test
-=======
     @Test
->>>>>>> 176a519086c6988f364232fe19a58f0f55d05ad6
     fun delete400() = testApplication {
         environment { config }
 
@@ -1394,11 +1376,5 @@ class BookingsRoutesKtTest{
 
         assertEquals(HttpStatusCode.BadRequest, response.status)
     }
-
-<<<<<<< HEAD
-
-
 }
-=======
-}
->>>>>>> 176a519086c6988f364232fe19a58f0f55d05ad6
+

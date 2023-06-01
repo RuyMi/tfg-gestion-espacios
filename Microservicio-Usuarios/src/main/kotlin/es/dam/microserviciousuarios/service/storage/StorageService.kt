@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder
+import java.io.File
 import java.io.IOException
 import java.lang.System.load
 import java.net.MalformedURLException
@@ -68,9 +69,8 @@ class StorageService(
             if (resource.exists() || resource.isReadable) {
                 resource
             } else {
-                throw StorageNotFoundException(
-                    "No se puede leer fichero: $filename"
-                )
+                val placeholder = File("${ruta}/placeholder.png")
+                return UrlResource(placeholder.toURI())
             }
         } catch (e: MalformedURLException) {
             throw StorageNotFoundException("No se puede leer fichero: $filename -> ${e.message}")

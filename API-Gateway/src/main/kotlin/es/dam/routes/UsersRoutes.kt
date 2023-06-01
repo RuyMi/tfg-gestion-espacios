@@ -228,7 +228,9 @@ fun Application.usersRoutes() {
                                     val fileBytes = inputStream.readBytes()
                                     val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
                                     val multipartBody = MultipartBody.Part.createFormData("file", "${UUID.randomUUID()}.png", requestBody)
+                                    println("Llegada al repositorio")
                                     userPhotoDTO = userRepository.uploadFile(token, multipartBody).await()
+                                    println("Salida del repositorio")
                                 }
                                 is PartData.BinaryItem -> {
                                     println("He entrado a BinaryItem")
