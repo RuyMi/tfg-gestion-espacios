@@ -19,114 +19,128 @@ class UsuariosBOScreen extends StatefulWidget {
 
 class _UsuariosBOScreen extends State<UsuariosBOScreen> {
   final TextEditingController _searchController = TextEditingController();
+  List<Usuario> usuariosFiltrados = [];
 
   @override
   void initState() {
     super.initState();
     final usuariosProvider =
         Provider.of<UsuariosProvider>(context, listen: false);
-    usuariosProvider.fetchUsuarios();
+
+    usuariosFiltrados = usuariosProvider.usuarios;
+
+    usuariosProvider.fetchUsuarios().then((value) => setState(() {
+          usuariosFiltrados = usuariosProvider.usuarios;
+        }));
+  }
+
+  Future<List<Usuario>> filterEspacios(String query) async {
+    final usuariosProvider =
+        Provider.of<UsuariosProvider>(context, listen: false);
+    List<Usuario> usuarios = usuariosProvider.usuarios;
+
+    return usuarios
+        .where((usuario) =>
+            usuario.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    final usuariosProvider = Provider.of<UsuariosProvider>(context);
-    List<Usuario> usuarios = usuariosProvider.usuarios;
-
-    if (usuarios.isEmpty) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    } else {
-      return Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _searchController,
-                  cursorColor: theme.colorScheme.secondary,
-                  style: TextStyle(
-                      color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: MyColors.pinkApp.shade100,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
-                    ),
-                    hintText: 'Buscar',
-                    hintStyle: TextStyle(
-                      fontFamily: 'KoHo',
-                      color: theme.colorScheme.secondary,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    prefixIcon: Icon(Icons.search_rounded,
-                        color: theme.colorScheme.secondary, size: 30),
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _searchController,
+                cursorColor: theme.colorScheme.secondary,
+                style: TextStyle(
+                    color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: MyColors.pinkApp.shade100,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none,
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      usuarios = usuariosProvider.usuarios
-                          .where((usuario) => usuario.name
-                              .toLowerCase()
-                              .contains(value.toLowerCase()))
-                          .toList();
-                    });
-                  },
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none,
+                  ),
+                  hintText: 'Buscar',
+                  hintStyle: TextStyle(
+                    fontFamily: 'KoHo',
+                    color: theme.colorScheme.secondary,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  prefixIcon: Icon(Icons.search_rounded,
+                      color: theme.colorScheme.secondary, size: 30),
                 ),
+                onChanged: (value) {
+                  filterEspacios(value).then((usuarios) {
+                    setState(() {
+                      usuariosFiltrados = usuarios;
+                    });
+                  });
+                },
               ),
-              const SizedBox(width: 20),
-              Column(
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return const NuevoUsuarioBODialog();
-                          });
-                    },
-                    icon: Icon(Icons.add_rounded,
-                        color: theme.colorScheme.onSecondary),
-                    label: Text(
-                      'Nuevo',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSecondary,
-                        overflow: TextOverflow.ellipsis,
-                        fontFamily: 'KoHo',
-                        fontSize: 20,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      backgroundColor: theme.colorScheme.secondary,
+            ),
+            const SizedBox(width: 20),
+            Column(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const NuevoUsuarioBODialog();
+                        });
+                  },
+                  icon: Icon(Icons.add_rounded,
+                      color: theme.colorScheme.onSecondary),
+                  label: Text(
+                    'Nuevo',
+                    style: TextStyle(
+                      color: theme.colorScheme.onSecondary,
+                      overflow: TextOverflow.ellipsis,
+                      fontFamily: 'KoHo',
+                      fontSize: 20,
                     ),
                   ),
-                ],
-              )
-            ],
-          ),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    backgroundColor: theme.colorScheme.secondary,
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
-        const SizedBox(height: 20),
+      ),
+      if (usuariosFiltrados.isEmpty) const SizedBox(height: 20),
+      Center(
+        child: CircularProgressIndicator.adaptive(
+          valueColor:
+              AlwaysStoppedAnimation<Color>(theme.colorScheme.secondary),
+        ),
+      ),
+      if (usuariosFiltrados.isNotEmpty)
         Expanded(
           child: StaggeredGridView.countBuilder(
             padding: const EdgeInsets.all(10),
             crossAxisCount: 5,
-            itemCount: usuarios.length,
+            itemCount: usuariosFiltrados.length,
             staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
             itemBuilder: (BuildContext context, int index) {
-              final usuario = usuarios[index];
+              final usuario = usuariosFiltrados[index];
               return InkWell(
                 onTap: () {
                   showDialog(
@@ -190,7 +204,6 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
             },
           ),
         )
-      ]);
-    }
+    ]);
   }
 }

@@ -19,115 +19,127 @@ class EspaciosBOScreen extends StatefulWidget {
 
 class _EspaciosBOScreen extends State<EspaciosBOScreen> {
   final TextEditingController _searchController = TextEditingController();
+  List<Espacio> espaciosFiltrados = [];
 
   @override
   void initState() {
     super.initState();
     final espaciosProvider =
         Provider.of<EspaciosProvider>(context, listen: false);
-    espaciosProvider.fetchEspacios();
+
+    espaciosFiltrados = espaciosProvider.espacios;
+
+    espaciosProvider.fetchEspacios().then((value) => setState(() {
+          espaciosFiltrados = espaciosProvider.espacios;
+        }));
+  }
+
+  Future<List<Espacio>> filterEspacios(String query) async {
+    final espaciosProvider =
+        Provider.of<EspaciosProvider>(context, listen: false);
+    List<Espacio> espacios = espaciosProvider.espacios;
+
+    return espacios
+        .where((espacio) =>
+            espacio.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    final espaciosProvider = Provider.of<EspaciosProvider>(context);
-    List<Espacio> espacios = espaciosProvider.espacios;
-
-    if (espacios.isEmpty) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    } else {
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    cursorColor: theme.colorScheme.secondary,
-                    style: TextStyle(
-                        color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: MyColors.pinkApp.shade100,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none,
-                      ),
-                      hintText: 'Buscar',
-                      hintStyle: TextStyle(
-                        fontFamily: 'KoHo',
-                        color: theme.colorScheme.secondary,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      prefixIcon: Icon(Icons.search_rounded,
-                          color: theme.colorScheme.secondary, size: 30),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _searchController,
+                  cursorColor: theme.colorScheme.secondary,
+                  style: TextStyle(
+                      color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: MyColors.pinkApp.shade100,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        espacios = espaciosProvider.espacios
-                            .where((espacio) => espacio.name
-                                .toLowerCase()
-                                .contains(value.toLowerCase()))
-                            .toList();
-                      });
-                    },
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: 'Buscar',
+                    hintStyle: TextStyle(
+                      fontFamily: 'KoHo',
+                      color: theme.colorScheme.secondary,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    prefixIcon: Icon(Icons.search_rounded,
+                        color: theme.colorScheme.secondary, size: 30),
                   ),
+                  onChanged: (value) {
+                    filterEspacios(value).then((value) => setState(() {
+                          espaciosFiltrados = value;
+                        }));
+                  },
                 ),
-                const SizedBox(width: 20),
-                Column(
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return const NuevoEspacioBODialog();
-                            });
-                      },
-                      icon: Icon(Icons.add_rounded,
-                          color: theme.colorScheme.onSecondary),
-                      label: Text(
-                        'Nuevo',
-                        style: TextStyle(
-                          color: theme.colorScheme.onSecondary,
-                          overflow: TextOverflow.ellipsis,
-                          fontFamily: 'KoHo',
-                          fontSize: 20,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        backgroundColor: theme.colorScheme.secondary,
+              ),
+              const SizedBox(width: 20),
+              Column(
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const NuevoEspacioBODialog();
+                          });
+                    },
+                    icon: Icon(Icons.add_rounded,
+                        color: theme.colorScheme.onSecondary),
+                    label: Text(
+                      'Nuevo',
+                      style: TextStyle(
+                        color: theme.colorScheme.onSecondary,
+                        overflow: TextOverflow.ellipsis,
+                        fontFamily: 'KoHo',
+                        fontSize: 20,
                       ),
                     ),
-                  ],
-                )
-              ],
-            ),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      backgroundColor: theme.colorScheme.secondary,
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
-          const SizedBox(height: 20),
+        ),
+        if (espaciosFiltrados.isEmpty) const SizedBox(height: 20),
+        Center(
+          child: CircularProgressIndicator.adaptive(
+            valueColor:
+                AlwaysStoppedAnimation<Color>(theme.colorScheme.secondary),
+          ),
+        ),
+        if (espaciosFiltrados.isNotEmpty)
           Expanded(
             child: StaggeredGridView.countBuilder(
               padding: const EdgeInsets.all(10),
               crossAxisCount: 5,
-              itemCount: espacios.length,
+              itemCount: espaciosFiltrados.length,
               staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
               itemBuilder: (BuildContext context, int index) {
-                final espacio = espacios[index];
+                final espacio = espaciosFiltrados[index];
                 return InkWell(
                   onTap: () {
                     showDialog(
@@ -208,8 +220,7 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
               },
             ),
           )
-        ],
-      );
-    }
+      ],
+    );
   }
 }

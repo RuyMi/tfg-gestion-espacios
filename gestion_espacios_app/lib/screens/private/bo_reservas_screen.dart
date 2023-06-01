@@ -21,6 +21,7 @@ class ReservasBOScreen extends StatefulWidget {
 
 class _ReservasBOScreen extends State<ReservasBOScreen> {
   final TextEditingController _searchController = TextEditingController();
+  List<Reserva> reservasFiltradas = [];
   bool _sortBySpaces = true;
 
   @override
@@ -28,7 +29,12 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
     super.initState();
     final reservasProvider =
         Provider.of<ReservasProvider>(context, listen: false);
-    reservasProvider.fetchReservas();
+
+    reservasFiltradas = reservasProvider.reservas;
+
+    reservasProvider.fetchReservas().then((value) => setState(() {
+          reservasFiltradas = reservasProvider.reservas;
+        }));
   }
 
   void _handleSortBy(bool sortByUsers) {
@@ -41,131 +47,138 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
     });
   }
 
+  Future<List<Reserva>> filterEspacios(String query) async {
+    final reservasProvider =
+        Provider.of<ReservasProvider>(context, listen: false);
+    List<Reserva> reservas = reservasProvider.reservas;
+
+    return reservas
+        .where((reserva) =>
+            reserva.spaceName.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    final reservasProvider = Provider.of<ReservasProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
     final Usuario usuario = authProvider.usuario;
-    List<Reserva> reservas = reservasProvider.reservas;
 
-    if (reservas.isEmpty) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    } else {
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    cursorColor: theme.colorScheme.secondary,
-                    style: TextStyle(
-                        color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: MyColors.pinkApp.shade100,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none,
-                      ),
-                      hintText: 'Buscar',
-                      hintStyle: TextStyle(
-                        fontFamily: 'KoHo',
-                        color: theme.colorScheme.secondary,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      prefixIcon: Icon(Icons.search_rounded,
-                          color: theme.colorScheme.secondary, size: 30),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _searchController,
+                  cursorColor: theme.colorScheme.secondary,
+                  style: TextStyle(
+                      color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: MyColors.pinkApp.shade100,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        reservas = reservasProvider.reservas
-                            .where((reserva) => reserva.spaceName
-                                .toLowerCase()
-                                .contains(value.toLowerCase()))
-                            .toList();
-                      });
-                    },
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: 'Buscar',
+                    hintStyle: TextStyle(
+                      fontFamily: 'KoHo',
+                      color: theme.colorScheme.secondary,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    prefixIcon: Icon(Icons.search_rounded,
+                        color: theme.colorScheme.secondary, size: 30),
                   ),
+                  onChanged: (value) {
+                    filterEspacios(value).then((value) => setState(() {
+                          reservasFiltradas = value;
+                        }));
+                  },
                 ),
-                const SizedBox(width: 20),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.person_rounded,
-                            color: theme.colorScheme.onBackground),
-                        Switch(
-                          focusColor: theme.colorScheme.secondary,
-                          activeColor: theme.colorScheme.secondary,
-                          inactiveTrackColor:
-                              theme.colorScheme.onBackground.withOpacity(0.2),
-                          inactiveThumbColor: theme.colorScheme.onBackground,
-                          value: _sortBySpaces,
-                          onChanged: (value) {
-                            setState(() {
-                              _sortBySpaces = value;
-                              _handleSortBy(_sortBySpaces);
-                            });
-                          },
-                        ),
-                        Icon(Icons.calendar_today,
-                            color: theme.colorScheme.secondary),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return NuevaReservaBODialog(usuario: usuario);
-                            });
-                      },
-                      icon: Icon(Icons.add_rounded,
-                          color: theme.colorScheme.onSecondary),
-                      label: Text(
-                        'Nuevo',
-                        style: TextStyle(
-                          color: theme.colorScheme.onSecondary,
-                          overflow: TextOverflow.ellipsis,
-                          fontFamily: 'KoHo',
-                          fontSize: 20,
-                        ),
+              ),
+              const SizedBox(width: 20),
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.person_rounded,
+                          color: theme.colorScheme.onBackground),
+                      Switch(
+                        focusColor: theme.colorScheme.secondary,
+                        activeColor: theme.colorScheme.secondary,
+                        inactiveTrackColor:
+                            theme.colorScheme.onBackground.withOpacity(0.2),
+                        inactiveThumbColor: theme.colorScheme.onBackground,
+                        value: _sortBySpaces,
+                        onChanged: (value) {
+                          setState(() {
+                            _sortBySpaces = value;
+                            _handleSortBy(_sortBySpaces);
+                          });
+                        },
                       ),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        backgroundColor: theme.colorScheme.secondary,
+                      Icon(Icons.calendar_today,
+                          color: theme.colorScheme.secondary),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return NuevaReservaBODialog(usuario: usuario);
+                          });
+                    },
+                    icon: Icon(Icons.add_rounded,
+                        color: theme.colorScheme.onSecondary),
+                    label: Text(
+                      'Nuevo',
+                      style: TextStyle(
+                        color: theme.colorScheme.onSecondary,
+                        overflow: TextOverflow.ellipsis,
+                        fontFamily: 'KoHo',
+                        fontSize: 20,
                       ),
                     ),
-                  ],
-                )
-              ],
-            ),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      backgroundColor: theme.colorScheme.secondary,
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
-          const SizedBox(height: 20),
+        ),
+        if (reservasFiltradas.isEmpty) const SizedBox(height: 20),
+        Center(
+          child: CircularProgressIndicator.adaptive(
+            valueColor:
+                AlwaysStoppedAnimation<Color>(theme.colorScheme.secondary),
+          ),
+        ),
+        if (reservasFiltradas.isNotEmpty)
           Expanded(
             child: StaggeredGridView.countBuilder(
               padding: const EdgeInsets.all(10),
               crossAxisCount: 5,
-              itemCount: reservas.length,
+              itemCount: reservasFiltradas.length,
               staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
               itemBuilder: (BuildContext context, int index) {
-                final reserva = reservas[index];
+                final reserva = reservasFiltradas[index];
                 return InkWell(
                   onTap: () {
                     showDialog(
@@ -244,8 +257,7 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
               },
             ),
           ),
-        ],
-      );
-    }
+      ],
+    );
   }
 }
