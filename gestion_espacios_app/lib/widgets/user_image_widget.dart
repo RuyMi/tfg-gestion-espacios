@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class MyImageWidget extends StatelessWidget {
+class MyUserImageWidget extends StatelessWidget {
   final String? image;
 
-  const MyImageWidget({
+  const MyUserImageWidget({
     super.key,
     required this.image,
   });
@@ -14,8 +14,8 @@ class MyImageWidget extends StatelessWidget {
 
     return Image.network(
       image != null && image != ''
-          ? 'http://magarcia.asuscomm.com:25546/spaces/storage/$image.png'
-          : 'assets/images/image_placeholder.png',
+          ? 'http://magarcia.asuscomm.com:25546/users/storage/$image.png'
+          : 'assets/images/profile_pic.png',
       width: 100,
       height: 100,
       fit: BoxFit.cover,
@@ -38,12 +38,23 @@ class MyImageWidget extends StatelessWidget {
       },
       errorBuilder: (context, exception, stackTrace) {
         return Image.asset(
-          'assets/images/image_placeholder.png',
+          'assets/images/profile_pic.png',
           width: 100,
           height: 100,
           fit: BoxFit.cover,
         );
       },
+    );
+  }
+
+  Widget getImageWidget(BuildContext context) {
+    return Image.network(
+      image != null && image != ''
+          ? 'http://magarcia.asuscomm.com:25546/users/storage/$image.png'
+          : 'assets/images/profile_pic.png',
+      width: 100,
+      height: 100,
+      fit: BoxFit.cover,
     );
   }
 }

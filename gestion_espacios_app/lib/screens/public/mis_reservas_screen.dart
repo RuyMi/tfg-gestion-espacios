@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/screens/screens.dart';
-import 'package:gestion_espacios_app/widgets/image_widget.dart';
+import 'package:gestion_espacios_app/widgets/space_image_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -136,7 +136,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: MyImageWidget(image: reserva.image),
+                                  child: MySpaceImageWidget(image: reserva.image),
                                 ),
                               ),
                               const SizedBox(

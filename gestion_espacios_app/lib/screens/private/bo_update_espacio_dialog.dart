@@ -8,7 +8,7 @@ import 'package:gestion_espacios_app/providers/espacios_provider.dart';
 import 'package:gestion_espacios_app/providers/storage_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/eliminar_elemento.dart';
-import 'package:gestion_espacios_app/widgets/image_widget.dart';
+import 'package:gestion_espacios_app/widgets/space_image_widget.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:provider/provider.dart';
 
@@ -116,7 +116,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                     if (selectedImage == null && image != null)
                       ClipRRect(
                           borderRadius: BorderRadius.circular(30),
-                          child: MyImageWidget(image: espacio.image)),
+                          child: MySpaceImageWidget(image: espacio.image)),
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () async {

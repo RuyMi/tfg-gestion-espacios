@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/providers.dart';
 import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
-import 'package:gestion_espacios_app/widgets/image_widget.dart';
+import 'package:gestion_espacios_app/widgets/space_image_widget.dart';
 import 'package:provider/provider.dart';
 
 class EspaciosScreen extends StatefulWidget {
@@ -162,7 +162,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                   ),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: MyImageWidget(image: espacio.image),
+                                    child: MySpaceImageWidget(image: espacio.image),
                                   ),
                                 ),
                                 const SizedBox(
