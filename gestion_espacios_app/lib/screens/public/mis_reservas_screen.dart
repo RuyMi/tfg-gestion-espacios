@@ -146,7 +146,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                       ),
                     ),
                     child: const Text(
-                      'No existen espacios disponibles',
+                      'No existen reservas disponibles',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

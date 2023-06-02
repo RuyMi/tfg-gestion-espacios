@@ -87,7 +87,21 @@ class MyDrawer extends StatelessWidget {
             title: Text('Ajustes',
                 style: TextStyle(
                     fontFamily: 'KoHo', color: theme.colorScheme.onPrimary)),
-            onTap: () {},
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Funcionalidad no disponible.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'KoHo',
+                        color: theme.colorScheme.onSecondary,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  duration: const Duration(seconds: 1),
+                  backgroundColor: theme.colorScheme.secondary,
+                ),
+              );
+            },
           ),
           Divider(
             color: theme.colorScheme.onPrimary,
