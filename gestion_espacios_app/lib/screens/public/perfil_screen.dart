@@ -128,7 +128,21 @@ class _PerfilScreenState extends State<PerfilScreen> {
                         ),
                       ],
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Funcionalidad no disponible.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onSecondary,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          duration: const Duration(seconds: 1),
+                          backgroundColor: theme.colorScheme.secondary,
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 10),
                   TextButton(
@@ -149,7 +163,21 @@ class _PerfilScreenState extends State<PerfilScreen> {
                         ),
                       ],
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Funcionalidad no disponible.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onSecondary,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          duration: const Duration(seconds: 1),
+                          backgroundColor: theme.colorScheme.secondary,
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 10),
                   TextButton(

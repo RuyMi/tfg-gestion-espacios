@@ -35,55 +35,67 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 50),
               SizedBox(
                 width: 400,
-                child: TextField(
-                  onChanged: (value) => username = value,
-                  cursorColor: theme.colorScheme.secondary,
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(
-                        color: theme.colorScheme.onSurface,
+                child: GestureDetector(
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                  },
+                  child: TextField(
+                    onChanged: (value) => username = value,
+                    cursorColor: theme.colorScheme.secondary,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.onSurface,
+                        ),
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(
-                        color: theme.colorScheme.onSurface,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.onSurface,
+                        ),
                       ),
+                      labelText: 'Nombre de usuario',
+                      labelStyle: TextStyle(
+                          fontFamily: 'KoHo',
+                          color: theme.colorScheme.onSurface),
+                      prefixIcon: Icon(Icons.person,
+                          color: theme.colorScheme.onSurface),
                     ),
-                    labelText: 'Nombre de usuario',
-                    labelStyle: TextStyle(
-                        fontFamily: 'KoHo', color: theme.colorScheme.onSurface),
-                    prefixIcon:
-                        Icon(Icons.person, color: theme.colorScheme.onSurface),
                   ),
                 ),
               ),
               const SizedBox(height: 10),
               SizedBox(
                 width: 400,
-                child: TextField(
-                  onChanged: (value) => password = value,
-                  cursorColor: theme.colorScheme.secondary,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(
-                        color: theme.colorScheme.onSurface,
+                child: GestureDetector(
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                  },
+                  child: TextField(
+                    onChanged: (value) => password = value,
+                    cursorColor: theme.colorScheme.secondary,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.onSurface,
+                        ),
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(
-                        color: theme.colorScheme.onSurface,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.onSurface,
+                        ),
                       ),
+                      labelText: 'Contraseña',
+                      labelStyle: TextStyle(
+                          fontFamily: 'KoHo',
+                          color: theme.colorScheme.onSurface),
+                      prefixIcon:
+                          Icon(Icons.lock, color: theme.colorScheme.onSurface),
                     ),
-                    labelText: 'Contraseña',
-                    labelStyle: TextStyle(
-                        fontFamily: 'KoHo', color: theme.colorScheme.onSurface),
-                    prefixIcon:
-                        Icon(Icons.lock, color: theme.colorScheme.onSurface),
                   ),
                 ),
               ),
