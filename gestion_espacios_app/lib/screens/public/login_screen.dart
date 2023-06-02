@@ -16,29 +16,27 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        margin: const EdgeInsets.all(20),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/images/logo.png'),
-              const SizedBox(height: 10),
-              const Text(
-                'Gestión de espacios',
-                style: TextStyle(
-                  fontFamily: 'KoHo',
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          margin: const EdgeInsets.all(20),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/images/logo.png'),
+                const SizedBox(height: 10),
+                const Text(
+                  'Gestión de espacios',
+                  style: TextStyle(
+                    fontFamily: 'KoHo',
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 50),
-              SizedBox(
-                width: 400,
-                child: GestureDetector(
-                  onTap: () {
-                    FocusScope.of(context).unfocus();
-                  },
+                const SizedBox(height: 50),
+                SizedBox(
+                  width: 400,
                   child: TextField(
                     onChanged: (value) => username = value,
                     cursorColor: theme.colorScheme.secondary,
@@ -64,14 +62,9 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              SizedBox(
-                width: 400,
-                child: GestureDetector(
-                  onTap: () {
-                    FocusScope.of(context).unfocus();
-                  },
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: 400,
                   child: TextField(
                     onChanged: (value) => password = value,
                     cursorColor: theme.colorScheme.secondary,
@@ -98,65 +91,65 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  authProvider.login(username, password).then(
-                    (usuario) {
-                      final loginSucceed = authProvider.loginSucceed;
-
-                      if (loginSucceed) {
-                        Navigator.pushNamed(context, '/home');
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (context) => const MyErrorMessageDialog(
-                            title: 'Error al iniciar sesión',
-                            description: 'Usuario o contraseña incorrectos.',
-                          ),
-                        );
-                      }
-                    },
-                  ).catchError((error) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const MyErrorMessageDialog(
-                            title: 'Error al iniciar sesión',
-                            description: 'Usuario o contraseña incorrectos.',
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    authProvider.login(username, password).then(
+                      (usuario) {
+                        final loginSucceed = authProvider.loginSucceed;
+      
+                        if (loginSucceed) {
+                          Navigator.pushNamed(context, '/home');
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) => const MyErrorMessageDialog(
+                              title: 'Error al iniciar sesión',
+                              description: 'Usuario o contraseña incorrectos.',
+                            ),
                           );
-                        });
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+                        }
+                      },
+                    ).catchError((error) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const MyErrorMessageDialog(
+                              title: 'Error al iniciar sesión',
+                              description: 'Usuario o contraseña incorrectos.',
+                            );
+                          });
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    backgroundColor: theme.colorScheme.secondary,
                   ),
-                  backgroundColor: theme.colorScheme.secondary,
+                  child: Text('Validar',
+                      style: TextStyle(
+                          color: theme.colorScheme.onSecondary,
+                          fontFamily: 'KoHo')),
                 ),
-                child: Text('Validar',
+                const SizedBox(height: 10),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/login-bo');
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: theme.colorScheme.onBackground,
+                  ),
+                  child: Text(
+                    'Acceso al área privada del centro.',
                     style: TextStyle(
-                        color: theme.colorScheme.onSecondary,
-                        fontFamily: 'KoHo')),
-              ),
-              const SizedBox(height: 10),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/login-bo');
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: theme.colorScheme.onBackground,
-                ),
-                child: Text(
-                  'Acceso al área privada del centro.',
-                  style: TextStyle(
-                    fontFamily: 'KoHo',
-                    color: theme.colorScheme.secondary,
+                      fontFamily: 'KoHo',
+                      color: theme.colorScheme.secondary,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

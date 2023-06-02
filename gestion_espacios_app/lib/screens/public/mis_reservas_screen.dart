@@ -156,8 +156,8 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                   ),
                 ],
               ),
-            )
-          else
+            ),
+          if (misReservasFiltradas.isNotEmpty)
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.8,
               child: ListView.builder(

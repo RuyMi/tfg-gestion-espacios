@@ -188,10 +188,10 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                   ),
                 ],
               ),
-            )
-          else
+            ),
+          if (espaciosFiltrados.isNotEmpty)
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.8,
+              height: MediaQuery.of(context).size.height,
               child: ListView.builder(
                   itemCount: espaciosFiltrados.length,
                   itemBuilder: (context, index) {

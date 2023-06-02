@@ -185,38 +185,33 @@ class _ReservaSala extends State<EditarReservaScreen> {
                 const SizedBox(height: 30),
                 SizedBox(
                   width: 250,
-                  child: GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                    },
-                    child: TextField(
-                      controller: observationsController,
-                      onChanged: (value) => observations = value,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 3,
-                      cursorColor: theme.colorScheme.secondary,
-                      style: TextStyle(
-                          color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(
-                            color: theme.colorScheme.secondary,
-                          ),
+                  child: TextField(
+                    controller: observationsController,
+                    onChanged: (value) => observations = value,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 3,
+                    cursorColor: theme.colorScheme.secondary,
+                    style: TextStyle(
+                        color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.secondary,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(
-                            color: theme.colorScheme.secondary,
-                          ),
-                        ),
-                        labelText: 'Observaciones',
-                        labelStyle: TextStyle(
-                            fontFamily: 'KoHo',
-                            color: theme.colorScheme.secondary),
-                        prefixIcon: Icon(Icons.message_rounded,
-                            color: theme.colorScheme.secondary),
                       ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.secondary,
+                        ),
+                      ),
+                      labelText: 'Observaciones',
+                      labelStyle: TextStyle(
+                          fontFamily: 'KoHo',
+                          color: theme.colorScheme.secondary),
+                      prefixIcon: Icon(Icons.message_rounded,
+                          color: theme.colorScheme.secondary),
                     ),
                   ),
                 ),
