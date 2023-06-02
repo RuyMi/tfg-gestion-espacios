@@ -129,13 +129,13 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
           ],
         ),
       ),
-      if (usuariosFiltrados.isEmpty) const SizedBox(height: 20),
-      Center(
-        child: CircularProgressIndicator.adaptive(
-          valueColor:
-              AlwaysStoppedAnimation<Color>(theme.colorScheme.secondary),
+      if (usuariosFiltrados.isEmpty)
+        Center(
+          child: CircularProgressIndicator.adaptive(
+            valueColor:
+                AlwaysStoppedAnimation<Color>(theme.colorScheme.secondary),
+          ),
         ),
-      ),
       if (usuariosFiltrados.isNotEmpty)
         Expanded(
           child: StaggeredGridView.countBuilder(

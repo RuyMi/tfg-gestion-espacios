@@ -128,13 +128,13 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
             ],
           ),
         ),
-        if (espaciosFiltrados.isEmpty) const SizedBox(height: 20),
-        Center(
-          child: CircularProgressIndicator.adaptive(
-            valueColor:
-                AlwaysStoppedAnimation<Color>(theme.colorScheme.secondary),
+        if (espaciosFiltrados.isEmpty)
+          Center(
+            child: CircularProgressIndicator.adaptive(
+              valueColor:
+                  AlwaysStoppedAnimation<Color>(theme.colorScheme.secondary),
+            ),
           ),
-        ),
         if (espaciosFiltrados.isNotEmpty)
           Expanded(
             child: StaggeredGridView.countBuilder(

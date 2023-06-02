@@ -167,13 +167,13 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
             ],
           ),
         ),
-        if (reservasFiltradas.isEmpty) const SizedBox(height: 20),
-        Center(
-          child: CircularProgressIndicator.adaptive(
-            valueColor:
-                AlwaysStoppedAnimation<Color>(theme.colorScheme.secondary),
+        if (reservasFiltradas.isEmpty)
+          Center(
+            child: CircularProgressIndicator.adaptive(
+              valueColor:
+                  AlwaysStoppedAnimation<Color>(theme.colorScheme.secondary),
+            ),
           ),
-        ),
         if (reservasFiltradas.isNotEmpty)
           Expanded(
             child: StaggeredGridView.countBuilder(
