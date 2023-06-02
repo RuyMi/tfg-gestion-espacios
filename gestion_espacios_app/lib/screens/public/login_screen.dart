@@ -14,11 +14,15 @@ class LoginScreen extends StatelessWidget {
     var authProvider = Provider.of<AuthProvider>(context, listen: false);
     var theme = Theme.of(context);
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Container(
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Container(
           margin: const EdgeInsets.all(20),
           child: Center(
             child: Column(
@@ -97,7 +101,7 @@ class LoginScreen extends StatelessWidget {
                     authProvider.login(username, password).then(
                       (usuario) {
                         final loginSucceed = authProvider.loginSucceed;
-      
+
                         if (loginSucceed) {
                           Navigator.pushNamed(context, '/home');
                         } else {
