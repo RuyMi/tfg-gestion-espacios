@@ -1,11 +1,10 @@
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
 import 'package:gestion_espacios_app/providers/espacios_provider.dart';
 import 'package:gestion_espacios_app/providers/storage_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/eliminar_elemento.dart';
+import 'package:gestion_espacios_app/widgets/picked_image_widget.dart';
 import 'package:gestion_espacios_app/widgets/space_image_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -80,17 +79,6 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
     }
   }
 
-  Widget imageForPickedFile(PickedFile pickedImage,
-      {double? width, double? height, BoxFit? fit}) {
-    if (kIsWeb) {
-      return Image.network(pickedImage.path,
-          width: width, height: height, fit: fit);
-    } else {
-      return Image.file(File(pickedImage.path),
-          width: width, height: height, fit: fit);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -126,8 +114,12 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                     if (selectedImage != null)
                       ClipRRect(
                         borderRadius: BorderRadius.circular(30),
-                        child: imageForPickedFile(selectedImage!,
-                            width: 100, height: 100, fit: BoxFit.cover),
+                        child: PickedImageWidget(
+                          pickedImage: selectedImage!,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     if (selectedImage == null && image != null)
                       ClipRRect(

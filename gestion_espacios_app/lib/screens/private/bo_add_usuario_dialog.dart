@@ -1,12 +1,10 @@
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/usuario.dart';
 import 'package:gestion_espacios_app/providers/storage_provider.dart';
 import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
+import 'package:gestion_espacios_app/widgets/picked_image_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -51,17 +49,6 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
     }
   }
 
-  Widget imageForPickedFile(PickedFile pickedImage,
-      {double? width, double? height, BoxFit? fit}) {
-    if (kIsWeb) {
-      return Image.network(pickedImage.path,
-          width: width, height: height, fit: fit);
-    } else {
-      return Image.file(File(pickedImage.path),
-          width: width, height: height, fit: fit);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -90,8 +77,12 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                   if (selectedImage != null)
                     ClipRRect(
                       borderRadius: BorderRadius.circular(30),
-                      child: imageForPickedFile(selectedImage!,
-                          width: 100, height: 100, fit: BoxFit.cover),
+                      child: PickedImageWidget(
+                        pickedImage: selectedImage!,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   const SizedBox(height: 16),
                   ElevatedButton(
