@@ -58,7 +58,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
         if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: Row(
             children: [

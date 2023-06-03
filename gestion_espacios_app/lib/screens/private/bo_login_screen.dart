@@ -15,9 +15,10 @@ class BOLoginScreen extends StatelessWidget {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
+        padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom, top: 50),
         child: Container(
           margin: const EdgeInsets.all(20),
           child: Center(

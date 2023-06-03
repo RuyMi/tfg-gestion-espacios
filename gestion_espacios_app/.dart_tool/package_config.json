@@ -62,6 +62,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "cross_file",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.3+4",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "crypto",
       "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/crypto-3.0.3",
       "packageUri": "lib/",
@@ -110,6 +116,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "flutter_plugin_android_lifecycle",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.15",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
       "name": "flutter_staggered_grid_view",
       "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_staggered_grid_view-0.4.1",
       "packageUri": "lib/",
@@ -129,9 +141,9 @@
     },
     {
       "name": "http",
-      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.0.0",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/http-0.13.6",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "2.19"
     },
     {
       "name": "http_parser",
@@ -146,8 +158,32 @@
       "languageVersion": "2.15"
     },
     {
-      "name": "image_picker_web",
-      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_web-3.0.0+1",
+      "name": "image_picker",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker-0.8.7+5",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "image_picker_android",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_android-0.8.6+19",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "image_picker_for_web",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_for_web-2.1.12",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "image_picker_ios",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_ios-0.8.7+4",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "image_picker_platform_interface",
+      "rootUri": "file:///C:/Users/aleja/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_platform_interface-2.6.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -446,7 +482,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2023-06-01T23:09:40.342718Z",
+  "generated": "2023-06-03T18:00:16.561437Z",
   "generator": "pub",
   "generatorVersion": "3.0.2"
 }

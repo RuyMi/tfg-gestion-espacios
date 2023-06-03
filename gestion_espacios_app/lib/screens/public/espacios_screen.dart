@@ -67,7 +67,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
         if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
       },
       child: Scaffold(
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           appBar: AppBar(
             automaticallyImplyLeading: false,
             centerTitle: true,
@@ -197,7 +197,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
               ),
             if (espaciosFiltrados.isNotEmpty)
               SizedBox(
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height * 0.8,
                 child: ListView.builder(
                     itemCount: espaciosFiltrados.length,
                     itemBuilder: (context, index) {
@@ -223,8 +223,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(10),
                                           boxShadow: [
                                             BoxShadow(
                                               color: theme.colorScheme.surface
@@ -236,8 +235,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                           ],
                                         ),
                                         child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(10),
                                           child: MySpaceImageWidget(
                                               image: espacio.image),
                                         ),
@@ -283,8 +281,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                         CrossAxisAlignment.end,
                                                     children: [
                                                       IconButton(
-                                                        padding:
-                                                            EdgeInsets.zero,
+                                                        padding: EdgeInsets.zero,
                                                         constraints:
                                                             const BoxConstraints(),
                                                         icon: Icon(
@@ -299,8 +296,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                         width: 10,
                                                       ),
                                                       IconButton(
-                                                        padding:
-                                                            EdgeInsets.zero,
+                                                        padding: EdgeInsets.zero,
                                                         constraints:
                                                             const BoxConstraints(),
                                                         icon: Icon(
@@ -323,23 +319,20 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                          espacio
-                                                              .price
+                                                          espacio.price
                                                               .toString(),
                                                           style: TextStyle(
-                                                              fontFamily:
-                                                                  'KoHo',
+                                                              fontFamily: 'KoHo',
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                                  FontWeight.bold,
                                                               color: theme
                                                                   .colorScheme
                                                                   .secondary,
                                                               fontSize: 14)),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets
-                                                                .only(top: 2),
+                                                            const EdgeInsets.only(
+                                                                top: 2),
                                                         child: Icon(
                                                             Icons
                                                                 .monetization_on_outlined,

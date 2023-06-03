@@ -62,7 +62,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
         if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
       },
       child: Scaffold(
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           appBar: AppBar(
             automaticallyImplyLeading: true,
             centerTitle: true,
