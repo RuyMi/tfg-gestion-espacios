@@ -26,7 +26,7 @@ class SpaceRepositoryImplTest {
         isReservable = false,
         requiresAuthorization = false,
         authorizedRoles = setOf(Space.UserRole.USER),
-        bookingWindow = "test"
+        bookingWindow = 10
     )
 
     val spaceReservable = Space(
@@ -38,7 +38,7 @@ class SpaceRepositoryImplTest {
         isReservable = true,
         requiresAuthorization = false,
         authorizedRoles = setOf(Space.UserRole.USER),
-        bookingWindow = "test"
+        bookingWindow = 10
     )
 
 
@@ -109,7 +109,7 @@ class SpaceRepositoryImplTest {
     fun update() = runTest {
         val response = space.copy(
             name = "testUpdate",
-            bookingWindow = "testUpdate"
+            bookingWindow = 10
         )
         val updatedResponse = repository.update(response)
 

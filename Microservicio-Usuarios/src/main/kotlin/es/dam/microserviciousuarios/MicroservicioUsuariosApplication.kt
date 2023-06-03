@@ -5,7 +5,7 @@ import org.springframework.boot.runApplication
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 
 @SpringBootApplication
-//@EnableWebSecurity
+@EnableWebSecurity
 class MicroservicioUsuariosApplication
 
 fun main(args: Array<String>) {

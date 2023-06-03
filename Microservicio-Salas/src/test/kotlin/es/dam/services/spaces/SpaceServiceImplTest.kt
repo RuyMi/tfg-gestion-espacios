@@ -36,7 +36,7 @@ class SpaceServiceImplTest {
         isReservable = false,
         requiresAuthorization = false,
         authorizedRoles = setOf(Space.UserRole.USER),
-        bookingWindow = "test"
+        bookingWindow = 10
     )
 
     val spaceReservable = Space(
@@ -48,7 +48,7 @@ class SpaceServiceImplTest {
         isReservable = true,
         requiresAuthorization = false,
         authorizedRoles = setOf(Space.UserRole.USER),
-        bookingWindow = "test"
+        bookingWindow = 10
     )
 
 
