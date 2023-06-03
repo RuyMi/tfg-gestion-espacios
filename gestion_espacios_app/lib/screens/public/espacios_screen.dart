@@ -73,7 +73,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
             centerTitle: true,
             title: Column(
               children: [
-                const Text('IES Luis Vives'),
+                const Text('Espacios', style: TextStyle(fontFamily: 'KoHo')),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -163,36 +163,38 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
               ),
             ),
             if (espaciosFiltrados.isEmpty)
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.hide_source_rounded,
-                      size: 100,
-                      color: theme.colorScheme.onBackground,
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.background,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: theme.colorScheme.onBackground,
-                          width: 2,
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.hide_source_rounded,
+                        size: 100,
+                        color: theme.colorScheme.onBackground,
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.background,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: theme.colorScheme.onBackground,
+                            width: 2,
+                          ),
+                        ),
+                        child: const Text(
+                          'No existen espacios disponibles',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'KoHo',
+                          ),
                         ),
                       ),
-                      child: const Text(
-                        'No existen espacios disponibles',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'KoHo',
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             if (espaciosFiltrados.isNotEmpty)
@@ -223,7 +225,8 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           boxShadow: [
                                             BoxShadow(
                                               color: theme.colorScheme.surface
@@ -235,7 +238,8 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                           ],
                                         ),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           child: MySpaceImageWidget(
                                               image: espacio.image),
                                         ),
@@ -281,7 +285,8 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                         CrossAxisAlignment.end,
                                                     children: [
                                                       IconButton(
-                                                        padding: EdgeInsets.zero,
+                                                        padding:
+                                                            EdgeInsets.zero,
                                                         constraints:
                                                             const BoxConstraints(),
                                                         icon: Icon(
@@ -296,7 +301,8 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                         width: 10,
                                                       ),
                                                       IconButton(
-                                                        padding: EdgeInsets.zero,
+                                                        padding:
+                                                            EdgeInsets.zero,
                                                         constraints:
                                                             const BoxConstraints(),
                                                         icon: Icon(
@@ -319,20 +325,23 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                          espacio.price
+                                                          espacio
+                                                              .price
                                                               .toString(),
                                                           style: TextStyle(
-                                                              fontFamily: 'KoHo',
+                                                              fontFamily:
+                                                                  'KoHo',
                                                               fontWeight:
-                                                                  FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                               color: theme
                                                                   .colorScheme
                                                                   .secondary,
                                                               fontSize: 14)),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets.only(
-                                                                top: 2),
+                                                            const EdgeInsets
+                                                                .only(top: 2),
                                                         child: Icon(
                                                             Icons
                                                                 .monetization_on_outlined,
