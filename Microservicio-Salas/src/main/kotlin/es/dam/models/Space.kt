@@ -1,16 +1,11 @@
 package es.dam.models
 
 import es.dam.serializers.IdSerializer
-import es.dam.serializers.UUIDSerializer
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.bson.codecs.pojo.annotations.BsonId
-import org.bson.types.ObjectId
 import org.litote.kmongo.Id
-import org.litote.kmongo.id.toId
 import org.litote.kmongo.newId
 import java.util.*
-import kotlin.time.Duration
 
 @Serializable
 data class Space(

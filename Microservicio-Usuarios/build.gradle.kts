@@ -53,8 +53,8 @@ dependencies {
 
     // Spring security
     implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+    //implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    //implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
     //Azure
     //implementation("com.nimbusds:nimbus-jose-jwt:9.10.1")
@@ -75,13 +75,24 @@ dependencyManagement {
 }
  */
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+sourceSets.main {
+    java.srcDirs("build/generated/ksp/main/kotlin")
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes(
+            "Main-Class" to "es.dam.microserviciousuarios.ApplicationKt",
+            "Class-Path" to configurations.runtimeClasspath.get().files.joinToString(" ")
+        )
     }
 }
 
-tasks.withType<Test> {
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    jvmTarget = "17"
+}
+
+tasks.test {
     useJUnitPlatform()
 }

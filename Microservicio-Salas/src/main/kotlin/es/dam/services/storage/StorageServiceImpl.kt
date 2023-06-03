@@ -7,7 +7,6 @@ import io.ktor.utils.io.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.InjectedParam
-import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 import java.io.File
 import java.time.LocalDateTime
@@ -19,17 +18,20 @@ class StorageServiceImpl(
     override fun getConfig(): StorageConfig {
         return storageConfig
     }
+    private val resourcePath = this::class.java.classLoader.getResource("uploads").file
+    private val uploadsPath = resourcePath
+    private val uploadsDir = File(uploadsPath)
 
     override fun initStorageDirectory() {
-        if (!File(storageConfig.uploadDir).exists()) {
-            File(storageConfig.uploadDir).mkdir()
+        if (!uploadsDir.exists()) {
+            uploadsDir.mkdirs()
         }
     }
 
     override suspend fun saveFile(fileName: String, fileBytes: ByteArray): Map<String, String> =
         withContext(Dispatchers.IO) {
             try {
-                val file = File("${storageConfig.uploadDir}/$fileName")
+                val file = File("${uploadsPath}/$fileName")
                 file.writeBytes(fileBytes)
                 return@withContext mapOf(
                     "fileName" to fileName,
@@ -45,7 +47,7 @@ class StorageServiceImpl(
     override suspend fun saveFile(fileName: String, fileBytes: ByteReadChannel): Map<String, String> =
         withContext(Dispatchers.IO) {
             try {
-                val file = File("${storageConfig.uploadDir}/$fileName")
+                val file = File("${uploadsPath}/$fileName")
                 val res = fileBytes.copyAndClose(file.writeChannel())
                 return@withContext mapOf(
                     "fileName" to fileName,
@@ -59,16 +61,17 @@ class StorageServiceImpl(
         }
 
     override suspend fun getFile(fileName: String): File = withContext(Dispatchers.IO) {
-        val file = File("${storageConfig.uploadDir}/$fileName")
+        println(uploadsPath)
+        val file = File("${uploadsPath}/$fileName")
         if (!file.exists()) {
-            return@withContext File("${storageConfig.uploadDir}/placeholder.jpeg")
+            return@withContext File("${uploadsPath}/placeholder.jpeg")
         } else {
             return@withContext file
         }
     }
 
     override suspend fun deleteFile(fileName: String): Unit = withContext(Dispatchers.IO) {
-        val file = File("${storageConfig.uploadDir}/$fileName")
+        val file = File("${uploadsPath}/$fileName")
         if (!file.exists()) {
             throw StorageException.FileNotFound("No se ha encontrado el fichero: $fileName")
         } else {
