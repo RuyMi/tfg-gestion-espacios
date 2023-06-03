@@ -48,9 +48,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var themeProvider = context.watch<ThemeProvider>();
+    // var themePreference = context.watch<ThemePreference>();
 
     return MaterialApp(
-      title: 'Luis Vives',
+      title: 'IES Luis Vives App',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightThemeData,
       darkTheme: AppTheme.darkThemeData,

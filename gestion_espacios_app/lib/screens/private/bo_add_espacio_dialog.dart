@@ -1,12 +1,13 @@
-import 'dart:typed_data';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
 import 'package:gestion_espacios_app/providers/espacios_provider.dart';
 import 'package:gestion_espacios_app/providers/storage_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class NuevoEspacioBODialog extends StatefulWidget {
@@ -26,23 +27,46 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
   bool requiresAuthorization = false;
   List<String> authorizedRoles = [];
   int bookingWindow = 0;
-  Uint8List? selectedImage;
+  PickedFile? selectedImage;
+  ImagePicker picker = ImagePicker();
+
+  int tryParseInt(String value, {int fallbackValue = 0}) {
+    int result;
+    try {
+      result = int.parse(value);
+    } catch (e) {
+      result = fallbackValue;
+    }
+    return result;
+  }
+
+  void pickImage() async {
+    PickedFile? pickedFile =
+        // ignore: invalid_use_of_visible_for_testing_member
+        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        selectedImage = pickedFile;
+      });
+    }
+  }
+
+  Widget imageForPickedFile(PickedFile pickedImage,
+      {double? width, double? height, BoxFit? fit}) {
+    if (kIsWeb) {
+      return Image.network(pickedImage.path,
+          width: width, height: height, fit: fit);
+    } else {
+      return Image.file(File(pickedImage.path),
+          width: width, height: height, fit: fit);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     final espaciosProvider = Provider.of<EspaciosProvider>(context);
     final storageProvider = Provider.of<StorageProvider>(context);
-
-    int tryParseInt(String value, {int fallbackValue = 0}) {
-      int result;
-      try {
-        result = int.parse(value);
-      } catch (e) {
-        result = fallbackValue;
-      }
-      return result;
-    }
 
     return AlertDialog(
       backgroundColor: theme.colorScheme.onBackground,
@@ -67,22 +91,13 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                     if (selectedImage != null)
                       ClipRRect(
                         borderRadius: BorderRadius.circular(30),
-                        child: Image.memory(
-                          selectedImage!,
-                          width: 200,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
+                        child: imageForPickedFile(selectedImage!,
+                            width: 100, height: 100, fit: BoxFit.cover),
                       ),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () async {
-                        final image = await ImagePickerWeb.getImageAsBytes();
-                        if (image != null) {
-                          setState(() {
-                            selectedImage = image;
-                          });
-                        }
+                      onPressed: () {
+                        pickImage();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.colorScheme.secondary,
