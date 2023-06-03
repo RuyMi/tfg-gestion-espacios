@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
     // var themePreference = context.watch<ThemePreference>();
 
     return MaterialApp(
-      title: 'IES Luis Vives App',
+      title: 'IES Luis Vives',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightThemeData,
       darkTheme: AppTheme.darkThemeData,
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
 
         // Public
-        '/login': (context) => const LoginScreen(),
+        '/login': (context) => LoginScreen(),
         '/home': (context) => const MainScreen(),
         '/espacios': (context) => const EspaciosScreen(),
         '/mis-reservas': (context) => const MisReservasScreen(),
@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
         // '/editar-reserva': (context) => const EditarReservaScreen(),
 
         // Private
-        '/login-bo': (context) => const BOLoginScreen(),
+        '/login-bo': (context) => BOLoginScreen(),
         '/home-bo': (context) => const BOMainScreen(),
         '/espacios-bo': (context) => const EspaciosBOScreen(),
         '/reservas-bo': (context) => const ReservasBOScreen(),

@@ -320,6 +320,11 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                                         curve: Curves.easeInOut);
                                   },
                                   style: ButtonStyle(
+                                    backgroundColor: hora == selectedHour
+                                        ? MaterialStateProperty.all<Color>(theme
+                                            .colorScheme.secondary
+                                            .withOpacity(0.5))
+                                        : null,
                                     overlayColor: MaterialStateProperty
                                         .resolveWith<Color>(
                                       (Set<MaterialState> states) {
