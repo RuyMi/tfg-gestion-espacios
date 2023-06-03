@@ -57,8 +57,8 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
   @override
   void initState() {
     super.initState();
-    observationsController = TextEditingController(
-        text: widget.reserva.observations ?? '');
+    observationsController =
+        TextEditingController(text: widget.reserva.observations ?? '');
   }
 
   @override
@@ -464,10 +464,11 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return const MyErrorMessageDialog(
-                              title: 'Error',
-                              description:
-                                  'Ha ocurrido un error al actualizar la reserva.',
+                            return MyErrorMessageDialog(
+                              title: 'Error al actualizar la reserva',
+                              description: error
+                                  .toString()
+                                  .substring(error.toString().indexOf(':') + 1),
                             );
                           });
                     });

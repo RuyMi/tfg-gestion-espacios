@@ -108,32 +108,20 @@ class BOLoginScreen extends StatelessWidget {
                     onPressed: () {
                       authProvider.login(username, password).then(
                         (usuario) {
-                          final loginSucceed = authProvider.loginSucceed;
                           final roles = authProvider.usuario.userRole;
 
-                          if (loginSucceed &&
-                              roles.contains('ADMINISTRATOR')) {
+                          if (roles.contains('ADMINISTRATOR')) {
                             Navigator.pushNamed(context, '/home-bo');
-                          } else {
-                            showDialog(
-                              context: context,
-                              builder: (context) =>
-                                  const MyErrorMessageDialog(
-                                title: 'Error al iniciar sesión',
-                                description:
-                                    'Usuario o contraseña incorrectos.',
-                              ),
-                            );
                           }
                         },
                       ).catchError((error) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return const MyErrorMessageDialog(
+                              return MyErrorMessageDialog(
                                 title: 'Error al iniciar sesión',
-                                description:
-                                    'Usuario o contraseña incorrectos.',
+                                description: error.toString().substring(
+                                    error.toString().indexOf(':') + 1),
                               );
                             });
                       });

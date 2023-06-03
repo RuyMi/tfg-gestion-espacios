@@ -422,10 +422,11 @@ class _NuevaReservaBODialog extends State<NuevaReservaBODialog> {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return const MyErrorMessageDialog(
-                              title: 'Error',
-                              description:
-                                  'Ha ocurrido un error al realizar la reserva.',
+                            return MyErrorMessageDialog(
+                              title: 'Error al crear la reserva',
+                              description: error
+                                  .toString()
+                                  .substring(error.toString().indexOf(':') + 1),
                             );
                           });
                     });

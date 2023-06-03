@@ -14,74 +14,66 @@ class StorageProvider with ChangeNotifier {
   String baseUrl = 'http://magarcia.asuscomm.com:25546';
 
   Future<String> uploadSpaceImage(PickedFile imageFile) async {
-    try {
-      final request = http.MultipartRequest(
-        'POST',
-        Uri.parse('$baseUrl/spaces/storage'),
-      );
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseUrl/spaces/storage'),
+    );
 
-      request.headers['Authorization'] = 'Bearer $_token';
+    request.headers['Authorization'] = 'Bearer $_token';
 
-      Uint8List imageBytes = await imageFile.readAsBytes();
+    Uint8List imageBytes = await imageFile.readAsBytes();
 
-      final file = http.MultipartFile.fromBytes(
-        'image',
-        imageBytes,
-        filename: 'space.png',
-        contentType: MediaType('image', 'png'),
-      );
+    final file = http.MultipartFile.fromBytes(
+      'image',
+      imageBytes,
+      filename: 'space.png',
+      contentType: MediaType('image', 'png'),
+    );
 
-      request.files.add(file);
+    request.files.add(file);
 
-      final response = await request.send();
+    final response = await request.send();
 
-      if (response.statusCode == 201) {
-        final data = await response.stream.bytesToString();
-        final json = jsonDecode(data);
-        final fileName = json['data']['fileName'];
+    if (response.statusCode == 201) {
+      final data = await response.stream.bytesToString();
+      final json = jsonDecode(data);
+      final fileName = json['data']['fileName'];
 
-        return fileName.split('.')[0];
-      } else {
-        throw Exception('Error al subir la imagen.');
-      }
-    } catch (e) {
-      throw Exception('Error al subir la imagen.');
+      return fileName.split('.')[0];
+    } else {
+      throw Exception(response.reasonPhrase);
     }
   }
 
   Future<String> uploadUserImage(PickedFile imageFile) async {
-    try {
-      final request = http.MultipartRequest(
-        'POST',
-        Uri.parse('$baseUrl/users/storage'),
-      );
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseUrl/users/storage'),
+    );
 
-      request.headers['Authorization'] = 'Bearer $_token';
+    request.headers['Authorization'] = 'Bearer $_token';
 
-      Uint8List imageBytes = await imageFile.readAsBytes();
+    Uint8List imageBytes = await imageFile.readAsBytes();
 
-      final file = http.MultipartFile.fromBytes(
-        'image',
-        imageBytes,
-        filename: 'user.png',
-        contentType: MediaType('image', 'png'),
-      );
+    final file = http.MultipartFile.fromBytes(
+      'image',
+      imageBytes,
+      filename: 'user.png',
+      contentType: MediaType('image', 'png'),
+    );
 
-      request.files.add(file);
+    request.files.add(file);
 
-      final response = await request.send();
+    final response = await request.send();
 
-      if (response.statusCode == 201) {
-        final data = await response.stream.bytesToString();
-        final json = jsonDecode(data);
-        final fileName = json['data']['fileName'];
+    if (response.statusCode == 201) {
+      final data = await response.stream.bytesToString();
+      final json = jsonDecode(data);
+      final fileName = json['data']['fileName'];
 
-        return fileName.split('.')[0];
-      } else {
-        throw Exception('Error al subir la imagen.');
-      }
-    } catch (e) {
-      throw Exception('Error al subir la imagen.');
+      return fileName.split('.')[0];
+    } else {
+      throw Exception(response.reasonPhrase);
     }
   }
 }

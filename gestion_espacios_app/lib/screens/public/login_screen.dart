@@ -113,31 +113,16 @@ class LoginScreen extends StatelessWidget {
                       onPressed: () {
                         authProvider.login(username, password).then(
                           (usuario) {
-                            final loginSucceed = authProvider.loginSucceed;
-
-                            if (loginSucceed) {
-                              Navigator.pushNamed(context, '/home');
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (context) =>
-                                    const MyErrorMessageDialog(
-                                  title: 'Error al iniciar sesión',
-                                  description:
-                                      'Usuario o contraseña incorrectos.',
-                                ),
-                              );
-                            }
+                            Navigator.pushNamed(context, '/home');
                           },
                         ).catchError((error) {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return const MyErrorMessageDialog(
-                                  title: 'Error al iniciar sesión',
-                                  description:
-                                      'Usuario o contraseña incorrectos.',
-                                );
+                                return MyErrorMessageDialog(
+                                    title: 'Error al iniciar sesión',
+                                    description: error.toString().substring(
+                                        error.toString().indexOf(':') + 1));
                               });
                         });
                       },

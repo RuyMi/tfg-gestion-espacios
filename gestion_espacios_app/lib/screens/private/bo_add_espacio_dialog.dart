@@ -411,11 +411,10 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return const MyErrorMessageDialog(
-                              title: 'Error',
-                              description:
-                                  'Ha ocurrido un error al crear el espacio.',
-                            );
+                            return MyErrorMessageDialog(
+                                title: 'Error al crear el espacio',
+                                description: error.toString().substring(
+                                    error.toString().indexOf(':') + 1));
                           },
                         );
                       });
@@ -423,10 +422,11 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return const MyErrorMessageDialog(
-                            title: 'Error',
-                            description:
-                                'Ha ocurrido un error al subir la imagen.',
+                          return MyErrorMessageDialog(
+                            title: 'Error al añadir la imagen',
+                            description: error
+                                .toString()
+                                .substring(error.toString().indexOf(':') + 1),
                           );
                         },
                       );
@@ -448,10 +448,11 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return const MyErrorMessageDialog(
-                            title: 'Error',
-                            description:
-                                'Ha ocurrido un error al crear el espacio.',
+                          return MyErrorMessageDialog(
+                            title: 'Error al crear el espacio',
+                            description: error
+                                .toString()
+                                .substring(error.toString().indexOf(':') + 1),
                           );
                         },
                       );

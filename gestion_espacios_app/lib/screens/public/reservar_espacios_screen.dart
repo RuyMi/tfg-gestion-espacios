@@ -424,10 +424,10 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return const MyErrorMessageDialog(
-                                  title: 'Error',
-                                  description:
-                                      'Ha ocurrido un error al realizar la reserva.',
+                                return MyErrorMessageDialog(
+                                  title: 'Error al realizar la reserva',
+                                  description: error.toString().substring(
+                                      error.toString().indexOf(':') + 1),
                                 );
                               });
                         });

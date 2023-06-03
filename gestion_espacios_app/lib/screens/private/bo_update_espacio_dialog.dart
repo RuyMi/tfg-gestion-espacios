@@ -469,10 +469,10 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return const MyErrorMessageDialog(
-                                  title: 'Error',
-                                  description:
-                                      'Ha ocurrido un error al actualizar el espacio.',
+                                return MyErrorMessageDialog(
+                                  title: 'Error al actualizar el espacio',
+                                  description: error.toString().substring(
+                                      error.toString().indexOf(':') + 1),
                                 );
                               },
                             );
@@ -481,10 +481,10 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return const MyErrorMessageDialog(
-                                title: 'Error',
-                                description:
-                                    'Ha ocurrido un error al subir la imagen.',
+                              return MyErrorMessageDialog(
+                                title: 'Error al añadir la imagen',
+                                description: error.toString().substring(
+                                    error.toString().indexOf(':') + 1),
                               );
                             },
                           );
@@ -508,10 +508,10 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return const MyErrorMessageDialog(
-                                title: 'Error',
-                                description:
-                                    'Ha ocurrido un error al actualizar el espacio.',
+                              return MyErrorMessageDialog(
+                                title: 'Error al actualizar el espacio',
+                                description: error.toString().substring(
+                                    error.toString().indexOf(':') + 1),
                               );
                             },
                           );

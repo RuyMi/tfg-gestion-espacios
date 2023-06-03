@@ -497,10 +497,10 @@ class _ReservaSala extends State<EditarReservaScreen> {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return const MyErrorMessageDialog(
-                                title: 'Error',
-                                description:
-                                    'Ha ocurrido un error al actualizar la reserva.',
+                              return MyErrorMessageDialog(
+                                title: 'Error al actualizar la reserva',
+                                description: error.toString().substring(
+                                    error.toString().indexOf(':') + 1),
                               );
                             });
                       });
