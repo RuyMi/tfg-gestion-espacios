@@ -96,38 +96,42 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
             backgroundColor: theme.colorScheme.background,
           ),
           body: Column(children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                controller: _searchController,
-                cursorColor: theme.colorScheme.secondary,
-                style: TextStyle(
-                    color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: MyColors.pinkApp.shade100,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
+            SizedBox(
+              height: 80,
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  controller: _searchController,
+                  cursorColor: theme.colorScheme.secondary,
+                  style: TextStyle(
+                      color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: MyColors.pinkApp.shade100,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: 'Buscar',
+                    hintStyle: TextStyle(
+                      fontFamily: 'KoHo',
+                      color: theme.colorScheme.secondary,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    prefixIcon: Icon(Icons.search_rounded,
+                        color: theme.colorScheme.secondary, size: 30),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintText: 'Buscar',
-                  hintStyle: TextStyle(
-                    fontFamily: 'KoHo',
-                    color: theme.colorScheme.secondary,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  prefixIcon: Icon(Icons.search_rounded,
-                      color: theme.colorScheme.secondary, size: 30),
+                  onChanged: (value) {
+                    filterReserva(value).then((value) => setState(() {
+                          misReservasFiltradas = value;
+                        }));
+                  },
                 ),
-                onChanged: (value) {
-                  filterReserva(value).then((value) => setState(() {
-                        misReservasFiltradas = value;
-                      }));
-                },
               ),
             ),
             if (misReservasFiltradas.isEmpty)
