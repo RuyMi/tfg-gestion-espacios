@@ -15,7 +15,7 @@ class _BuzonScreenState extends State<BuzonScreen> {
     var theme = Theme.of(context);
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,

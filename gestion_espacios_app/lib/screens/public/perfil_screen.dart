@@ -28,7 +28,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
     var theme = Theme.of(context);
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
         centerTitle: true,

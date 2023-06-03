@@ -35,13 +35,13 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/logo.png"
+  image_path: "assets/images/logo_fondo.jpg"
 
 flutter_launcher_icons:
   android: true
   ios: true
   min_sdk_android: 21
-  image_path: "assets/images/logo.png"
+  image_path: "assets/images/logo_fondo.jpg"
   remove_alpha_ios: true
 
 flutter:
