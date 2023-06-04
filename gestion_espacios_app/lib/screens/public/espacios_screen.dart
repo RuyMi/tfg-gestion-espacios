@@ -4,6 +4,7 @@ import 'package:gestion_espacios_app/providers/providers.dart';
 import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 import 'package:gestion_espacios_app/widgets/space_image_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../models/colors.dart';
 
@@ -295,7 +296,10 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                               .colorScheme
                                                               .surface,
                                                           size: 20),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        Share.share(
+                                                            '¡Mira este espacio que podemos reservar: ${espacio.name}!');
+                                                      },
                                                     ),
                                                     const SizedBox(
                                                       width: 10,
