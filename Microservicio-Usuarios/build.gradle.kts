@@ -6,7 +6,6 @@ plugins {
     kotlin("jvm") version "1.8.10"
     kotlin("plugin.spring") version "1.8.10"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
-    id("de.jensklingenberg.ktorfit") version "1.0.0"
 }
 
 group = "es.dam"
@@ -70,27 +69,14 @@ dependencyManagement {
     }
 }
 
-/*tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
-    mainClassName = "es.dam.microserviciousuarios.MicroserviciosUsuariosApplication"
-}
- */
 
-sourceSets.main {
-    java.srcDirs("build/generated/ksp/main/kotlin")
-}
 
-tasks.withType<Jar> {
-    manifest {
-        attributes(
-            "Main-Class" to "es.dam.microserviciousuarios.ApplicationKt",
-            "Class-Path" to configurations.runtimeClasspath.get().files.joinToString(" ")
-        )
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "17"
     }
-}
-
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    jvmTarget = "17"
 }
 
 tasks.test {

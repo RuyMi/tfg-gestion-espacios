@@ -22,6 +22,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.ktor.ext.inject
 import retrofit2.await
 import java.io.File
+import java.net.ConnectException
 import java.time.LocalDateTime
 import java.util.*
 
@@ -39,13 +40,20 @@ fun Application.usersRoutes() {
             post("/login") {
                 try {
                     val login = call.receive<UserLoginDTO>()
+                    println("Login: ${login.username} - ${login.password}")
 
-                   require(userRepository.isActive(login.username)){"Este usuario ha sido dado de baja."}
-                    val user = async {
+
+
+                    val user = runCatching {
                         userRepository.login(login)
                     }
 
-                    call.respond(HttpStatusCode.OK, user.await())
+                    if (user.isSuccess) {
+                        require(userRepository.isActive(login.username)){"Este usuario ha sido dado de baja."}
+                        call.respond(HttpStatusCode.OK, user.getOrNull()!!)
+                    } else {
+                        call.respond(HttpStatusCode.Unauthorized, user.exceptionOrNull()!!.message!!)
+                    }
 
                 } catch (e: UserNotFoundException) {
                     println("Error: ${e.message}")
@@ -62,6 +70,12 @@ fun Application.usersRoutes() {
                 } catch (e: IllegalArgumentException) {
                     println("Error: ${e.message}")
                     call.respond(HttpStatusCode.Unauthorized, "${e.message}")
+                } catch (e: ConnectException) {
+                    println("Error: ${e.message}")
+                    call.respond(HttpStatusCode.InternalServerError, "EL servidor no esta disponible en este momento.")
+                } catch (e: Exception) {
+                    println("Error: ${e.message}")
+                    call.respond(HttpStatusCode.InternalServerError, "Error interno del servidor.")
                 }
             }
 

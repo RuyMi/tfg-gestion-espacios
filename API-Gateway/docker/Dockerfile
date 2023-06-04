@@ -8,5 +8,5 @@ EXPOSE 8080
 RUN mkdir /app
 #RUN mkdir /cert
 #COPY --from=build /home/gradle/src/cert/* /cert/
-COPY --from=build /home/gradle/src/build/libs/API-Gateway-0.0.1.jar /app/microservicios-gateway.jar
+COPY --from=build /home/gradle/src/build/libs/API-Gateway-all.jar /app/microservicios-gateway.jar
 ENTRYPOINT ["java","-jar","/app/microservicios-gateway.jar"]
