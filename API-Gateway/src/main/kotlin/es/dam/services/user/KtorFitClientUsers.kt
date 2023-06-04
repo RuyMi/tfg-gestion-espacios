@@ -16,7 +16,7 @@ import kotlinx.serialization.json.Json
 
 
 object KtorFitClientUsers {
-    private const val API_URL = "http://localhost:8383/"
+    private const val API_URL = "http://api-users:8383/"
 
     private val ktorfit by lazy {
         Ktorfit.Builder()

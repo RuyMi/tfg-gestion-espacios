@@ -22,6 +22,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.ktor.ext.inject
 import retrofit2.await
 import java.io.File
+import java.net.ConnectException
 import java.time.LocalDateTime
 import java.util.*
 
@@ -39,13 +40,20 @@ fun Application.usersRoutes() {
             post("/login") {
                 try {
                     val login = call.receive<UserLoginDTO>()
+                    println("Login: ${login.username} - ${login.password}")
 
-                   require(userRepository.isActive(login.username)){"Este usuario ha sido dado de baja."}
-                    val user = async {
+
+
+                    val user = runCatching {
                         userRepository.login(login)
                     }
 
-                    call.respond(HttpStatusCode.OK, user.await())
+                    if (user.isSuccess) {
+                        require(userRepository.isActive(login.username)){"Este usuario ha sido dado de baja."}
+                        call.respond(HttpStatusCode.OK, user.getOrNull()!!)
+                    } else {
+                        call.respond(HttpStatusCode.Unauthorized, user.exceptionOrNull()!!.message!!)
+                    }
 
                 } catch (e: UserNotFoundException) {
                     println("Error: ${e.message}")
@@ -62,6 +70,12 @@ fun Application.usersRoutes() {
                 } catch (e: IllegalArgumentException) {
                     println("Error: ${e.message}")
                     call.respond(HttpStatusCode.Unauthorized, "${e.message}")
+                } catch (e: ConnectException) {
+                    println("Error: ${e.message}")
+                    call.respond(HttpStatusCode.InternalServerError, "EL servidor no esta disponible en este momento.")
+                } catch (e: Exception) {
+                    println("Error: ${e.message}")
+                    call.respond(HttpStatusCode.InternalServerError, "Error interno del servidor.")
                 }
             }
 
@@ -89,10 +103,7 @@ fun Application.usersRoutes() {
 
             get("/storage/{uuid}") {
                 try {
-                    val originalToken = call.principal<JWTPrincipal>()!!
-                    val token = tokenService.generateToken(originalToken)
                     val uuid = call.parameters["uuid"]
-
                     val res = runCatching {
                         userRepository.downloadFile(uuid!!)
                     }
@@ -113,6 +124,9 @@ fun Application.usersRoutes() {
                 } catch (e: IllegalArgumentException){
                     println("Error: ${e.message}")
                     call.respond(HttpStatusCode.Unauthorized, "${e.message}")
+                } catch (e: Exception){
+                    println("Error: ${e.message}")
+                    call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                 }
             }
 
@@ -228,7 +242,9 @@ fun Application.usersRoutes() {
                                     val fileBytes = inputStream.readBytes()
                                     val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
                                     val multipartBody = MultipartBody.Part.createFormData("file", "${UUID.randomUUID()}.png", requestBody)
+                                    println("Llegada al repositorio")
                                     userPhotoDTO = userRepository.uploadFile(token, multipartBody).await()
+                                    println("Salida del repositorio")
                                 }
                                 is PartData.BinaryItem -> {
                                     println("He entrado a BinaryItem")
@@ -266,6 +282,9 @@ fun Application.usersRoutes() {
                         println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: UserInternalErrorException) {
+                        println("Error: ${e.message}")
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    }catch (e: Exception){
                         println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     }

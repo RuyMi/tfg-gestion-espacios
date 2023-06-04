@@ -38,17 +38,17 @@ class SpaceRoutesTest {
         isReservable = true,
         requiresAuthorization = true,
         authorizedRoles = setOf(Space.UserRole.USER),
-        bookingWindow = Duration.parse("PT1H").toString()
+        bookingWindow = 10
     )
     val spaceDto = space.toSpaceDto()
     val spaceDtoCreate = SpaceCreateDTO(
         name = "name",
         image = "image",
-        price = 1,
+        price = 20,
         isReservable = true,
         requiresAuthorization = true,
         authorizedRoles = setOf(Space.UserRole.USER.toString()),
-        bookingWindow = Duration.parse("PT1H").toString()
+        bookingWindow = 10
     )
 
     val spaceDtoCreateWrong = SpaceCreateDTO(
@@ -58,7 +58,7 @@ class SpaceRoutesTest {
         isReservable = true,
         requiresAuthorization = true,
         authorizedRoles = setOf(Space.UserRole.USER.toString()),
-        bookingWindow = Duration.parse("PT1H").toString()
+        bookingWindow = 10
     )
 
     val spaceDtoUpdate = SpaceUpdateDTO(
@@ -66,7 +66,7 @@ class SpaceRoutesTest {
         isReservable = true,
         requiresAuthorization = true,
         authorizedRoles = setOf(Space.UserRole.USER.toString()),
-        bookingWindow = Duration.parse("PT1H").toString(),
+        bookingWindow = 10,
         price = 20
     )
     val data = SpaceDataDTO(
@@ -409,7 +409,7 @@ class SpaceRoutesTest {
                 isReservable = true,
                 requiresAuthorization = true,
                 authorizedRoles = setOf(Space.UserRole.USER),
-                bookingWindow = Duration.parse("PT1H").toString()
+                bookingWindow = 10
             )
             SpaceRepositoryImpl().deleteAll()
             SpaceRepositoryImpl().save(space)

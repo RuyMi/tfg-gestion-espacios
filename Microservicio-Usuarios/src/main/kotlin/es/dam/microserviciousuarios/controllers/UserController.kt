@@ -46,7 +46,7 @@ class UsersController @Autowired constructor(
 
             return ResponseEntity.ok(UserTokenDTO(user.toDTO(), jwtToken))
         } catch (e: Exception) {
-            throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password")
+            throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos")
         }
     }
 
@@ -59,7 +59,7 @@ class UsersController @Autowired constructor(
 
             return ResponseEntity.ok(UserTokenDTO(userInsert.toDTO(), jwtToken))
         } catch (e: UserBadRequestException) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists with that username or email")
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ya existe un usuario con ese nombre o correo")
         }
     }
 
@@ -71,7 +71,7 @@ class UsersController @Autowired constructor(
             val res2 = UserDataDTO(res)
             return ResponseEntity.ok(res2)
         } catch (e: UserNotFoundException) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Users not found")
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Usuarios no encontrados")
         }
     }
 
@@ -82,7 +82,7 @@ class UsersController @Autowired constructor(
             val res = userService.findByUuid(id).toDTO()
             return ResponseEntity.ok(res)
         } catch (e: UserNotFoundException) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with uuid: $id")
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario con uuid: $id no encontrado")
         } catch (e: UserBadRequestException) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid UUID string: $id")
         }

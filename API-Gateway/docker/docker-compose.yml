@@ -35,7 +35,7 @@ services:
       dockerfile: ./docker/Dockerfile
     container_name: gateway
     ports:
-      - "8080:8080"
+      - "1212:1212"
     depends_on:
       - api-spaces
       - api-users

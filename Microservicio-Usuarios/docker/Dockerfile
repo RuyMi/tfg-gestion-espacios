@@ -6,5 +6,5 @@ RUN gradle build --no-daemon
 FROM openjdk:17-jdk-slim-buster
 EXPOSE 8383
 RUN mkdir /app
-COPY --from=build /home/gradle/src/build/libs/Microservicio-Usuarios-0.0.1-SNAPSHOT-plain.jar /app/microservicios-usuarios.jar
+COPY --from=build /home/gradle/src/build/libs/Microservicio-Usuarios-0.0.1-SNAPSHOT.jar /app/microservicios-usuarios.jar
 ENTRYPOINT ["java","-jar","/app/microservicios-usuarios.jar"]

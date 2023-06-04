@@ -250,12 +250,16 @@ fun Application.spacesRoutes() {
                             throw res.exceptionOrNull()!!
                         }
                     } catch (e: SpaceNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: SpaceBadRequestException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: SpaceInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     } catch (e: IllegalArgumentException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "El id debe ser un UUID válido")
                     }
                 }

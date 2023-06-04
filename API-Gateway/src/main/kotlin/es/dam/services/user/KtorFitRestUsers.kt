@@ -2,6 +2,7 @@ package es.dam.services.user
 
 import de.jensklingenberg.ktorfit.http.*
 import es.dam.dto.*
+import io.ktor.client.request.forms.*
 
 interface KtorFitRestUsers {
     @GET("users")
@@ -67,6 +68,12 @@ interface KtorFitRestUsers {
         @Header("Authorization") token: String,
         @Path("id") id: String, @Body user: UserUpdateDTO
     ): UserResponseDTO
+
+    @POST("users/storage")
+    suspend fun uploadFile(
+        @Header("Authorization") token: String,
+        @Body image: MultiPartFormDataContent
+    ): UserPhotoDTO
 
     @PUT("users/me")
     suspend fun me(
