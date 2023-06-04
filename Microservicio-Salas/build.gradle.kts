@@ -58,6 +58,9 @@ dependencies {
 
     // Serializar KMongo
     implementation("org.litote.kmongo:kmongo-id-serialization:4.8.0")
+
+    //Cache
+    implementation("io.github.reactivecircus.cache4k:cache4k:0.9.0")
 }
 
 sourceSets.main {
