@@ -11,7 +11,7 @@ class StorageProvider with ChangeNotifier {
 
   StorageProvider(this._token);
 
-  String baseUrl = 'http://magarcia.asuscomm.com:25546';
+  String baseUrl = 'http://app.iesluisvives.org:1212';
 
   Future<String> uploadSpaceImage(PickedFile imageFile) async {
     final request = http.MultipartRequest(

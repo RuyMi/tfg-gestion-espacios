@@ -28,7 +28,7 @@ class UsuariosProvider with ChangeNotifier {
     fetchActualUsuario();
   }
 
-  String baseUrl = 'http://magarcia.asuscomm.com:25546';
+  String baseUrl = 'http://app.iesluisvives.org:1212';
 
   Future<void> fetchUsuarios() async {
     final response = await http.get(Uri.parse('$baseUrl/users'),
