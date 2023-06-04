@@ -77,9 +77,9 @@ class SpaceCachedRepositoryTest {
         coEvery { repo.findById(any()) } returns null
 
         val exception = assertFailsWith(SpaceException::class) {
-            repository.findById(UUID.fromString(space.uuid))
+            repository.findById(UUID.fromString("c060c959-8462-4a0f-9265-9af4f54d166f"))
         }
-        assertEquals("No se ha encontrado el espacio con uuid ${space.uuid}", exception.message)
+        assertEquals("No se ha encontrado el espacio con uuid c060c959-8462-4a0f-9265-9af4f54d166f", exception.message)
     }
 
     @Test

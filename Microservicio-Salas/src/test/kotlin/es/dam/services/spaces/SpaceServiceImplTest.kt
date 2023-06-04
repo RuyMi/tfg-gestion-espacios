@@ -2,7 +2,7 @@ package es.dam.services.spaces
 
 import es.dam.exceptions.SpaceException
 import es.dam.models.Space
-import es.dam.repositories.SpaceRepositoryImpl
+import es.dam.repositories.SpaceCachedRepository
 import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -22,7 +22,7 @@ import kotlin.test.assertFailsWith
 class SpaceServiceImplTest {
 
     @MockK
-    lateinit var spaceRepository : SpaceRepositoryImpl
+    lateinit var spaceRepository : SpaceCachedRepository
 
     @InjectMockKs
     lateinit var spaceService : SpaceServiceImpl
