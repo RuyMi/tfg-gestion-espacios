@@ -6,6 +6,7 @@ import 'package:gestion_espacios_app/screens/screens.dart';
 import 'package:gestion_espacios_app/widgets/space_image_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 class MisReservasScreen extends StatefulWidget {
   const MisReservasScreen({Key? key}) : super(key: key);
@@ -267,7 +268,10 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                                                               .colorScheme
                                                               .surface,
                                                           size: 20),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        Share.share(
+                                                            '🎈 Acabo de reservar ${reserva.spaceName}! ¿Quieres venirte?');
+                                                      },
                                                     ),
                                                     const SizedBox(
                                                       width: 10,

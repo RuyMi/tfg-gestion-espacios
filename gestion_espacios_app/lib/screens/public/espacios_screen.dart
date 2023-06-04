@@ -298,7 +298,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                           size: 20),
                                                       onPressed: () {
                                                         Share.share(
-                                                            '¡Mira este espacio que podemos reservar: ${espacio.name}!');
+                                                            '🎈 ¡He pensado que podríamos reservar ${espacio.name} por solo ${espacio.price} créditos 💲!\n\n💠 ${espacio.description}');
                                                       },
                                                     ),
                                                     const SizedBox(
