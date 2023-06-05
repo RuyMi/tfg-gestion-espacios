@@ -27,16 +27,16 @@ class EspaciosProvider with ChangeNotifier {
       final data = jsonDecode(response.body);
       final results = data['data'] as List<dynamic>;
       _espacios = results
-          .map((json) => Espacio(
-                uuid: json['uuid'],
-                name: json['name'],
-                image: json['image'],
-                price: json['price'],
-                isReservable: json['isReservable'],
-                requiresAuthorization: json['requiresAuthorization'],
-                authorizedRoles: List<String>.from(json['authorizedRoles']),
-                bookingWindow: json['bookingWindow'],
-                description: json['description'],
+          .map((espacio) => Espacio(
+                uuid: espacio['uuid'],
+                name: espacio['name'],
+                image: espacio['image'],
+                price: espacio['price'],
+                isReservable: espacio['isReservable'],
+                requiresAuthorization: espacio['requiresAuthorization'],
+                authorizedRoles: List<String>.from(espacio['authorizedRoles']),
+                bookingWindow: espacio['bookingWindow'],
+                description: espacio['description'],
               ))
           .toList();
 
@@ -57,16 +57,16 @@ class EspaciosProvider with ChangeNotifier {
       final data = jsonDecode(response.body);
       final results = data['data'] as List<dynamic>;
       _espaciosReservables = results
-          .map((json) => Espacio(
-                uuid: json['uuid'],
-                name: json['name'],
-                image: json['image'],
-                price: json['price'],
-                isReservable: json['isReservable'],
-                requiresAuthorization: json['requiresAuthorization'],
-                authorizedRoles: List<String>.from(json['authorizedRoles']),
-                bookingWindow: json['bookingWindow'],
-                description: json['description'],
+          .map((espacio) => Espacio(
+                uuid: espacio['uuid'],
+                name: espacio['name'],
+                image: espacio['image'],
+                price: espacio['price'],
+                isReservable: espacio['isReservable'],
+                requiresAuthorization: espacio['requiresAuthorization'],
+                authorizedRoles: List<String>.from(espacio['authorizedRoles']),
+                bookingWindow: espacio['bookingWindow'],
+                description: espacio['description'],
               ))
           .toList();
       notifyListeners();

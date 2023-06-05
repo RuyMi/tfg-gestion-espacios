@@ -37,17 +37,17 @@ class ReservasProvider with ChangeNotifier {
       final data = jsonDecode(response.body);
       final results = data['data'] as List<dynamic>;
       _reservas = results
-          .map((json) => Reserva(
-                uuid: json['uuid'],
-                userId: json['userId'],
-                spaceId: json['spaceId'],
-                startTime: json['startTime'],
-                endTime: json['endTime'],
-                observations: json['observations'],
-                status: json['status'],
-                userName: json['userName'],
-                spaceName: json['spaceName'],
-                image: json['image'],
+          .map((reserva) => Reserva(
+                uuid: reserva['uuid'],
+                userId: reserva['userId'],
+                spaceId: reserva['spaceId'],
+                startTime: reserva['startTime'],
+                endTime: reserva['endTime'],
+                observations: reserva['observations'],
+                status: reserva['status'],
+                userName: reserva['userName'],
+                spaceName: reserva['spaceName'],
+                image: reserva['image'],
               ))
           .toList();
 
@@ -93,17 +93,17 @@ class ReservasProvider with ChangeNotifier {
       final data = jsonDecode(response.body);
       final results = data['data'] as List<dynamic>;
       _misReservas = results
-          .map((json) => Reserva(
-                uuid: json['uuid'],
-                userId: json['userId'],
-                spaceId: json['spaceId'],
-                startTime: json['startTime'],
-                endTime: json['endTime'],
-                observations: json['observations'],
-                status: json['status'],
-                userName: json['userName'],
-                spaceName: json['spaceName'],
-                image: json['image'],
+          .map((reserva) => Reserva(
+                uuid: reserva['uuid'],
+                userId: reserva['userId'],
+                spaceId: reserva['spaceId'],
+                startTime: reserva['startTime'],
+                endTime: reserva['endTime'],
+                observations: reserva['observations'],
+                status: reserva['status'],
+                userName: reserva['userName'],
+                spaceName: reserva['spaceName'],
+                image: reserva['image'],
               ))
           .toList();
 
@@ -124,17 +124,17 @@ class ReservasProvider with ChangeNotifier {
       final data = jsonDecode(response.body);
       final results = data['data'] as List<dynamic>;
       _reservasByUser = results
-          .map((json) => Reserva(
-                uuid: json['uuid'],
-                userId: json['userId'],
-                spaceId: json['spaceId'],
-                startTime: json['startTime'],
-                endTime: json['endTime'],
-                observations: json['observations'],
-                status: json['status'],
-                userName: json['userName'],
-                spaceName: json['spaceName'],
-                image: json['image'],
+          .map((reserva) => Reserva(
+                uuid: reserva['uuid'],
+                userId: reserva['userId'],
+                spaceId: reserva['spaceId'],
+                startTime: reserva['startTime'],
+                endTime: reserva['endTime'],
+                observations: reserva['observations'],
+                status: reserva['status'],
+                userName: reserva['userName'],
+                spaceName: reserva['spaceName'],
+                image: reserva['image'],
               ))
           .toList();
 
@@ -155,17 +155,17 @@ class ReservasProvider with ChangeNotifier {
       final data = jsonDecode(response.body);
       final results = data['data'] as List<dynamic>;
       _reservasBySpace = results
-          .map((json) => Reserva(
-                uuid: json['uuid'],
-                userId: json['userId'],
-                spaceId: json['spaceId'],
-                startTime: json['startTime'],
-                endTime: json['endTime'],
-                observations: json['observations'],
-                status: json['status'],
-                userName: json['userName'],
-                spaceName: json['spaceName'],
-                image: json['image'],
+          .map((reserva) => Reserva(
+                uuid: reserva['uuid'],
+                userId: reserva['userId'],
+                spaceId: reserva['spaceId'],
+                startTime: reserva['startTime'],
+                endTime: reserva['endTime'],
+                observations: reserva['observations'],
+                status: reserva['status'],
+                userName: reserva['userName'],
+                spaceName: reserva['spaceName'],
+                image: reserva['image'],
               ))
           .toList();
 
@@ -186,17 +186,17 @@ class ReservasProvider with ChangeNotifier {
       final data = jsonDecode(response.body);
       final results = data['data'] as List<dynamic>;
       _reservasByStatus = results
-          .map((json) => Reserva(
-                uuid: json['uuid'],
-                userId: json['userId'],
-                spaceId: json['spaceId'],
-                startTime: json['startTime'],
-                endTime: json['endTime'],
-                observations: json['observations'],
-                status: json['status'],
-                userName: json['userName'],
-                spaceName: json['spaceName'],
-                image: json['image'],
+          .map((reserva) => Reserva(
+                uuid: reserva['uuid'],
+                userId: reserva['userId'],
+                spaceId: reserva['spaceId'],
+                startTime: reserva['startTime'],
+                endTime: reserva['endTime'],
+                observations: reserva['observations'],
+                status: reserva['status'],
+                userName: reserva['userName'],
+                spaceName: reserva['spaceName'],
+                image: reserva['image'],
               ))
           .toList();
 
@@ -217,17 +217,17 @@ class ReservasProvider with ChangeNotifier {
       final data = jsonDecode(response.body);
       final results = data['data'] as List<dynamic>;
       _reservasByTime = results
-          .map((json) => Reserva(
-                uuid: json['uuid'],
-                userId: json['userId'],
-                spaceId: json['spaceId'],
-                startTime: json['startTime'],
-                endTime: json['endTime'],
-                observations: json['observations'],
-                status: json['status'],
-                userName: json['userName'],
-                spaceName: json['spaceName'],
-                image: json['image'],
+          .map((reserva) => Reserva(
+                uuid: reserva['uuid'],
+                userId: reserva['userId'],
+                spaceId: reserva['spaceId'],
+                startTime: reserva['startTime'],
+                endTime: reserva['endTime'],
+                observations: reserva['observations'],
+                status: reserva['status'],
+                userName: reserva['userName'],
+                spaceName: reserva['spaceName'],
+                image: reserva['image'],
               ))
           .toList();
 
@@ -235,6 +235,24 @@ class ReservasProvider with ChangeNotifier {
     } else {
       _reservasByTime = [];
       notifyListeners();
+    }
+  }
+
+  Future<List<String>> fetchOccupiedTimes(String time, String uuidSpace) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/bookings/time/$uuidSpace/$time'),
+      headers: {'Authorization': 'Bearer $_token'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final results = data['data'] as List<dynamic>;
+      return results
+          .map((reserva) => reserva['startTime'].toString())
+          .toList()
+          .cast<String>();
+    } else {
+      return [];
     }
   }
 

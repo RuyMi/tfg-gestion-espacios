@@ -38,16 +38,16 @@ class UsuariosProvider with ChangeNotifier {
       final data = jsonDecode(response.body);
       final results = data['data'] as List<dynamic>;
       _usuarios = results
-          .map((json) => Usuario(
-                uuid: json['uuid'],
-                name: json['name'],
-                username: json['username'],
-                email: json['email'],
-                password: json['password'],
-                avatar: json['avatar'],
-                userRole: List<String>.from(json['userRole']),
-                credits: json['credits'],
-                isActive: json['isActive'],
+          .map((usuario) => Usuario(
+                uuid: usuario['uuid'],
+                name: usuario['name'],
+                username: usuario['username'],
+                email: usuario['email'],
+                password: usuario['password'],
+                avatar: usuario['avatar'],
+                userRole: List<String>.from(usuario['userRole']),
+                credits: usuario['credits'],
+                isActive: usuario['isActive'],
               ))
           .toList();
 

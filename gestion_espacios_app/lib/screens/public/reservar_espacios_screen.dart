@@ -6,18 +6,19 @@ import 'package:gestion_espacios_app/providers/reservas_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
 import 'package:gestion_espacios_app/widgets/space_image_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-final List<String> horas = [
-  '08:25 - 09:20',
-  '09:20 - 10:15',
-  '10:15 - 11:10',
-  '11:10 - 12:05',
-  '12:05 - 12:30',
-  '12:30 - 13:25',
-  '13:25 - 14:20',
-  '14:20 - 15:15',
+final List<Map<String, dynamic>> horas = [
+  {'hora': '08:25 - 09:20', 'ocupada': false},
+  {'hora': '09:20 - 10:15', 'ocupada': false},
+  {'hora': '10:15 - 11:10', 'ocupada': false},
+  {'hora': '11:10 - 12:05', 'ocupada': false},
+  {'hora': '12:05 - 12:30', 'ocupada': false},
+  {'hora': '12:30 - 13:25', 'ocupada': false},
+  {'hora': '13:25 - 14:20', 'ocupada': false},
+  {'hora': '14:20 - 15:15', 'ocupada': false},
 ];
 
 class ReservaEspacioScreen extends StatefulWidget {
@@ -34,6 +35,29 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
   DateTime? selectedDay;
   String? selectedHour;
   final ScrollController _scrollController = ScrollController();
+
+  String convertirHoraLocalDateTime(String localDateTime) {
+    DateTime horaDateTime = DateTime.parse(localDateTime);
+    String horaInicio = DateFormat('HH:mm').format(horaDateTime);
+    return horaInicio;
+  }
+
+  void actualizarHorasOcupadas(List<String> horasOcupadas) {
+    setState(() {
+      List<String> horasOcupadasConvertidas = horasOcupadas
+          .map((hora) => convertirHoraLocalDateTime(hora))
+          .toList();
+
+      for (int i = 0; i < horas.length; i++) {
+        if (horasOcupadasConvertidas
+            .any((horaOcupada) => horas[i]['hora'].startsWith(horaOcupada))) {
+          horas[i]['ocupada'] = true;
+        } else {
+          horas[i]['ocupada'] = false;
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -294,6 +318,16 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                               _scrollController.position.viewportDimension,
                               duration: const Duration(milliseconds: 1000),
                               curve: Curves.easeInOut);
+
+                          String date = DateFormat('yyyy-MM-dd')
+                              .parse(selectedDay.toString())
+                              .toString()
+                              .split(' ')[0];
+                          reservasProvider
+                              .fetchOccupiedTimes(date, espacio.uuid!)
+                              .then((horasOcupadas) {
+                            actualizarHorasOcupadas(horasOcupadas);
+                          });
                         }
                       },
                     ),
@@ -307,24 +341,27 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                           .map((hora) => SizedBox(
                                 width: 150,
                                 child: TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _isHourSelected = true;
-                                      selectedHour = hora;
-                                    });
-                                    _scrollController.animateTo(
-                                        _scrollController
-                                            .position.viewportDimension,
-                                        duration:
-                                            const Duration(milliseconds: 1000),
-                                        curve: Curves.easeInOut);
-                                  },
+                                  onPressed: hora['ocupada']
+                                      ? null
+                                      : () {
+                                          setState(() {
+                                            _isHourSelected = true;
+                                            selectedHour = hora['hora'];
+                                          });
+                                          _scrollController.animateTo(
+                                              _scrollController
+                                                  .position.viewportDimension,
+                                              duration: const Duration(
+                                                  milliseconds: 1000),
+                                              curve: Curves.easeInOut);
+                                        },
                                   style: ButtonStyle(
-                                    backgroundColor: hora == selectedHour
-                                        ? MaterialStateProperty.all<Color>(theme
-                                            .colorScheme.secondary
-                                            .withOpacity(0.5))
-                                        : null,
+                                    backgroundColor:
+                                        hora['hora'] == selectedHour
+                                            ? MaterialStateProperty.all<Color>(
+                                                theme.colorScheme.secondary
+                                                    .withOpacity(0.5))
+                                            : null,
                                     overlayColor: MaterialStateProperty
                                         .resolveWith<Color>(
                                       (Set<MaterialState> states) {
@@ -345,14 +382,19 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                                     children: [
                                       Icon(
                                         Icons.access_time_rounded,
-                                        color: theme.colorScheme.surface,
+                                        color: hora['ocupada']
+                                            ? Colors.grey
+                                            : theme.colorScheme.surface,
                                       ),
                                       const SizedBox(width: 10),
                                       Text(
-                                        hora,
+                                        hora['hora'],
                                         textAlign: TextAlign.right,
                                         style: TextStyle(
-                                          color: theme.colorScheme.surface,
+                                          color: hora['ocupada']
+                                              ? Colors.grey
+                                              : theme.colorScheme.surface,
+                                          fontWeight: FontWeight.bold,
                                           fontFamily: 'KoHo',
                                         ),
                                       ),
@@ -367,7 +409,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                   Visibility(
                       visible: _isDaySelected,
                       child: Text(
-                        'Fecha elegida: ${selectedDay?.day}/${selectedDay?.month}/${selectedDay?.year}',
+                        'Fecha elegida: ${selectedDay != null ? DateFormat('dd/MM/yyyy').format(selectedDay!) : ''}',
                         style: TextStyle(
                           color: theme.colorScheme.secondary,
                           fontWeight: FontWeight.bold,

@@ -11,15 +11,15 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../widgets/error_widget.dart';
 
-final List<String> horas = [
-  '08:25 - 09:20',
-  '09:20 - 10:15',
-  '10:15 - 11:10',
-  '11:10 - 12:05',
-  '12:05 - 12:30',
-  '12:30 - 13:25',
-  '13:25 - 14:20',
-  '14:20 - 15:15',
+final List<Map<String, dynamic>> horas = [
+  {'hora': '08:25 - 09:20', 'ocupada': false},
+  {'hora': '09:20 - 10:15', 'ocupada': false},
+  {'hora': '10:15 - 11:10', 'ocupada': false},
+  {'hora': '11:10 - 12:05', 'ocupada': false},
+  {'hora': '12:05 - 12:30', 'ocupada': false},
+  {'hora': '12:30 - 13:25', 'ocupada': false},
+  {'hora': '13:25 - 14:20', 'ocupada': false},
+  {'hora': '14:20 - 15:15', 'ocupada': false},
 ];
 
 class NuevaReservaBODialog extends StatefulWidget {
@@ -41,6 +41,29 @@ class _NuevaReservaBODialog extends State<NuevaReservaBODialog> {
   String spaceName = '';
   String observations = '';
   bool requiresAuthorization = false;
+
+  String convertirHoraLocalDateTime(String localDateTime) {
+    DateTime horaDateTime = DateTime.parse(localDateTime);
+    String horaInicio = DateFormat('HH:mm').format(horaDateTime);
+    return horaInicio;
+  }
+
+  void actualizarHorasOcupadas(List<String> horasOcupadas) {
+    setState(() {
+      List<String> horasOcupadasConvertidas = horasOcupadas
+          .map((hora) => convertirHoraLocalDateTime(hora))
+          .toList();
+
+      for (int i = 0; i < horas.length; i++) {
+        if (horasOcupadasConvertidas
+            .any((horaOcupada) => horas[i]['hora'].startsWith(horaOcupada))) {
+          horas[i]['ocupada'] = true;
+        } else {
+          horas[i]['ocupada'] = false;
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -265,6 +288,16 @@ class _NuevaReservaBODialog extends State<NuevaReservaBODialog> {
                                 setState(() {
                                   this.selectedDay = selectedDay;
                                 });
+
+                                String date = DateFormat('yyyy-MM-dd')
+                                    .parse(selectedDay.toString())
+                                    .toString()
+                                    .split(' ')[0];
+                                reservasProvider
+                                    .fetchOccupiedTimes(date, spaceId)
+                                    .then((horasOcupadas) {
+                                  actualizarHorasOcupadas(horasOcupadas);
+                                });
                               }
                             },
                           ),
@@ -287,21 +320,23 @@ class _NuevaReservaBODialog extends State<NuevaReservaBODialog> {
                                     .map((hora) => SizedBox(
                                           width: 150,
                                           child: TextButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                selectedHour = hora;
-                                              });
-                                            },
+                                            onPressed: hora['ocupada']
+                                                ? null
+                                                : () {
+                                                    setState(() {
+                                                      selectedHour =
+                                                          hora['hora'];
+                                                    });
+                                                  },
                                             style: ButtonStyle(
-                                              backgroundColor: hora ==
-                                                      selectedHour
-                                                  ? MaterialStateProperty
-                                                      .all<Color>(theme
-                                                          .colorScheme.secondary
-                                                          .withOpacity(0.5))
-                                                  : MaterialStateProperty.all<
-                                                          Color>(
-                                                      Colors.transparent),
+                                              backgroundColor:
+                                                  hora['hora'] == selectedHour
+                                                      ? MaterialStateProperty
+                                                          .all<Color>(theme
+                                                              .colorScheme
+                                                              .secondary
+                                                              .withOpacity(0.5))
+                                                      : null,
                                               overlayColor:
                                                   MaterialStateProperty
                                                       .resolveWith<Color>(
@@ -325,20 +360,21 @@ class _NuevaReservaBODialog extends State<NuevaReservaBODialog> {
                                               children: [
                                                 Icon(
                                                   Icons.access_time_rounded,
-                                                  color: theme
-                                                      .colorScheme.onPrimary,
+                                                  color: hora['ocupada']
+                                                      ? Colors.grey
+                                                      : theme.colorScheme
+                                                          .onPrimary,
                                                 ),
                                                 const SizedBox(width: 10),
                                                 Text(
-                                                  hora,
+                                                  hora['hora'],
                                                   textAlign: TextAlign.right,
                                                   style: TextStyle(
-                                                    color: theme
-                                                        .colorScheme.onPrimary,
-                                                    fontWeight:
-                                                        hora == selectedHour
-                                                            ? FontWeight.bold
-                                                            : FontWeight.normal,
+                                                    color: hora['ocupada']
+                                                        ? Colors.grey
+                                                        : theme.colorScheme
+                                                            .onPrimary,
+                                                    fontWeight: FontWeight.bold,
                                                     fontFamily: 'KoHo',
                                                   ),
                                                 ),
