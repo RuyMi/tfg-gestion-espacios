@@ -8,8 +8,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.InjectedParam
 import org.koin.core.annotation.Single
+import java.awt.image.BufferedImage
 import java.io.File
+import java.io.InputStream
+import java.nio.file.Files
 import java.time.LocalDateTime
+import javax.imageio.ImageIO
 
 @Single
 class StorageServiceImpl(
@@ -61,12 +65,18 @@ class StorageServiceImpl(
         }
 
     override suspend fun getFile(fileName: String): File = withContext(Dispatchers.IO) {
-        println(uploadsPath)
-        val file = File("${uploadsPath}/$fileName")
-        if (!file.exists()) {
-            return@withContext File("${uploadsPath}/placeholder.jpeg")
+        var resourceStream = getResourceAsStream("uploads/$fileName")
+         if (resourceStream == null) {
+            resourceStream = getResourceAsStream("placeholder.jpeg")
+            val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
+            val outputFile = Files.createTempFile("temp", "").toFile()
+            ImageIO.write(imagePlaceHolder, "", outputFile)
+            return@withContext outputFile
         } else {
-            return@withContext file
+            val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
+            val outputFile = Files.createTempFile("temp", "").toFile()
+            ImageIO.write(imagePlaceHolder, "", outputFile)
+            return@withContext outputFile
         }
     }
 
@@ -77,5 +87,10 @@ class StorageServiceImpl(
         } else {
             file.delete()
         }
+    }
+
+    fun getResourceAsStream(resourceName: String): InputStream? {
+        val classLoader = Thread.currentThread().contextClassLoader
+        return classLoader.getResourceAsStream(resourceName)?: null
     }
 }
