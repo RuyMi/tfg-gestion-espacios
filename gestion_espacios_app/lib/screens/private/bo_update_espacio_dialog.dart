@@ -1,17 +1,13 @@
-// ignore_for_file: unused_local_variable
-
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
 import 'package:gestion_espacios_app/providers/espacios_provider.dart';
 import 'package:gestion_espacios_app/providers/storage_provider.dart';
 import 'package:gestion_espacios_app/widgets/alert_widget.dart';
 import 'package:gestion_espacios_app/widgets/eliminar_elemento.dart';
-import 'package:gestion_espacios_app/widgets/image_widget.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+import 'package:gestion_espacios_app/widgets/picked_image_widget.dart';
+import 'package:gestion_espacios_app/widgets/space_image_widget.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-
 import '../../widgets/error_widget.dart';
 
 class EditarEspacioBODialog extends StatefulWidget {
@@ -32,7 +28,8 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
   late TextEditingController bookingWindowController;
   late TextEditingController isReservableController;
   late TextEditingController requiresAuthorizationController;
-  Uint8List? selectedImage;
+  PickedFile? selectedImage;
+  ImagePicker picker = ImagePicker();
 
   @override
   void initState() {
@@ -61,6 +58,27 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
     super.dispose();
   }
 
+  int tryParseInt(String value, int lastValue) {
+    int result;
+    try {
+      result = int.parse(value);
+    } catch (e) {
+      result = lastValue;
+    }
+    return result;
+  }
+
+  void pickImage() async {
+    PickedFile? pickedFile =
+        // ignore: invalid_use_of_visible_for_testing_member
+        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        selectedImage = pickedFile;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -73,16 +91,6 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
     int price = espacio.price;
     List<String> authorizedRoles = espacio.authorizedRoles;
     int bookingWindow = espacio.bookingWindow;
-
-    int tryParseInt(String value, int lastValue) {
-      int result;
-      try {
-        result = int.parse(value);
-      } catch (e) {
-        result = lastValue;
-      }
-      return result;
-    }
 
     return AlertDialog(
         backgroundColor: theme.colorScheme.onBackground,
@@ -106,26 +114,21 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
                     if (selectedImage != null)
                       ClipRRect(
                         borderRadius: BorderRadius.circular(30),
-                        child: Image.memory(
-                          selectedImage!,
-                          width: 200,
-                          height: 200,
+                        child: PickedImageWidget(
+                          pickedImage: selectedImage!,
+                          width: 100,
+                          height: 100,
                           fit: BoxFit.cover,
                         ),
                       ),
                     if (selectedImage == null && image != null)
                       ClipRRect(
                           borderRadius: BorderRadius.circular(30),
-                          child: MyImageWidget(image: espacio.image)),
+                          child: MySpaceImageWidget(image: espacio.image)),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () async {
-                        final image = await ImagePickerWeb.getImageAsBytes();
-                        if (image != null) {
-                          setState(() {
-                            selectedImage = image;
-                          });
-                        }
+                      onPressed: () {
+                        pickImage();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.colorScheme.secondary,

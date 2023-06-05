@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 
 class UsuariosProvider with ChangeNotifier {
   String? _token;
-  final String? _userId;
 
   List<Usuario> _usuarios = [];
   Usuario _actualUsuario = Usuario(
@@ -24,7 +23,7 @@ class UsuariosProvider with ChangeNotifier {
   List<Usuario> get usuarios => _usuarios;
   Usuario get actualUsuario => _actualUsuario;
 
-  UsuariosProvider(this._token, this._userId) {
+  UsuariosProvider(this._token) {
     fetchUsuarios();
     fetchActualUsuario();
   }
@@ -66,7 +65,7 @@ class UsuariosProvider with ChangeNotifier {
 
   Future<Usuario?> fetchActualUsuario() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/users/$_userId'),
+      final response = await http.get(Uri.parse('$baseUrl/users/me'),
           headers: {'Authorization': 'Bearer $_token'});
 
       if (response.statusCode == 200) {
@@ -139,7 +138,7 @@ class UsuariosProvider with ChangeNotifier {
           email: data['user']['email'],
           password: data['user']['password'],
           avatar: data['user']['avatar'],
-          userRole: List<String>.from(data['userRole']),
+          userRole: List<String>.from(data['user']['userRole']),
           credits: data['user']['credits'],
           isActive: data['user']['isActive'],
         ));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
 import 'package:gestion_espacios_app/widgets/logout_widget.dart';
+import 'package:gestion_espacios_app/widgets/user_image_widget.dart';
 import 'package:provider/provider.dart';
 
 class PerfilScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
     var theme = Theme.of(context);
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
         centerTitle: true,
@@ -55,13 +56,14 @@ class _PerfilScreenState extends State<PerfilScreen> {
             Container(
               width: 75,
               height: 75,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage('assets/images/profile_pic.png'),
-                  fit: BoxFit.cover,
-                ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
               ),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: MyUserImageWidget(
+                    image: usuario.avatar,
+                  )),
             ),
             const SizedBox(height: 20),
             Text(
@@ -126,7 +128,21 @@ class _PerfilScreenState extends State<PerfilScreen> {
                         ),
                       ],
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Funcionalidad no disponible.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onSecondary,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          duration: const Duration(seconds: 1),
+                          backgroundColor: theme.colorScheme.secondary,
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 10),
                   TextButton(
@@ -147,7 +163,21 @@ class _PerfilScreenState extends State<PerfilScreen> {
                         ),
                       ],
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Funcionalidad no disponible.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onSecondary,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          duration: const Duration(seconds: 1),
+                          backgroundColor: theme.colorScheme.secondary,
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 10),
                   TextButton(

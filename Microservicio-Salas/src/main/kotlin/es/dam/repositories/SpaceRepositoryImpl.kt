@@ -28,23 +28,22 @@ class SpaceRepositoryImpl: SpaceRepository {
         return@withContext db.database.getCollection<Space>().find(Space::isReservable eq isReservable).toList()
     }
 
-    override suspend fun findById(id: UUID): Space = withContext(Dispatchers.IO){
-        return@withContext db.database.getCollection<Space>().find(Space::uuid eq id.toString()).first()?: throw SpaceException("No se ha encontrado el espacio con uuid $id")
+    override suspend fun findById(id: UUID): Space? = withContext(Dispatchers.IO){
+        return@withContext db.database.getCollection<Space>().find(Space::uuid eq id.toString()).first()
     }
 
-    override suspend fun save(entity: Space): Space = withContext(Dispatchers.IO){
+    override suspend fun save(entity: Space): Space? = withContext(Dispatchers.IO){
         db.database.getCollection<Space>().save(entity)?.let {
             return@withContext entity
         }
-        throw SpaceException("Error al guardar el espacio con uuid ${entity.uuid}")
+        return@withContext null
     }
 
-    override suspend fun update(entity: Space): Space = withContext(Dispatchers.IO){
+    override suspend fun update(entity: Space): Space? = withContext(Dispatchers.IO){
         db.database.getCollection<Space>().save(entity)?.let {
-
             return@withContext entity
         }
-        throw SpaceException("No se ha encontrado el espacio con uuid ${entity.uuid}")
+        return@withContext null
     }
 
     override suspend fun delete(id: UUID): Boolean = withContext(Dispatchers.IO){

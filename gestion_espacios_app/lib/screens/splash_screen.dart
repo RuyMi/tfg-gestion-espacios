@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gestion_espacios_app/screens/private/bo_login_screen.dart';
 import 'package:gestion_espacios_app/screens/public/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -26,25 +28,47 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) =>
-                const LoginScreen(),
-            transitionDuration: const Duration(milliseconds: 750),
-            transitionsBuilder: (context, animation1, animation2, child) {
-              return FadeTransition(
-                opacity: Tween<double>(begin: 0, end: 1).animate(
-                  CurvedAnimation(
-                    parent: animation1,
-                    curve: Curves.easeIn,
+        if (kIsWeb) {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation1, animation2) =>
+                  BOLoginScreen(),
+              transitionDuration: const Duration(milliseconds: 750),
+              transitionsBuilder: (context, animation1, animation2, child) {
+                return FadeTransition(
+                  opacity: Tween<double>(begin: 0, end: 1).animate(
+                    CurvedAnimation(
+                      parent: animation1,
+                      curve: Curves.easeIn,
+                    ),
                   ),
-                ),
-                child: child,
-              );
-            },
-          ),
-        );
+                  child: child,
+                );
+              },
+            ),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation1, animation2) =>
+                  LoginScreen(),
+              transitionDuration: const Duration(milliseconds: 750),
+              transitionsBuilder: (context, animation1, animation2, child) {
+                return FadeTransition(
+                  opacity: Tween<double>(begin: 0, end: 1).animate(
+                    CurvedAnimation(
+                      parent: animation1,
+                      curve: Curves.easeIn,
+                    ),
+                  ),
+                  child: child,
+                );
+              },
+            ),
+          );
+        }
       }
     });
   }

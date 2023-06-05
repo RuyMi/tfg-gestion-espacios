@@ -40,6 +40,7 @@ class EspaciosProvider with ChangeNotifier {
                   description: json['description'],
                 ))
             .toList();
+
         notifyListeners();
       } else {
         _espacios = [];

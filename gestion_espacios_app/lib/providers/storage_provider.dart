@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class StorageProvider with ChangeNotifier {
 
   String baseUrl = 'http://magarcia.asuscomm.com:25546';
 
-  Future<String> uploadSpaceImage(Uint8List imageBytes) async {
+  Future<String> uploadSpaceImage(PickedFile imageFile) async {
     try {
       final request = http.MultipartRequest(
         'POST',
@@ -20,6 +21,8 @@ class StorageProvider with ChangeNotifier {
       );
 
       request.headers['Authorization'] = 'Bearer $_token';
+
+      Uint8List imageBytes = await imageFile.readAsBytes();
 
       final file = http.MultipartFile.fromBytes(
         'image',
@@ -46,7 +49,7 @@ class StorageProvider with ChangeNotifier {
     }
   }
 
-  Future<String> uploadUserImage(Uint8List imageBytes) async {
+  Future<String> uploadUserImage(PickedFile imageFile) async {
     try {
       final request = http.MultipartRequest(
         'POST',
@@ -54,6 +57,8 @@ class StorageProvider with ChangeNotifier {
       );
 
       request.headers['Authorization'] = 'Bearer $_token';
+
+      Uint8List imageBytes = await imageFile.readAsBytes();
 
       final file = http.MultipartFile.fromBytes(
         'image',

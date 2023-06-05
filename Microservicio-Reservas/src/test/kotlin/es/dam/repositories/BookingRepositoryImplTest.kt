@@ -136,16 +136,16 @@ class BookingRepositoryImplTest {
         val endTimeReduced = booking.endTime.toString().substring(0, 23)
 
         assertAll(
-            { assertEquals(booking.id, bookingTest.id) },
-            { assertEquals(booking.uuid, bookingTest.uuid) },
-            { assertEquals(booking.userId, bookingTest.userId) },
-            { assertEquals(booking.spaceId, bookingTest.spaceId) },
-            { assertEquals(booking.status, bookingTest.status) },
-            { assertEquals(startTimeReduced, bookingTest.startTime.toString()) },
-            { assertEquals(endTimeReduced, bookingTest.endTime.toString()) },
-            { assertEquals(booking.observations, bookingTest.observations) },
-            { assertEquals(booking.spaceName, bookingTest.spaceName) },
-            { assertEquals(booking.userName, bookingTest.userName) },
+            { assertEquals(booking.id, bookingTest?.id) },
+            { assertEquals(booking.uuid, bookingTest?.uuid) },
+            { assertEquals(booking.userId, bookingTest?.userId) },
+            { assertEquals(booking.spaceId, bookingTest?.spaceId) },
+            { assertEquals(booking.status, bookingTest?.status) },
+            { assertEquals(startTimeReduced, bookingTest?.startTime.toString()) },
+            { assertEquals(endTimeReduced, bookingTest?.endTime.toString()) },
+            { assertEquals(booking.observations, bookingTest?.observations) },
+            { assertEquals(booking.spaceName, bookingTest?.spaceName) },
+            { assertEquals(booking.userName, bookingTest?.userName) },
             )
     }
 
@@ -154,16 +154,16 @@ class BookingRepositoryImplTest {
         repository.delete(UUID.fromString(booking.uuid))
         val bookingTest = repository.save(booking)
         assertAll(
-            { assertEquals(booking.id, bookingTest.id) },
-            { assertEquals(booking.uuid, bookingTest.uuid) },
-            { assertEquals(booking.userId, bookingTest.userId) },
-            { assertEquals(booking.spaceId, bookingTest.spaceId) },
-            { assertEquals(booking.status, bookingTest.status) },
-            { assertEquals(booking.startTime, bookingTest.startTime) },
-            { assertEquals(booking.endTime, bookingTest.endTime) },
-            { assertEquals(booking.observations, bookingTest.observations) },
-            { assertEquals(booking.spaceName, bookingTest.spaceName) },
-            { assertEquals(booking.userName, bookingTest.userName) },
+            { assertEquals(booking.id, bookingTest?.id) },
+            { assertEquals(booking.uuid, bookingTest?.uuid) },
+            { assertEquals(booking.userId, bookingTest?.userId) },
+            { assertEquals(booking.spaceId, bookingTest?.spaceId) },
+            { assertEquals(booking.status, bookingTest?.status) },
+            { assertEquals(booking.startTime, bookingTest?.startTime) },
+            { assertEquals(booking.endTime, bookingTest?.endTime) },
+            { assertEquals(booking.observations, bookingTest?.observations) },
+            { assertEquals(booking.spaceName, bookingTest?.spaceName) },
+            { assertEquals(booking.userName, bookingTest?.userName) },
             )
     }
 
@@ -178,16 +178,16 @@ class BookingRepositoryImplTest {
         val updatedBooking = repository.update(bookingTest)
 
         assertAll(
-            { assertEquals(updatedBooking.id, bookingTest.id) },
-            { assertEquals(updatedBooking.uuid, bookingTest.uuid) },
-            { assertEquals(updatedBooking.userId, bookingTest.userId) },
-            { assertEquals(updatedBooking.spaceId, bookingTest.spaceId) },
-            { assertEquals(updatedBooking.status, bookingTest.status) },
-            { assertEquals(updatedBooking.startTime, bookingTest.startTime) },
-            { assertEquals(updatedBooking.endTime, bookingTest.endTime) },
-            { assertEquals(updatedBooking.observations, bookingTest.observations) },
-            { assertEquals(updatedBooking.spaceName, bookingTest.spaceName) },
-            { assertEquals(updatedBooking.userName, bookingTest.userName) },
+            { assertEquals(updatedBooking?.id, bookingTest.id) },
+            { assertEquals(updatedBooking?.uuid, bookingTest.uuid) },
+            { assertEquals(updatedBooking?.userId, bookingTest.userId) },
+            { assertEquals(updatedBooking?.spaceId, bookingTest.spaceId) },
+            { assertEquals(updatedBooking?.status, bookingTest.status) },
+            { assertEquals(updatedBooking?.startTime, bookingTest.startTime) },
+            { assertEquals(updatedBooking?.endTime, bookingTest.endTime) },
+            { assertEquals(updatedBooking?.observations, bookingTest.observations) },
+            { assertEquals(updatedBooking?.spaceName, bookingTest.spaceName) },
+            { assertEquals(updatedBooking?.userName, bookingTest.userName) },
         )
 
     }

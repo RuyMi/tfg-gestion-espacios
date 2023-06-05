@@ -2,6 +2,7 @@ package es.dam.services.spaces
 
 import es.dam.dto.SpaceUpdateDTO
 import es.dam.models.Space
+import es.dam.repositories.SpaceCachedRepository
 import es.dam.repositories.SpaceRepositoryImpl
 import org.koin.core.annotation.InjectedParam
 import org.koin.core.annotation.Named
@@ -11,7 +12,7 @@ import java.util.*
 @Single
 class SpaceServiceImpl(
     @InjectedParam
-    private val repo: SpaceRepositoryImpl
+    private val repo: SpaceCachedRepository
 ): SpaceService {
     override suspend fun createSpace(space: Space): Space {
         return repo.save(space)
