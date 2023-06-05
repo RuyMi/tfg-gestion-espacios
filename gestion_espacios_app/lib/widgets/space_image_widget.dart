@@ -15,7 +15,7 @@ class MySpaceImageWidget extends StatelessWidget {
     try {
       return Image.network(
         image != null && image != ''
-            ? 'http://magarcia.asuscomm.com:25546/spaces/storage/$image.png'
+            ? 'http://app.iesluisvives.org:1212/spaces/storage/$image.png'
             : 'assets/images/image_placeholder.png',
         width: 100,
         height: 100,

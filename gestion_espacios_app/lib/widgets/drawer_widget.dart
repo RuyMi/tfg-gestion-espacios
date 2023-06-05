@@ -56,9 +56,6 @@ class MyDrawer extends StatelessWidget {
               },
             ),
           ),
-          Divider(
-            color: theme.colorScheme.onPrimary,
-          ),
           ListTile(
             leading: const Icon(Icons.person_rounded),
             iconColor: theme.colorScheme.onPrimary,
@@ -102,9 +99,6 @@ class MyDrawer extends StatelessWidget {
                 ),
               );
             },
-          ),
-          Divider(
-            color: theme.colorScheme.onPrimary,
           ),
           ListTile(
             iconColor: theme.colorScheme.onPrimary,

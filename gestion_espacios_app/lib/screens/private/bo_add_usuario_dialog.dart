@@ -392,10 +392,11 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return const MyErrorMessageDialog(
-                              title: 'Error',
-                              description:
-                                  'Ha ocurrido un error al crear el usuario.',
+                            return MyErrorMessageDialog(
+                              title: 'Error al crear el usuario',
+                              description: error
+                                  .toString()
+                                  .substring(error.toString().indexOf(':') + 1),
                             );
                           });
                     });
@@ -403,10 +404,11 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return const MyErrorMessageDialog(
-                          title: 'Error',
-                          description:
-                              'Ha ocurrido un error al subir la imagen.',
+                        return MyErrorMessageDialog(
+                          title: 'Error al añadir la imagen',
+                          description: error
+                              .toString()
+                              .substring(error.toString().indexOf(':') + 1),
                         );
                       },
                     );
@@ -427,10 +429,11 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return const MyErrorMessageDialog(
-                          title: 'Error',
-                          description:
-                              'Ha ocurrido un error al crear el usuario.',
+                        return MyErrorMessageDialog(
+                          title: 'Error al registrar el usuario',
+                          description: error
+                              .toString()
+                              .substring(error.toString().indexOf(':') + 1),
                         );
                       },
                     );

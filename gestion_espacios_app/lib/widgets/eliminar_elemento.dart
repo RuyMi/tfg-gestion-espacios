@@ -90,18 +90,17 @@ class MyDeleteAlert extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const MyErrorMessageDialog(
-                      title: 'Error',
-                      description:
-                          'Ha ocurrido un error al eliminar el espacio.',
+                    return MyErrorMessageDialog(
+                      title: 'Error al eliminar el espacio',
+                      description: error
+                          .toString()
+                          .substring(error.toString().indexOf(':') + 1),
                     );
                   },
                 );
               });
             } else if (elemento is Reserva) {
-              reservasProvider
-                  .deleteReserva(elemento.uuid)
-                  .then((result) {
+              reservasProvider.deleteReserva(elemento.uuid).then((result) {
                 Navigator.pushNamed(context, ruta);
                 showDialog(
                   context: context,
@@ -116,10 +115,11 @@ class MyDeleteAlert extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const MyErrorMessageDialog(
-                      title: 'Error',
-                      description:
-                          'Ha ocurrido un error al eliminar la reserva.',
+                    return MyErrorMessageDialog(
+                      title: 'Error al eliminar la reserva',
+                      description: error
+                          .toString()
+                          .substring(error.toString().indexOf(':') + 1),
                     );
                   },
                 );
@@ -140,10 +140,11 @@ class MyDeleteAlert extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const MyErrorMessageDialog(
-                      title: 'Error',
-                      description:
-                          'Ha ocurrido un error al eliminar el usuario.',
+                    return MyErrorMessageDialog(
+                      title: 'Error al eliminar el usuario',
+                      description: error
+                          .toString()
+                          .substring(error.toString().indexOf(':') + 1),
                     );
                   },
                 );

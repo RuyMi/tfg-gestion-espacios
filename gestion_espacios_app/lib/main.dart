@@ -9,8 +9,14 @@ import 'package:gestion_espacios_app/screens/public/reservar_espacios_screen.dar
 import 'package:gestion_espacios_app/screens/screens.dart';
 import 'package:gestion_espacios_app/theme/app_theme.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final isDarkMode = prefs.getBool('theme') ?? false;
+  runApp(MyApp(isDarkMode: isDarkMode));
+
   runApp(
     MultiProvider(
       providers: [
@@ -37,18 +43,19 @@ void main() {
               ReservasProvider(authProvider.token, authProvider.userId),
         ),
       ],
-      child: const MyApp(),
+      child: MyApp(isDarkMode: isDarkMode),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isDarkMode;
+
+  const MyApp({Key? key, required this.isDarkMode}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var themeProvider = context.watch<ThemeProvider>();
-    // var themePreference = context.watch<ThemePreference>();
 
     return MaterialApp(
       title: 'IES Luis Vives',

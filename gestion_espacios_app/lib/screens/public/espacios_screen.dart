@@ -4,6 +4,7 @@ import 'package:gestion_espacios_app/providers/providers.dart';
 import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 import 'package:gestion_espacios_app/widgets/space_image_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../models/colors.dart';
 
@@ -128,38 +129,42 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
             backgroundColor: theme.colorScheme.background,
           ),
           body: Column(children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                controller: _searchController,
-                cursorColor: theme.colorScheme.secondary,
-                style: TextStyle(
-                    color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: MyColors.pinkApp.shade100,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
+            SizedBox(
+              height: 80,
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  controller: _searchController,
+                  cursorColor: theme.colorScheme.secondary,
+                  style: TextStyle(
+                      color: theme.colorScheme.secondary, fontFamily: 'KoHo'),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: MyColors.pinkApp.shade100,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: 'Buscar',
+                    hintStyle: TextStyle(
+                      fontFamily: 'KoHo',
+                      color: theme.colorScheme.secondary,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    prefixIcon: Icon(Icons.search_rounded,
+                        color: theme.colorScheme.secondary, size: 30),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintText: 'Buscar',
-                  hintStyle: TextStyle(
-                    fontFamily: 'KoHo',
-                    color: theme.colorScheme.secondary,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  prefixIcon: Icon(Icons.search_rounded,
-                      color: theme.colorScheme.secondary, size: 30),
+                  onChanged: (value) {
+                    filterEspacios(value).then((value) => setState(() {
+                          espaciosFiltrados = value;
+                        }));
+                  },
                 ),
-                onChanged: (value) {
-                  filterEspacios(value).then((value) => setState(() {
-                        espaciosFiltrados = value;
-                      }));
-                },
               ),
             ),
             if (espaciosFiltrados.isEmpty)
@@ -224,8 +229,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10),
+                                        borderRadius: BorderRadius.circular(10),
                                         boxShadow: [
                                           BoxShadow(
                                             color: theme.colorScheme.surface
@@ -237,8 +241,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                         ],
                                       ),
                                       child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(10),
+                                        borderRadius: BorderRadius.circular(10),
                                         child: MySpaceImageWidget(
                                             image: espacio.image),
                                       ),
@@ -284,8 +287,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                       CrossAxisAlignment.end,
                                                   children: [
                                                     IconButton(
-                                                      padding:
-                                                          EdgeInsets.zero,
+                                                      padding: EdgeInsets.zero,
                                                       constraints:
                                                           const BoxConstraints(),
                                                       icon: Icon(
@@ -294,14 +296,16 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                               .colorScheme
                                                               .surface,
                                                           size: 20),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        Share.share(
+                                                            '🎈 ¡He pensado que podríamos reservar ${espacio.name} por solo ${espacio.price} créditos 💲!\n\n💠 ${espacio.description}');
+                                                      },
                                                     ),
                                                     const SizedBox(
                                                       width: 10,
                                                     ),
                                                     IconButton(
-                                                      padding:
-                                                          EdgeInsets.zero,
+                                                      padding: EdgeInsets.zero,
                                                       constraints:
                                                           const BoxConstraints(),
                                                       icon: Icon(
@@ -324,23 +328,20 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                 Row(
                                                   children: [
                                                     Text(
-                                                        espacio
-                                                            .price
+                                                        espacio.price
                                                             .toString(),
                                                         style: TextStyle(
-                                                            fontFamily:
-                                                                'KoHo',
+                                                            fontFamily: 'KoHo',
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .bold,
+                                                                FontWeight.bold,
                                                             color: theme
                                                                 .colorScheme
                                                                 .secondary,
                                                             fontSize: 14)),
                                                     Padding(
                                                       padding:
-                                                          const EdgeInsets
-                                                              .only(top: 2),
+                                                          const EdgeInsets.only(
+                                                              top: 2),
                                                       child: Icon(
                                                           Icons
                                                               .monetization_on_outlined,

@@ -15,7 +15,7 @@ class MyUserImageWidget extends StatelessWidget {
     try {
       return Image.network(
         image != null && image != ''
-            ? 'http://magarcia.asuscomm.com:25546/users/storage/$image.png'
+            ? 'http://app.iesluisvives.org:1212/users/storage/$image.png'
             : 'assets/images/profile_pic.png',
         width: 100,
         height: 100,
@@ -60,7 +60,7 @@ class MyUserImageWidget extends StatelessWidget {
     try {
       return Image.network(
         image != null && image != ''
-            ? 'http://magarcia.asuscomm.com:25546/users/storage/$image.png'
+            ? 'http://app.iesluisvives.org:1212/users/storage/$image.png'
             : 'assets/images/profile_pic.png',
         width: 100,
         height: 100,

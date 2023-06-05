@@ -9,15 +9,15 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-final List<String> horas = [
-  '08:25 - 09:20',
-  '09:20 - 10:15',
-  '10:15 - 11:10',
-  '11:10 - 12:05',
-  '12:05 - 12:30',
-  '12:30 - 13:25',
-  '13:25 - 14:20',
-  '14:20 - 15:15',
+final List<Map<String, dynamic>> horas = [
+  {'hora': '08:25 - 09:20', 'ocupada': false},
+  {'hora': '09:20 - 10:15', 'ocupada': false},
+  {'hora': '10:15 - 11:10', 'ocupada': false},
+  {'hora': '11:10 - 12:05', 'ocupada': false},
+  {'hora': '12:05 - 12:30', 'ocupada': false},
+  {'hora': '12:30 - 13:25', 'ocupada': false},
+  {'hora': '13:25 - 14:20', 'ocupada': false},
+  {'hora': '14:20 - 15:15', 'ocupada': false},
 ];
 
 String startTimeFromLocalDateTime(String localDateTimeString) {
@@ -62,6 +62,29 @@ class _ReservaSala extends State<EditarReservaScreen> {
   void dispose() {
     observationsController.dispose();
     super.dispose();
+  }
+
+  String convertirHoraLocalDateTime(String localDateTime) {
+    DateTime horaDateTime = DateTime.parse(localDateTime);
+    String horaInicio = DateFormat('HH:mm').format(horaDateTime);
+    return horaInicio;
+  }
+
+  void actualizarHorasOcupadas(List<String> horasOcupadas) {
+    setState(() {
+      List<String> horasOcupadasConvertidas = horasOcupadas
+          .map((hora) => convertirHoraLocalDateTime(hora))
+          .toList();
+
+      for (int i = 0; i < horas.length; i++) {
+        if (horasOcupadasConvertidas
+            .any((horaOcupada) => horas[i]['hora'].startsWith(horaOcupada))) {
+          horas[i]['ocupada'] = true;
+        } else {
+          horas[i]['ocupada'] = false;
+        }
+      }
+    });
   }
 
   @override
@@ -277,7 +300,11 @@ class _ReservaSala extends State<EditarReservaScreen> {
                           color: theme.colorScheme.secondary,
                         ),
                       ),
-                      focusedDay: DateTime.now(),
+                      focusedDay: DateFormat('yyyy-MM-dd')
+                          .parse(reserva.startTime),
+                      selectedDayPredicate: (day) {
+                        return isSameDay(selectedDay, day);
+                      },
                       firstDay:
                           DateTime.now().subtract(const Duration(days: 365)),
                       lastDay: DateTime.now().add(const Duration(days: 365)),
@@ -320,9 +347,6 @@ class _ReservaSala extends State<EditarReservaScreen> {
                           color: Colors.grey,
                         ),
                       ),
-                      selectedDayPredicate: (day) {
-                        return isSameDay(selectedDay, day);
-                      },
                       onDaySelected: (selectedDay, focusedDay) {
                         final now = DateTime.now();
                         if (selectedDay.isBefore(
@@ -346,6 +370,16 @@ class _ReservaSala extends State<EditarReservaScreen> {
                               _scrollController.position.viewportDimension,
                               duration: const Duration(milliseconds: 1000),
                               curve: Curves.easeInOut);
+
+                          String date = DateFormat('yyyy-MM-dd')
+                              .parse(selectedDay.toString())
+                              .toString()
+                              .split(' ')[0];
+                          reservasProvider
+                              .fetchOccupiedTimes(date, reserva.spaceId)
+                              .then((horasOcupadas) {
+                            actualizarHorasOcupadas(horasOcupadas);
+                          });
                         }
                       },
                     ),
@@ -357,17 +391,26 @@ class _ReservaSala extends State<EditarReservaScreen> {
                         .map((hora) => SizedBox(
                               width: 150,
                               child: TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    selectedHour = hora;
-                                  });
-                                },
+                                onPressed:
+                                    hora['ocupada'] && hora['hora'] != myHour
+                                        ? null
+                                        : () {
+                                            setState(() {
+                                              selectedHour = hora['hora'];
+                                            });
+                                            _scrollController.animateTo(
+                                                _scrollController
+                                                    .position.viewportDimension,
+                                                duration: const Duration(
+                                                    milliseconds: 1000),
+                                                curve: Curves.easeInOut);
+                                          },
                                 style: ButtonStyle(
-                                  backgroundColor: hora == selectedHour
+                                  backgroundColor: hora['hora'] == selectedHour
                                       ? MaterialStateProperty.all<Color>(theme
                                           .colorScheme.secondary
                                           .withOpacity(0.5))
-                                      : hora == myHour
+                                      : hora['hora'] == myHour
                                           ? MaterialStateProperty.all<Color>(
                                               theme.colorScheme.surface
                                                   .withOpacity(0.5))
@@ -392,18 +435,21 @@ class _ReservaSala extends State<EditarReservaScreen> {
                                   children: [
                                     Icon(
                                       Icons.access_time_rounded,
-                                      color: theme.colorScheme.surface,
+                                      color: hora['ocupada'] &&
+                                              hora['hora'] != myHour
+                                          ? Colors.grey
+                                          : theme.colorScheme.surface,
                                     ),
                                     const SizedBox(width: 10),
                                     Text(
-                                      hora,
+                                      hora['hora'],
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
-                                        color: theme.colorScheme.surface,
-                                        fontWeight: hora == selectedHour ||
-                                                hora == myHour
-                                            ? FontWeight.bold
-                                            : FontWeight.normal,
+                                        color: hora['ocupada'] &&
+                                                hora['hora'] != myHour
+                                            ? Colors.grey
+                                            : theme.colorScheme.surface,
+                                        fontWeight: FontWeight.bold,
                                         fontFamily: 'KoHo',
                                       ),
                                     ),
@@ -497,10 +543,10 @@ class _ReservaSala extends State<EditarReservaScreen> {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return const MyErrorMessageDialog(
-                                title: 'Error',
-                                description:
-                                    'Ha ocurrido un error al actualizar la reserva.',
+                              return MyErrorMessageDialog(
+                                title: 'Error al actualizar la reserva',
+                                description: error.toString().substring(
+                                    error.toString().indexOf(':') + 1),
                               );
                             });
                       });
