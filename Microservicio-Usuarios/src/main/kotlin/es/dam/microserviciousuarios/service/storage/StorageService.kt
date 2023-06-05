@@ -6,16 +6,13 @@ import es.dam.microserviciousuarios.exceptions.StorageNotFoundException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
 import org.springframework.core.io.UrlResource
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder
 import java.awt.image.BufferedImage
-import java.io.File
 import java.io.IOException
 import java.io.InputStream
-import java.lang.System.load
 import java.net.MalformedURLException
 import java.nio.file.Files
 import java.nio.file.Path
@@ -66,20 +63,20 @@ class StorageService(
     }
 
     override fun loadAsResource(filename: String): Resource {
-        return try {
+         try {
             var resourceStream = getResourceAsStream("uploads/$filename")
-            if (resourceStream == null) {
-                resourceStream = getResourceAsStream("placeholder.png")
-                val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
-                val outputFile = Files.createTempFile("temp", ".png").toFile()
-                ImageIO.write(imagePlaceHolder, "jpeg", outputFile)
-                return UrlResource(outputFile.toURI())
-            } else {
-                val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
-                val outputFile = Files.createTempFile("temp", ".png").toFile()
-                ImageIO.write(imagePlaceHolder, "png", outputFile)
-                return UrlResource(outputFile.toURI())
-            }
+             return if (resourceStream == null) {
+                 resourceStream = getResourceAsStream("placeholder.png")
+                 val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
+                 val outputFile = Files.createTempFile("temp", ".png").toFile()
+                 ImageIO.write(imagePlaceHolder, "jpeg", outputFile)
+                 UrlResource(outputFile.toURI())
+             } else {
+                 val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
+                 val outputFile = Files.createTempFile("temp", ".png").toFile()
+                 ImageIO.write(imagePlaceHolder, "png", outputFile)
+                 UrlResource(outputFile.toURI())
+             }
         } catch (e: MalformedURLException) {
             throw StorageNotFoundException("No se puede leer fichero: $filename -> ${e.message}")
         }

@@ -1,7 +1,9 @@
 package es.dam.services.space
 
 import de.jensklingenberg.ktorfit.Ktorfit
-import es.dam.exceptions.*
+import es.dam.exceptions.SpaceBadRequestException
+import es.dam.exceptions.SpaceInternalErrorException
+import es.dam.exceptions.SpaceNotFoundException
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*

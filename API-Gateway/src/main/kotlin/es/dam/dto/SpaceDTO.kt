@@ -1,7 +1,6 @@
 package es.dam.dto
 
 import kotlinx.serialization.Serializable
-import kotlin.time.Duration
 
 @Serializable
 data class SpaceDTO(

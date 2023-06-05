@@ -7,7 +7,6 @@ import es.dam.services.cache.SpaceCacheImpl
 import es.dam.services.spaces.SpaceServiceImpl
 import es.dam.services.storage.StorageServiceImpl
 import io.ktor.server.application.*
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 

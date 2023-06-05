@@ -3,8 +3,6 @@ package es.dam.services
 import es.dam.exceptions.BookingException
 import es.dam.models.Booking
 import es.dam.repositories.BookingCachedRepository
-import es.dam.repositories.BookingRepository
-import es.dam.repositories.BookingRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -12,9 +10,8 @@ import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.bson.types.ObjectId
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.litote.kmongo.id.toId
 import java.time.LocalDateTime

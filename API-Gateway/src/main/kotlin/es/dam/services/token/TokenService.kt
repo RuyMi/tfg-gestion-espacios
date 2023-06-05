@@ -1,11 +1,11 @@
 package es.dam.services.token
 
-import es.dam.config.TokenConfig
-import org.koin.core.annotation.Single
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
+import es.dam.config.TokenConfig
 import io.ktor.server.auth.jwt.*
+import org.koin.core.annotation.Single
 
 @Single
 class TokensService(

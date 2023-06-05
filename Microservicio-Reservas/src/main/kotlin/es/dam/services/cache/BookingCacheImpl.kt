@@ -1,9 +1,9 @@
 package es.dam.services.cache
 
 import es.dam.models.Booking
-import org.koin.core.annotation.Single
 import io.github.reactivecircus.cache4k.Cache
 import org.koin.core.annotation.Named
+import org.koin.core.annotation.Single
 import java.util.*
 import kotlin.time.Duration.Companion.minutes
 

@@ -5,8 +5,6 @@ import es.dam.dto.SpaceDTO
 import es.dam.dto.SpaceUpdateDTO
 import es.dam.models.Space
 import org.litote.kmongo.toId
-import java.util.*
-import kotlin.time.Duration
 
 fun Space.toSpaceDto() = SpaceDTO(
     id = this.id.toString(),

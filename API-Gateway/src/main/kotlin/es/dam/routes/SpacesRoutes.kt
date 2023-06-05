@@ -3,32 +3,27 @@ package es.dam.routes
 import es.dam.dto.SpaceCreateDTO
 import es.dam.dto.SpacePhotoDTO
 import es.dam.dto.SpaceUpdateDTO
-import es.dam.exceptions.*
+import es.dam.exceptions.BookingMediaNotSupportedException
+import es.dam.exceptions.SpaceBadRequestException
+import es.dam.exceptions.SpaceInternalErrorException
+import es.dam.exceptions.SpaceNotFoundException
 import es.dam.repositories.booking.KtorFitBookingsRepository
-import es.dam.services.token.TokensService
 import es.dam.repositories.space.KtorFitSpacesRepository
-import io.ktor.client.request.forms.*
+import es.dam.services.token.TokensService
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
-import io.ktor.server.response.respond
 import io.ktor.server.routing.*
 import io.ktor.utils.io.core.*
-import io.ktor.utils.io.streams.*
-import kotlinx.coroutines.async
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.ktor.ext.inject
 import retrofit2.await
-import java.io.File
-import java.io.InputStream
-import java.lang.IllegalArgumentException
-import java.util.UUID
+import java.util.*
 
 private const val ENDPOINT = "spaces"
 
