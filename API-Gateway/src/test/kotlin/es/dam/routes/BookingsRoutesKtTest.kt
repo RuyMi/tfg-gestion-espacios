@@ -1,4 +1,3 @@
-/*
 package es.dam.routes
 
 import es.dam.dto.*
@@ -85,7 +84,7 @@ class BookingsRoutesKtTest{
             isReservable = true,
             requiresAuthorization = false,
             authorizedRoles = setOf("USER"),
-            bookingWindow = "10"
+            bookingWindow = 10
         )
 
         environment { config }
@@ -391,7 +390,6 @@ class BookingsRoutesKtTest{
 
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
-
 
     @Test
     fun getById400() = testApplication {
@@ -1355,7 +1353,6 @@ class BookingsRoutesKtTest{
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
-
     @Test
     fun delete400() = testApplication {
         environment { config }
@@ -1379,5 +1376,5 @@ class BookingsRoutesKtTest{
 
         assertEquals(HttpStatusCode.BadRequest, response.status)
     }
-
 }
+

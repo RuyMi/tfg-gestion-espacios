@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder
+import java.awt.image.BufferedImage
+import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import java.lang.System.load
 import java.net.MalformedURLException
 import java.nio.file.Files
@@ -20,6 +23,7 @@ import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 import java.util.*
 import java.util.stream.Stream
+import javax.imageio.ImageIO
 
 @Service
 class StorageService(
@@ -63,14 +67,18 @@ class StorageService(
 
     override fun loadAsResource(filename: String): Resource {
         return try {
-            val file = loadFile(filename)
-            val resource = UrlResource(file.toUri())
-            if (resource.exists() || resource.isReadable) {
-                resource
+            var resourceStream = getResourceAsStream("uploads/$filename")
+            if (resourceStream == null) {
+                resourceStream = getResourceAsStream("placeholder.png")
+                val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
+                val outputFile = Files.createTempFile("temp", ".png").toFile()
+                ImageIO.write(imagePlaceHolder, "jpeg", outputFile)
+                return UrlResource(outputFile.toURI())
             } else {
-                throw StorageNotFoundException(
-                    "No se puede leer fichero: $filename"
-                )
+                val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
+                val outputFile = Files.createTempFile("temp", ".png").toFile()
+                ImageIO.write(imagePlaceHolder, "png", outputFile)
+                return UrlResource(outputFile.toURI())
             }
         } catch (e: MalformedURLException) {
             throw StorageNotFoundException("No se puede leer fichero: $filename -> ${e.message}")
@@ -113,5 +121,10 @@ class StorageService(
         } catch (e: IOException) {
             throw StorageBadRequestException("Error deleting: $fileName -> ${e.message}")
         }
+    }
+
+    fun getResourceAsStream(resourceName: String): InputStream? {
+        val classLoader = Thread.currentThread().contextClassLoader
+        return classLoader.getResourceAsStream(resourceName)?: null
     }
 }

@@ -1,5 +1,6 @@
 package es.dam.microserviciousuarios.controllers
 
+import es.dam.microserviciousuarios.dto.SpacePhotoDTO
 import es.dam.microserviciousuarios.exceptions.StorageBadRequestException
 import es.dam.microserviciousuarios.exceptions.StorageException
 import es.dam.microserviciousuarios.service.storage.StorageService
@@ -50,15 +51,15 @@ class StorageController @Autowired constructor(
     )
     fun uploadFile(
         @RequestPart("file") file: MultipartFile
-    ): ResponseEntity<Map<String, String>> = runBlocking {
+    ): ResponseEntity<SpacePhotoDTO> = runBlocking {
         return@runBlocking try {
             if (!file.isEmpty) {
                 val myScope = CoroutineScope(Dispatchers.IO)
                 val fileStored = myScope.async { storageService.storeFile(file) }.await()
                 val urlStored = storageService.getUrl(fileStored)
                 val response =
-                    mapOf("url" to urlStored, "name" to fileStored, "created_at" to LocalDateTime.now().toString())
-                ResponseEntity.status(HttpStatus.CREATED).body(response)
+                    mapOf("url" to urlStored, "fileName" to fileStored, "created_at" to LocalDateTime.now().toString())
+                ResponseEntity.status(HttpStatus.CREATED).body(SpacePhotoDTO(response))
             } else {
                 throw StorageBadRequestException("No se puede subir un fichero vacío.")
             }

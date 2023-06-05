@@ -7,10 +7,13 @@ import io.ktor.utils.io.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.InjectedParam
-import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
+import java.awt.image.BufferedImage
 import java.io.File
+import java.io.InputStream
+import java.nio.file.Files
 import java.time.LocalDateTime
+import javax.imageio.ImageIO
 
 @Single
 class StorageServiceImpl(
@@ -19,17 +22,20 @@ class StorageServiceImpl(
     override fun getConfig(): StorageConfig {
         return storageConfig
     }
+    private val resourcePath = this::class.java.classLoader.getResource("uploads").file
+    private val uploadsPath = resourcePath
+    private val uploadsDir = File(uploadsPath)
 
     override fun initStorageDirectory() {
-        if (!File(storageConfig.uploadDir).exists()) {
-            File(storageConfig.uploadDir).mkdir()
+        if (!uploadsDir.exists()) {
+            uploadsDir.mkdirs()
         }
     }
 
     override suspend fun saveFile(fileName: String, fileBytes: ByteArray): Map<String, String> =
         withContext(Dispatchers.IO) {
             try {
-                val file = File("${storageConfig.uploadDir}/$fileName")
+                val file = File("${uploadsPath}/$fileName")
                 file.writeBytes(fileBytes)
                 return@withContext mapOf(
                     "fileName" to fileName,
@@ -45,7 +51,7 @@ class StorageServiceImpl(
     override suspend fun saveFile(fileName: String, fileBytes: ByteReadChannel): Map<String, String> =
         withContext(Dispatchers.IO) {
             try {
-                val file = File("${storageConfig.uploadDir}/$fileName")
+                val file = File("${uploadsPath}/$fileName")
                 val res = fileBytes.copyAndClose(file.writeChannel())
                 return@withContext mapOf(
                     "fileName" to fileName,
@@ -59,20 +65,32 @@ class StorageServiceImpl(
         }
 
     override suspend fun getFile(fileName: String): File = withContext(Dispatchers.IO) {
-        val file = File("${storageConfig.uploadDir}/$fileName")
-        if (!file.exists()) {
-            return@withContext File("${storageConfig.uploadDir}/placeholder.jpeg")
+        var resourceStream = getResourceAsStream("uploads/$fileName")
+         if (resourceStream == null) {
+            resourceStream = getResourceAsStream("placeholder.jpeg")
+            val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
+            val outputFile = Files.createTempFile("temp", "").toFile()
+            ImageIO.write(imagePlaceHolder, "", outputFile)
+            return@withContext outputFile
         } else {
-            return@withContext file
+            val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
+            val outputFile = Files.createTempFile("temp", "").toFile()
+            ImageIO.write(imagePlaceHolder, "", outputFile)
+            return@withContext outputFile
         }
     }
 
     override suspend fun deleteFile(fileName: String): Unit = withContext(Dispatchers.IO) {
-        val file = File("${storageConfig.uploadDir}/$fileName")
+        val file = File("${uploadsPath}/$fileName")
         if (!file.exists()) {
             throw StorageException.FileNotFound("No se ha encontrado el fichero: $fileName")
         } else {
             file.delete()
         }
+    }
+
+    fun getResourceAsStream(resourceName: String): InputStream? {
+        val classLoader = Thread.currentThread().contextClassLoader
+        return classLoader.getResourceAsStream(resourceName)?: null
     }
 }

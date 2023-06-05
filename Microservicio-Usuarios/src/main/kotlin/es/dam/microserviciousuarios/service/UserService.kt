@@ -32,6 +32,17 @@ class UserService
         return@withContext usersRepository.findAll()
     }
 
+    fun poner20creditosAllUsers() {
+        val users = usersRepository.findAll()
+        users.forEach {
+            val entity = it.copy(
+                credits = 20,
+                updatedAt = LocalDateTime.now()
+            )
+            usersRepository.save(entity)
+        }
+    }
+
     suspend fun findUserById(id: String): User = withContext(Dispatchers.IO) {
         if (usersRepository.findById(ObjectId(id)).isPresent) {
             return@withContext usersRepository.findById(ObjectId(id)).get()

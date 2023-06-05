@@ -90,14 +90,14 @@ sourceSets.main {
     java.srcDirs("build/generated/ksp/main/kotlin")
 }
 
-tasks.withType<Jar> {
+/*tasks.withType<Jar> {
     manifest {
         attributes(
-            "Main-Class" to "io.ktor.server.netty.EngineMain",
-            "Class-Path" to configurations.runtimeClasspath.get().files.joinToString(" ") { "lib/{it.name}" }
+            "Main-Class" to "es.dam.ApplicationKt",
+            "Class-Path" to configurations.runtimeClasspath.get().files.joinToString(" ")
         )
     }
-}
+}*/
 
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {

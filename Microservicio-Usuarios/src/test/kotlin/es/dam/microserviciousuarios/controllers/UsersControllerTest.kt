@@ -14,6 +14,7 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.Test
@@ -32,6 +33,7 @@ import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 @SpringBootTest
 class UsersControllerTest {
     @MockK
@@ -117,7 +119,7 @@ class UsersControllerTest {
         )
     }
 
-    //TODO: fallo login
+
     @Test
     fun loginFailedUnauthorized() = runTest {
         coEvery { authenticationManager.authenticate(UsernamePasswordAuthenticationToken(userLogin.username, userLogin.password)) } throws UserNotFoundException("User not found.")
@@ -128,7 +130,7 @@ class UsersControllerTest {
             usersController.login(userLogin)
         }
 
-        assertEquals("401 UNAUTHORIZED \"Invalid username or password\"", exception.message)
+        assertEquals("401 UNAUTHORIZED \"Usuario o contraseña incorrectos\"", exception.message)
     }
 
 
@@ -152,26 +154,26 @@ class UsersControllerTest {
 
     @Test
     fun registerEmailFailed() = runTest  {
-        coEvery { userService.save(any()) } throws UserBadRequestException("Email already exists.")
+        coEvery { userService.save(any()) } throws UserBadRequestException("Ya existe un usuario con ese nombre o correo")
         coEvery { jwtUtils.generateToken(any()) } returns "token"
 
         val exception = assertThrows<ResponseStatusException> {
             usersController.register(userRegister)
         }
 
-        assertEquals("400 BAD_REQUEST \"User already exists with that username or email\"", exception.message)
+        assertEquals("400 BAD_REQUEST \"Ya existe un usuario con ese nombre o correo\"", exception.message)
     }
 
     @Test
     fun registerUsernameFailed() = runTest  {
-        coEvery { userService.save(any()) } throws UserBadRequestException("Username already exists.")
+        coEvery { userService.save(any()) } throws UserBadRequestException("Ya existe un usuario con ese nombre o correo")
         coEvery { jwtUtils.generateToken(any()) } returns "token"
 
         val exception = assertThrows<ResponseStatusException> {
             usersController.register(userRegister)
         }
 
-        assertEquals("400 BAD_REQUEST \"User already exists with that username or email\"", exception.message)
+        assertEquals("400 BAD_REQUEST \"Ya existe un usuario con ese nombre o correo\"", exception.message)
     }
 
     @Test
@@ -183,7 +185,7 @@ class UsersControllerTest {
             usersController.register(userRegisterWrong)
         }
 
-        assertEquals("400 BAD_REQUEST \"User already exists with that username or email\"", exception.message)
+        assertEquals("400 BAD_REQUEST \"Ya existe un usuario con ese nombre o correo\"", exception.message)
     }
 
     @Test
@@ -224,13 +226,13 @@ class UsersControllerTest {
 
     @Test
     fun findByIdFailed404() = runTest  {
-        coEvery { userService.findByUuid(any()) } throws UserNotFoundException("User with uuid ${user.uuid} not found.")
+        coEvery { userService.findByUuid(any()) } throws UserNotFoundException("Usuario con uuid: ${user.uuid} no encontrado")
 
         val exception = assertThrows<ResponseStatusException> {
             usersController.findById(user.uuid.toString())
         }
 
-        assertEquals("404 NOT_FOUND \"User not found with uuid: ${user.uuid}\"", exception.message)
+        assertEquals("404 NOT_FOUND \"Usuario con uuid: ${user.uuid} no encontrado\"", exception.message)
     }
 
     @Test
@@ -325,6 +327,7 @@ class UsersControllerTest {
 
         assertEquals("404 NOT_FOUND \"User not found with uuid: ${user.uuid}\"", exception.message)
     }
+
 
     @Test
     fun delete() = runTest {

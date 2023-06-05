@@ -15,7 +15,7 @@ data class SpaceDTO(
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,
     val authorizedRoles: Set<String>,
-    val bookingWindow: String
+    val bookingWindow: Int
 )
 
 @Serializable
@@ -27,7 +27,7 @@ data class SpaceCreateDTO(
     val isReservable: Boolean = false,
     val requiresAuthorization: Boolean,
     val authorizedRoles: Set<String>,
-    val bookingWindow: String
+    val bookingWindow: Int
 )
 
 @Serializable
@@ -39,7 +39,7 @@ data class SpaceUpdateDTO(
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,
     val authorizedRoles: Set<String> = setOf(Space.UserRole.USER.toString()),
-    val bookingWindow: String
+    val bookingWindow: Int
 )
 
 @Serializable
@@ -58,7 +58,7 @@ data class SpaceResponseDTO(
     val isReservable: Boolean,
     val requiresAuthorization: Boolean,
     val authorizedRoles: Set<String>,
-    val bookingWindow: Duration
+    val bookingWindow: Int
 )
 
 @Serializable

@@ -40,7 +40,7 @@ fun Application.spacesRoutes() {
     routing {
         route("/$ENDPOINT") {
             authenticate {
-                get() {
+                get {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
 
@@ -143,7 +143,7 @@ fun Application.spacesRoutes() {
                     }
                 }
 
-                post() {
+                post {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
                         val entity = call.receive<SpaceCreateDTO>()
@@ -175,7 +175,6 @@ fun Application.spacesRoutes() {
                             println(part.headers)
                             when (part) {
                                 is PartData.FileItem  -> {
-                                    println("He entrado a fileItem")
                                     val inputStream = part.streamProvider()
                                     val fileBytes = inputStream.readBytes()
                                     val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
@@ -183,7 +182,6 @@ fun Application.spacesRoutes() {
                                     spacePhotoDto = spacesRepository.uploadFile(token, multipartBody).await()
                                 }
                                 is PartData.BinaryItem -> {
-                                    println("He entrado a BinaryItem")
                                     val inputStream = part.provider()
                                     val fileBytes = inputStream.readBytes()
                                     val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
@@ -191,7 +189,6 @@ fun Application.spacesRoutes() {
                                     spacePhotoDto = spacesRepository.uploadFile(token, multipartBody).await()
                                 }
                                 is PartData.BinaryChannelItem -> {
-                                    println("He entrado a BinaryChannelItem")
                                     val inputStream = part.provider()
                                     val fileBytes = inputStream.readRemaining().readBytes()
                                     val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
@@ -250,12 +247,16 @@ fun Application.spacesRoutes() {
                             throw res.exceptionOrNull()!!
                         }
                     } catch (e: SpaceNotFoundException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
                     } catch (e: SpaceBadRequestException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     } catch (e: SpaceInternalErrorException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     } catch (e: IllegalArgumentException) {
+                        println("Error: ${e.message}")
                         call.respond(HttpStatusCode.BadRequest, "El id debe ser un UUID válido")
                     }
                 }
@@ -269,7 +270,7 @@ fun Application.spacesRoutes() {
                         require(bookingsRepository.findBySpace("Bearer $token", id!!).data.isEmpty())
                         {"Se deben actualizar o eliminar las reservas asociadas a esta sala antes de continuar con la operación."}
 
-                        spacesRepository.delete("Bearer $token", id!!)
+                        spacesRepository.delete("Bearer $token", id)
 
                         call.respond(HttpStatusCode.NoContent)
 

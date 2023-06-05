@@ -50,7 +50,7 @@ fun Application.storageRoutes() {
                     val file = storageService.getFile(fileName)
                     call.respondFile(file)
                 }catch (e: Exception){
-                    //Creame
+                    call.respond(HttpStatusCode.NotFound, "No se ha encontrado el archivo con el nombre: $fileName")
                 }
             }
 

@@ -26,7 +26,7 @@ class SpaceRepositoryImplTest {
         isReservable = false,
         requiresAuthorization = false,
         authorizedRoles = setOf(Space.UserRole.USER),
-        bookingWindow = "test"
+        bookingWindow = 10
     )
 
     val spaceReservable = Space(
@@ -38,7 +38,7 @@ class SpaceRepositoryImplTest {
         isReservable = true,
         requiresAuthorization = false,
         authorizedRoles = setOf(Space.UserRole.USER),
-        bookingWindow = "test"
+        bookingWindow = 10
     )
 
 
@@ -74,15 +74,15 @@ class SpaceRepositoryImplTest {
 
         assertAll(
             { assertEquals(space, response) },
-            { assertEquals(space.id, response.id) },
-            { assertEquals(space.uuid, response.uuid) },
-            { assertEquals(space.name, response.name) },
-            { assertEquals(space.image, response.image) },
-            { assertEquals(space.price, response.price) },
-            { assertEquals(space.isReservable, response.isReservable)},
-            { assertEquals(space.requiresAuthorization, response.requiresAuthorization)},
-            { assertEquals(space.authorizedRoles, response.authorizedRoles) },
-            { assertEquals(space.bookingWindow, response.bookingWindow) }
+            { assertEquals(space.id, response?.id) },
+            { assertEquals(space.uuid, response?.uuid) },
+            { assertEquals(space.name, response?.name) },
+            { assertEquals(space.image, response?.image) },
+            { assertEquals(space.price, response?.price) },
+            { assertEquals(space.isReservable, response?.isReservable)},
+            { assertEquals(space.requiresAuthorization, response?.requiresAuthorization)},
+            { assertEquals(space.authorizedRoles, response?.authorizedRoles) },
+            { assertEquals(space.bookingWindow, response?.bookingWindow) }
         )
     }
 
@@ -93,15 +93,15 @@ class SpaceRepositoryImplTest {
 
         assertAll(
             { assertEquals(space, response) },
-            { assertEquals(space.id, response.id) },
-            { assertEquals(space.uuid, response.uuid) },
-            { assertEquals(space.name, response.name) },
-            { assertEquals(space.image, response.image) },
-            { assertEquals(space.price, response.price) },
-            { assertEquals(space.isReservable, response.isReservable)},
-            { assertEquals(space.requiresAuthorization, response.requiresAuthorization)},
-            { assertEquals(space.authorizedRoles, response.authorizedRoles) },
-            { assertEquals(space.bookingWindow, response.bookingWindow) }
+            { assertEquals(space.id, response?.id) },
+            { assertEquals(space.uuid, response?.uuid) },
+            { assertEquals(space.name, response?.name) },
+            { assertEquals(space.image, response?.image) },
+            { assertEquals(space.price, response?.price) },
+            { assertEquals(space.isReservable, response?.isReservable)},
+            { assertEquals(space.requiresAuthorization, response?.requiresAuthorization)},
+            { assertEquals(space.authorizedRoles, response?.authorizedRoles) },
+            { assertEquals(space.bookingWindow, response?.bookingWindow) }
         )
     }
 
@@ -109,21 +109,21 @@ class SpaceRepositoryImplTest {
     fun update() = runTest {
         val response = space.copy(
             name = "testUpdate",
-            bookingWindow = "testUpdate"
+            bookingWindow = 10
         )
         val updatedResponse = repository.update(response)
 
         assertAll(
             { assertEquals(updatedResponse, response) },
-            { assertEquals(updatedResponse.id, response.id) },
-            { assertEquals(updatedResponse.uuid, response.uuid) },
-            { assertEquals(updatedResponse.name, response.name) },
-            { assertEquals(updatedResponse.image, response.image) },
-            { assertEquals(updatedResponse.price, response.price) },
-            { assertEquals(updatedResponse.isReservable, response.isReservable)},
-            { assertEquals(updatedResponse.requiresAuthorization, response.requiresAuthorization)},
-            { assertEquals(updatedResponse.authorizedRoles, response.authorizedRoles) },
-            { assertEquals(updatedResponse.bookingWindow, response.bookingWindow) }
+            { assertEquals(updatedResponse?.id, response.id) },
+            { assertEquals(updatedResponse?.uuid, response.uuid) },
+            { assertEquals(updatedResponse?.name, response.name) },
+            { assertEquals(updatedResponse?.image, response.image) },
+            { assertEquals(updatedResponse?.price, response.price) },
+            { assertEquals(updatedResponse?.isReservable, response.isReservable)},
+            { assertEquals(updatedResponse?.requiresAuthorization, response.requiresAuthorization)},
+            { assertEquals(updatedResponse?.authorizedRoles, response.authorizedRoles) },
+            { assertEquals(updatedResponse?.bookingWindow, response.bookingWindow) }
         )
     }
 

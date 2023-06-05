@@ -36,7 +36,7 @@ fun Application.bookingsRoutes() {
     routing {
         route("/$ENDPOINT") {
             authenticate {
-                get() {
+                get {
                     try {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
@@ -239,7 +239,7 @@ fun Application.bookingsRoutes() {
                     }
                 }
 
-                post() {
+                post {
                     try {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
@@ -258,7 +258,7 @@ fun Application.bookingsRoutes() {
 
                             require(LocalDateTime.parse(entity.startTime).isAfter( LocalDateTime.now()))
                             {"No se ha podido guardar la reserva fecha introducida es anterior a la actual."}
-                            require(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(entity.startTime.split("T")[0])) <= space.bookingWindow.toInt())
+                            require(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(entity.startTime.split("T")[0])) <= space.bookingWindow)
                             {"No se puede reservar con tanta anterioridad."}
                             require(bookingsRepository.findByTime("Bearer $token", entity.spaceId, entity.startTime.split("T")[0])
                                 .data
@@ -267,14 +267,12 @@ fun Application.bookingsRoutes() {
                             )
                             {"Franja horaria no disponible."}
 
-                            val booking: Result<BookingResponseDTO>
-
-                            if(!space.requiresAuthorization){
-                                booking = runCatching {
+                            val booking: Result<BookingResponseDTO> = if(!space.requiresAuthorization){
+                                runCatching {
                                     bookingsRepository.create("Bearer $token", entity.copy(status = "APPROVED"))
                                 }
                             }else{
-                                booking = runCatching {
+                                runCatching {
                                     bookingsRepository.create("Bearer $token", entity)
                                 }
                             }
@@ -288,7 +286,7 @@ fun Application.bookingsRoutes() {
                         }else{
                             require(LocalDateTime.parse(entity.startTime).isAfter( LocalDateTime.now()))
                             {"No se ha podido guardar la reserva fecha introducida es anterior a la actual."}
-                            require(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(entity.startTime.split("T")[0])) <= space.bookingWindow.toInt())
+                            require(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(entity.startTime.split("T")[0])) <= space.bookingWindow)
                             {"No se puede reservar con tanta anterioridad."}
                             require(bookingsRepository.findByTime("Bearer $token", entity.spaceId, entity.startTime.split("T")[0])
                                 .data
@@ -350,6 +348,7 @@ fun Application.bookingsRoutes() {
 
                         if(!userRole.contains("ADMINISTRATOR")){
                             require(bookingsRepository.findByUser("Bearer $token", booking.userId).data.filter{it.userId == subject}.isNotEmpty()){"La reserva que se quiere actualizar no está guardada bajo el mismo usuario."}
+                            require(bookingsRepository.findById("Bearer $token", id!!).status != "REJECTED"){"No se puede actualizar una reserva rechazada."}
                             require(LocalDateTime.parse(booking.startTime).isAfter(LocalDateTime.now()))
                             {"No se ha podido guardar la reserva fecha introducida es anterior a la actual."}
                             require(Period.between(LocalDate.now(),LocalDate.parse(booking.startTime.split("T")[0])).days <=
@@ -361,20 +360,7 @@ fun Application.bookingsRoutes() {
                             )
                             {"Franja horaria no disponible."}
 
-                            val updatingResult: Result<BookingResponseDTO>
-
-                           /* if(spaceRepository.findById(token, booking.spaceId).requiresAuthorization){
-                                updatingResult = runCatching {
-                                    bookingsRepository.update("Bearer $token", id!!, booking.copy(status = "APPROVED"))
-                                }
-
-                            }else{
-                                updatingResult = runCatching {
-                                    bookingsRepository.update("Bearer $token", id!!, booking)
-                                }
-                            }*/
-
-                            updatingResult = runCatching {
+                            val updatingResult: Result<BookingResponseDTO> = runCatching {
                                 bookingsRepository.update("Bearer $token", id!!, booking)
                             }
 
@@ -460,7 +446,7 @@ fun Application.bookingsRoutes() {
                             call.respond(HttpStatusCode.NoContent)
                         } else {
                             bookingsRepository.findById("Bearer $token", id!!).spaceId
-                            bookingsRepository.delete("Bearer $token", id!!)
+                            bookingsRepository.delete("Bearer $token", id)
 
                             call.respond(HttpStatusCode.NoContent)
                         }

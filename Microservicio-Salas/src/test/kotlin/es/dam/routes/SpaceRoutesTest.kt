@@ -23,7 +23,6 @@ import org.litote.kmongo.id.toId
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.time.Duration
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SpaceRoutesTest {
@@ -38,17 +37,17 @@ class SpaceRoutesTest {
         isReservable = true,
         requiresAuthorization = true,
         authorizedRoles = setOf(Space.UserRole.USER),
-        bookingWindow = Duration.parse("PT1H").toString()
+        bookingWindow = 10
     )
     val spaceDto = space.toSpaceDto()
     val spaceDtoCreate = SpaceCreateDTO(
         name = "name",
         image = "image",
-        price = 1,
+        price = 20,
         isReservable = true,
         requiresAuthorization = true,
         authorizedRoles = setOf(Space.UserRole.USER.toString()),
-        bookingWindow = Duration.parse("PT1H").toString()
+        bookingWindow = 10
     )
 
     val spaceDtoCreateWrong = SpaceCreateDTO(
@@ -58,16 +57,17 @@ class SpaceRoutesTest {
         isReservable = true,
         requiresAuthorization = true,
         authorizedRoles = setOf(Space.UserRole.USER.toString()),
-        bookingWindow = Duration.parse("PT1H").toString()
+        bookingWindow = 10
     )
 
     val spaceDtoUpdate = SpaceUpdateDTO(
         name = "name",
+        image = "image",
         isReservable = true,
         requiresAuthorization = true,
         authorizedRoles = setOf(Space.UserRole.USER.toString()),
-        bookingWindow = Duration.parse("PT1H").toString(),
-        price = 20
+        bookingWindow = 10,
+        price = 1
     )
     val data = SpaceDataDTO(
         listOf(spaceDto)
@@ -409,7 +409,7 @@ class SpaceRoutesTest {
                 isReservable = true,
                 requiresAuthorization = true,
                 authorizedRoles = setOf(Space.UserRole.USER),
-                bookingWindow = Duration.parse("PT1H").toString()
+                bookingWindow = 10
             )
             SpaceRepositoryImpl().deleteAll()
             SpaceRepositoryImpl().save(space)

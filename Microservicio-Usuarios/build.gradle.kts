@@ -6,7 +6,6 @@ plugins {
     kotlin("jvm") version "1.8.10"
     kotlin("plugin.spring") version "1.8.10"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
-    id("de.jensklingenberg.ktorfit") version "1.0.0"
 }
 
 group = "es.dam"
@@ -70,10 +69,8 @@ dependencyManagement {
     }
 }
 
-/*tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
-    mainClassName = "es.dam.microserviciousuarios.MicroserviciosUsuariosApplication"
-}
- */
+
+
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
@@ -82,6 +79,6 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-tasks.withType<Test> {
+tasks.test {
     useJUnitPlatform()
 }
