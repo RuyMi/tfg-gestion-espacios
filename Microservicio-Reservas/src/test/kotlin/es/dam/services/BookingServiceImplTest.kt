@@ -2,6 +2,7 @@ package es.dam.services
 
 import es.dam.exceptions.BookingException
 import es.dam.models.Booking
+import es.dam.repositories.BookingCachedRepository
 import es.dam.repositories.BookingRepository
 import es.dam.repositories.BookingRepositoryImpl
 import io.mockk.coEvery
@@ -25,7 +26,7 @@ import kotlin.test.assertFailsWith
 class BookingServiceImplTest {
 
     @MockK
-    lateinit var bookingRepository : BookingRepositoryImpl
+    lateinit var bookingRepository : BookingCachedRepository
 
     @InjectMockKs
     lateinit var bookingService : BookingServiceImpl

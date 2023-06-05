@@ -23,7 +23,6 @@ import org.litote.kmongo.id.toId
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.time.Duration
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SpaceRoutesTest {
@@ -63,11 +62,12 @@ class SpaceRoutesTest {
 
     val spaceDtoUpdate = SpaceUpdateDTO(
         name = "name",
+        image = "image",
         isReservable = true,
         requiresAuthorization = true,
         authorizedRoles = setOf(Space.UserRole.USER.toString()),
         bookingWindow = 10,
-        price = 20
+        price = 1
     )
     val data = SpaceDataDTO(
         listOf(spaceDto)

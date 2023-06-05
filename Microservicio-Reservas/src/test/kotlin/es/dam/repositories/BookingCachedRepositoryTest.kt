@@ -1,8 +1,8 @@
 package es.dam.repositories
 
-import es.dam.exceptions.SpaceException
-import es.dam.models.Space
-import es.dam.services.cache.SpaceCacheImpl
+import es.dam.exceptions.BookingException
+import es.dam.models.Booking
+import es.dam.services.cache.BookingCacheImpl
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
@@ -16,33 +16,36 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.litote.kmongo.id.toId
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.test.assertFailsWith
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockKExtension::class)
-class SpaceCachedRepositoryTest {
+class BookingCachedRepositoryTest {
 
-    val space = Space(
+    val booking = Booking(
         id = ObjectId().toId(),
         uuid = UUID.fromString("c060c959-8462-4a0f-9265-9af4f54d166c").toString(),
-        name = "test",
-        image = null,
-        price = 1,
-        isReservable = true,
-        requiresAuthorization = false,
-        authorizedRoles = setOf(Space.UserRole.USER),
-        bookingWindow = 10
+        userId = UUID.randomUUID().toString(),
+        spaceId = UUID.randomUUID().toString(),
+        status = Booking.Status.PENDING,
+        startTime = LocalDateTime.now(),
+        endTime = LocalDateTime.now(),
+        observations =  "test",
+        userName = "test",
+        spaceName = "test",
+        image = ""
     )
 
     @MockK
-    lateinit var repo: SpaceRepositoryImpl
+    lateinit var repo: BookingRepositoryImpl
 
     @SpyK
-    var cache = SpaceCacheImpl()
+    var cache = BookingCacheImpl()
 
     @InjectMockKs
-    lateinit var repository: SpaceCachedRepository
+    lateinit var repository: BookingCachedRepository
 
     init {
         MockKAnnotations.init(this)
@@ -50,25 +53,25 @@ class SpaceCachedRepositoryTest {
 
     @Test
     fun findAll() = runTest {
-        coEvery { repo.findAll() } returns listOf(space)
+        coEvery { repo.findAll() } returns listOf(booking)
 
         val result = repository.findAll().toList()
 
         assertAll(
             { assertEquals(1, result.size) },
-            { assertEquals(space, result[0]) }
+            { assertEquals(booking, result[0]) }
         )
     }
 
     @Test
     fun findById() = runTest {
-        coEvery { repo.findById(any()) } returns space
+        coEvery { repo.findById(any()) } returns booking
 
-        val result = repository.findById(UUID.fromString(space.uuid))
+        val result = repository.findById(UUID.fromString(booking.uuid))
 
         assertAll(
-            { assertEquals(space.name, result.name) },
-            { assertEquals(space.bookingWindow, result.bookingWindow) },
+            { assertEquals(booking.userName, result.userName) },
+            { assertEquals(booking.spaceName, result.spaceName) },
         )
     }
 
@@ -76,40 +79,40 @@ class SpaceCachedRepositoryTest {
     fun findByIdNotFound() = runTest {
         coEvery { repo.findById(any()) } returns null
 
-        val exception = assertFailsWith(SpaceException::class) {
+        val exception = assertFailsWith(BookingException::class) {
             repository.findById(UUID.fromString("c060c959-8462-4a0f-9265-9af4f54d166f"))
         }
-        assertEquals("No se ha encontrado el espacio con uuid c060c959-8462-4a0f-9265-9af4f54d166f", exception.message)
+        assertEquals("No se ha encontrado la reserva con uuid c060c959-8462-4a0f-9265-9af4f54d166f", exception.message)
     }
 
     @Test
     fun save() = runTest {
-        coEvery { repo.save(any()) } returns space
+        coEvery { repo.save(any()) } returns booking
 
-        val result = repository.save(space)
+        val result = repository.save(booking)
 
         assertAll(
-            { assertEquals(space.name, result.name) },
-            { assertEquals(space.bookingWindow, result.bookingWindow) },
+            { assertEquals(booking.userName, result.userName) },
+            { assertEquals(booking.spaceName, result.spaceName) },
         )
     }
 
     @Test
     fun update()  = runTest {
-        coEvery { repo.update(any()) } returns space
+        coEvery { repo.update(any()) } returns booking
 
-        val result = repository.update(space)
+        val result = repository.update(booking)
 
         assertAll(
-            { assertEquals(space.name, result.name) },
-            { assertEquals(space.bookingWindow, result.bookingWindow) },
+            { assertEquals(booking.userName, result.userName) },
+            { assertEquals(booking.spaceName, result.spaceName) },
         )
     }
     @Test
     fun delete()  = runTest {
         coEvery { repo.delete(any()) } returns true
 
-        val result = repository.delete(UUID.fromString(space.uuid))
+        val result = repository.delete(UUID.fromString(booking.uuid))
 
         assertTrue(result)
     }

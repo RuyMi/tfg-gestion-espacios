@@ -63,6 +63,9 @@ dependencies {
     implementation("io.insert-koin:koin-ktor:$koin_ktor_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_ktor_version")
     implementation("io.insert-koin:koin-annotations:$koin_ksp_version")
+
+    //Cache
+    implementation("io.github.reactivecircus.cache4k:cache4k:0.9.0")
 }
 
 sourceSets.main {
