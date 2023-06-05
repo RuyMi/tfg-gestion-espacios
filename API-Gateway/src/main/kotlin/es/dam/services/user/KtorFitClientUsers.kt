@@ -7,12 +7,10 @@ import es.dam.exceptions.UserNotFoundException
 import es.dam.exceptions.UserUnauthorizedException
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.gson.*
-import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
 
 
 object KtorFitClientUsers {

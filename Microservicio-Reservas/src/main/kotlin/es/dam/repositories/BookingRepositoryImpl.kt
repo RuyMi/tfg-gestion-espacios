@@ -1,13 +1,12 @@
 package es.dam.repositories
 
 import es.dam.db.MongoDbManager
-import es.dam.exceptions.BookingException
 import es.dam.models.Booking
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
-import org.litote.kmongo.*
+import org.litote.kmongo.eq
 import java.time.LocalDate
 import java.util.*
 

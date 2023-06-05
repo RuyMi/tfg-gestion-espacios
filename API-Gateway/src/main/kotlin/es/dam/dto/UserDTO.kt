@@ -1,28 +1,6 @@
 package es.dam.dto
 
 import kotlinx.serialization.Serializable
-import java.time.LocalDateTime
-
-@Serializable
-data class UserDTO(
-    val id: String? = null,
-    val uuid: String,
-    val name: String,
-    val username: String,
-    val email: String,
-    val password: String,
-    val avatar: String? = null,
-    val userRole: Set<String>,
-    val credits: Int,
-    val isActive: Boolean,
-    val metadata: Metadata
-) {
-    @Serializable
-    data class Metadata(
-        val createdAt: String? = LocalDateTime.now().toString(),
-        val updatedAt: String? = LocalDateTime.now().toString()
-    )
-}
 
 @Serializable
 data class UserRegisterDTO(

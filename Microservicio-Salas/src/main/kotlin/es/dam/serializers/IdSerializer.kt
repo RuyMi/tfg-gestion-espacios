@@ -8,7 +8,6 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import org.litote.kmongo.Id
 import org.litote.kmongo.toId
-import java.util.*
 
 object IdSerializer : KSerializer<Id<Space>> {
     override val descriptor = PrimitiveSerialDescriptor("Id", PrimitiveKind.STRING)

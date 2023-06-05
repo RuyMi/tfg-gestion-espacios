@@ -1,10 +1,13 @@
 package es.dam.routes
 
-import es.dam.dto.*
-import es.dam.services.token.TokensService
+import es.dam.dto.UserLoginDTO
+import es.dam.dto.UserPhotoDTO
+import es.dam.dto.UserRegisterDTO
+import es.dam.dto.UserUpdateDTO
 import es.dam.exceptions.*
 import es.dam.repositories.booking.KtorFitBookingsRepository
 import es.dam.repositories.user.KtorFitUsersRepository
+import es.dam.services.token.TokensService
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -14,16 +17,12 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.utils.io.core.*
-import jdk.jshell.spi.ExecutionControl.UserException
-import kotlinx.coroutines.async
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.ktor.ext.inject
 import retrofit2.await
-import java.io.File
 import java.net.ConnectException
-import java.time.LocalDateTime
 import java.util.*
 
 private const val ENDPOINT = "users"
@@ -443,7 +442,7 @@ fun Application.usersRoutes() {
                         require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
 
                         val updatedUser = runCatching {
-                            userRepository.updateActive("Bearer $token", user.uuid, active!!.toBooleanStrict())
+                            userRepository.updateActive("Bearer $token", user.uuid, active.toBooleanStrict())
                         }
 
                         if (updatedUser.isSuccess) {

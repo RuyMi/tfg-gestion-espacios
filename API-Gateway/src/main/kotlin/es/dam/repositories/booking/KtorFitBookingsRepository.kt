@@ -5,7 +5,6 @@ import es.dam.dto.BookingDataDTO
 import es.dam.dto.BookingResponseDTO
 import es.dam.dto.BookingUpdateDTO
 import es.dam.exceptions.BookingBadRequestException
-import es.dam.exceptions.BookingExceptions
 import es.dam.exceptions.BookingNotFoundException
 import es.dam.services.booking.KtorFitClientBookings
 import kotlinx.coroutines.CoroutineStart

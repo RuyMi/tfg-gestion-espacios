@@ -2,19 +2,19 @@ package es.dam.plugins
 
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
+import io.ktor.network.tls.*
+import io.ktor.server.application.*
+import io.ktor.server.routing.*
+import io.ktor.server.websocket.*
 import io.ktor.utils.io.*
+import io.ktor.utils.io.core.*
+import io.ktor.websocket.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.InputStream
-import java.util.*
-import io.ktor.network.tls.*
-import io.ktor.utils.io.core.*
-import io.ktor.server.websocket.*
-import io.ktor.websocket.*
 import java.time.Duration
-import io.ktor.server.application.*
-import io.ktor.server.routing.*
+import java.util.*
 
 fun Application.configureSockets() {
     install(WebSockets) {
@@ -95,7 +95,7 @@ object EchoApp {
 
         private fun Scanner.lines() = sequence {
             while (hasNext()) {
-                yield(readLine())
+                yield(readlnOrNull())
             }
         }
     }

@@ -13,14 +13,8 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import org.bson.types.ObjectId
-import org.koin.core.qualifier.named
 import org.koin.ktor.ext.inject
-import org.litote.kmongo.id.toId
-import java.lang.IllegalArgumentException
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.Period
 import java.time.format.DateTimeParseException
 
 fun Application.bookingRoutes(){

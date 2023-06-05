@@ -1,7 +1,10 @@
 package es.dam.services.booking
 
 import de.jensklingenberg.ktorfit.http.*
-import es.dam.dto.*
+import es.dam.dto.BookingCreateDTO
+import es.dam.dto.BookingDataDTO
+import es.dam.dto.BookingResponseDTO
+import es.dam.dto.BookingUpdateDTO
 
 interface KtorFitRestBookings {
     @GET("bookings")

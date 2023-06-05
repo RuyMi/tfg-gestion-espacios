@@ -1,12 +1,9 @@
 package es.dam.plugins
 
-import io.ktor.server.application.*
 import es.dam.config.StorageConfig
-import es.dam.services.storage.StorageService
 import es.dam.services.storage.StorageServiceImpl
+import io.ktor.server.application.*
 import org.koin.core.parameter.parametersOf
-import org.koin.core.qualifier.named
-import org.koin.java.KoinJavaComponent
 import org.koin.ktor.ext.get
 import org.koin.ktor.ext.inject
 

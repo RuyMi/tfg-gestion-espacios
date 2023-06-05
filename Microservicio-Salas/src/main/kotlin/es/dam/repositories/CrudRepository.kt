@@ -1,8 +1,5 @@
 package es.dam.repositories
 
-import es.dam.models.Space
-import org.litote.kmongo.Id
-
 
 interface CrudRepository<T, ID> {
     suspend fun findAll(): List<T>

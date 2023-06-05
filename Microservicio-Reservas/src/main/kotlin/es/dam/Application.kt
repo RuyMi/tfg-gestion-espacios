@@ -1,8 +1,10 @@
 package es.dam
 
+import es.dam.plugins.configureKoin
+import es.dam.plugins.configureRouting
+import es.dam.plugins.configureSerialization
+import es.dam.plugins.configureValidation
 import io.ktor.server.application.*
-import es.dam.plugins.*
-import io.ktor.server.netty.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 

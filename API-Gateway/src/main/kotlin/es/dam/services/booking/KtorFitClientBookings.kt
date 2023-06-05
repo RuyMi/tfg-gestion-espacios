@@ -1,14 +1,15 @@
 package es.dam.services.booking
 
 import de.jensklingenberg.ktorfit.Ktorfit
-import es.dam.exceptions.*
+import es.dam.exceptions.BookingBadRequestException
+import es.dam.exceptions.BookingInternalErrorException
+import es.dam.exceptions.BookingNotFoundException
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
-import io.ktor.server.application.*
 
 object KtorFitClientBookings {
     private const val API_URL = "http://api-bookings:8181/"
