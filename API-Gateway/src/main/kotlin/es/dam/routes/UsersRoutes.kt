@@ -83,11 +83,15 @@ fun Application.usersRoutes() {
                 try {
                     val register = call.receive<UserRegisterDTO>()
 
-                    val user = async {
+                    val user = runCatching {
                         userRepository.register(register)
                     }
 
-                    call.respond(HttpStatusCode.Created, user.await())
+                    if (user.isSuccess) {
+                        call.respond(HttpStatusCode.OK, user.getOrNull()!!)
+                    } else {
+                        call.respond(HttpStatusCode.BadRequest, user.exceptionOrNull()!!.message!!)
+                    }
 
                 } catch (e: UserNotFoundException) {
                     println("Error: ${e.message}")
@@ -131,20 +135,23 @@ fun Application.usersRoutes() {
             }
 
             authenticate {
-                get() {
+                get {
                     try {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
                         val userRole = originalToken.payload.getClaim("role").toString()
 
                         require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
-                        val res = async {
+                        val res = runCatching {
                             userRepository.findAll("Bearer $token")
                         }
-                        val users = res.await()
 
-                        call.respond(HttpStatusCode.OK, users)
-
+                        if (res.isSuccess) {
+                            val users = res.getOrNull()!!
+                            call.respond(HttpStatusCode.OK, users)
+                        } else {
+                            throw res.exceptionOrNull()!!
+                        }
                     } catch (e: UserNotFoundException) {
                         println("Error: ${e.message}")
                         call.respond(HttpStatusCode.NotFound, "${e.message}")
@@ -162,7 +169,6 @@ fun Application.usersRoutes() {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
                         val userRole = originalToken.payload.getClaim("role").toString()
-
                         val id = call.parameters["id"]
 
                         try{
@@ -173,11 +179,9 @@ fun Application.usersRoutes() {
                         }
 
                         require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
-
                         val user = runCatching {
                             userRepository.findById("Bearer $token", id!!)
                         }
-
                         if (user.isSuccess) {
                             call.respond(HttpStatusCode.OK, user.getOrNull()!!)
                         } else {
@@ -205,11 +209,15 @@ fun Application.usersRoutes() {
                         val token = tokenService.generateToken(originalToken)
                         val subject = originalToken.payload.subject
 
-                        val user = async {
+                        val user = runCatching {
                             userRepository.findMe("Bearer $token", subject)
                         }
 
-                        call.respond(HttpStatusCode.OK, user.await())
+                        if (user.isSuccess) {
+                            call.respond(HttpStatusCode.OK, user.getOrNull()!!)
+                        } else {
+                            throw user.exceptionOrNull()!!
+                        }
 
                     } catch (e: UserNotFoundException) {
                         println("Error: ${e.message}")
@@ -228,7 +236,6 @@ fun Application.usersRoutes() {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
                         val multipart = call.receiveMultipart()
-
                         var userPhotoDTO: UserPhotoDTO? = null
 
                         multipart.forEachPart { part ->
@@ -242,12 +249,9 @@ fun Application.usersRoutes() {
                                     val fileBytes = inputStream.readBytes()
                                     val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
                                     val multipartBody = MultipartBody.Part.createFormData("file", "${UUID.randomUUID()}.png", requestBody)
-                                    println("Llegada al repositorio")
                                     userPhotoDTO = userRepository.uploadFile(token, multipartBody).await()
-                                    println("Salida del repositorio")
                                 }
                                 is PartData.BinaryItem -> {
-                                    println("He entrado a BinaryItem")
                                     val inputStream = part.provider()
                                     val fileBytes = inputStream.readBytes()
                                     val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
@@ -255,7 +259,6 @@ fun Application.usersRoutes() {
                                     userPhotoDTO = userRepository.uploadFile(token, multipartBody).await()
                                 }
                                 is PartData.BinaryChannelItem -> {
-                                    println("He entrado a BinaryChannelItem")
                                     val inputStream = part.provider()
                                     val fileBytes = inputStream.readRemaining().readBytes()
                                     val requestBody = fileBytes.toRequestBody("image/png".toMediaTypeOrNull())
@@ -263,11 +266,9 @@ fun Application.usersRoutes() {
                                     userPhotoDTO = userRepository.uploadFile(token, multipartBody).await()
                                 }
                                 is PartData.FormItem -> {
-                                    println()
                                     throw BookingMediaNotSupportedException("Este tipo de archivo no está soportado (FileItem)")
                                 }
                                 else -> {
-                                    println("He entrado a else")
                                     throw BookingMediaNotSupportedException("Este tipo de archivo no está soportado")
                                 }
                             }
@@ -295,8 +296,6 @@ fun Application.usersRoutes() {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
                         val userRole = originalToken.payload.getClaim("role").toString()
-                        val subject = originalToken.subject.toString()
-
 
                         val id = call.parameters["id"]
                         val userDTO = call.receive<UserUpdateDTO>()
@@ -310,11 +309,15 @@ fun Application.usersRoutes() {
 
                         require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
                         val user = userRepository.findById("Bearer $token", id!!)
-                        val updatedUser = async {
+                        val updatedUser = runCatching {
                             userRepository.update("Bearer $token", user.uuid, userDTO)
                         }
 
-                        call.respond(HttpStatusCode.OK, updatedUser.await())
+                        if (updatedUser.isSuccess) {
+                            call.respond(HttpStatusCode.OK, updatedUser.getOrNull()!!)
+                        } else {
+                            throw updatedUser.exceptionOrNull()!!
+                        }
 
 
                     } catch (e: UserNotFoundException) {
@@ -337,16 +340,18 @@ fun Application.usersRoutes() {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
                         val subject = originalToken.subject.toString()
-
                         val userDTO = call.receive<UserUpdateDTO>()
 
-                        val user = userRepository.findMe("Bearer $token", subject)
-
-                        val updatedUser = async {
+                        userRepository.findMe("Bearer $token", subject)
+                        val updatedUser = runCatching {
                             userRepository.me("Bearer $token", userDTO)
                         }
 
-                        call.respond(HttpStatusCode.OK, updatedUser.await())
+                        if (updatedUser.isSuccess) {
+                            call.respond(HttpStatusCode.OK, updatedUser.getOrNull()!!)
+                        } else {
+                            throw updatedUser.exceptionOrNull()!!
+                        }
 
                     } catch (e: UserNotFoundException) {
                         println("Error: ${e.message}")
@@ -365,7 +370,6 @@ fun Application.usersRoutes() {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
                         val userRole = originalToken.payload.getClaim("role").toString()
-
                         val id = call.parameters["id"]
 
                         try{
@@ -376,7 +380,6 @@ fun Application.usersRoutes() {
                         }
 
                         val creditsAmount = call.parameters["creditsAmount"]
-
                         try{
                             creditsAmount!!.toInt()
                         } catch (e: java.lang.NumberFormatException){
@@ -385,14 +388,16 @@ fun Application.usersRoutes() {
                         }
 
                         require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
-
                         val user = userRepository.findById("Bearer $token", id!!)
-
-                        val updatedUser = async {
-                            userRepository.updateCredits("Bearer $token", user.uuid, creditsAmount!!.toInt())
+                        val updatedUser = runCatching {
+                            userRepository.updateCredits("Bearer $token", user.uuid, creditsAmount.toInt())
                         }
 
-                        call.respond(HttpStatusCode.OK, updatedUser.await())
+                        if (updatedUser.isSuccess) {
+                            call.respond(HttpStatusCode.OK, updatedUser.getOrNull()!!)
+                        } else {
+                            throw updatedUser.exceptionOrNull()!!
+                        }
 
                     } catch (e: UserNotFoundException) {
                         println("Error: ${e.message}")
@@ -437,10 +442,15 @@ fun Application.usersRoutes() {
 
                         require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
 
-                        val updatedUser = async {
+                        val updatedUser = runCatching {
                             userRepository.updateActive("Bearer $token", user.uuid, active!!.toBooleanStrict())
                         }
-                        call.respond(HttpStatusCode.OK, updatedUser.await())
+
+                        if (updatedUser.isSuccess) {
+                            call.respond(HttpStatusCode.OK, updatedUser.getOrNull()!!)
+                        } else {
+                            throw updatedUser.exceptionOrNull()!!
+                        }
 
                     } catch (e: UserNotFoundException) {
                         println("Error: ${e.message}")
@@ -475,9 +485,9 @@ fun Application.usersRoutes() {
                         if(userRole.contains("ADMINISTRATOR")) {
                             require(bookingsRepository.findByUser(token, id!!).data.isEmpty())
                             { "Se deben actualizar o eliminar las reservas asociadas a este usuario antes de continuar con la operación." }
-                            userRepository.findById("Bearer $token", id!!)
+                            userRepository.findById("Bearer $token", id)
 
-                            userRepository.delete("Bearer $token", id!!)
+                            userRepository.delete("Bearer $token", id)
 
                             call.respond(HttpStatusCode.NoContent)
                         }else{
