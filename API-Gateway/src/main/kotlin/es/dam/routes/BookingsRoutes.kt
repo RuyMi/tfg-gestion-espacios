@@ -101,6 +101,7 @@ fun Application.bookingsRoutes() {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
                         val userRole = originalToken.payload.getClaim("role").toString()
+
                         val id = call.parameters["id"]
 
                         require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
@@ -138,9 +139,10 @@ fun Application.bookingsRoutes() {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
                         val userRole = originalToken.payload.getClaim("role").toString()
+                        val subject = originalToken.payload.subject
                         val id = call.parameters["id"]
 
-                        require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
+                        require(userRole.contains("ADMINISTRATOR") || id == subject){"Esta operación no está permitida para los usuarios que no son administradores."}
 
                         try {
                             UUID.fromString(id)
