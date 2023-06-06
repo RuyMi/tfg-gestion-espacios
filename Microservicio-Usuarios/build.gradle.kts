@@ -14,10 +14,17 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
+    maven {
+        url = uri("https://repo.maven.apache.org/maven2")
+    }
+    maven {
+        url = uri("https://packages.microsoft.com/maven")
+    }
 }
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web")
 
     // MongoDB
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
@@ -52,22 +59,23 @@ dependencies {
 
     // Spring security
     implementation("org.springframework.boot:spring-boot-starter-security")
-    //implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    //implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-
-    //Azure
-    //implementation("com.nimbusds:nimbus-jose-jwt:9.10.1")
-    //implementation("com.microsoft.azure:azure-active-directory-spring-boot-starter:2.3.0")
+    implementation ("org.springframework.security:spring-security-config")
 
     // JWT
     implementation("com.auth0:java-jwt:4.2.1")
+
+    implementation("com.azure.spring:azure-spring-boot-starter-active-directory-b2c:3.13.0")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+    implementation("org.springframework.security:spring-security-oauth2-client")
+    implementation("org.springframework.security:spring-security-oauth2-jose")
+
 }
 
-dependencyManagement {
-    imports {
-        mavenBom("com.microsoft.azure:azure-spring-boot-bom:2.3.0")
-    }
-}
+
+
+
+
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {

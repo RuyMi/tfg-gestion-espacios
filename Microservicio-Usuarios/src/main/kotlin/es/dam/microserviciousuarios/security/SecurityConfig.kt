@@ -1,64 +1,50 @@
 package es.dam.microserviciousuarios.security
 
-import es.dam.microserviciousuarios.security.jwt.JWTAuthenticationFilter
-import es.dam.microserviciousuarios.security.jwt.JWTAuthorizationFilter
-import es.dam.microserviciousuarios.service.UserService
-import es.dam.microserviciousuarios.utils.JWTUtils
-import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator
+import org.springframework.security.oauth2.core.OAuth2TokenValidator
+import org.springframework.security.oauth2.jwt.Jwt
+import org.springframework.security.oauth2.jwt.JwtDecoder
+import org.springframework.security.oauth2.jwt.JwtDecoders
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
+import org.springframework.security.oauth2.jwt.JwtValidators
+import org.springframework.security.web.authentication.AuthenticationConverter
+
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
-class SecurityConfig
-@Autowired constructor(
-    private val userService: UserService,
-    private val jwtUtils: JWTUtils
-) {
+class SecurityConfig {
+
+    @Value("\${azure.activedirectory.client-id}")
+    private val audience: String = ""
+
+    @Value("\${azure.activedirectory.tenant-id}")
+    private val issuer: String = ""
 
     @Bean
-    fun authManager(http: HttpSecurity): AuthenticationManager {
-        val authenticationManagerBuilder = http.getSharedObject(
-            AuthenticationManagerBuilder::class.java
-        )
-
-        authenticationManagerBuilder.userDetailsService(userService)
-        return authenticationManagerBuilder.build()
+    fun jwtDecoder(): JwtDecoder {
+        val jwtDecoder = JwtDecoders.fromIssuerLocation(issuer) as NimbusJwtDecoder
+        val audienceValidator: OAuth2TokenValidator<Jwt> = AudienceValidator(audience)
+        val withIssuer: OAuth2TokenValidator<Jwt> = JwtValidators.createDefaultWithIssuer(issuer)
+        val withAudience: OAuth2TokenValidator<Jwt> = DelegatingOAuth2TokenValidator(withIssuer, audienceValidator)
+        jwtDecoder.setJwtValidator(withAudience)
+        return jwtDecoder
     }
 
-    @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        val authenticationManager = authManager(http)
-
+    fun configure(http: HttpSecurity) {
         http
-            .csrf()
-            .disable()
-            .exceptionHandling()
-            .and()
-
-            .authenticationManager(authenticationManager)
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-            .and()
-            .authorizeHttpRequests()
+            .csrf().disable()
+            .authorizeRequests()
             .requestMatchers("/error/**").permitAll()
             .requestMatchers("/users/login", "/users/register").permitAll()
             .requestMatchers("/**").permitAll()
             .requestMatchers("/users", "/users{id}").hasAnyRole("ADMINISTRATOR")
             .anyRequest().authenticated()
-
             .and()
-            .addFilter(JWTAuthenticationFilter(jwtUtils, authenticationManager))
-            .addFilter(JWTAuthorizationFilter(jwtUtils, userService, authenticationManager))
-
-        return http.build()
+            .oauth2ResourceServer().jwt()
     }
 }

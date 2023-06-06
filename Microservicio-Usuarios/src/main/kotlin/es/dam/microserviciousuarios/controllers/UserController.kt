@@ -24,10 +24,9 @@ import org.springframework.web.server.ResponseStatusException
 @RequestMapping("/users")
 class UsersController @Autowired constructor(
     private val userService: UserService,
-    private val authenticationManager: AuthenticationManager,
     private val jwtUtils: JWTUtils
 ) {
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     fun login(@RequestBody logingDto: UserLoginDTO): ResponseEntity<UserTokenDTO> {
         try {
 
@@ -48,7 +47,7 @@ class UsersController @Autowired constructor(
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos")
         }
-    }
+    }*/
 
     @PostMapping("/register")
     suspend fun register(@RequestBody usuarioDto: UserRegisterDTO): ResponseEntity<UserTokenDTO> {
