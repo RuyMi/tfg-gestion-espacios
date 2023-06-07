@@ -5,7 +5,7 @@ import 'package:gestion_espacios_app/models/usuario.dart';
 import 'package:http/http.dart' as http;
 
 class UsuariosProvider with ChangeNotifier {
-  String? _token;
+  final String? _token;
 
   List<Usuario> _usuarios = [];
   Usuario _actualUsuario = Usuario(
