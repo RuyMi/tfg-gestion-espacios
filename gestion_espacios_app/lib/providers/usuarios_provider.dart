@@ -118,17 +118,16 @@ class UsuariosProvider with ChangeNotifier {
     if (response.statusCode == 201) {
       final data = jsonDecode(response.body);
       _usuarios.add(Usuario(
-        uuid: data['user']['uuid'],
-        name: data['user']['name'],
-        username: data['user']['username'],
-        email: data['user']['email'],
-        password: data['user']['password'],
-        avatar: data['user']['avatar'],
-        userRole: List<String>.from(data['user']['userRole']),
-        credits: data['user']['credits'],
-        isActive: data['user']['isActive'],
-      ));
-      _token = data['token'];
+          uuid: data['user']['uuid'],
+          name: data['user']['name'],
+          username: data['user']['username'],
+          email: data['user']['email'],
+          password: data['user']['password'],
+          avatar: data['user']['avatar'],
+          userRole: List<String>.from(data['user']['userRole']),
+          credits: data['user']['credits'],
+          isActive: data['user']['isActive'],
+          token: data['token']));
 
       notifyListeners();
     } else {

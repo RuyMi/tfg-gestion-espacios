@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
@@ -156,7 +155,9 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     Visibility(
-                      visible: !Platform.isAndroid && !Platform.isIOS,
+                      visible:
+                          defaultTargetPlatform != TargetPlatform.android &&
+                              defaultTargetPlatform != TargetPlatform.iOS,
                       child: TextButton(
                         onPressed: () {
                           Navigator.pushNamed(context, '/login-bo');
