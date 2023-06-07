@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
@@ -140,16 +142,34 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/login-bo');
+                        Navigator.pushNamed(context, '/user-register');
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: theme.colorScheme.onBackground,
                       ),
                       child: Text(
-                        'Acceso al área privada del centro.',
+                        '¿Aún no estás registrado? Regístrate aquí.',
                         style: TextStyle(
                           fontFamily: 'KoHo',
                           color: theme.colorScheme.secondary,
+                        ),
+                      ),
+                    ),
+                    Visibility(
+                      visible: !Platform.isAndroid && !Platform.isIOS,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/login-bo');
+                        },
+                        style: TextButton.styleFrom(
+                          foregroundColor: theme.colorScheme.onBackground,
+                        ),
+                        child: Text(
+                          'Acceso al área privada del centro.',
+                          style: TextStyle(
+                            fontFamily: 'KoHo',
+                            color: theme.colorScheme.secondary,
+                          ),
                         ),
                       ),
                     ),

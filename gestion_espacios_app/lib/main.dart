@@ -5,6 +5,7 @@ import 'package:gestion_espacios_app/screens/private/bo_add_usuario_dialog.dart'
 import 'package:gestion_espacios_app/screens/private/bo_espacios_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_reservas_screen.dart';
 import 'package:gestion_espacios_app/screens/private/bo_usuarios_screen.dart';
+import 'package:gestion_espacios_app/screens/public/registro_usuario_screen.dart';
 import 'package:gestion_espacios_app/screens/public/reservar_espacios_screen.dart';
 import 'package:gestion_espacios_app/screens/screens.dart';
 import 'package:gestion_espacios_app/theme/app_theme.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
 
         // Public
         '/login': (context) => LoginScreen(),
+        '/user-register': (context) => const RegistroUsuarioScreen(),
         '/home': (context) => const MainScreen(),
         '/espacios': (context) => const EspaciosScreen(),
         '/mis-reservas': (context) => const MisReservasScreen(),

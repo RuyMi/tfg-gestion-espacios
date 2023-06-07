@@ -22,7 +22,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
   String password = 'luisvives';
   String email = '';
   List<String> userRole = [];
-  String? avatar;
+  String? avatar = 'placeholder';
   int credits = 0;
   bool isActive = true;
   PickedFile? selectedImage;
@@ -365,7 +365,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                   email: email,
                   password: password,
                   credits: credits,
-                  avatar: 'profile_pic',
+                  avatar: 'placeholder',
                   isActive: isActive,
                   userRole: userRole,
                 );
