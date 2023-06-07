@@ -87,7 +87,7 @@ fun Application.usersRoutes() {
                     }
 
                     if (user.isSuccess) {
-                        call.respond(HttpStatusCode.OK, user.getOrNull()!!)
+                        call.respond(HttpStatusCode.Created, user.getOrNull()!!)
                     } else {
                         call.respond(HttpStatusCode.BadRequest, user.exceptionOrNull()!!.message!!)
                     }
