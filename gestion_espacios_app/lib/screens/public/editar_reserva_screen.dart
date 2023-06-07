@@ -114,6 +114,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
+          toolbarHeight: 75,
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -186,7 +187,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                             ),
                           ),
                           child: CircleAvatar(
-                            radius: 35,
+                            radius: 50,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(75),
                               child: MySpaceImageWidget(image: reserva.image),
@@ -204,6 +205,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                               style: TextStyle(
                                 color: theme.colorScheme.onSecondary,
                                 fontFamily: 'KoHo',
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -223,6 +225,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                       style: TextStyle(
                           color: theme.colorScheme.secondary,
                           fontFamily: 'KoHo'),
+                      textAlign: TextAlign.center,
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -246,12 +249,11 @@ class _ReservaSala extends State<EditarReservaScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        DateFormat('dd/MM/yyyy HH:mm')
-                            .format(DateTime.parse(reserva.startTime)),
+                        'Inicio: ${DateFormat('dd/MM/yyyy - HH:mm').format(DateTime.parse(reserva.startTime))}',
                         style: TextStyle(
                           fontSize: 15,
                           fontFamily: 'KoHo',
@@ -260,8 +262,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                         ),
                       ),
                       Text(
-                        DateFormat('dd/MM/yyyy HH:mm')
-                            .format(DateTime.parse(reserva.endTime)),
+                        'Fin: ${DateFormat('dd/MM/yyyy - HH:mm').format(DateTime.parse(reserva.endTime))}',
                         style: TextStyle(
                           fontSize: 15,
                           fontFamily: 'KoHo',
@@ -300,8 +301,8 @@ class _ReservaSala extends State<EditarReservaScreen> {
                           color: theme.colorScheme.secondary,
                         ),
                       ),
-                      focusedDay: DateFormat('yyyy-MM-dd')
-                          .parse(reserva.startTime),
+                      focusedDay:
+                          DateFormat('yyyy-MM-dd').parse(reserva.startTime),
                       selectedDayPredicate: (day) {
                         return isSameDay(selectedDay, day);
                       },
@@ -311,6 +312,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                       calendarFormat: CalendarFormat.month,
                       startingDayOfWeek: StartingDayOfWeek.monday,
                       daysOfWeekVisible: true,
+                      daysOfWeekHeight: 30,
                       calendarStyle: CalendarStyle(
                         defaultTextStyle: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -389,7 +391,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: horas
                         .map((hora) => SizedBox(
-                              width: 150,
+                              width: 175,
                               child: TextButton(
                                 onPressed:
                                     hora['ocupada'] && hora['hora'] != myHour

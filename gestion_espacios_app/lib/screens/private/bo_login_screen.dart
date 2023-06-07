@@ -43,6 +43,7 @@ class BOLoginScreen extends StatelessWidget {
                         fontSize: 35,
                         fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 50),
                     SizedBox(
@@ -157,6 +158,7 @@ class BOLoginScreen extends StatelessWidget {
                           fontFamily: 'KoHo',
                           color: theme.colorScheme.secondary,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ],

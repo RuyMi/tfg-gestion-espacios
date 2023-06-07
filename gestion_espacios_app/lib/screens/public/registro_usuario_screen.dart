@@ -45,6 +45,7 @@ class _RegistroUsuarioScreenState extends State<RegistroUsuarioScreen> {
           resizeToAvoidBottomInset: true,
           backgroundColor: theme.colorScheme.background,
           appBar: AppBar(
+            toolbarHeight: 75,
             centerTitle: true,
             title: const Text('Registro de usuario'),
             titleTextStyle: TextStyle(
@@ -67,7 +68,7 @@ class _RegistroUsuarioScreenState extends State<RegistroUsuarioScreen> {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Center(
               child: Container(
-                margin: const EdgeInsets.all(20),
+                margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
