@@ -2,7 +2,6 @@ package es.dam.models
 
 import es.dam.serializers.IdSerializer
 import es.dam.serializers.LocalDateTimeSerializer
-import es.dam.serializers.UUIDSerializer
 import kotlinx.serialization.Serializable
 import org.bson.codecs.pojo.annotations.BsonId
 import org.litote.kmongo.Id

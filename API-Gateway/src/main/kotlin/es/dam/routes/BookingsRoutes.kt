@@ -2,28 +2,25 @@ package es.dam.routes
 
 import es.dam.dto.BookingCreateDTO
 import es.dam.dto.BookingResponseDTO
-import es.dam.services.token.TokensService
 import es.dam.dto.BookingUpdateDTO
 import es.dam.exceptions.*
 import es.dam.repositories.booking.KtorFitBookingsRepository
 import es.dam.repositories.space.KtorFitSpacesRepository
 import es.dam.repositories.user.KtorFitUsersRepository
+import es.dam.services.token.TokensService
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
 import org.koin.ktor.ext.inject
-import java.lang.IllegalArgumentException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Period
 import java.time.temporal.ChronoUnit
 import java.util.*
-import io.ktor.server.auth.jwt.*
 
 private const val ENDPOINT = "bookings"
 
@@ -104,6 +101,7 @@ fun Application.bookingsRoutes() {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
                         val userRole = originalToken.payload.getClaim("role").toString()
+
                         val id = call.parameters["id"]
 
                         require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
@@ -141,9 +139,10 @@ fun Application.bookingsRoutes() {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
                         val userRole = originalToken.payload.getClaim("role").toString()
+                        val subject = originalToken.payload.subject
                         val id = call.parameters["id"]
 
-                        require(userRole.contains("ADMINISTRATOR")){"Esta operación no está permitida para los usuarios que no son administradores."}
+                        require(userRole.contains("ADMINISTRATOR") || id == subject){"Esta operación no está permitida para los usuarios que no son administradores."}
 
                         try {
                             UUID.fromString(id)
@@ -188,7 +187,7 @@ fun Application.bookingsRoutes() {
                         }
 
                         val res = runCatching {
-                            bookingsRepository.findByStatus("Bearer $token", status!!)
+                            bookingsRepository.findByStatus("Bearer $token", status)
                         }
 
                         if (res.isSuccess) {
@@ -361,7 +360,7 @@ fun Application.bookingsRoutes() {
                             {"Franja horaria no disponible."}
 
                             val updatingResult: Result<BookingResponseDTO> = runCatching {
-                                bookingsRepository.update("Bearer $token", id!!, booking)
+                                bookingsRepository.update("Bearer $token", id, booking)
                             }
 
                             if (updatingResult.isSuccess) {

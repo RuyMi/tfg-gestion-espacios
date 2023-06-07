@@ -5,11 +5,8 @@ import es.dam.exceptions.SpaceException
 import es.dam.models.Space
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.koin.core.annotation.InjectedParam
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
-import org.litote.kmongo.Id
-import org.litote.kmongo.coroutine.updateOne
 import org.litote.kmongo.eq
 import java.util.*
 

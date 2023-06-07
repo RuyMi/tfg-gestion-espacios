@@ -1,7 +1,6 @@
 package es.dam.routes
 
 import es.dam.dto.SpacePhotoDTO
-import es.dam.services.storage.StorageService
 import es.dam.services.storage.StorageServiceImpl
 import io.ktor.http.*
 import io.ktor.http.content.*
@@ -9,10 +8,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import org.koin.core.qualifier.named
 import org.koin.ktor.ext.inject
-import java.io.File
-import java.util.*
 
 fun Application.storageRoutes() {
     val storageService: StorageServiceImpl by inject()
@@ -31,9 +27,7 @@ fun Application.storageRoutes() {
                             fileName = part.originalFileName
                         }
                         is PartData.FormItem -> {
-                            // Handle form items if needed
                         }
-
                         else -> {}
                     }
                     part.dispose()

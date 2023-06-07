@@ -1,7 +1,5 @@
 package es.dam.microserviciousuarios.dto
 
-import es.dam.microserviciousuarios.models.User
-import es.dam.microserviciousuarios.serializers.LocalDateTimeSerializer
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 

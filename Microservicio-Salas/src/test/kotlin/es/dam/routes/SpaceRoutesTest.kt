@@ -1,6 +1,9 @@
 package es.dam.routes
 
-import es.dam.dto.*
+import es.dam.dto.SpaceCreateDTO
+import es.dam.dto.SpaceDTO
+import es.dam.dto.SpaceDataDTO
+import es.dam.dto.SpaceUpdateDTO
 import es.dam.mappers.toSpaceDto
 import es.dam.models.Space
 import es.dam.repositories.SpaceRepositoryImpl

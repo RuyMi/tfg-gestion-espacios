@@ -2,11 +2,9 @@ package es.dam.services
 
 import es.dam.models.Booking
 import es.dam.repositories.BookingCachedRepository
-import es.dam.repositories.BookingRepositoryImpl
 import org.koin.core.annotation.InjectedParam
 import org.koin.core.annotation.Single
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 
 @Single
