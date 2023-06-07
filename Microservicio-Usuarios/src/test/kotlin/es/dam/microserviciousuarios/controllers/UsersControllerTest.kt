@@ -144,7 +144,7 @@ class UsersControllerTest {
                 { assertEquals(userResponseDTO.id, responseDTO!!.user.id) },
                 { assertEquals(userResponseDTO.username, responseDTO!!.user.username) },
                 { assertEquals(userResponseDTO.email, responseDTO!!.user.email) },
-                { assertEquals(result.statusCode, HttpStatus.OK) },
+                { assertEquals(result.statusCode, HttpStatus.CREATED) },
         )
     }
 

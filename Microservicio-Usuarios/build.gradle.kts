@@ -52,12 +52,6 @@ dependencies {
 
     // Spring security
     implementation("org.springframework.boot:spring-boot-starter-security")
-    //implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    //implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-
-    //Azure
-    //implementation("com.nimbusds:nimbus-jose-jwt:9.10.1")
-    //implementation("com.microsoft.azure:azure-active-directory-spring-boot-starter:2.3.0")
 
     // JWT
     implementation("com.auth0:java-jwt:4.2.1")
