@@ -30,8 +30,6 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
     final reservasProvider =
         Provider.of<ReservasProvider>(context, listen: false);
 
-    reservasFiltradas = reservasProvider.reservas;
-
     reservasProvider.fetchReservas().then((value) => setState(() {
           reservasFiltradas = reservasProvider.reservas;
         }));
@@ -46,10 +44,7 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
   void _handleSortBy(bool sortByUsers) {
     setState(() {
       if (sortByUsers) {
-        //TODO: Ordenar por usuarios.
-      } else {
-        //TODO: Ordenar por reservas.
-      }
+      } else {}
     });
   }
 

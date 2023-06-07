@@ -5,7 +5,7 @@ import 'package:gestion_espacios_app/models/usuario.dart';
 import 'package:http/http.dart' as http;
 
 class UsuariosProvider with ChangeNotifier {
-  String? _token;
+  final String? _token;
 
   List<Usuario> _usuarios = [];
   Usuario _actualUsuario = Usuario(
@@ -118,17 +118,16 @@ class UsuariosProvider with ChangeNotifier {
     if (response.statusCode == 201) {
       final data = jsonDecode(response.body);
       _usuarios.add(Usuario(
-        uuid: data['user']['uuid'],
-        name: data['user']['name'],
-        username: data['user']['username'],
-        email: data['user']['email'],
-        password: data['user']['password'],
-        avatar: data['user']['avatar'],
-        userRole: List<String>.from(data['user']['userRole']),
-        credits: data['user']['credits'],
-        isActive: data['user']['isActive'],
-      ));
-      _token = data['token'];
+          uuid: data['user']['uuid'],
+          name: data['user']['name'],
+          username: data['user']['username'],
+          email: data['user']['email'],
+          password: data['user']['password'],
+          avatar: data['user']['avatar'],
+          userRole: List<String>.from(data['user']['userRole']),
+          credits: data['user']['credits'],
+          isActive: data['user']['isActive'],
+          token: data['token']));
 
       notifyListeners();
     } else {

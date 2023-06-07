@@ -31,6 +31,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
       resizeToAvoidBottomInset: true,
       backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
+        toolbarHeight: 75,
         centerTitle: true,
         title: const Text('Perfil'),
         titleTextStyle: TextStyle(
@@ -65,7 +66,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                     image: usuario.avatar,
                   )),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Text(
               usuario.name,
               style: const TextStyle(
@@ -81,7 +82,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                 fontFamily: 'KoHo',
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 5),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -105,7 +106,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             SizedBox(
               width: 200,
               child: Column(
@@ -144,7 +145,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
                       );
                     },
                   ),
-                  const SizedBox(height: 10),
                   TextButton(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -179,7 +179,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
                       );
                     },
                   ),
-                  const SizedBox(height: 10),
                   TextButton(
                     onPressed: () {
                       showDialog(

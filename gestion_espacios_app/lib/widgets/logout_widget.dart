@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
+import 'package:gestion_espacios_app/screens/screens.dart';
 import 'package:provider/provider.dart';
 
 class MyLogoutAlert extends StatelessWidget {
@@ -53,10 +54,11 @@ class MyLogoutAlert extends StatelessWidget {
           onPressed: () {
             authProvider.logout();
 
-            Navigator.pushNamedAndRemoveUntil(
+            Navigator.pushReplacement(
               context,
-              '/login',
-              (Route<dynamic> route) => false,
+              PageRouteBuilder(
+                pageBuilder: (context, animation1, animation2) => LoginScreen(),
+              ),
             );
           },
         ),

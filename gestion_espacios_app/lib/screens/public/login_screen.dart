@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
@@ -42,6 +43,7 @@ class LoginScreen extends StatelessWidget {
                         fontSize: 35,
                         fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 50),
                     SizedBox(
@@ -140,16 +142,38 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/login-bo');
+                        Navigator.pushNamed(context, '/user-register');
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: theme.colorScheme.onBackground,
                       ),
                       child: Text(
-                        'Acceso al área privada del centro.',
+                        '¿Aún no estás registrado? Regístrate aquí.',
                         style: TextStyle(
                           fontFamily: 'KoHo',
                           color: theme.colorScheme.secondary,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Visibility(
+                      visible:
+                          defaultTargetPlatform != TargetPlatform.android &&
+                              defaultTargetPlatform != TargetPlatform.iOS,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/login-bo');
+                        },
+                        style: TextButton.styleFrom(
+                          foregroundColor: theme.colorScheme.onBackground,
+                        ),
+                        child: Text(
+                          'Acceso al área privada del centro.',
+                          style: TextStyle(
+                            fontFamily: 'KoHo',
+                            color: theme.colorScheme.secondary,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
