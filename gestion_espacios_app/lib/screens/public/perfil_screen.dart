@@ -145,6 +145,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                       );
                     },
                   ),
+                  const SizedBox(height: 5),
                   TextButton(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -179,12 +180,13 @@ class _PerfilScreenState extends State<PerfilScreen> {
                       );
                     },
                   ),
+                  const SizedBox(height: 5),
                   TextButton(
                     onPressed: () {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return const MyLogoutAlert();
+                          return const MyLogoutAlert(ruta: '/login');
                         },
                       );
                     },
@@ -207,6 +209,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 5),
                 ],
               ),
             ),
