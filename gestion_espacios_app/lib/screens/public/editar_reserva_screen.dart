@@ -125,7 +125,7 @@ class _ReservaSala extends State<EditarReservaScreen> {
                   fontWeight: FontWeight.bold,
                   fontFamily: 'KoHo',
                 ),
-              ),
+                overflow: TextOverflow.ellipsis,              ),
             ],
           ),
           leading: IconButton(

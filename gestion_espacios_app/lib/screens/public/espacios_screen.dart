@@ -234,7 +234,8 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           boxShadow: [
                                             BoxShadow(
                                               color: theme.colorScheme.surface
@@ -246,7 +247,8 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                           ],
                                         ),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           child: MySpaceImageWidget(
                                               image: espacio.image),
                                         ),
@@ -260,99 +262,132 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                espacio.name,
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18,
-                                                    fontFamily: 'KoHo'),
-                                              ),
-                                              Text(espacio.description,
-                                                  style: const TextStyle(
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    espacio.name,
+                                                    style: const TextStyle(
                                                       fontWeight:
-                                                          FontWeight.normal,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      fontSize: 12,
-                                                      fontFamily: 'KoHo'),
-                                                  maxLines: 2),
+                                                          FontWeight.bold,
+                                                      fontSize: 18,
+                                                      fontFamily: 'KoHo',
+                                                    ),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                  Text(espacio.description,
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          fontSize: 12,
+                                                          fontFamily: 'KoHo'),
+                                                      maxLines: 2),
+                                                ],
+                                              ),
                                               const SizedBox(
-                                                height: 18,
+                                                height: 10,
                                               ),
                                               Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
                                                 children: [
                                                   Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
                                                     children: [
-                                                      IconButton(
-                                                        padding: EdgeInsets.zero,
-                                                        constraints:
-                                                            const BoxConstraints(),
-                                                        icon: Icon(
-                                                            Icons.share_rounded,
-                                                            color: theme
-                                                                .colorScheme
-                                                                .surface,
-                                                            size: 20),
-                                                        onPressed: () {
-                                                          Share.share(
-                                                              '🎈 ¡He pensado que podríamos reservar ${espacio.name} por solo ${espacio.price} créditos 💲!\n\n💠 ${espacio.description}');
-                                                        },
-                                                      ),
-                                                      IconButton(
-                                                        padding: EdgeInsets.zero,
-                                                        constraints:
-                                                            const BoxConstraints(),
-                                                        icon: Icon(
-                                                            Icons
-                                                                .bookmark_outline,
-                                                            color: theme
-                                                                .colorScheme
-                                                                .onBackground,
-                                                            size: 20),
-                                                        onPressed: () {
-                                                          Navigator.pushNamed(
-                                                            context,
-                                                            '/reservar-espacio',
-                                                            arguments: espacio,
-                                                          );
-                                                        },
+                                                      Row(
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 25,
+                                                            height: 25,
+                                                            child: IconButton(
+                                                              icon: Icon(
+                                                                  Icons
+                                                                      .share_rounded,
+                                                                  color: theme
+                                                                      .colorScheme
+                                                                      .surface,
+                                                                  size: 20),
+                                                              onPressed: () {
+                                                                Share.share(
+                                                                    '🎈 ¡He pensado que podríamos reservar ${espacio.name} por solo ${espacio.price} créditos 💲!\n\n💠 ${espacio.description}');
+                                                              },
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 25,
+                                                            height: 25,
+                                                            child: IconButton(
+                                                              icon: Icon(
+                                                                  Icons
+                                                                      .bookmark_outline,
+                                                                  color: theme
+                                                                      .colorScheme
+                                                                      .onBackground,
+                                                                  size: 20),
+                                                              onPressed: () {
+                                                                Navigator
+                                                                    .pushNamed(
+                                                                  context,
+                                                                  '/reservar-espacio',
+                                                                  arguments:
+                                                                      espacio,
+                                                                );
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ],
                                                   ),
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                          espacio.price
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              fontFamily: 'KoHo',
-                                                              fontWeight:
-                                                                  FontWeight.bold,
+                                                  Container(
+                                                    height: 25,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Text(
+                                                            espacio.price
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    'KoHo',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: theme
+                                                                    .colorScheme
+                                                                    .secondary,
+                                                                fontSize: 16)),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(top: 3),
+                                                          child: Icon(
+                                                              Icons
+                                                                  .monetization_on_outlined,
                                                               color: theme
                                                                   .colorScheme
                                                                   .secondary,
-                                                              fontSize: 14)),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets.only(
-                                                                top: 2),
-                                                        child: Icon(
-                                                            Icons
-                                                                .monetization_on_outlined,
-                                                            color: theme
-                                                                .colorScheme
-                                                                .secondary,
-                                                            size: 16),
-                                                      ),
-                                                    ],
+                                                              size: 18),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),
