@@ -152,7 +152,7 @@ fun Application.bookingsRoutes() {
                         }
 
                         val res = runCatching {
-                            bookingsRepository.findByUser("Bearer $token", id!!)
+                            bookingsRepository.findByUser("Bearer $token", id!!).data.filter { LocalDateTime.parse(it.startTime).isAfter(LocalDateTime.now()) }
                         }
 
                         if (res.isSuccess) {
@@ -345,6 +345,8 @@ fun Application.bookingsRoutes() {
 
                         if(!userRole.contains("ADMINISTRATOR")){
                             require(bookingsRepository.findByUser("Bearer $token", booking.userId).data.filter{it.userId == subject}.isNotEmpty()){"La reserva que se quiere actualizar no está guardada bajo el mismo usuario."}
+                            require(LocalDateTime.parse(bookingsRepository.findById("Bearer $token", id!!).startTime).isAfter(LocalDateTime.now()))
+                            {"No se puede actualizar una reserva que ya ha comenzado."}
                             require(bookingsRepository.findById("Bearer $token", id!!).status != "REJECTED"){"No se puede actualizar una reserva rechazada."}
                             require(LocalDateTime.parse(booking.startTime).isAfter(LocalDateTime.now()))
                             {"No se ha podido guardar la reserva fecha introducida es anterior a la actual."}
@@ -428,8 +430,10 @@ fun Application.bookingsRoutes() {
                             require(bookingsRepository.findById("Bearer $token", id!!).userId == subject)
                             {"La reserva que se quiere eliminar no está guardada bajo el mismo usuario."}
 
+                            require(LocalDateTime.parse(bookingsRepository.findById("Bearer $token", id!!).startTime).isAfter(LocalDateTime.now()))
+                            {"No se puede eliminar una reserva que ya ha comenzado."}
+
                             val spaceId = bookingsRepository.findById("Bearer $token", id).spaceId
-                            bookingsRepository.delete("Bearer $token", id)
 
                             userRepository.updateCreditsMe(
                                 "Bearer $token",
