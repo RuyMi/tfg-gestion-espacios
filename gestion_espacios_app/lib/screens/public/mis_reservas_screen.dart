@@ -28,7 +28,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
 
     misReservasFiltradas = reservasProvider.misReservas;
 
-    reservasProvider.fetchMyReservas().then((value) => setState(() {
+    reservasProvider.fetchMyReservasNotFinished().then((value) => setState(() {
           misReservasFiltradas = reservasProvider.misReservas;
         }));
   }
@@ -85,7 +85,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
             actions: [
               IconButton(
                 onPressed: () async {
-                  await reservasProvider.fetchMyReservas();
+                  await reservasProvider.fetchMyReservasNotFinished();
                   setState(() {
                     misReservasFiltradas = reservasProvider.misReservas;
                   });

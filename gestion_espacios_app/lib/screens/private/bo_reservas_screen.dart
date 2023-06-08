@@ -22,7 +22,6 @@ class ReservasBOScreen extends StatefulWidget {
 class _ReservasBOScreen extends State<ReservasBOScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<Reserva> reservasFiltradas = [];
-  bool _sortBySpaces = true;
 
   @override
   void initState() {
@@ -39,13 +38,6 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
   void dispose() {
     super.dispose();
     _searchController.dispose();
-  }
-
-  void _handleSortBy(bool sortByUsers) {
-    setState(() {
-      if (sortByUsers) {
-      } else {}
-    });
   }
 
   Future<List<Reserva>> filterReservas(String query) async {
@@ -106,58 +98,31 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
                 ),
               ),
               const SizedBox(width: 20),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.person_rounded,
-                          color: theme.colorScheme.onBackground),
-                      Switch(
-                        focusColor: theme.colorScheme.secondary,
-                        activeColor: theme.colorScheme.secondary,
-                        inactiveTrackColor:
-                            theme.colorScheme.onBackground.withOpacity(0.2),
-                        inactiveThumbColor: theme.colorScheme.onBackground,
-                        value: _sortBySpaces,
-                        onChanged: (value) {
-                          setState(() {
-                            _sortBySpaces = value;
-                            _handleSortBy(_sortBySpaces);
-                          });
-                        },
-                      ),
-                      Icon(Icons.calendar_today,
-                          color: theme.colorScheme.secondary),
-                    ],
+              ElevatedButton.icon(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NuevaReservaBODialog(usuario: usuario);
+                      });
+                },
+                icon: Icon(Icons.add_rounded,
+                    color: theme.colorScheme.onSecondary),
+                label: Text(
+                  'Nuevo',
+                  style: TextStyle(
+                    color: theme.colorScheme.onSecondary,
+                    overflow: TextOverflow.ellipsis,
+                    fontFamily: 'KoHo',
+                    fontSize: 20,
                   ),
-                  const SizedBox(height: 10),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return NuevaReservaBODialog(usuario: usuario);
-                          });
-                    },
-                    icon: Icon(Icons.add_rounded,
-                        color: theme.colorScheme.onSecondary),
-                    label: Text(
-                      'Nuevo',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSecondary,
-                        overflow: TextOverflow.ellipsis,
-                        fontFamily: 'KoHo',
-                        fontSize: 20,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      backgroundColor: theme.colorScheme.secondary,
-                    ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                ],
+                  backgroundColor: theme.colorScheme.secondary,
+                ),
               )
             ],
           ),
