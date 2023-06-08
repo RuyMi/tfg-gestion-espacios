@@ -12,7 +12,7 @@ import io.ktor.http.*
 import io.ktor.serialization.gson.*
 
 object KtorFitClientBookings {
-    private const val API_URL = "http://api-bookings:8181/"
+    private const val API_URL = "http://localhost:8181/"
 
     private val ktorfit by lazy {
         Ktorfit.Builder()

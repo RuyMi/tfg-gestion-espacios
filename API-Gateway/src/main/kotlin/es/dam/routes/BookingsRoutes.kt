@@ -252,7 +252,6 @@ fun Application.bookingsRoutes() {
                         if(!userRole.contains("ADMINISTRATOR")){
                             require(subject == entity.userId){"No se puede realizar la reserva a nombre de otra persona"}
                             require(user.credits >= space.price) {"No tienes créditos suficientes para realizar la reserva"}
-                            //TODO:crear usuario administrador para hacer un update y luego borrarlo
                             userRepository.updateCreditsMe("Bearer $token", subject, space.price)
 
                             require(LocalDateTime.parse(entity.startTime).isAfter( LocalDateTime.now()))
@@ -304,7 +303,6 @@ fun Application.bookingsRoutes() {
                                 throw booking.exceptionOrNull()!!
                             }
                         }
-                        //TODO: a los profes se les van a quitar creditos y van a necesitar autorizacion?
 
                     } catch (e: BookingNotFoundException) {
                         println("Error: ${e.message}")

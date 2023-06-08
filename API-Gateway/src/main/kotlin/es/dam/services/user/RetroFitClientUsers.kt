@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 object RetroFitClientUsers {
-    private const val BASE_URL = "http://api-users:8383/"
+    private const val BASE_URL = "http://localhost:8383/"
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY

@@ -257,12 +257,11 @@ class BookingsRoutesKtTest{
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
 
-        client.delete("/users/$userId") {
+        client.delete("/users/$userNotAdminId") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
 
-        //TODO: No lo borra
-        client.delete("/users/$userNotAdminId") {
+        client.delete("/users/$userId") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
     }
