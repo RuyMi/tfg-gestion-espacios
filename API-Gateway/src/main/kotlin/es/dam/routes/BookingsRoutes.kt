@@ -1,6 +1,7 @@
 package es.dam.routes
 
 import es.dam.dto.BookingCreateDTO
+import es.dam.dto.BookingDataDTO
 import es.dam.dto.BookingResponseDTO
 import es.dam.dto.BookingUpdateDTO
 import es.dam.exceptions.*
@@ -152,7 +153,46 @@ fun Application.bookingsRoutes() {
                         }
 
                         val res = runCatching {
-                            bookingsRepository.findByUser("Bearer $token", id!!).data.filter { LocalDateTime.parse(it.startTime).isAfter(LocalDateTime.now()) }
+                            bookingsRepository.findByUser("Bearer $token", id!!)
+                        }
+
+                        if (res.isSuccess) {
+                            call.respond(HttpStatusCode.OK, res.getOrNull()!!)
+                        } else {
+                            throw res.exceptionOrNull()!!
+                        }
+
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(HttpStatusCode.Unauthorized, "${e.message}")
+                    } catch (e: BookingNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: BookingBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: BookingInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    }
+                }
+
+                get("/not-finished/user/{id}") {
+                    try {
+                        val originalToken = call.principal<JWTPrincipal>()!!
+                        val token = tokenService.generateToken(originalToken)
+                        val userRole = originalToken.payload.getClaim("role").toString()
+                        val subject = originalToken.payload.subject
+                        val id = call.parameters["id"]
+
+                        require(userRole.contains("ADMINISTRATOR") || id == subject){"Esta operación no está permitida para los usuarios que no son administradores."}
+
+                        try {
+                            UUID.fromString(id)
+                        }catch (e: IllegalArgumentException) {
+                            call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
+                            return@get
+                        }
+
+                        val res = runCatching {
+                            BookingDataDTO(data = bookingsRepository.findByUser("Bearer $token", id!!).data.filter { LocalDateTime.parse(it.startTime).isAfter(LocalDateTime.now()) })
+
                         }
 
                         if (res.isSuccess) {

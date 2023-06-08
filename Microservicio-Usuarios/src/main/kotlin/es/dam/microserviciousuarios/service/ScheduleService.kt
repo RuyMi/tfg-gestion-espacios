@@ -11,7 +11,7 @@ class ScheduleService constructor(
     val userService: UserService){
 
 
-    @Scheduled(cron = "0 39 22 * * ?")
+    @Scheduled(cron = "0 0 1 1 * ?")
      fun poner20creditosAllUsers() {
          println("${LocalDateTime.now()} INFO --- [Schedule credits function] ScheduleService : Poniendo 20 creditos a todos los usuarios...")
          userService.poner20creditosAllUsers();
