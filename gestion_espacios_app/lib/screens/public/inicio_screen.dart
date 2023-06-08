@@ -17,6 +17,7 @@ class _InicioScreenState extends State<InicioScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        toolbarHeight: 75,
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text('Inicio'),

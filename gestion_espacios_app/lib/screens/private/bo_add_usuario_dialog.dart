@@ -19,10 +19,11 @@ class NuevoUsuarioBODialog extends StatefulWidget {
 class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
   String name = '';
   String username = '';
-  String password = 'luisvives';
+  String password = '';
+  String password2 = '';
   String email = '';
   List<String> userRole = [];
-  String? avatar;
+  String? avatar = 'placeholder';
   int credits = 0;
   bool isActive = true;
   PickedFile? selectedImage;
@@ -139,8 +140,6 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                         TextField(
                           onChanged: (value) => username = value,
                           cursorColor: theme.colorScheme.secondary,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
                           style: TextStyle(
                               color: theme.colorScheme.onPrimary,
                               fontFamily: 'KoHo'),
@@ -167,9 +166,67 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                         ),
                         const SizedBox(height: 16),
                         TextField(
+                          onChanged: (value) => password = value,
+                          cursorColor: theme.colorScheme.secondary,
+                          obscureText: true,
+                          style: TextStyle(
+                              color: theme.colorScheme.onPrimary,
+                              fontFamily: 'KoHo'),
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            labelText: 'Contraseña',
+                            labelStyle: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onPrimary),
+                            prefixIcon: Icon(Icons.lock_rounded,
+                                color: theme.colorScheme.onPrimary),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          onChanged: (value) => password2 = value,
+                          cursorColor: theme.colorScheme.secondary,
+                          obscureText: true,
+                          style: TextStyle(
+                              color: theme.colorScheme.onPrimary,
+                              fontFamily: 'KoHo'),
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                            labelText: 'Confirmar contraseña',
+                            labelStyle: TextStyle(
+                                fontFamily: 'KoHo',
+                                color: theme.colorScheme.onPrimary),
+                            prefixIcon: Icon(Icons.lock_rounded,
+                                color: theme.colorScheme.onPrimary),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
                           onChanged: (value) => email = value,
                           cursorColor: theme.colorScheme.secondary,
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.emailAddress,
                           style: TextStyle(
                               color: theme.colorScheme.onPrimary,
                               fontFamily: 'KoHo'),
@@ -359,23 +416,61 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
-                Usuario usuario = Usuario(
-                  name: name,
-                  username: username,
-                  email: email,
-                  password: password,
-                  credits: credits,
-                  avatar: 'profile_pic',
-                  isActive: isActive,
-                  userRole: userRole,
-                );
+                if (password == password2) {
+                  Usuario usuario = Usuario(
+                    name: name,
+                    username: username,
+                    email: email,
+                    password: password,
+                    credits: credits,
+                    avatar: 'placeholder',
+                    isActive: isActive,
+                    userRole: userRole,
+                  );
 
-                if (selectedImage != null) {
-                  storageProvider
-                      .uploadUserImage(selectedImage!)
-                      .then((imageUrl) {
-                    usuario.avatar = imageUrl;
+                  if (selectedImage != null) {
+                    storageProvider
+                        .uploadUserImage(selectedImage!)
+                        .then((imageUrl) {
+                      usuario.avatar = imageUrl;
 
+                      usuariosProvider.register(usuario).then((_) {
+                        Navigator.pushNamed(context, '/home-bo');
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const MyMessageDialog(
+                              title: 'Usuario creado',
+                              description:
+                                  'Se ha creado el usuario correctamente.',
+                            );
+                          },
+                        );
+                      }).catchError((error) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return MyErrorMessageDialog(
+                                title: 'Error al crear el usuario',
+                                description: error.toString().substring(
+                                    error.toString().indexOf(':') + 1),
+                              );
+                            });
+                      });
+                    }).catchError((error) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return MyErrorMessageDialog(
+                            title: 'Error al añadir la imagen',
+                            description: error
+                                .toString()
+                                .substring(error.toString().indexOf(':') + 1),
+                          );
+                        },
+                      );
+                    });
+                  } else {
                     usuariosProvider.register(usuario).then((_) {
                       Navigator.pushNamed(context, '/home-bo');
                       showDialog(
@@ -390,54 +485,28 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                       );
                     }).catchError((error) {
                       showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return MyErrorMessageDialog(
-                              title: 'Error al crear el usuario',
-                              description: error
-                                  .toString()
-                                  .substring(error.toString().indexOf(':') + 1),
-                            );
-                          });
+                        context: context,
+                        builder: (BuildContext context) {
+                          return MyErrorMessageDialog(
+                            title: 'Error al registrar el usuario',
+                            description: error
+                                .toString()
+                                .substring(error.toString().indexOf(':') + 1),
+                          );
+                        },
+                      );
                     });
-                  }).catchError((error) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return MyErrorMessageDialog(
-                          title: 'Error al añadir la imagen',
-                          description: error
-                              .toString()
-                              .substring(error.toString().indexOf(':') + 1),
-                        );
-                      },
-                    );
-                  });
+                  }
                 } else {
-                  usuariosProvider.register(usuario).then((_) {
-                    Navigator.pushNamed(context, '/home-bo');
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const MyMessageDialog(
-                          title: 'Usuario creado',
-                          description: 'Se ha creado el usuario correctamente.',
-                        );
-                      },
-                    );
-                  }).catchError((error) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return MyErrorMessageDialog(
-                          title: 'Error al registrar el usuario',
-                          description: error
-                              .toString()
-                              .substring(error.toString().indexOf(':') + 1),
-                        );
-                      },
-                    );
-                  });
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const MyErrorMessageDialog(
+                        title: 'Error al registrar el usuario',
+                        description: 'Las contraseñas no coinciden.',
+                      );
+                    },
+                  );
                 }
               },
               icon:

@@ -3,7 +3,8 @@ import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
 class MyLogoutAlert extends StatelessWidget {
-  const MyLogoutAlert({super.key});
+  final String ruta;
+  const MyLogoutAlert({Key? key, required this.ruta}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +54,8 @@ class MyLogoutAlert extends StatelessWidget {
           onPressed: () {
             authProvider.logout();
 
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              '/login',
-              (Route<dynamic> route) => false,
-            );
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil(ruta, (Route<dynamic> route) => false);
           },
         ),
       ],

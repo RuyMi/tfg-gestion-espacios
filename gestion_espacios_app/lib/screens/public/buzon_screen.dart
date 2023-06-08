@@ -25,6 +25,7 @@ class _BuzonScreenState extends State<BuzonScreen> {
           color: theme.colorScheme.surface,
           fontWeight: FontWeight.bold,
           fontSize: 25,
+          overflow: TextOverflow.visible,
         ),
         leading: IconButton(
           onPressed: () {

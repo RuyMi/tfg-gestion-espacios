@@ -27,8 +27,6 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
     final usuariosProvider =
         Provider.of<UsuariosProvider>(context, listen: false);
 
-    usuariosFiltrados = usuariosProvider.usuarios;
-
     usuariosProvider.fetchUsuarios().then((value) => setState(() {
           usuariosFiltrados = usuariosProvider.usuarios;
         }));

@@ -84,6 +84,8 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
+          toolbarHeight: 75,
+          centerTitle: true,
           title: Row(
             children: [
               Text(
@@ -161,7 +163,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                             ),
                           ),
                           child: CircleAvatar(
-                            radius: 35,
+                            radius: 50,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(75),
                               child: MySpaceImageWidget(image: espacio.image),
@@ -226,7 +228,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(
-                        color: theme.colorScheme.onPrimary,
+                        color: theme.colorScheme.secondary,
                         width: 2,
                       ),
                     ),
@@ -255,6 +257,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                       calendarFormat: CalendarFormat.month,
                       startingDayOfWeek: StartingDayOfWeek.monday,
                       daysOfWeekVisible: true,
+                      daysOfWeekHeight: 30,
                       calendarStyle: CalendarStyle(
                         defaultTextStyle: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -339,7 +342,7 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: horas
                           .map((hora) => SizedBox(
-                                width: 150,
+                                width: 175,
                                 child: TextButton(
                                   onPressed: hora['ocupada']
                                       ? null
@@ -407,25 +410,43 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
                   ),
                   const SizedBox(height: 20),
                   Visibility(
-                      visible: _isDaySelected,
-                      child: Text(
-                        'Fecha elegida: ${selectedDay != null ? DateFormat('dd/MM/yyyy').format(selectedDay!) : ''}',
-                        style: TextStyle(
+                    visible: _isHourSelected || _isDaySelected,
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
                           color: theme.colorScheme.secondary,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'KoHo',
+                          width: 2,
                         ),
-                      )),
-                  Visibility(
-                      visible: _isHourSelected,
-                      child: Text(
-                        'Hora elegida: $selectedHour',
-                        style: TextStyle(
-                          color: theme.colorScheme.secondary,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'KoHo',
-                        ),
-                      )),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Visibility(
+                              visible: _isDaySelected,
+                              child: Text(
+                                'Fecha elegida: ${selectedDay != null ? DateFormat('dd/MM/yyyy').format(selectedDay!) : ''}',
+                                style: TextStyle(
+                                  color: theme.colorScheme.secondary,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'KoHo',
+                                ),
+                              )),
+                          Visibility(
+                              visible: _isHourSelected,
+                              child: Text(
+                                'Hora elegida: $selectedHour',
+                                style: TextStyle(
+                                  color: theme.colorScheme.secondary,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'KoHo',
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 20),
                   Visibility(
                     visible: _isHourSelected,
