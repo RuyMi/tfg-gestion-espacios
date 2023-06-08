@@ -106,7 +106,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             SizedBox(
               width: 200,
               child: Column(

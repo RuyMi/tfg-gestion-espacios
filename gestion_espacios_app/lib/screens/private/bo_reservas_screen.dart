@@ -242,7 +242,7 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
                                                 theme.colorScheme.secondary)),
                                     const SizedBox(width: 5),
                                     Icon(
-                                      Icons.info_outline_rounded,
+                                      Icons.access_time_rounded,
                                       color: theme.colorScheme.secondary,
                                     ),
                                   ],
