@@ -152,43 +152,41 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                         valueColor: AlwaysStoppedAnimation<Color>(
                             theme.colorScheme.secondary),
                       )
-                    : Expanded(
-                        child: Center(
-                          child: Container(
-                            margin: const EdgeInsets.all(20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.hide_source_rounded,
-                                  size: 100,
-                                  color: theme.colorScheme.onBackground,
-                                ),
-                                const SizedBox(height: 20),
-                                Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: theme.colorScheme.background,
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                      color: theme.colorScheme.onBackground,
-                                      width: 2,
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    'No existen reservas disponibles',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'KoHo',
-                                    ),
-                                  ),
-                                ),
-                              ],
+                    : Center(
+                      child: Container(
+                        margin: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.hide_source_rounded,
+                              size: 100,
+                              color: theme.colorScheme.onBackground,
                             ),
-                          ),
+                            const SizedBox(height: 20),
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.background,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: theme.colorScheme.onBackground,
+                                  width: 2,
+                                ),
+                              ),
+                              child: const Text(
+                                'No existen reservas disponibles',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'KoHo',
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                    ),
               ),
             if (misReservasFiltradas.isNotEmpty)
               Expanded(
