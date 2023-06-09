@@ -297,7 +297,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
-                                                  Text(espacio.description,
+                                                  Text(espacio.description ?? '',
                                                       style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.normal,

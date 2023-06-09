@@ -234,7 +234,7 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
                                     color: theme.colorScheme.onPrimary,
                                   ),
                                 ),
-                                Text(espacio.description,
+                                Text(espacio.description ?? '',
                                     textAlign: TextAlign.center,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
