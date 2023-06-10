@@ -24,7 +24,7 @@ class StorageServiceImpl(
     }
     private val resourcePath = this::class.java.classLoader.getResource("uploads").file
     private val uploadsPath = resourcePath
-    private val uploadsDir = File(uploadsPath)
+    private val uploadsDir = File("./uploads")
 
     override fun initStorageDirectory() {
         if (!uploadsDir.exists()) {
@@ -35,7 +35,7 @@ class StorageServiceImpl(
     override suspend fun saveFile(fileName: String, fileBytes: ByteArray): Map<String, String> =
         withContext(Dispatchers.IO) {
             try {
-                val file = File("${uploadsPath}/$fileName")
+                val file = File("./uploads/$fileName")
                 file.writeBytes(fileBytes)
                 return@withContext mapOf(
                     "fileName" to fileName,
@@ -51,7 +51,7 @@ class StorageServiceImpl(
     override suspend fun saveFile(fileName: String, fileBytes: ByteReadChannel): Map<String, String> =
         withContext(Dispatchers.IO) {
             try {
-                val file = File("${uploadsPath}/$fileName")
+                val file = File("./uploads/$fileName")
                 val res = fileBytes.copyAndClose(file.writeChannel())
                 return@withContext mapOf(
                     "fileName" to fileName,
@@ -65,14 +65,11 @@ class StorageServiceImpl(
         }
 
     override suspend fun getFile(fileName: String): File = withContext(Dispatchers.IO) {
-        var resourceStream = getResourceAsStream("uploads/$fileName")
-         if (resourceStream == null) {
-            resourceStream = getResourceAsStream("placeholder.png")
-            val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
-            val outputFile = Files.createTempFile("temp", "").toFile()
-            ImageIO.write(imagePlaceHolder, "", outputFile)
-            return@withContext outputFile
-        } else {
+        try {
+            val file = File("./uploads/$fileName")
+            return@withContext file
+        } catch (e: Exception) {
+            val resourceStream = getResourceAsStream("placeholder.png")
             val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
             val outputFile = Files.createTempFile("temp", "").toFile()
             ImageIO.write(imagePlaceHolder, "", outputFile)
@@ -81,7 +78,7 @@ class StorageServiceImpl(
     }
 
     override suspend fun deleteFile(fileName: String): Unit = withContext(Dispatchers.IO) {
-        val file = File("${uploadsPath}/$fileName")
+        val file = File("./uploads/$fileName")
         if (!file.exists()) {
             throw StorageException.FileNotFound("No se ha encontrado el fichero: $fileName")
         } else {
@@ -89,7 +86,7 @@ class StorageServiceImpl(
         }
     }
 
-    fun getResourceAsStream(resourceName: String): InputStream? {
+    private fun getResourceAsStream(resourceName: String): InputStream? {
         val classLoader = Thread.currentThread().contextClassLoader
         return classLoader.getResourceAsStream(resourceName)?: null
     }

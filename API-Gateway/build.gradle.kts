@@ -39,7 +39,6 @@ dependencies {
     implementation("io.ktor:ktor-server-swagger:$ktor_version")
     implementation("io.github.smiley4:ktor-swagger-ui:$ktor_swagger_ui_version")
     implementation("io.ktor:ktor-server-openapi:$ktor_version")
-    implementation("io.ktor:ktor-server-websockets-jvm:$ktor_version")
     implementation("io.ktor:ktor-network-tls-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-cors:$ktor_version")
 

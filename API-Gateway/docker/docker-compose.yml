@@ -47,3 +47,13 @@ services:
       - api-spaces
       - api-users
       - api-bookings
+  web:
+    build:
+      context: ../../gestion_espacios_app/
+      dockerfile: ./docker/Dockerfile
+    image: ruymi/web:latest
+    container_name: web
+    ports:
+      - "2121:80"
+    depends_on:
+      - gateway
