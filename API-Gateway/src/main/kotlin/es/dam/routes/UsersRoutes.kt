@@ -39,9 +39,6 @@ fun Application.usersRoutes() {
             post("/login") {
                 try {
                     val login = call.receive<UserLoginDTO>()
-                    println("Login: ${login.username} - ${login.password}")
-
-
 
                     val user = runCatching {
                         userRepository.login(login)
@@ -87,7 +84,7 @@ fun Application.usersRoutes() {
                     }
 
                     if (user.isSuccess) {
-                        call.respond(HttpStatusCode.OK, user.getOrNull()!!)
+                        call.respond(HttpStatusCode.Created, user.getOrNull()!!)
                     } else {
                         call.respond(HttpStatusCode.BadRequest, user.exceptionOrNull()!!.message!!)
                     }

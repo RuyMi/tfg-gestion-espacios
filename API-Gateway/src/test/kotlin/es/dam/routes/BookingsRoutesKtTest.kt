@@ -257,12 +257,11 @@ class BookingsRoutesKtTest{
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
 
-        client.delete("/users/$userId") {
+        client.delete("/users/$userNotAdminId") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
 
-        //TODO: No lo borra
-        client.delete("/users/$userNotAdminId") {
+        client.delete("/users/$userId") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
     }
@@ -518,6 +517,109 @@ class BookingsRoutesKtTest{
         assertEquals(HttpStatusCode.BadRequest, response.status)
 
     }
+
+    @Test
+    fun getNotFinishedByUserId() = testApplication {
+        environment { config }
+
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+
+        val login = client.post("/users/login") {
+            contentType(ContentType.Application.Json)
+            setBody(loginAdminDTO)
+        }
+
+        val dto = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
+
+        val response = client.get("/bookings/not-finished/user/${userId}") {
+            header(HttpHeaders.Authorization, "Bearer " + dto.token)
+        }
+
+        val result = json.decodeFromString<BookingDataDTO>(response.bodyAsText())
+
+        assertTrue(result.data.isNotEmpty())
+        assertEquals(HttpStatusCode.OK, response.status)
+    }
+
+    @Test
+    fun getNotFinishedByUserIdNotAdmin() = testApplication {
+        environment { config }
+
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+
+        val login = client.post("/users/login") {
+            contentType(ContentType.Application.Json)
+            setBody(loginNotAdminDTO)
+        }
+
+        val dto = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
+
+        val response = client.get("/bookings/not-finished/user/${userId}") {
+            header(HttpHeaders.Authorization, "Bearer " + dto.token)
+        }
+
+        assertEquals(HttpStatusCode.Unauthorized, response.status)
+    }
+
+    @Test
+    fun getNotFinishedByUserId404() = testApplication {
+        environment { config }
+
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+
+        val login = client.post("/users/login") {
+            contentType(ContentType.Application.Json)
+            setBody(loginAdminDTO)
+        }
+
+        val dto = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
+
+        val response = client.get("/bookings/not-finished/user/$uuid404") {
+            header(HttpHeaders.Authorization, "Bearer " + dto.token)
+        }
+
+        val result = json.decodeFromString<BookingDataDTO>(response.bodyAsText())
+
+        assertTrue(result.data.isEmpty())
+        assertEquals(HttpStatusCode.OK, response.status)
+    }
+
+    @Test
+    fun getNotFinishedByUserId400() = testApplication {
+        environment { config }
+
+        val client = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+
+        val login = client.post("/users/login") {
+            contentType(ContentType.Application.Json)
+            setBody(loginAdminDTO)
+        }
+
+        val dto = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
+
+        val response = client.get("/bookings/not-finished/user/123") {
+            header(HttpHeaders.Authorization, "Bearer " + dto.token)
+        }
+
+        assertEquals(HttpStatusCode.BadRequest, response.status)
+    }
+
 
     @Test
     fun getByUserId() = testApplication {

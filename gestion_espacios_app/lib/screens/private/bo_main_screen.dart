@@ -106,7 +106,7 @@ class _BOMainScreenState extends State<BOMainScreen>
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const MyLogoutAlert();
+                    return const MyLogoutAlert(ruta: '/login-bo');
                   },
                 );
               },

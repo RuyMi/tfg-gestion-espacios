@@ -65,6 +65,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
       child: Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
+            toolbarHeight: 75,
             automaticallyImplyLeading: true,
             centerTitle: true,
             title: const Text('Mis reservas'),
@@ -138,201 +139,249 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
             if (misReservasFiltradas.isEmpty)
               Expanded(
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.hide_source_rounded,
-                        size: 100,
-                        color: theme.colorScheme.onBackground,
-                      ),
-                      const SizedBox(height: 20),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.background,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: theme.colorScheme.onBackground,
-                            width: 2,
+                  child: Container(
+                    margin: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.hide_source_rounded,
+                          size: 100,
+                          color: theme.colorScheme.onBackground,
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.background,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: theme.colorScheme.onBackground,
+                              width: 2,
+                            ),
+                          ),
+                          child: const Text(
+                            'No existen reservas disponibles',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'KoHo',
+                            ),
                           ),
                         ),
-                        child: const Text(
-                          'No existen reservas disponibles',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'KoHo',
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             if (misReservasFiltradas.isNotEmpty)
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.8,
-                child: ListView.builder(
-                    itemCount: misReservasFiltradas.length,
-                    itemBuilder: (context, index) {
-                      final reserva = misReservasFiltradas[index];
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditarReservaScreen(
-                                reserva: reserva,
+              Expanded(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: ListView.builder(
+                      itemCount: misReservasFiltradas.length,
+                      itemBuilder: (context, index) {
+                        final reserva = misReservasFiltradas[index];
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditarReservaScreen(
+                                  reserva: reserva,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        child: Card(
-                          color: theme.colorScheme.inversePrimary,
-                          margin: const EdgeInsets.only(
-                              top: 5, bottom: 5, left: 10, right: 10),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: theme.colorScheme.surface
-                                                .withOpacity(0.2),
-                                            spreadRadius: 1,
-                                            blurRadius: 5,
-                                            offset: const Offset(0, 3),
-                                          ),
-                                        ],
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: MySpaceImageWidget(
-                                            image: reserva.image),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              reserva.spaceName,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-                                                  fontFamily: 'KoHo'),
-                                            ),
-                                            Text(
-                                                DateFormat('dd/MM/yyyy HH:mm')
-                                                    .format(DateTime.parse(
-                                                        reserva.startTime)),
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    fontSize: 12,
-                                                    fontFamily: 'KoHo'),
-                                                maxLines: 2),
-                                            const SizedBox(
-                                              height: 18,
-                                            ),
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    IconButton(
-                                                      padding: EdgeInsets.zero,
-                                                      constraints:
-                                                          const BoxConstraints(),
-                                                      icon: Icon(
-                                                          Icons.share_rounded,
-                                                          color: theme
-                                                              .colorScheme
-                                                              .surface,
-                                                          size: 20),
-                                                      onPressed: () {
-                                                        Share.share(
-                                                            '🎈 Acabo de reservar ${reserva.spaceName}! ¿Quieres venirte?');
-                                                      },
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    IconButton(
-                                                      padding: EdgeInsets.zero,
-                                                      constraints:
-                                                          const BoxConstraints(),
-                                                      icon: Icon(
-                                                          Icons
-                                                              .bookmark_rounded,
-                                                          color: theme
-                                                              .colorScheme
-                                                              .onBackground,
-                                                          size: 20),
-                                                      onPressed: () {
-                                                        Navigator.pushNamed(
-                                                          context,
-                                                          '/editar-reserva',
-                                                          arguments: reserva,
-                                                        );
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(reserva.status!,
-                                                        style: TextStyle(
-                                                            fontFamily: 'KoHo',
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: theme
-                                                                .colorScheme
-                                                                .secondary,
-                                                            fontSize: 12)),
-                                                    const SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Icon(
-                                                        Icons
-                                                            .info_outline_rounded,
-                                                        color: theme.colorScheme
-                                                            .secondary,
-                                                        size: 16),
-                                                  ],
-                                                ),
-                                              ],
+                            );
+                          },
+                          child: Card(
+                            color: theme.colorScheme.inversePrimary,
+                            margin: const EdgeInsets.only(
+                                top: 5, bottom: 5, left: 10, right: 10),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: theme.colorScheme.surface
+                                                  .withOpacity(0.2),
+                                              spreadRadius: 1,
+                                              blurRadius: 5,
+                                              offset: const Offset(0, 3),
                                             ),
                                           ],
                                         ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: MySpaceImageWidget(
+                                              image: reserva.image),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    reserva.spaceName,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18,
+                                                        fontFamily: 'KoHo'),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                  ),
+                                                  Text(
+                                                      DateFormat(
+                                                              'dd/MM/yyyy HH:mm')
+                                                          .format(DateTime
+                                                              .parse(reserva
+                                                                  .startTime)),
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          fontSize: 12,
+                                                          fontFamily: 'KoHo'),
+                                                      maxLines: 2),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 25,
+                                                            height: 25,
+                                                            child: IconButton(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .zero,
+                                                              constraints:
+                                                                  const BoxConstraints(),
+                                                              icon: Icon(
+                                                                  Icons
+                                                                      .share_rounded,
+                                                                  color: theme
+                                                                      .colorScheme
+                                                                      .surface,
+                                                                  size: 20),
+                                                              onPressed: () {
+                                                                Share.share(
+                                                                    '🎈 Acabo de reservar ${reserva.spaceName}! ¿Quieres venirte?');
+                                                              },
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 25,
+                                                            height: 25,
+                                                            child: IconButton(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .zero,
+                                                              constraints:
+                                                                  const BoxConstraints(),
+                                                              icon: Icon(
+                                                                  Icons
+                                                                      .bookmark_rounded,
+                                                                  color: theme
+                                                                      .colorScheme
+                                                                      .onBackground,
+                                                                  size: 20),
+                                                              onPressed: () {
+                                                                Navigator
+                                                                    .pushNamed(
+                                                                  context,
+                                                                  '/editar-reserva',
+                                                                  arguments:
+                                                                      reserva,
+                                                                );
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Container(
+                                                    height: 25,
+                                                    padding:
+                                                        const EdgeInsets.all(5),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(reserva.status!,
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    'KoHo',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: theme
+                                                                    .colorScheme
+                                                                    .secondary,
+                                                                fontSize: 12)),
+                                                        const SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Icon(
+                                                            Icons
+                                                                .access_time_rounded,
+                                                            color: theme
+                                                                .colorScheme
+                                                                .secondary,
+                                                            size: 16),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                ),
               )
           ])),
     );

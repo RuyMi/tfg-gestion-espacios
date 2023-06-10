@@ -43,6 +43,7 @@ class BOLoginScreen extends StatelessWidget {
                         fontSize: 35,
                         fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 50),
                     SizedBox(
@@ -118,6 +119,16 @@ class BOLoginScreen extends StatelessWidget {
 
                             if (roles.contains('ADMINISTRATOR')) {
                               Navigator.pushNamed(context, '/home-bo');
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const MyErrorMessageDialog(
+                                      title: 'Error al iniciar sesión',
+                                      description:
+                                          'El usuario no tiene permisos para acceder al BackOffice.',
+                                    );
+                                  });
                             }
                           },
                         ).catchError((error) {
@@ -157,6 +168,7 @@ class BOLoginScreen extends StatelessWidget {
                           fontFamily: 'KoHo',
                           color: theme.colorScheme.secondary,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ],

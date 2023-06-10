@@ -10,10 +10,9 @@ fun main(args: Array<String>): Unit =
 fun Application.module() {
     configureKoin()
     configureSecurity()
-    //configureHTTP()
     configureCors()
-    configureSockets()
     configureSerialization()
-    //configureSwagger()
+    configureHTTP()
+    configureSwagger()
     configureRouting()
 }

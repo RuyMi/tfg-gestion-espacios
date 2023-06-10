@@ -106,8 +106,6 @@ class UsersRoutesKtTest{
             setBody(registerNotAdminDTO)
         }
 
-        userInactiveId = json.decodeFromString<UserTokenDTO>(register.bodyAsText()).user.uuid
-
         val register2 = client.post("/users/register") {
             contentType(ContentType.Application.Json)
             setBody(registerDeleteDTO)
@@ -119,6 +117,9 @@ class UsersRoutesKtTest{
             contentType(ContentType.Application.Json)
             setBody(registerInactiveDTO)
         }
+
+        userInactiveId = json.decodeFromString<UserTokenDTO>(registerInactive.bodyAsText()).user.uuid
+
 
         val loginAdmin = client.post("/users/login") {
             contentType(ContentType.Application.Json)
@@ -149,6 +150,7 @@ class UsersRoutesKtTest{
         val userTokenNotAdminDTO = json.decodeFromString<UserTokenDTO>(loginNotAdmin.bodyAsText())
 
         userNotAdminId = userTokenNotAdminDTO.user.uuid
+
     }
 
     @AfterAll
@@ -168,10 +170,6 @@ class UsersRoutesKtTest{
 
         val userTokenDTO = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
 
-        client.delete("/users/$userAdminId") {
-            header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
-        }
-
         client.delete("/users/$userNotAdminId") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
@@ -183,6 +181,12 @@ class UsersRoutesKtTest{
         client.delete("/users/$userInactiveId") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
+
+        client.delete("/users/$userAdminId") {
+            header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
+        }
+
+
     }
 
     @Test
@@ -204,7 +208,7 @@ class UsersRoutesKtTest{
     }
 
     @Test
-    fun  login401() = testApplication {
+    fun login401() = testApplication {
         environment { config }
 
         val client = createClient {
@@ -239,7 +243,7 @@ class UsersRoutesKtTest{
             ))
         }
 
-        assertEquals(HttpStatusCode.NotFound, login.status)
+        assertEquals(HttpStatusCode.Unauthorized, login.status)
     }
 
     @Test
@@ -1084,7 +1088,7 @@ class UsersRoutesKtTest{
                 json()
             }
         }
-        val file = File("src/test/resources/test.jpeg")
+        val file = File("src/test/resources/test.png")
 
         val login = client.post("/users/login") {
             contentType(ContentType.Application.Json)

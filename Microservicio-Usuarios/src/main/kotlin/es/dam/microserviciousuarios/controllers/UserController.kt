@@ -57,7 +57,7 @@ class UsersController @Autowired constructor(
             val userInsert = userService.save(user)
             val jwtToken: String = jwtUtils.generateToken(userInsert)
 
-            return ResponseEntity.ok(UserTokenDTO(userInsert.toDTO(), jwtToken))
+            return ResponseEntity.status(HttpStatus.CREATED).body(UserTokenDTO(userInsert.toDTO(), jwtToken))
         } catch (e: UserBadRequestException) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ya existe un usuario con ese nombre o correo")
         }

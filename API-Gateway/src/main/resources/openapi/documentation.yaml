@@ -1,0 +1,1634 @@
+openapi: "3.0.3"
+info:
+  title: "API_Gateway API"
+  description: "Api central que permite el acceso a los microservicios de reservas, salas y usuarios."
+  version: "1.0.0"
+servers:
+- url: "http://app.iesluisvives.org:1212"
+paths:
+  /users:
+    get:
+      description: "Devuelve una lista de todos los usuarios existentes."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDataDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Usuarios no encontrados"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Esta operación no está permitida para los usuarios que no son administradores."
+  /users/{id}:
+    delete:
+      description: "Elimina el usuario con el id especificado."
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "b816165e-197d-454f-97fc-d08a15648c8f"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidId:
+                  value: "El id introducido no es válido:"
+                DataNotEmpty:
+                  value: "Se deben actualizar o eliminar las reservas asociadas a este usuario antes de continuar con la operación."
+
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Esta operación no está permitida para los usuarios que no son administradores."
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Usuario no encontrado con el id: b816165e-197d-454f-97fc-d08a15648c8f"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+    get:
+      description: "Devuelve el usuario con el id especificado."
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "b816165e-197d-454f-97fc-d08a15648c8f"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidId:
+                  value: "El id introducido no es válido:"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Usuario no encontrado con el id: b816165e-197d-454f-97fc-d08a15648c8f"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Esta operación no está permitida para los usuarios que no son administradores."
+    put:
+      description: "Actualiza el usuario con el id especificado."
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "b816165e-197d-454f-97fc-d08a15648c8f"
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/UserUpdateDTO"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidId:
+                  value: "El id introducido no es válido:"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Usuario no encontrado con el id: b816165e-197d-454f-97fc-d08a15648c8f"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Esta operación no está permitida para los usuarios que no son administradores."
+  /users/active/{id}/{active}:
+    put:
+      description: "Actualiza el estado \"activo\" del usuario con el id especificado."
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "b816165e-197d-454f-97fc-d08a15648c8f"
+      - name: "active"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "true"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidId:
+                  value: "El id introducido no es válido:"
+                InvalidBoolean:
+                  value: "El estado de actividad introducido del usuario no es valido:"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Usuario no encontrado con el id: b816165e-197d-454f-97fc-d08a15648c8f"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Esta operación no está permitida para los usuarios que no son administradores."
+  /users/credits/{id}/{creditsAmount}:
+    put:
+      description: "Actualiza los créditos del usuario con el id especificado."
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "b816165e-197d-454f-97fc-d08a15648c8f"
+      - name: "creditsAmount"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "25"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidId:
+                  value: "El id introducido no es válido:"
+                InvalidCreditsAmount:
+                  value: "El número de créditos introducido no es válido:"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Usuario no encontrado con el id: b816165e-197d-454f-97fc-d08a15648c8f"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Esta operación no está permitida para los usuarios que no son administradores."
+  /users/login:
+    post:
+      description: "Loguea al usuario con el email y contraseña especificados."
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/UserLoginDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserTokenDTO"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Usuario o contraseña incorrectos."
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Usuario o contraseña incorrectos."
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Este usuario ha sido dado de baja."
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Error interno del servidor."
+                Example#2:
+                  value: "EL servidor no esta disponible en este momento."
+  /users/me:
+    get:
+      description: "Devuelve la informacion del usuario logueado."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Usuario no encontrado con el id: b816165e-197d-454f-97fc-d08a15648c8f"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Este usuario ha sido dado de baja."
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+    put:
+      description: "Actualiza la informacion del usuario logueado."
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/UserUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Usuario no encontrado con el id: b816165e-197d-454f-97fc-d08a15648c8f"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Este usuario ha sido dado de baja."
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+  /users/register:
+    post:
+      description: "Registra un nuevo usuario."
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/UserRegisterDTO"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserTokenDTO"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "El email introducido ya está en uso."
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+  /users/storage:
+    post:
+      description: "Almacena una foto de perfil."
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserPhotoDTO"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Este tipo de archivo no está soportado."
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+  /users/storage/{uuid}:
+    get:
+      description: "Devuelve la foto de perfil del usuario con el id especificado."
+      parameters:
+      - name: "uuid"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "b816165e-197d-454f-97fc-d08a15648c8f"
+      responses:
+        "200":
+          description: "OK <br> A file response"
+          content:
+            application/*:
+              schema:
+                type: "object"
+                format: "binary"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Archivo no encontrado con el id: b816165e-197d-454f-97fc-d08a15648c8f"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No autorizado."
+  /spaces:
+    get:
+      description: "Devuelve todos los espacios."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SpaceDataDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No se han encontrado espacios."
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+    post:
+      description: "Almacena un nuevo espacio."
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/SpaceCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SpaceResponseDTO"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "EL valor de los campos no es válido."
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+  /spaces/{id}:
+    delete:
+      description: "Borra el espacio con el id especificado."
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Espacio no encontrado con el id: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidId:
+                  value: "El id debe ser un id válido"
+                DataNotEmpty:
+                  value: "Se deben actualizar o eliminar las reservas asociadas a esta sala antes de continuar con la operación."
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+    get:
+      description: "Devuelve el espacio con el id especificado."
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SpaceResponseDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Espacio no encontrado con el id: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidId:
+                  value: "El id debe ser un UUID válido"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+    put:
+      description: "Actualiza el espacio con el id especificado."
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/SpaceUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SpaceResponseDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Espacio no encontrado con el id: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidId:
+                  value: "El id debe ser un UUID válido"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+  /spaces/nombre/{name}:
+    get:
+      description: "Devuelve el espacio con el nombre especificado."
+      parameters:
+      - name: "name"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "Departamento de FOL"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SpaceResponseDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Espacio no encontrado con el nombre: Departamento de FOL"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "El nombre debe ser una cadena de caracteres"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+  /spaces/reservables/{isReservable}:
+    get:
+      description: ""
+      parameters:
+      - name: "isReservable"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "true"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidBoolean:
+                  value: "El parámetro isReservable debe ser un booleano"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SpaceDataDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No se han encontrado espacios con el parámetro isReservable: true"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+  /spaces/storage:
+    post:
+      description: "Guarda uan foto y devuelve el nombre de la foto guardada."
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SpacePhotoDTO"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Este tipo de archivo no está permitido"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+        "415":
+          description: "Unsupported Media Type"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Este tipo de archivo no está permitido"
+  /spaces/storage/{uuid}:
+    get:
+      description: "Devuelve la foto con el uuid especificado."
+      parameters:
+      - name: "uuid"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+      responses:
+        "200":
+          description: "OK <br> A file response"
+          content:
+            application/*:
+              schema:
+                type: "object"
+                format: "binary"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Fichero no encontrado con el uuid: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "El uuid debe ser un UUID válido"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+  /bookings:
+    get:
+      description: "Devuelve todas las reservas."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingDataDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No se han encontrado reservas"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No estas autorizado para realizar esta acción"
+    post:
+      description: "Guarda una reserva y devuelve la reserva guardada."
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/BookingCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingResponseDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No se ha encontrado el espacio con el id: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
+                InvalidDate:
+                  value: "La fecha de inicio debe ser anterior a la fecha de fin"
+                InvalidCredits:
+                  value: "No tienes créditos suficientes para realizar la reserva"
+                InvalidBookingWindow:
+                  value: "No se puede reservar con tanta anterioridad."
+                InvalidBookingTime:
+                  value: "Franja horaria no disponible."
+                InvalidUser:
+                  value: "No se puede realizar la reserva a nombre de otra persona"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+  /bookings/{id}:
+    delete:
+      description: "Elimina la reserva con el id especificado."
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "51e1e0a2-2d25-4463-a0d6-d14c865d37d3"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
+                InvalidDate:
+                  value: "No se puede eliminar una reserva que ya ha comenzado."
+                InvalidUser:
+                  value: "La reserva que se quiere eliminar no está guardada bajo el mismo usuario."
+
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+    get:
+      description: "Devuelve la reserva con el id especificado."
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "51e1e0a2-2d25-4463-a0d6-d14c865d37d3"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingResponseDTO"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No estas autorizado para realizar esta acción"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No se ha encontrado la reserva con el id: 51e1e0a2-2d25-4463-a0d6-d14c865d37d3"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+    put:
+      description: "Actualiza la reserva con el id especificado."
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "51e1e0a2-2d25-4463-a0d6-d14c865d37d3"
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/BookingUpdateDTO"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
+                InvalidDate:
+                  value: "La fecha de inicio debe ser anterior a la fecha de fin"
+                InvalidCredits:
+                  value: "No tienes créditos suficientes para realizar la reserva"
+                InvalidBookingWindow:
+                  value: "No se puede reservar con tanta anterioridad."
+                InvalidBookingTime:
+                  value: "Franja horaria no disponible."
+                InvalidUser:
+                  value: "No se puede realizar la reserva a nombre de otra persona"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No se ha encontrado la reserva con el id: 51e1e0a2-2d25-4463-a0d6-d14c865d37d3"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+  /bookings/space/{id}:
+    get:
+      description: "Devuelve todas las reservas de un espacio."
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingDataDTO"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No estas autorizado para realizar esta acción"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No se ha encontrado el espacio con el id: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+  /bookings/not-finished/user/{id}:
+    get:
+      description: "Devuelve todas las reservas no finalizadas de un usuario."
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            example: "fa5d82ed-fcb3-479a-97ca-334c1f46a2ff"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingDataDTO"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No estas autorizado para realizar esta acción"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No se ha encontrado el usuario con el id: fa5d82ed-fcb3-479a-97ca-334c1f46a2ff"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+  /bookings/status/{status}:
+    get:
+      description: "Devuelve todas las reservas con el estado especificado."
+      parameters:
+      - name: "status"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "PENDING"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingDataDTO"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No se ha encontrado ninguna reserva con el estado: PENDING"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "El estado debe ser uno de los siguientes: PENDING, ACCEPTED, REJECTED"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No estas autorizado para realizar esta acción"
+  /bookings/time/{idSpace}/{date}:
+    get:
+      description: "Devuelve todas las reservas de un espacio en una fecha especificada."
+      parameters:
+      - name: "idSpace"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+      - name: "date"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "2023-05-10"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingDataDTO"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No se ha encontrado el espacio con el id: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+  /bookings/user/{id}:
+    get:
+      description: "Devuelve todas las reservas de un usuario."
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+          example: "fa5d82ed-fcb3-479a-97ca-334c1f46a2ff"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingDataDTO"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No estas autorizado para realizar esta acción"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No se ha encontrado el usuario con el id: fa5d82ed-fcb3-479a-97ca-334c1f46a2ff"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
+components:
+  schemas:
+    UserResponseDTO:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          example: "fa5d82ed-fcb3-479a-97ca-334c1f46a2ff"
+        name:
+          type: "string"
+          example: "Maria Fernanda"
+        username:
+          type: "string"
+          example: "mariafernanda"
+        email:
+          type: "string"
+          example: "mariafernanda@gmail.com"
+        password:
+          type: "string"
+          example: "password12345"
+        avatar:
+          type: "string"
+          example: "placeholder.png"
+        userRole:
+          type: "array"
+          items:
+            type: "string"
+            example: "USER"
+        credits:
+          type: "integer"
+          format: "int32"
+          example: 20
+    UserDataDTO:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/UserResponseDTO"
+    UserUpdateDTO:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          example: "Maria Fernanda"
+        username:
+          type: "string"
+          example: "mariafernanda"
+        avatar:
+          type: "string"
+          example: "placeholder.png"
+        userRole:
+          type: "array"
+          items:
+            type: "string"
+            example: "USER"
+        credits:
+          type: "integer"
+          format: "int32"
+          example: 20
+    UserLoginDTO:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+          example: "mariafernanda"
+        password:
+          type: "string"
+          example: "password12345"
+    UserTokenDTO:
+      type: "object"
+      properties:
+        user:
+          $ref: "#/components/schemas/UserResponseDTO"
+        token:
+          type: "string"
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik1hcmlhIEZlcm5hbmRhIiwiaWF0IjoxNTE2MjM5MDIyfQ.iZxaYMH2xcsKWtaAhjj5gXVvvyG5MXyyRt-CAoCpp40"
+    UserRegisterDTO:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          example: "Maria Fernanda"
+        username:
+          type: "string"
+          example: "mariafernanda"
+        email:
+          type: "string"
+          example: "mariafernanda@gmail.com"
+        password:
+          type: "string"
+          example: "password12345"
+        avatar:
+          type: "string"
+          example: "placeholder.png"
+        userRole:
+          type: "array"
+          items:
+            type: "string"
+            example: "USER"
+    UserPhotoDTO:
+      type: "object"
+      properties:
+        data:
+          type: "string"
+          format: "binary"
+          example: "filename: placeholder.png"
+    SpaceDTO:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "ObjectId('5f9b3b5b9b3b5f9b3b5b9b3b')"
+        uuid:
+          type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+        name:
+          type: "string"
+          example: "Departamento de FOL"
+        description:
+          type: "string"
+          example: "Departamento de Formación y Orientación Laboral"
+        image:
+          type: "string"
+          example: "placeholder.png"
+        price:
+          type: "integer"
+          format: "int32"
+          example: 4
+        requiresAuthorization:
+          type: "boolean"
+          example: true
+        authorizedRoles:
+          type: "array"
+          items:
+            type: "string"
+            example: "TEACHER"
+        bookingWindow:
+          type: "integer"
+          description: "Número de días que se puede reservar con antelación la sala"
+          format: "int32"
+          example: 5
+    SpaceDataDTO:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SpaceDTO"
+    SpaceCreateDTO:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          example: "Departamento de FOL"
+        description:
+          type: "string"
+          example: "Departamento de Formación y Orientación Laboral"
+        image:
+          type: "string"
+          example: "placeholder.png"
+        price:
+          type: "integer"
+          format: "int32"
+          example: 4
+        requiresAuthorization:
+          type: "boolean"
+          example: true
+        authorizedRoles:
+          type: "array"
+          items:
+            type: "string"
+            example: "TEACHER"
+        bookingWindow:
+          type: "integer"
+          format: "int32"
+          example: 5
+    SpaceResponseDTO:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+        name:
+          type: "string"
+          example: "Departamento de FOL"
+        description:
+          type: "string"
+          example: "Departamento de Formación y Orientación Laboral"
+        image:
+          type: "string"
+          example: "placeholder.png"
+        price:
+          type: "integer"
+          format: "int32"
+          example: 4
+        requiresAuthorization:
+          type: "boolean"
+          example: true
+        authorizedRoles:
+          type: "array"
+          items:
+            type: "string"
+            example: "TEACHER"
+        bookingWindow:
+          type: "integer"
+          format: "int32"
+          example: 5
+    SpaceUpdateDTO:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          example: "Departamento de FOL"
+        description:
+          type: "string"
+          example: "Departamento de Formación y Orientación Laboral"
+        image:
+          type: "string"
+          example: "placeholder.png"
+        price:
+          type: "integer"
+          format: "int32"
+          example: 4
+        requiresAuthorization:
+          type: "boolean"
+          example: true
+        authorizedRoles:
+          type: "array"
+          items:
+            type: "string"
+            example: "TEACHER"
+        bookingWindow:
+          type: "integer"
+          format: "int32"
+          example: 5
+    SpacePhotoDTO:
+      type: "object"
+      properties:
+        data:
+          type: "string"
+          example: "filename: placeholder.png"
+    BookingResponseDTO:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          example: "51e1e0a2-2d25-4463-a0d6-d14c865d37d3"
+        userId:
+          type: "string"
+          example: "fa5d82ed-fcb3-479a-97ca-334c1f46a2ff"
+        userName:
+          type: "string"
+          example: "mariafernanda"
+        spaceId:
+          type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+        spaceName:
+          type: "string"
+          example: "Departamento de FOL"
+        image:
+          type: "string"
+          example: "placeholder.png"
+        startTime:
+          type: "string"
+          example: "2023-06-14T:08:25.000"
+        endTime:
+          type: "string"
+          example: "2023-06-14T:09:00.000"
+        observations:
+          type: "string"
+          example: "Reunión de trabajo"
+        status:
+          type: "string"
+          example: "PENDING"
+    BookingDataDTO:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/BookingResponseDTO"
+    BookingCreateDTO:
+      type: "object"
+      properties:
+        userId:
+          type: "string"
+          example: "fa5d82ed-fcb3-479a-97ca-334c1f46a2ff"
+        userName:
+          type: "string"
+          example: "mariafernanda"
+        spaceId:
+          type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+        spaceName:
+          type: "string"
+          example: "Departamento de FOL"
+        image:
+          type: "string"
+          example: "placeholder.png"
+        startTime:
+          type: "string"
+          example: "2023-06-14T:08:25.000"
+        endTime:
+          type: "string"
+          example: "2023-06-14T:09:00.000"
+        observations:
+          type: "string"
+          example: "Reunión de trabajo"
+        status:
+          type: "string"
+          example: "PENDING"
+    BookingUpdateDTO:
+      type: "object"
+      properties:
+        userId:
+          type: "string"
+          example: "fa5d82ed-fcb3-479a-97ca-334c1f46a2ff"
+        userName:
+          type: "string"
+          example: "mariafernanda"
+        spaceId:
+          type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
+        spaceName:
+          type: "string"
+          example: "Departamento de FOL"
+        image:
+          type: "string"
+          example: "placeholder.png"
+        startTime:
+          type: "string"
+          example: "2023-06-14T:08:25.000"
+        endTime:
+          type: "string"
+          example: "2023-06-14T:09:00.000"
+        observations:
+          type: "string"
+          example: "Reunión de trabajo"
+        status:
+          type: "string"
+          example: "PENDING"

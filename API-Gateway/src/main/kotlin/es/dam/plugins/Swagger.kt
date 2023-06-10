@@ -4,9 +4,15 @@ import io.github.smiley4.ktorswaggerui.SwaggerUI
 import io.github.smiley4.ktorswaggerui.dsl.AuthScheme
 import io.github.smiley4.ktorswaggerui.dsl.AuthType
 import io.ktor.server.application.*
+import io.ktor.server.plugins.swagger.*
+import io.ktor.server.routing.*
 
 fun Application.configureSwagger() {
     install(SwaggerUI) {
+
+        routing {
+            swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
+        }
 
         swagger {
             swaggerUrl = "swagger"
@@ -28,17 +34,5 @@ fun Application.configureSwagger() {
             description = "API Gateway que hace de nexo entre los microservicios."
         }
 
-        schemasInComponentSection = true
-        examplesInComponentSection = true
-        automaticTagGenerator = { url -> url.firstOrNull() }
-        pathFilter = { method, url ->
-            url.contains("test")
-        }
-
-        securityScheme("JWT-Auth") {
-            type = AuthType.HTTP
-            scheme = AuthScheme.BEARER
-            bearerFormat = "jwt"
-        }
     }
 }

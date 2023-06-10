@@ -30,7 +30,7 @@ class SpaceServiceImplTest {
     val space = Space(
         id = ObjectId().toId(),
         uuid = UUID.fromString("c060c959-8462-4a0f-9265-9af4f54d166c").toString(),
-        name = "test",
+        name = "test1",
         image = null,
         price = 1,
         isReservable = false,
@@ -42,7 +42,7 @@ class SpaceServiceImplTest {
     val spaceReservable = Space(
         id = ObjectId().toId(),
         uuid = UUID.fromString("c060c959-8462-4a0f-9265-9af4f54d166c").toString(),
-        name = "test",
+        name = "test2",
         image = null,
         price = 1,
         isReservable = true,

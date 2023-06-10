@@ -1,6 +1,7 @@
 package es.dam.routes
 
 import es.dam.dto.BookingCreateDTO
+import es.dam.dto.BookingDataDTO
 import es.dam.dto.BookingResponseDTO
 import es.dam.dto.BookingUpdateDTO
 import es.dam.exceptions.*
@@ -172,6 +173,45 @@ fun Application.bookingsRoutes() {
                     }
                 }
 
+                get("/not-finished/user/{id}") {
+                    try {
+                        val originalToken = call.principal<JWTPrincipal>()!!
+                        val token = tokenService.generateToken(originalToken)
+                        val userRole = originalToken.payload.getClaim("role").toString()
+                        val subject = originalToken.payload.subject
+                        val id = call.parameters["id"]
+
+                        require(userRole.contains("ADMINISTRATOR") || id == subject){"Esta operación no está permitida para los usuarios que no son administradores."}
+
+                        try {
+                            UUID.fromString(id)
+                        }catch (e: IllegalArgumentException) {
+                            call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
+                            return@get
+                        }
+
+                        val res = runCatching {
+                            BookingDataDTO(data = bookingsRepository.findByUser("Bearer $token", id!!).data.filter { LocalDateTime.parse(it.startTime).isAfter(LocalDateTime.now()) })
+
+                        }
+
+                        if (res.isSuccess) {
+                            call.respond(HttpStatusCode.OK, res.getOrNull()!!)
+                        } else {
+                            throw res.exceptionOrNull()!!
+                        }
+
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(HttpStatusCode.Unauthorized, "${e.message}")
+                    } catch (e: BookingNotFoundException) {
+                        call.respond(HttpStatusCode.NotFound, "${e.message}")
+                    } catch (e: BookingBadRequestException) {
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    } catch (e: BookingInternalErrorException) {
+                        call.respond(HttpStatusCode.InternalServerError, "${e.message}")
+                    }
+                }
+
                 get("/status/{status}") {
                     try {
                         val originalToken = call.principal<JWTPrincipal>()!!
@@ -252,7 +292,6 @@ fun Application.bookingsRoutes() {
                         if(!userRole.contains("ADMINISTRATOR")){
                             require(subject == entity.userId){"No se puede realizar la reserva a nombre de otra persona"}
                             require(user.credits >= space.price) {"No tienes créditos suficientes para realizar la reserva"}
-                            //TODO:crear usuario administrador para hacer un update y luego borrarlo
                             userRepository.updateCreditsMe("Bearer $token", subject, space.price)
 
                             require(LocalDateTime.parse(entity.startTime).isAfter( LocalDateTime.now()))
@@ -304,7 +343,6 @@ fun Application.bookingsRoutes() {
                                 throw booking.exceptionOrNull()!!
                             }
                         }
-                        //TODO: a los profes se les van a quitar creditos y van a necesitar autorizacion?
 
                     } catch (e: BookingNotFoundException) {
                         println("Error: ${e.message}")
@@ -347,6 +385,8 @@ fun Application.bookingsRoutes() {
 
                         if(!userRole.contains("ADMINISTRATOR")){
                             require(bookingsRepository.findByUser("Bearer $token", booking.userId).data.filter{it.userId == subject}.isNotEmpty()){"La reserva que se quiere actualizar no está guardada bajo el mismo usuario."}
+                            require(LocalDateTime.parse(bookingsRepository.findById("Bearer $token", id!!).startTime).isAfter(LocalDateTime.now()))
+                            {"No se puede actualizar una reserva que ya ha comenzado."}
                             require(bookingsRepository.findById("Bearer $token", id!!).status != "REJECTED"){"No se puede actualizar una reserva rechazada."}
                             require(LocalDateTime.parse(booking.startTime).isAfter(LocalDateTime.now()))
                             {"No se ha podido guardar la reserva fecha introducida es anterior a la actual."}
@@ -430,8 +470,10 @@ fun Application.bookingsRoutes() {
                             require(bookingsRepository.findById("Bearer $token", id!!).userId == subject)
                             {"La reserva que se quiere eliminar no está guardada bajo el mismo usuario."}
 
+                            require(LocalDateTime.parse(bookingsRepository.findById("Bearer $token", id!!).startTime).isAfter(LocalDateTime.now()))
+                            {"No se puede eliminar una reserva que ya ha comenzado."}
+
                             val spaceId = bookingsRepository.findById("Bearer $token", id).spaceId
-                            bookingsRepository.delete("Bearer $token", id)
 
                             userRepository.updateCreditsMe(
                                 "Bearer $token",
