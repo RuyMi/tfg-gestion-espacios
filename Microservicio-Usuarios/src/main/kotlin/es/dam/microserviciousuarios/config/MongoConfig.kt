@@ -11,12 +11,12 @@ import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration
 @Configuration
 class MongoConfig : AbstractMongoClientConfiguration() {
     override fun getDatabaseName(): String {
-        return "reservas-luisvives-test"
+        return "reservas-luisvives"
     }
 
     override fun mongoClient(): MongoClient {
         val connectionString =
-            ConnectionString("mongodb+srv://pedidos:admin@biquesdam.el7mnzz.mongodb.net/reservas-luisvives?retryWrites=true&w=majority")
+            ConnectionString("mongodb://admin:admin@mongodb:27017/")
         val mongoClientSettings = MongoClientSettings.builder()
             .applyConnectionString(connectionString)
             .uuidRepresentation(UuidRepresentation.STANDARD)
