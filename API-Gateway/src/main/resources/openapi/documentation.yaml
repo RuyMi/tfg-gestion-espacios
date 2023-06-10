@@ -1076,6 +1076,53 @@ paths:
               schema:
                 type: "string"
                 example: "Error interno del servidor"
+  /bookings/not-finished/user/{id}:
+    get:
+      description: "Devuelve todas las reservas no finalizadas de un usuario."
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            example: "fa5d82ed-fcb3-479a-97ca-334c1f46a2ff"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingDataDTO"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No estas autorizado para realizar esta acción"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "No se ha encontrado el usuario con el id: fa5d82ed-fcb3-479a-97ca-334c1f46a2ff"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                example: "Error interno del servidor"
   /bookings/status/{status}:
     get:
       description: "Devuelve todas las reservas con el estado especificado."

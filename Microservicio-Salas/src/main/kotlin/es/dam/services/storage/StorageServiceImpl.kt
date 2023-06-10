@@ -67,7 +67,7 @@ class StorageServiceImpl(
     override suspend fun getFile(fileName: String): File = withContext(Dispatchers.IO) {
         var resourceStream = getResourceAsStream("uploads/$fileName")
          if (resourceStream == null) {
-            resourceStream = getResourceAsStream("placeholder.jpeg")
+            resourceStream = getResourceAsStream("placeholder.png")
             val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
             val outputFile = Files.createTempFile("temp", "").toFile()
             ImageIO.write(imagePlaceHolder, "", outputFile)
