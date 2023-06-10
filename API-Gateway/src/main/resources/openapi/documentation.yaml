@@ -890,7 +890,19 @@ paths:
             '*/*':
               schema:
                 type: "string"
-                example: "El id del espacio debe ser un UUID válido"
+              examples:
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
+                InvalidDate:
+                  value: "La fecha de inicio debe ser anterior a la fecha de fin"
+                InvalidCredits:
+                  value: "No tienes créditos suficientes para realizar la reserva"
+                InvalidBookingWindow:
+                  value: "No se puede reservar con tanta anterioridad."
+                InvalidBookingTime:
+                  value: "Franja horaria no disponible."
+                InvalidUser:
+                  value: "No se puede realizar la reserva a nombre de otra persona"
         "500":
           description: "Internal Server Error"
           content:
@@ -930,7 +942,14 @@ paths:
             '*/*':
               schema:
                 type: "string"
-                example: "No se ha encontrado la reserva con el id: 51e1e0a2-2d25-4463-a0d6-d14c865d37d3"
+              examples:
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
+                InvalidDate:
+                  value: "No se puede eliminar una reserva que ya ha comenzado."
+                InvalidUser:
+                  value: "La reserva que se quiere eliminar no está guardada bajo el mismo usuario."
+
         "500":
           description: "Internal Server Error"
           content:
@@ -1009,6 +1028,16 @@ paths:
               examples:
                 InvalidID:
                   value: "El id debe ser un UUID válido"
+                InvalidDate:
+                  value: "La fecha de inicio debe ser anterior a la fecha de fin"
+                InvalidCredits:
+                  value: "No tienes créditos suficientes para realizar la reserva"
+                InvalidBookingWindow:
+                  value: "No se puede reservar con tanta anterioridad."
+                InvalidBookingTime:
+                  value: "Franja horaria no disponible."
+                InvalidUser:
+                  value: "No se puede realizar la reserva a nombre de otra persona"
         "200":
           description: "OK"
           content:
