@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder
 import java.awt.image.BufferedImage
+import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.net.MalformedURLException
@@ -64,17 +65,14 @@ class StorageService(
 
     override fun loadAsResource(filename: String): Resource {
          try {
-            var resourceStream = getResourceAsStream("uploads/$filename")
-             return if (resourceStream == null) {
-                 resourceStream = getResourceAsStream("placeholder.png")
+             return try {
+                 val file = File("./uploads/$filename")
+                 UrlResource(file.toURI())
+             } catch (e: Exception) {
+                 val resourceStream = getResourceAsStream("placeholder.png")
                  val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
-                 val outputFile = Files.createTempFile("temp", ".png").toFile()
-                 ImageIO.write(imagePlaceHolder, "jpeg", outputFile)
-                 UrlResource(outputFile.toURI())
-             } else {
-                 val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
-                 val outputFile = Files.createTempFile("temp", ".png").toFile()
-                 ImageIO.write(imagePlaceHolder, "png", outputFile)
+                 val outputFile = Files.createTempFile("temp", "").toFile()
+                 ImageIO.write(imagePlaceHolder, "", outputFile)
                  UrlResource(outputFile.toURI())
              }
         } catch (e: MalformedURLException) {
