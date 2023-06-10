@@ -17,7 +17,7 @@ class EspaciosProvider with ChangeNotifier {
     fetchEspaciosByReservable(true);
   }
 
-  String baseUrl = 'http://app.iesluisvives.org:1212';
+  String baseUrl = 'https://app.iesluisvives.org:1212';
 
   Future<void> fetchEspacios() async {
     final response = await http.get(Uri.parse('$baseUrl/spaces'),

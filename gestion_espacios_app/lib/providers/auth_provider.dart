@@ -24,7 +24,7 @@ class AuthProvider with ChangeNotifier {
   String get token => _token;
   String get userId => _userId;
 
-  String baseUrl = 'http://app.iesluisvives.org:1212';
+  String baseUrl = 'https://app.iesluisvives.org:1212';
 
   void logout() {
     _token = '';

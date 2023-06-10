@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/models/reserva.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
-import 'package:gestion_espacios_app/screens/screens.dart';
+import 'package:gestion_espacios_app/screens/public/editar_reserva_screen.dart';
 import 'package:gestion_espacios_app/widgets/space_image_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';

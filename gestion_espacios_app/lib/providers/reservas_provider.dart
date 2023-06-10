@@ -27,7 +27,7 @@ class ReservasProvider with ChangeNotifier {
     fetchReservas();
   }
 
-  String baseUrl = 'http://app.iesluisvives.org:1212';
+  String baseUrl = 'https://app.iesluisvives.org:1212';
 
   Future<void> fetchReservas() async {
     final response = await http.get(Uri.parse('$baseUrl/bookings'),
