@@ -41,6 +41,7 @@ class _NuevaReservaBODialog extends State<NuevaReservaBODialog> {
   String spaceName = '';
   String observations = '';
   bool requiresAuthorization = false;
+  List<Espacio> espacios = [];
 
   String convertirHoraLocalDateTime(String localDateTime) {
     DateTime horaDateTime = DateTime.parse(localDateTime);
@@ -66,11 +67,21 @@ class _NuevaReservaBODialog extends State<NuevaReservaBODialog> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    final espaciosProvider =
+        Provider.of<EspaciosProvider>(context, listen: false);
+
+    espaciosProvider.fetchEspacios().then((value) => setState(() {
+          espacios = espaciosProvider.espacios;
+        }));
+  }
+
+  @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     final reservasProvider = Provider.of<ReservasProvider>(context);
-    final espaciosProvider = Provider.of<EspaciosProvider>(context);
-    final List<Espacio> espacios = espaciosProvider.espaciosReservables;
     Usuario usuario = widget.usuario;
     final userId = usuario.uuid;
     final userName = widget.usuario.name;

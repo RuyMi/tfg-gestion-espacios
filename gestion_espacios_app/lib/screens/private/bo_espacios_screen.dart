@@ -27,8 +27,6 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
     final espaciosProvider =
         Provider.of<EspaciosProvider>(context, listen: false);
 
-    espaciosFiltrados = espaciosProvider.espacios;
-
     espaciosProvider.fetchEspacios().then((value) => setState(() {
           espaciosFiltrados = espaciosProvider.espacios;
         }));

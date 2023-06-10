@@ -43,9 +43,10 @@ class SpacesRoutesTest {
         bookingWindow = 10
     )
 
-    private var bookingId = ""
     private var userId = ""
     private var spaceId = ""
+    private var spaceCreateId = ""
+
 
     @BeforeAll
     fun setup() = testApplication{
@@ -117,6 +118,10 @@ class SpacesRoutesTest {
         val userTokenDTO = json.decodeFromString<UserTokenDTO>(login.bodyAsText())
 
         client.delete("/spaces/$spaceId") {
+            header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
+        }
+
+        client.delete("/spaces/$spaceCreateId") {
             header(HttpHeaders.Authorization, "Bearer " + userTokenDTO.token)
         }
 
@@ -446,6 +451,9 @@ class SpacesRoutesTest {
             setBody(spaceCreateDTO)
         }
         val body = response.body<SpaceResponseDTO>()
+
+        spaceCreateId = body.uuid
+
         assertAll(
             { assertEquals(HttpStatusCode.Created, response.status) },
             { assertEquals(spaceCreateDTO.name, body.name) },

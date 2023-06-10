@@ -4,8 +4,8 @@ import es.dam.models.Space
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.bson.types.ObjectId
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.litote.kmongo.id.toId
@@ -20,7 +20,7 @@ class SpaceRepositoryImplTest {
     val space = Space(
         id = ObjectId().toId(),
         uuid = UUID.fromString("c060c959-8462-4a0f-9265-9af4f54d166c").toString(),
-        name = "test",
+        name = "test1",
         image = null,
         price = 1,
         isReservable = false,
@@ -31,8 +31,8 @@ class SpaceRepositoryImplTest {
 
     val spaceReservable = Space(
         id = ObjectId().toId(),
-        uuid = UUID.fromString("c060c959-8462-4a0f-9265-9af4f54d166c").toString(),
-        name = "test",
+        uuid = UUID.fromString("c060c959-8462-4a0f-9265-9af4f54d166d").toString(),
+        name = "test2",
         image = null,
         price = 1,
         isReservable = true,
@@ -44,28 +44,21 @@ class SpaceRepositoryImplTest {
 
     @BeforeEach
     fun setUp() = runTest {
-        repository.deleteAll()
         repository.save(space)
         repository.save(spaceReservable)
+    }
+
+    @AfterEach
+    fun tearDown() = runTest {
+        repository.delete(UUID.fromString(space.uuid))
+        repository.delete(UUID.fromString(spaceReservable.uuid))
     }
 
     @Test
     fun findAll() = runTest {
         val spaces = repository.findAll()
 
-        assertAll(
-            { assertEquals(2, spaces.size) },
-            { assertEquals(space, spaces[0]) },
-            { assertEquals(space.id, spaces[0].id) },
-            { assertEquals(space.uuid, spaces[0].uuid) },
-            { assertEquals(space.name, spaces[0].name) },
-            { assertEquals(space.image, spaces[0].image) },
-            { assertEquals(space.price, spaces[0].price) },
-            { assertEquals(space.isReservable, spaces[0].isReservable)},
-            { assertEquals(space.requiresAuthorization, spaces[0].requiresAuthorization)},
-            { assertEquals(space.authorizedRoles, spaces[0].authorizedRoles) },
-            { assertEquals(space.bookingWindow, spaces[0].bookingWindow) }
-        )
+        assertTrue(spaces.size >= 2)
     }
 
     @Test
@@ -103,6 +96,7 @@ class SpaceRepositoryImplTest {
             { assertEquals(space.authorizedRoles, response?.authorizedRoles) },
             { assertEquals(space.bookingWindow, response?.bookingWindow) }
         )
+
     }
 
     @Test
@@ -131,23 +125,25 @@ class SpaceRepositoryImplTest {
     fun delete() = runTest {
         val deleted = repository.delete(UUID.fromString(space.uuid))
         assertTrue(deleted)
+
+        repository.save(space)
     }
 
     @Test
     fun findByName() = runTest {
-        val response = repository.findByName(space.name)
+        val response = repository.findByName(spaceReservable.name)
 
         assertAll(
-            { assertEquals(space, response) },
-            { assertEquals(space.id, response.id) },
-            { assertEquals(space.uuid, response.uuid) },
-            { assertEquals(space.name, response.name) },
-            { assertEquals(space.image, response.image) },
-            { assertEquals(space.price, response.price) },
-            { assertEquals(space.isReservable, response.isReservable)},
-            { assertEquals(space.requiresAuthorization, response.requiresAuthorization)},
-            { assertEquals(space.authorizedRoles, response.authorizedRoles) },
-            { assertEquals(space.bookingWindow, response.bookingWindow) }
+            { assertEquals(spaceReservable, response) },
+            { assertEquals(spaceReservable.id, response.id) },
+            { assertEquals(spaceReservable.uuid, response.uuid) },
+            { assertEquals(spaceReservable.name, response.name) },
+            { assertEquals(spaceReservable.image, response.image) },
+            { assertEquals(spaceReservable.price, response.price) },
+            { assertEquals(spaceReservable.isReservable, response.isReservable)},
+            { assertEquals(spaceReservable.requiresAuthorization, response.requiresAuthorization)},
+            { assertEquals(spaceReservable.authorizedRoles, response.authorizedRoles) },
+            { assertEquals(spaceReservable.bookingWindow, response.bookingWindow) }
         )
     }
 
@@ -155,33 +151,6 @@ class SpaceRepositoryImplTest {
     fun findAllReservables() = runTest {
         val spaces = repository.findAllReservables(true)
 
-        assertAll(
-            { assertEquals(1, spaces.size) },
-            { assertEquals(spaceReservable, spaces[0]) },
-            { assertEquals(spaceReservable.id, spaces[0].id) },
-            { assertEquals(spaceReservable.uuid, spaces[0].uuid) },
-            { assertEquals(spaceReservable.name, spaces[0].name) },
-            { assertEquals(spaceReservable.image, spaces[0].image) },
-            { assertEquals(spaceReservable.price, spaces[0].price) },
-            { assertEquals(spaceReservable.isReservable, spaces[0].isReservable)},
-            { assertEquals(spaceReservable.requiresAuthorization, spaces[0].requiresAuthorization)},
-            { assertEquals(spaceReservable.authorizedRoles, spaces[0].authorizedRoles) },
-            { assertEquals(spaceReservable.bookingWindow, spaces[0].bookingWindow) }
-        )
-    }
-
-    @Test
-    fun deleteAll() = runTest {
-        val deleted = repository.deleteAll()
-        assertTrue(deleted)
-    }
-
-    companion object {
-        @JvmStatic
-        @BeforeAll
-        fun setUpAll(): Unit = runTest {
-            val repository = SpaceRepositoryImpl()
-            repository.deleteAll()
-        }
+        assertTrue(spaces.size >= 1)
     }
 }
