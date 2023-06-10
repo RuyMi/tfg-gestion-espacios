@@ -1084,7 +1084,7 @@ class UsersRoutesKtTest{
                 json()
             }
         }
-        val file = File("src/test/resources/test.jpeg")
+        val file = File("src/test/resources/test.png")
 
         val login = client.post("/users/login") {
             contentType(ContentType.Application.Json)

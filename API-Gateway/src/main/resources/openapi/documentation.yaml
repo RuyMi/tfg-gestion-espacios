@@ -1,10 +1,10 @@
 openapi: "3.0.3"
 info:
   title: "API_Gateway API"
-  description: "API_Gateway API"
+  description: "Api central que permite el acceso a los microservicios de reservas, salas y usuarios."
   version: "1.0.0"
 servers:
-- url: "https://API_Gateway"
+- url: "http://app.iesluisvives.org:1212"
 paths:
   /users:
     get:
@@ -318,18 +318,21 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "Usuario o contraseña incorrectos."
         "404":
           description: "Not Found"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Usuario o contraseña incorrectos."
         "400":
           description: "Bad Request"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Este usuario ha sido dado de baja."
         "500":
           description: "Internal Server Error"
           content:
@@ -343,7 +346,7 @@ paths:
                   value: "EL servidor no esta disponible en este momento."
   /users/me:
     get:
-      description: ""
+      description: "Devuelve la informacion del usuario logueado."
       responses:
         "200":
           description: "OK"
@@ -357,20 +360,23 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "Usuario no encontrado con el id: b816165e-197d-454f-97fc-d08a15648c8f"
         "400":
           description: "Bad Request"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Este usuario ha sido dado de baja."
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
     put:
-      description: ""
+      description: "Actualiza la informacion del usuario logueado."
       requestBody:
         content:
           '*/*':
@@ -390,21 +396,24 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "Usuario no encontrado con el id: b816165e-197d-454f-97fc-d08a15648c8f"
         "400":
           description: "Bad Request"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Este usuario ha sido dado de baja."
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
   /users/register:
     post:
-      description: ""
+      description: "Registra un nuevo usuario."
       requestBody:
         content:
           '*/*':
@@ -424,21 +433,17 @@ paths:
             '*/*':
               schema:
                 type: "string"
-        "404":
-          description: "Not Found"
-          content:
-            '*/*':
-              schema:
-                type: "string"
+                example: "El email introducido ya está en uso."
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
   /users/storage:
     post:
-      description: ""
+      description: "Almacena una foto de perfil."
       responses:
         "201":
           description: "Created"
@@ -446,33 +451,30 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/UserPhotoDTO"
-        "404":
-          description: "Not Found"
-          content:
-            '*/*':
-              schema:
-                type: "string"
         "400":
           description: "Bad Request"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Este tipo de archivo no está soportado."
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
   /users/storage/{uuid}:
     get:
-      description: ""
+      description: "Devuelve la foto de perfil del usuario con el id especificado."
       parameters:
       - name: "uuid"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "b816165e-197d-454f-97fc-d08a15648c8f"
       responses:
         "200":
           description: "OK <br> A file response"
@@ -487,21 +489,24 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "Archivo no encontrado con el id: b816165e-197d-454f-97fc-d08a15648c8f"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
         "401":
           description: "Unauthorized"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "No autorizado."
   /spaces:
     get:
-      description: ""
+      description: "Devuelve todos los espacios."
       responses:
         "200":
           description: "OK"
@@ -515,14 +520,16 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "No se han encontrado espacios."
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
     post:
-      description: ""
+      description: "Almacena un nuevo espacio."
       requestBody:
         content:
           '*/*':
@@ -536,33 +543,30 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/SpaceResponseDTO"
-        "404":
-          description: "Not Found"
-          content:
-            '*/*':
-              schema:
-                type: "string"
         "400":
           description: "Bad Request"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "EL valor de los campos no es válido."
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
   /spaces/{id}:
     delete:
-      description: ""
+      description: "Borra el espacio con el id especificado."
       parameters:
       - name: "id"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
       responses:
         "204":
           description: "No Content"
@@ -576,6 +580,7 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "Espacio no encontrado con el id: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
         "400":
           description: "Bad Request"
           content:
@@ -583,22 +588,26 @@ paths:
               schema:
                 type: "string"
               examples:
-                Example#1:
+                InvalidId:
                   value: "El id debe ser un id válido"
+                DataNotEmpty:
+                  value: "Se deben actualizar o eliminar las reservas asociadas a esta sala antes de continuar con la operación."
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
     get:
-      description: ""
+      description: "Devuelve el espacio con el id especificado."
       parameters:
       - name: "id"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
       responses:
         "200":
           description: "OK"
@@ -612,6 +621,7 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "Espacio no encontrado con el id: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
         "400":
           description: "Bad Request"
           content:
@@ -619,7 +629,7 @@ paths:
               schema:
                 type: "string"
               examples:
-                Example#1:
+                InvalidId:
                   value: "El id debe ser un UUID válido"
         "500":
           description: "Internal Server Error"
@@ -627,14 +637,16 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
     put:
-      description: ""
+      description: "Actualiza el espacio con el id especificado."
       parameters:
       - name: "id"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
       requestBody:
         content:
           '*/*':
@@ -654,6 +666,7 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "Espacio no encontrado con el id: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
         "400":
           description: "Bad Request"
           content:
@@ -661,7 +674,7 @@ paths:
               schema:
                 type: "string"
               examples:
-                Example#1:
+                InvalidId:
                   value: "El id debe ser un UUID válido"
         "500":
           description: "Internal Server Error"
@@ -669,15 +682,17 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
   /spaces/nombre/{name}:
     get:
-      description: ""
+      description: "Devuelve el espacio con el nombre especificado."
       parameters:
       - name: "name"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "Departamento de FOL"
       responses:
         "200":
           description: "OK"
@@ -691,18 +706,21 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "Espacio no encontrado con el nombre: Departamento de FOL"
         "400":
           description: "Bad Request"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "El nombre debe ser una cadena de caracteres"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
   /spaces/reservables/{isReservable}:
     get:
       description: ""
@@ -712,11 +730,7 @@ paths:
         required: true
         schema:
           type: "string"
-      - name: "isReservable"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
+          example: "true"
       responses:
         "400":
           description: "Bad Request"
@@ -725,7 +739,7 @@ paths:
               schema:
                 type: "string"
               examples:
-                Example#1:
+                InvalidBoolean:
                   value: "El parámetro isReservable debe ser un booleano"
         "200":
           description: "OK"
@@ -739,15 +753,17 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "No se han encontrado espacios con el parámetro isReservable: true"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
   /spaces/storage:
     post:
-      description: ""
+      description: "Guarda uan foto y devuelve el nombre de la foto guardada."
       responses:
         "201":
           description: "Created"
@@ -755,39 +771,37 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/SpacePhotoDTO"
-        "404":
-          description: "Not Found"
-          content:
-            '*/*':
-              schema:
-                type: "string"
         "400":
           description: "Bad Request"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Este tipo de archivo no está permitido"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
         "415":
           description: "Unsupported Media Type"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Este tipo de archivo no está permitido"
   /spaces/storage/{uuid}:
     get:
-      description: ""
+      description: "Devuelve la foto con el uuid especificado."
       parameters:
       - name: "uuid"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
       responses:
         "200":
           description: "OK <br> A file response"
@@ -802,21 +816,24 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "Fichero no encontrado con el uuid: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
         "400":
           description: "Bad Request"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "El uuid debe ser un UUID válido"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
   /bookings:
     get:
-      description: ""
+      description: "Devuelve todas las reservas."
       responses:
         "200":
           description: "OK"
@@ -830,20 +847,23 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "No se han encontrado reservas"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
         "401":
           description: "Unauthorized"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "No estas autorizado para realizar esta acción"
     post:
-      description: ""
+      description: "Guarda una reserva y devuelve la reserva guardada."
       requestBody:
         content:
           '*/*':
@@ -856,34 +876,38 @@ paths:
           content:
             '*/*':
               schema:
-                type: "object"
+                $ref: "#/components/schemas/BookingResponseDTO"
         "404":
           description: "Not Found"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "No se ha encontrado el espacio con el id: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
         "400":
           description: "Bad Request"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "El id del espacio debe ser un UUID válido"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
   /bookings/{id}:
     delete:
-      description: ""
+      description: "Elimina la reserva con el id especificado."
       parameters:
       - name: "id"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "51e1e0a2-2d25-4463-a0d6-d14c865d37d3"
       responses:
         "400":
           description: "Bad Request"
@@ -892,8 +916,8 @@ paths:
               schema:
                 type: "string"
               examples:
-                Example#1:
-                  value: ""
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
         "204":
           description: "No Content"
           content:
@@ -906,20 +930,23 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "No se ha encontrado la reserva con el id: 51e1e0a2-2d25-4463-a0d6-d14c865d37d3"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
     get:
-      description: ""
+      description: "Devuelve la reserva con el id especificado."
       parameters:
       - name: "id"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "51e1e0a2-2d25-4463-a0d6-d14c865d37d3"
       responses:
         "400":
           description: "Bad Request"
@@ -928,8 +955,8 @@ paths:
               schema:
                 type: "string"
               examples:
-                Example#1:
-                  value: ""
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
         "200":
           description: "OK"
           content:
@@ -942,26 +969,30 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "No estas autorizado para realizar esta acción"
         "404":
           description: "Not Found"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "No se ha encontrado la reserva con el id: 51e1e0a2-2d25-4463-a0d6-d14c865d37d3"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
     put:
-      description: ""
+      description: "Actualiza la reserva con el id especificado."
       parameters:
       - name: "id"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "51e1e0a2-2d25-4463-a0d6-d14c865d37d3"
       requestBody:
         content:
           '*/*':
@@ -976,8 +1007,8 @@ paths:
               schema:
                 type: "string"
               examples:
-                Example#1:
-                  value: ""
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
         "200":
           description: "OK"
           content:
@@ -990,21 +1021,24 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "No se ha encontrado la reserva con el id: 51e1e0a2-2d25-4463-a0d6-d14c865d37d3"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
   /bookings/space/{id}:
     get:
-      description: ""
+      description: "Devuelve todas las reservas de un espacio."
       parameters:
       - name: "id"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
       responses:
         "400":
           description: "Bad Request"
@@ -1013,8 +1047,8 @@ paths:
               schema:
                 type: "string"
               examples:
-                Example#1:
-                  value: ""
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
         "200":
           description: "OK"
           content:
@@ -1027,27 +1061,31 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "No estas autorizado para realizar esta acción"
         "404":
           description: "Not Found"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "No se ha encontrado el espacio con el id: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
   /bookings/status/{status}:
     get:
-      description: ""
+      description: "Devuelve todas las reservas con el estado especificado."
       parameters:
       - name: "status"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "PENDING"
       responses:
         "200":
           description: "OK"
@@ -1061,38 +1099,44 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "No se ha encontrado ninguna reserva con el estado: PENDING"
         "400":
           description: "Bad Request"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "El estado debe ser uno de los siguientes: PENDING, ACCEPTED, REJECTED"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
         "401":
           description: "Unauthorized"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "No estas autorizado para realizar esta acción"
   /bookings/time/{idSpace}/{date}:
     get:
-      description: ""
+      description: "Devuelve todas las reservas de un espacio en una fecha especificada."
       parameters:
       - name: "idSpace"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "c02bc82f-909d-407f-b2bd-02b00dadc3fb"
       - name: "date"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "2023-05-10"
       responses:
         "200":
           description: "OK"
@@ -1107,29 +1151,32 @@ paths:
               schema:
                 type: "string"
               examples:
-                Example#1:
-                  value: ""
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
         "404":
           description: "Not Found"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "No se ha encontrado el espacio con el id: c02bc82f-909d-407f-b2bd-02b00dadc3fb"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "Error interno del servidor"
   /bookings/user/{id}:
     get:
-      description: ""
+      description: "Devuelve todas las reservas de un usuario."
       parameters:
       - name: "id"
         in: "path"
         required: true
         schema:
           type: "string"
+          example: "fa5d82ed-fcb3-479a-97ca-334c1f46a2ff"
       responses:
         "400":
           description: "Bad Request"
@@ -1138,8 +1185,8 @@ paths:
               schema:
                 type: "string"
               examples:
-                Example#1:
-                  value: ""
+                InvalidID:
+                  value: "El id debe ser un UUID válido"
         "200":
           description: "OK"
           content:
@@ -1152,69 +1199,21 @@ paths:
             '*/*':
               schema:
                 type: "string"
+                example: "No estas autorizado para realizar esta acción"
         "404":
           description: "Not Found"
           content:
             '*/*':
               schema:
                 type: "string"
+                example: "No se ha encontrado el usuario con el id: fa5d82ed-fcb3-479a-97ca-334c1f46a2ff"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
-  /ws:
-    get:
-      description: ""
-      parameters:
-      - name: "Connection"
-        in: "header"
-        required: true
-        description: "Websocket Connection parameter"
-        schema:
-          type: "string"
-      - name: "Upgrade"
-        in: "header"
-        required: true
-        description: "Websocket Upgrade parameter"
-        schema:
-          type: "string"
-      - name: "Sec-WebSocket-Key"
-        in: "header"
-        required: true
-        description: "Websocket Sec-WebSocket-Key parameter"
-        schema:
-          type: "string"
-      responses:
-        "101":
-          description: "Switching Protocols"
-          headers:
-            Connection:
-              required: true
-              schema:
-                type: "string"
-            Upgrade:
-              required: true
-              schema:
-                type: "string"
-            Sec-WebSocket-Accept:
-              required: true
-              schema:
-                type: "string"
-  /:
-    get:
-      description: ""
-      responses:
-        "200":
-          description: "OK"
-          content:
-            text/plain:
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Hello World!"
+                example: "Error interno del servidor"
 components:
   schemas:
     UserResponseDTO:
