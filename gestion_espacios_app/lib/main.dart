@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
 
         // Public
-        '/login': (context) => LoginScreen(),
+        '/login': (context) => const LoginScreen(),
         '/user-register': (context) => const RegistroUsuarioScreen(),
         '/home': (context) => const MainScreen(),
         '/espacios': (context) => const EspaciosScreen(),
@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
         // '/editar-reserva': (context) => const EditarReservaScreen(),
 
         // Private
-        '/login-bo': (context) => BOLoginScreen(),
+        '/login-bo': (context) => const BOLoginScreen(),
         '/home-bo': (context) => const BOMainScreen(),
         '/espacios-bo': (context) => const EspaciosBOScreen(),
         '/reservas-bo': (context) => const ReservasBOScreen(),
