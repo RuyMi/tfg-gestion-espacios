@@ -9,6 +9,24 @@ import org.litote.kmongo.newId
 import java.time.LocalDateTime
 import java.util.*
 
+/**
+ * Modelo de reserva.
+ * @param id: Id de la reserva.
+ * @param uuid: UUID de la reserva.
+ * @param userId: UUID del usuario que ha realizado la reserva.
+ * @param userName: Nombre del usuario que ha realizado la reserva.
+ * @param spaceId: UUID del espacio reservado.
+ * @param spaceName: Nombre del espacio reservado.
+ * @param image: Imagen del espacio reservado.
+ * @param startTime: Fecha y hora de inicio de la reserva.
+ * @param endTime: Fecha y hora de fin de la reserva.
+ * @param observations: Observaciones de la reserva.
+ * @param status: Estado de la reserva.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 
 @Serializable
 data class Booking(

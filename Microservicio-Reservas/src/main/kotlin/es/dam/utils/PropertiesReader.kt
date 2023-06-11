@@ -4,6 +4,14 @@ import java.io.FileNotFoundException
 import java.util.*
 
 
+/**
+ * Clase que lee un fichero de propiedades.
+ * @param fileName Nombre del fichero.
+ *
+ * @autor Alejandro Sánchez Monzón
+ * @autor Rubén García-Redondo Marín
+ * @autor Mireya Sánchez Pinzón
+ */
 class PropertiesReader(private val fileName: String) {
     private val properties = Properties()
 
@@ -16,6 +24,11 @@ class PropertiesReader(private val fileName: String) {
         }
     }
 
+    /**
+     * Obtiene una propiedad del fichero.
+     * @param key Clave de la propiedad.
+     * @return Valor de la propiedad.
+     */
     fun getProperty(key: String): String {
         val value = properties.getProperty(key)
         if (value != null) {
