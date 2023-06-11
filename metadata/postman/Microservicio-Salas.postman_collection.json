@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "f37091af-c46e-480c-afee-ba3c0dcc4998",
+		"name": "Microservicio-Salas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25247269",
+		"_collection_link": "https://galactic-satellite-602844.postman.co/workspace/Team-Workspace~81889f7f-d105-40e2-82ba-f9f3bc8de9d3/collection/25247269-f37091af-c46e-480c-afee-ba3c0dcc4998?action=share&creator=25247269&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "FIND ALL",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/spaces",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"spaces"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND BY ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/spaces/{{spaceId}}",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"spaces",
+						"{{spaceId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Salon de actos\",\r\n    \"description\": \"Hola\",\r\n    \"image\": null,\r\n    \"price\": 2,\r\n    \"isReservable\": true,\r\n    \"requiresAuthorization\": false,\r\n    \"authorizedRoles\": [\r\n        \"USER\"\r\n    ],\r\n    \"bookingWindow\": \"10\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/spaces",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"spaces"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"name\": \"Prueba7\",\r\n            \"image\": null,\r\n            \"price\": 20,\r\n            \"isReservable\": true,\r\n            \"requiresAuthorization\": false,\r\n            \"authorizedRoles\": [\r\n                \"USER\"\r\n            ],\r\n            \"bookingWindow\": \"22\"\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/spaces/{{spaceId}}",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"spaces",
+						"{{spaceId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/spaces/{{spaceId}}",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"spaces",
+						"{{spaceId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET STORAGE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/spaces/storage/03d1e525-9560-4d3f-9957-f1eaa93c9b60.png",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"spaces",
+						"storage",
+						"03d1e525-9560-4d3f-9957-f1eaa93c9b60.png"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Storage",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"contentType": "image/png",
+							"type": "file",
+							"src": "/C:/Users/Rubén/Downloads/placeholder.jpeg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api}}/spaces/storage",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"spaces",
+						"storage"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

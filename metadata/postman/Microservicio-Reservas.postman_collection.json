@@ -1,0 +1,293 @@
+{
+	"info": {
+		"_postman_id": "5bbaa19a-6ec2-48d5-adc6-16d4e48bde3c",
+		"name": "Microservicio-Reservas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25247269",
+		"_collection_link": "https://galactic-satellite-602844.postman.co/workspace/Team-Workspace~81889f7f-d105-40e2-82ba-f9f3bc8de9d3/collection/25247269-5bbaa19a-6ec2-48d5-adc6-16d4e48bde3c?action=share&creator=25247269&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "FIND ALL",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/bookings",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND BY ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/bookings/{{bookingId}}",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"bookings",
+						"{{bookingId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND BY ID SPACE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/bookings/space/{{spaceId}}",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"bookings",
+						"space",
+						"{{spaceId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND BY ID USER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/bookings/user/{{userId}}",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"bookings",
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND BY STATUS",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/bookings/status/PENDING",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"bookings",
+						"status",
+						"PENDING"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND BY TIME",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/bookings/time/{{spaceId}}/2023-05-19",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"bookings",
+						"time",
+						"{{spaceId}}",
+						"2023-05-19"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uuid\": null,\r\n    \"userId\": \"830c8286-21d6-42cc-8262-6a328f8cef1b\",\r\n    \"spaceId\": \"343a640a-927b-476c-9249-cc328ca3b6ef\",\r\n    \"startTime\": \"2023-05-26T13:25:00\",\r\n    \"endTime\": \"2023-05-26T14:20:00\",\r\n    \"userName\": \"Mireya\",\r\n    \"spaceName\": \"Ordenadores\",\r\n    \"observations\": \"fdfdf\",\r\n    \"status\": \"PENDING\",\r\n    \"image\": \"03d1e525-9560-4d3f-9957-f1eaa93c9b60\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/bookings",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"e7cf770a-9325-4dff-b4be-1b36c0ce651a\",\r\n    \"userName\": \"manolo\",\r\n    \"spaceId\": \"c060c959-8462-4a0f-9265-9af4f54d166c\",\r\n    \"spaceName\" : \"Informatica\",\r\n    \"startTime\": \"2023-05-19T14:00:00.000\",\r\n    \"endTime\": \"2023-05-19T15:00:00.00\",\r\n    \"phone\": \"54354\",\r\n    \"status\": \"PENDING\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/bookings/{{bookingId}}",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"bookings",
+						"{{bookingId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"4484ea54-18aa-48a7-b5ed-a46bdbf45a23\",\r\n    \"spaceId\": \"b4443487-b2cc-48b6-af53-0820be683b23\",\r\n    \"startTime\": \"2023-05-10T22:23:23.542\",\r\n    \"endTime\": \"2023-05-10T22:23:23.542\",\r\n    \"phone\": \"123456788\",\r\n    \"status\": \"PENDING\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/bookings/{{bookingId}}",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"bookings",
+						"{{bookingId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
