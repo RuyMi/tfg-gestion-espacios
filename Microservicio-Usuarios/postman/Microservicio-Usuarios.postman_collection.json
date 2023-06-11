@@ -1,0 +1,569 @@
+{
+	"info": {
+		"_postman_id": "29b71a52-661d-436e-bb2a-d9330f76b6fe",
+		"name": "Microservicio-Usuarios",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25247215"
+	},
+	"item": [
+		{
+			"name": "REGISTER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mireya\",\r\n    \"username\": \"mireya\",\r\n    \"email\": \"mireya@correo.com\",\r\n    \"password\": \"mireya1234\",\r\n    \"avatar\": \"\",\r\n    \"userRole\": [\r\n        \"ADMINISTRATOR\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxYWNhNzYwNC0wMzUwLTRjODUtOWI3NC0wMjBmNzE4N2E4ZjciLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgyNDU1MjA2LCJ1c2VybmFtZSI6Im1pcmV5YSJ9.96-zxwVC4D6KF-DDwakYQjUST9_rYj-FL-3vjYqy288z5jyV1N3K3tS_lCqznhDomErEs25kz6cJ7uXQUCpKqQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"mireya\",\r\n    \"password\": \"mireya1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND ALL",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4MDY1MjRlNi1lYzEwLTQ4YjMtOWU5ZC0wNGQ3N2RlZDE0MGQiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgyNTM3MTY5LCJ1c2VybmFtZSI6Im1pcmV5YSJ9.jA9VVleVjbvKqYqD41yfp_6ljunLL_rPB60J934BRbCggCFOhyMNg8WXVbUVuh1oOR_v2tIdyyNNGUtvaQnHMA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"mireya\",\r\n    \"password\": \"mireya1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND BY ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxYWNhNzYwNC0wMzUwLTRjODUtOWI3NC0wMjBmNzE4N2E4ZjciLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgyNDU1NTcyLCJ1c2VybmFtZSI6Im1pcmV5YSJ9.3aIzrECgSQQ-42SHiUIJk0nvGIFYre6kNYqGKxJlsKzVZdicH6is5Unl04v4yKuMEyihKj1p8BElCaJp0Ik05w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"mireya\",\r\n    \"password\": \"mireya1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/64482c9670f1fb59d1b489fe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"64482c9670f1fb59d1b489fe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 FIND BY ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxYWNhNzYwNC0wMzUwLTRjODUtOWI3NC0wMjBmNzE4N2E4ZjciLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgyNDU1NTcyLCJ1c2VybmFtZSI6Im1pcmV5YSJ9.3aIzrECgSQQ-42SHiUIJk0nvGIFYre6kNYqGKxJlsKzVZdicH6is5Unl04v4yKuMEyihKj1p8BElCaJp0Ik05w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"mireya\",\r\n    \"password\": \"mireya1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/64482f5e2d0bcd8b0242f8fa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"64482f5e2d0bcd8b0242f8fa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 FIND ALL",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxZjczZDI3NC00NzIwLTRiMTMtYWUyYS05ZDY5NDk1NDk3NjYiLCJpc3MiOiJCaXF1ZXNVc3VhcmlvcyIsImV4cCI6MTY3Nzk1NjUyMSwicm9sIjoiW0NMSUVOVF0iLCJ1c2VybmFtZSI6ImpvcmdlIn0.LZKSxI9N0hxHLgD9jK3OAeIdLgHVeExJWt-OCtT-xpEOB1U4Ms-ShLEfLGjQUUkKQ3VaK4mhdt-s6hgoC7ETpA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"jorge\",\r\n    \"password\": \"jorge1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 FIND BY ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxZjczZDI3NC00NzIwLTRiMTMtYWUyYS05ZDY5NDk1NDk3NjYiLCJpc3MiOiJCaXF1ZXNVc3VhcmlvcyIsImV4cCI6MTY3Nzk1NjUyMSwicm9sIjoiW0NMSUVOVF0iLCJ1c2VybmFtZSI6ImpvcmdlIn0.LZKSxI9N0hxHLgD9jK3OAeIdLgHVeExJWt-OCtT-xpEOB1U4Ms-ShLEfLGjQUUkKQ3VaK4mhdt-s6hgoC7ETpA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"jorge\",\r\n    \"password\": \"jorge1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE ME",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxYWNhNzYwNC0wMzUwLTRjODUtOWI3NC0wMjBmNzE4N2E4ZjciLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgyNDU1NTcyLCJ1c2VybmFtZSI6Im1pcmV5YSJ9.3aIzrECgSQQ-42SHiUIJk0nvGIFYre6kNYqGKxJlsKzVZdicH6is5Unl04v4yKuMEyihKj1p8BElCaJp0Ik05w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mireya\",\r\n    \"username\": \"mireya\",\r\n    \"email\": \"mireya@correo.com\",\r\n    \"password\": \"mireya1234\",\r\n    \"avatar\": \"UPDATED\",\r\n    \"userRole\": [\r\n        \"ADMINISTRATOR\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/me",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE ANY USER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4MDY1MjRlNi1lYzEwLTQ4YjMtOWU5ZC0wNGQ3N2RlZDE0MGQiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgyNTM3MTY5LCJ1c2VybmFtZSI6Im1pcmV5YSJ9.jA9VVleVjbvKqYqD41yfp_6ljunLL_rPB60J934BRbCggCFOhyMNg8WXVbUVuh1oOR_v2tIdyyNNGUtvaQnHMA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mireya\",\r\n    \"username\": \"mireya\",\r\n    \"email\": \"mireya@correo.com\",\r\n    \"password\": \"mireya1234\",\r\n    \"avatar\": \"UPDATED\",\r\n    \"userRole\": [\r\n        \"ADMINISTRATOR\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/644968de4eaf6040d7482f69",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"644968de4eaf6040d7482f69"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 UPDATE ANY USER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mireya\",\r\n    \"username\": \"mireya\",\r\n    \"email\": \"mireya@correo.com\",\r\n    \"password\": \"mireya1234\",\r\n    \"avatar\": \"\",\r\n    \"userRole\": [\r\n        \"ADMINISTRATOR\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/644968de4eaf6040d7482f69",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"644968de4eaf6040d7482f69"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 UPDATE ANY USER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4MDY1MjRlNi1lYzEwLTQ4YjMtOWU5ZC0wNGQ3N2RlZDE0MGQiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgyNTM2MTc1LCJ1c2VybmFtZSI6Im1pcmV5YSJ9.n4T7zTcSDTY6F8iCu-sISB0Tt46y1xK5PzbKdHnVxymwh8qSoNChV4Qy1IoWOXu3cu4AUyu0fG05gUgMhH_NdQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mireya\",\r\n    \"username\": \"mireya\",\r\n    \"email\": \"mireya@correo.com\",\r\n    \"password\": \"mireya1234\",\r\n    \"avatar\": \"UPDATED\",\r\n    \"userRole\": [\r\n        \"ADMINISTRATOR\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/64482c9670f1fb59d1b489fe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"64482c9670f1fb59d1b489fe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxYWNhNzYwNC0wMzUwLTRjODUtOWI3NC0wMjBmNzE4N2E4ZjciLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgyNDU1NTcyLCJ1c2VybmFtZSI6Im1pcmV5YSJ9.3aIzrECgSQQ-42SHiUIJk0nvGIFYre6kNYqGKxJlsKzVZdicH6is5Unl04v4yKuMEyihKj1p8BElCaJp0Ik05w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rol\": [\r\n        \"CLIENT\"\r\n    ],\r\n    \"email\": \"jorge@correo.com\",\r\n    \"image\": \"https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png\",\r\n    \"username\": \"jorge\",\r\n    \"password\": \"jorge1234\",\r\n    \"address\": \"Leganés\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/64482c9670f1fb59d1b489fe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"64482c9670f1fb59d1b489fe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 DELETE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlNjc2YmQwYy03MTczLTRkNGYtYjI1NC05NmYwMTYyYzQ1NDgiLCJpc3MiOiJCaXF1ZXNVc3VhcmlvcyIsImV4cCI6MTY3Nzk1NjI0OCwicm9sIjoiW1NVUEVSQURNSU4sICBBRE1JTl0iLCJ1c2VybmFtZSI6Im1pcmV5YSJ9.SFFxzfPowVBeMD0ajzyzTiQXUx1RU1MWXno72_4uA5tJORGoI2Oce0Ez3dDRpXyy4V5D2oIkl4-JKPPECXc0Sg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"image\": \"https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png\",\r\n    \"rol\": [\r\n        \"SUPERADMIN\",\r\n        \"ADMIN\"\r\n    ],\r\n    \"email\": \"mireya@correo.com\",\r\n    \"username\": \"mireya\",\r\n    \"password\": \"mireya1234\",\r\n    \"address\": \"Ugena\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 DELETE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxYWNhNzYwNC0wMzUwLTRjODUtOWI3NC0wMjBmNzE4N2E4ZjciLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgyNDU1NTcyLCJ1c2VybmFtZSI6Im1pcmV5YSJ9.3aIzrECgSQQ-42SHiUIJk0nvGIFYre6kNYqGKxJlsKzVZdicH6is5Unl04v4yKuMEyihKj1p8BElCaJp0Ik05e",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rol\": [\r\n        \"CLIENT\"\r\n    ],\r\n    \"email\": \"jorge@correo.com\",\r\n    \"image\": \"https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png\",\r\n    \"username\": \"jorge\",\r\n    \"password\": \"jorge1234\",\r\n    \"address\": \"Leganés\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/64482c9670f1fb59d1b489fe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"64482c9670f1fb59d1b489fe"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

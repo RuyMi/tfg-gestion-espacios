@@ -1,0 +1,59 @@
+version: "3.9"
+services:
+  mongodb:
+    image: mongo:4.2.18
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGODB_DATABASE: reservas-luisvives
+      MONGODB_USER: admin
+      MONGODB_PASSWORD: admin
+      MONGODB_HOST_NAME: localhost
+      MONGODB_PORT: 27017
+  api-users:
+    build:
+      context: ../../Microservicio-Usuarios
+      dockerfile: ./docker/Dockerfile
+    image: ruymi/api-users:latest
+    container_name: api-users
+    depends_on:
+          - mongodb
+  api-spaces:
+    build:
+      context: ../../Microservicio-Salas
+      dockerfile: ./docker/Dockerfile
+    image: ruymi/api-spaces:latest
+    container_name: api-spaces
+    depends_on:
+      - mongodb
+  api-bookings:
+    build:
+      context: ../../Microservicio-Reservas
+      dockerfile: ./docker/Dockerfile
+    image: ruymi/api-bookings:latest
+    container_name: api-bookings
+    depends_on:
+      - mongodb
+  gateway:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    image: ruymi/gateway:latest
+    container_name: gateway
+    ports:
+      - "1212:1212"
+    depends_on:
+      - api-spaces
+      - api-users
+      - api-bookings
+  web:
+    build:
+      context: ../../gestion_espacios_app/
+      dockerfile: ./docker/Dockerfile
+    image: ruymi/web:latest
+    container_name: web
+    ports:
+      - "2121:80"
+    depends_on:
+      - gateway

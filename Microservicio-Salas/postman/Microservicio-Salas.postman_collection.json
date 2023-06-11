@@ -1,0 +1,289 @@
+{
+	"info": {
+		"_postman_id": "ea839227-2f5d-4d5e-90c1-acc3613d3d60",
+		"name": "Microservicio-Salas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25247269"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzZmE4OTZmYi1kM2M2LTQxNDYtYTc0Zi05M2JkNzlhNTkwNTkiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgzNTczMzQzLCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.F153K_6MbgIaWRAQ3YdRmR2JLt6o864BtT1Rvt5l8eJkPs3JXHl423sxVz-x3k39JxKs2uzTEs0DmlyEE-fxMQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/spaces",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"spaces"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND ALL",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzZmE4OTZmYi1kM2M2LTQxNDYtYTc0Zi05M2JkNzlhNTkwNTkiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgzNTczMzQzLCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.F153K_6MbgIaWRAQ3YdRmR2JLt6o864BtT1Rvt5l8eJkPs3JXHl423sxVz-x3k39JxKs2uzTEs0DmlyEE-fxMQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/spaces",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"spaces"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND BY ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzZmE4OTZmYi1kM2M2LTQxNDYtYTc0Zi05M2JkNzlhNTkwNTkiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgzNTczMzQzLCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.F153K_6MbgIaWRAQ3YdRmR2JLt6o864BtT1Rvt5l8eJkPs3JXHl423sxVz-x3k39JxKs2uzTEs0DmlyEE-fxMQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/spaces/081092a3-ce2e-43f1-91e2-b67da584e1fe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"spaces",
+						"081092a3-ce2e-43f1-91e2-b67da584e1fe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzZmE4OTZmYi1kM2M2LTQxNDYtYTc0Zi05M2JkNzlhNTkwNTkiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgzNTczMzQzLCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.F153K_6MbgIaWRAQ3YdRmR2JLt6o864BtT1Rvt5l8eJkPs3JXHl423sxVz-x3k39JxKs2uzTEs0DmlyEE-fxMQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"name\": \"Prueba7\",\r\n            \"image\": null,\r\n            \"price\": 2,\r\n            \"isReservable\": true,\r\n            \"requiresAuthorization\": false,\r\n            \"authorizedRoles\": [\r\n                \"USER\"\r\n            ],\r\n            \"bookingWindow\": \"22\"\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/spaces",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"spaces"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzZmE4OTZmYi1kM2M2LTQxNDYtYTc0Zi05M2JkNzlhNTkwNTkiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgzNTczMzQzLCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.F153K_6MbgIaWRAQ3YdRmR2JLt6o864BtT1Rvt5l8eJkPs3JXHl423sxVz-x3k39JxKs2uzTEs0DmlyEE-fxMQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"name\": \"Prueba7\",\r\n            \"image\": null,\r\n            \"price\": 20,\r\n            \"isReservable\": true,\r\n            \"requiresAuthorization\": false,\r\n            \"authorizedRoles\": [\r\n                \"USER\"\r\n            ],\r\n            \"bookingWindow\": \"22\"\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/spaces/32a4e706-5958-40fa-aeaf-c31c912cfe47",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"spaces",
+						"32a4e706-5958-40fa-aeaf-c31c912cfe47"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzZmE4OTZmYi1kM2M2LTQxNDYtYTc0Zi05M2JkNzlhNTkwNTkiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgzNTczMzQzLCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.F153K_6MbgIaWRAQ3YdRmR2JLt6o864BtT1Rvt5l8eJkPs3JXHl423sxVz-x3k39JxKs2uzTEs0DmlyEE-fxMQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/spaces/32a4e706-5958-40fa-aeaf-c31c912cfe47",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"spaces",
+						"32a4e706-5958-40fa-aeaf-c31c912cfe47"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE IMAGE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzZmE4OTZmYi1kM2M2LTQxNDYtYTc0Zi05M2JkNzlhNTkwNTkiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgzNTczMzQzLCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.F153K_6MbgIaWRAQ3YdRmR2JLt6o864BtT1Rvt5l8eJkPs3JXHl423sxVz-x3k39JxKs2uzTEs0DmlyEE-fxMQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "/C:/Users/Rubén/Pictures/Screenshots/Captura de pantalla 2023-05-14 180030.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8282/spaces/storage",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8282",
+					"path": [
+						"spaces",
+						"storage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET IMAGE",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzZmE4OTZmYi1kM2M2LTQxNDYtYTc0Zi05M2JkNzlhNTkwNTkiLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgzNTczMzQzLCJ1c2VybmFtZSI6Im1pcmV5YTAifQ.F153K_6MbgIaWRAQ3YdRmR2JLt6o864BtT1Rvt5l8eJkPs3JXHl423sxVz-x3k39JxKs2uzTEs0DmlyEE-fxMQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "/C:/Users/Rubén/Pictures/Screenshots/Captura de pantalla 2023-05-14 180030.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8282/spaces/storage/03d1e525-9560-4d3f-9957-f1eaa93c9b60.png",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8282",
+					"path": [
+						"spaces",
+						"storage",
+						"03d1e525-9560-4d3f-9957-f1eaa93c9b60.png"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
