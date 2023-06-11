@@ -1,5 +1,6 @@
 package es.dam.routes
 
+import es.dam.dto.BookingUpdateDTO
 import es.dam.dto.SpaceCreateDTO
 import es.dam.dto.SpacePhotoDTO
 import es.dam.dto.SpaceUpdateDTO
@@ -244,6 +245,20 @@ fun Application.spacesRoutes() {
                             spacesRepository.update("Bearer $token", id!!, space)
                         }
 
+                        bookingsRepository.findBySpace("Bearer $token", id!!).data.forEach{
+                            val bookingUpdate = BookingUpdateDTO(
+                                it.userId,
+                                it.userName,
+                                it.spaceId,
+                                space.name,
+                                it.startTime,
+                                it.endTime,
+                                space.image!!,
+                                it.observations,
+                                it.status,
+                            )
+                            bookingsRepository.update("Bearer $token", it.uuid, bookingUpdate)
+                        }
                         if (res.isSuccess) {
                             call.respond(HttpStatusCode.OK, res.getOrNull()!!)
                         } else {
