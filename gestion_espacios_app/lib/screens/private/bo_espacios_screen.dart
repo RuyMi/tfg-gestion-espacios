@@ -1,3 +1,9 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gestion_espacios_app/providers/espacios_provider.dart';
@@ -9,6 +15,7 @@ import '../../models/colors.dart';
 import '../../models/espacio.dart';
 import 'bo_add_espacio_dialog.dart';
 
+/// Pantalla que muestra los espacios de la aplicación.
 class EspaciosBOScreen extends StatefulWidget {
   const EspaciosBOScreen({Key? key}) : super(key: key);
 
@@ -17,9 +24,16 @@ class EspaciosBOScreen extends StatefulWidget {
   _EspaciosBOScreen createState() => _EspaciosBOScreen();
 }
 
+/// Clase que muestra los espacios de la aplicación.
 class _EspaciosBOScreen extends State<EspaciosBOScreen> {
+  /// Controlador del campo de búsqueda.
   final TextEditingController _searchController = TextEditingController();
+
+  /// Lista de espacios filtrados.
   List<Espacio> espaciosFiltrados = [];
+
+  /// Variable que indica si se muestra el spinner de carga.
+  bool _showSpinner = true;
 
   @override
   void initState() {
@@ -30,6 +44,12 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
     espaciosProvider.fetchEspacios().then((value) => setState(() {
           espaciosFiltrados = espaciosProvider.espacios;
         }));
+
+    Timer(const Duration(seconds: 3), () {
+      setState(() {
+        _showSpinner = false;
+      });
+    });
   }
 
   @override
@@ -38,6 +58,7 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
     _searchController.dispose();
   }
 
+  /// Función que filtra los espacios por nombre.
   Future<List<Espacio>> filterEspacios(String query) async {
     final espaciosProvider =
         Provider.of<EspaciosProvider>(context, listen: false);
@@ -51,6 +72,7 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
     return Column(
@@ -128,10 +150,46 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
         ),
         if (espaciosFiltrados.isEmpty)
           Center(
-            child: CircularProgressIndicator.adaptive(
-              valueColor:
-                  AlwaysStoppedAnimation<Color>(theme.colorScheme.secondary),
-            ),
+            child: _showSpinner
+                ? CircularProgressIndicator.adaptive(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        theme.colorScheme.secondary),
+                  )
+                : Center(
+                    child: Container(
+                      margin: const EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.hide_source_rounded,
+                            size: 100,
+                            color: theme.colorScheme.onBackground,
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.background,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: theme.colorScheme.onBackground,
+                                width: 2,
+                              ),
+                            ),
+                            child: const Text(
+                              'No existen espacios disponibles',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'KoHo',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
           ),
         if (espaciosFiltrados.isNotEmpty)
           Expanded(
@@ -187,7 +245,7 @@ class _EspaciosBOScreen extends State<EspaciosBOScreen> {
                                     color: theme.colorScheme.onPrimary,
                                   ),
                                 ),
-                                Text(espacio.description,
+                                Text(espacio.description ?? '',
                                     textAlign: TextAlign.center,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(

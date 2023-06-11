@@ -8,6 +8,13 @@ import io.ktor.server.application.*
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 
+/**
+ * Configuración de Koin para la inyección de dependencias del microservicio.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 fun Application.configureKoin() {
     install(Koin) {
         modules(

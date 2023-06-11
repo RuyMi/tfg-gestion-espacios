@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/reserva.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
@@ -9,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+/// Lista de horas disponibles y ocupadas.
 final List<Map<String, dynamic>> horas = [
   {'hora': '08:25 - 09:20', 'ocupada': false},
   {'hora': '09:20 - 10:15', 'ocupada': false},
@@ -20,18 +25,22 @@ final List<Map<String, dynamic>> horas = [
   {'hora': '14:20 - 15:15', 'ocupada': false},
 ];
 
+/// Función que devuelve la hora de inicio de una reserva.
 String startTimeFromLocalDateTime(String localDateTimeString) {
   return '${localDateTimeString.split('T')[1].split(':')[0]}:${localDateTimeString.split('T')[1].split(':')[1]}';
 }
 
+/// Función que devuelve la hora de fin de una reserva.
 String endTimeFromLocalDateTime(String localDateTimeString) {
   return '${localDateTimeString.split('T')[1].split(':')[0]}:${localDateTimeString.split('T')[1].split(':')[1]}';
 }
 
+/// Función que devuelve la fecha de una reserva.
 String dateFromLocalDateTime(String localDateTimeString) {
   return '${localDateTimeString.split('T')[0].split('-')[2]}/${localDateTimeString.split('T')[0].split('-')[1]}/${localDateTimeString.split('T')[0].split('-')[0].replaceAll('-', '/')}';
 }
 
+/// Clase que representa la pantalla de edición de una reserva.
 class EditarReservaScreen extends StatefulWidget {
   final Reserva reserva;
 
@@ -43,12 +52,18 @@ class EditarReservaScreen extends StatefulWidget {
   _ReservaSala createState() => _ReservaSala();
 }
 
-// ignore: must_be_immutable
+/// Clase privada que representa la pantalla de edición de una reserva.
 class _ReservaSala extends State<EditarReservaScreen> {
+  /// Variable que almacena el día seleccionado en el calendario.
   DateTime? selectedDay;
+
+  /// Variable que almacena la hora seleccionada en el calendario.
   String? selectedHour;
+
+  /// Controlador del scroll.
   final ScrollController _scrollController = ScrollController();
 
+  /// Controlador del campo de texto de las observaciones.
   late TextEditingController observationsController;
 
   @override
@@ -64,12 +79,14 @@ class _ReservaSala extends State<EditarReservaScreen> {
     super.dispose();
   }
 
+  /// Función que convierte una fecha en formato localDateTime a un String.
   String convertirHoraLocalDateTime(String localDateTime) {
     DateTime horaDateTime = DateTime.parse(localDateTime);
     String horaInicio = DateFormat('HH:mm').format(horaDateTime);
     return horaInicio;
   }
 
+  /// Función que actualiza las horas ocupadas de la sala.
   void actualizarHorasOcupadas(List<String> horasOcupadas) {
     setState(() {
       List<String> horasOcupadasConvertidas = horasOcupadas
@@ -89,9 +106,16 @@ class _ReservaSala extends State<EditarReservaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
+
+    /// Se obtiene el provider de reservas.
     final reservasProvider = Provider.of<ReservasProvider>(context);
+
+    /// Se obtiene la reserva.
     final Reserva reserva = widget.reserva;
+
+    /// Se obttienen diferentes datos de la reserva.
     String spaceName = reserva.spaceName;
     String userName = reserva.userName;
     String observations = reserva.observations ?? '';
@@ -125,7 +149,8 @@ class _ReservaSala extends State<EditarReservaScreen> {
                   fontWeight: FontWeight.bold,
                   fontFamily: 'KoHo',
                 ),
-                overflow: TextOverflow.ellipsis,              ),
+                overflow: TextOverflow.ellipsis,
+              ),
             ],
           ),
           leading: IconButton(

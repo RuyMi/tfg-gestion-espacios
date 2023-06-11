@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
 import 'package:gestion_espacios_app/models/reserva.dart';
@@ -10,9 +14,15 @@ import 'package:provider/provider.dart';
 
 import '../models/usuario.dart';
 
+/// Widget que muestra un alert dialog para confirmar la eliminación de un elemento.
 class MyDeleteAlert extends StatelessWidget {
+  /// El título del alert dialog.
   final String title;
+
+  /// La ruta a la que se redirige al eliminar el elemento.
   final String ruta;
+
+  /// El elemento a eliminar.
   final dynamic elemento;
 
   const MyDeleteAlert({
@@ -24,6 +34,7 @@ class MyDeleteAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtienen los providers necesarios.
     var theme = Theme.of(context);
     final espaciosProvider =
         Provider.of<EspaciosProvider>(context, listen: false);

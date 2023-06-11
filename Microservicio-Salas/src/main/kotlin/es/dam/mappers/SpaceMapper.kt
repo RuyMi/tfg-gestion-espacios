@@ -6,6 +6,13 @@ import es.dam.dto.SpaceUpdateDTO
 import es.dam.models.Space
 import org.litote.kmongo.toId
 
+/**
+ * Mappers de la clase Space. Utilizados para convertir de Space a SpaceDTO y viceversa.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 fun Space.toSpaceDto() = SpaceDTO(
     id = this.id.toString(),
     uuid = this.uuid,

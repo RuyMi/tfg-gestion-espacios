@@ -1,8 +1,13 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/screens/private/bo_login_screen.dart';
 import 'package:gestion_espacios_app/screens/public/login_screen.dart';
 
+/// Clase que muestra la pantalla de carga de la aplicación.
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -13,6 +18,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
+  /// Controlador de la animación.
   late AnimationController _controller;
 
   @override
@@ -26,14 +32,18 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
+    /// Se añade un listener al controlador de la animación para que cuando
+    /// esta termine se redirija a la pantalla de login.
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         if (kIsWeb) {
+          // Si se está ejecutando la aplicación en web se redirige a la
+          // pantalla de login de backoffice.
           Navigator.pushReplacement(
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation1, animation2) =>
-                  BOLoginScreen(),
+                  const BOLoginScreen(),
               transitionDuration: const Duration(milliseconds: 750),
               transitionsBuilder: (context, animation1, animation2, child) {
                 return FadeTransition(
@@ -49,11 +59,13 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           );
         } else {
+          // Si se está ejecutando la aplicación en un dispositivo móvil se
+          // redirige a la pantalla de login.
           Navigator.pushReplacement(
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation1, animation2) =>
-                  LoginScreen(),
+                  const LoginScreen(),
               transitionDuration: const Duration(milliseconds: 750),
               transitionsBuilder: (context, animation1, animation2, child) {
                 return FadeTransition(

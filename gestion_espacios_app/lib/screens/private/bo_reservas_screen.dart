@@ -1,3 +1,9 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gestion_espacios_app/models/reserva.dart';
@@ -11,6 +17,7 @@ import '../../models/colors.dart';
 import '../../providers/auth_provider.dart';
 import 'bo_add_reserva_dialog.dart';
 
+/// Clase que representa la pantalla de reservas del backoffice.
 class ReservasBOScreen extends StatefulWidget {
   const ReservasBOScreen({Key? key}) : super(key: key);
 
@@ -19,10 +26,16 @@ class ReservasBOScreen extends StatefulWidget {
   _ReservasBOScreen createState() => _ReservasBOScreen();
 }
 
+/// Clase que muestra la pantalla de reservas del backoffice.
 class _ReservasBOScreen extends State<ReservasBOScreen> {
+  /// El controlador del campo de búsqueda.
   final TextEditingController _searchController = TextEditingController();
+
+  /// La lista de reservas filtradas.
   List<Reserva> reservasFiltradas = [];
-  bool _sortBySpaces = true;
+
+  /// Variable que indica si se muestra el spinner.
+  bool _showSpinner = true;
 
   @override
   void initState() {
@@ -33,6 +46,12 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
     reservasProvider.fetchReservas().then((value) => setState(() {
           reservasFiltradas = reservasProvider.reservas;
         }));
+
+    Timer(const Duration(seconds: 3), () {
+      setState(() {
+        _showSpinner = false;
+      });
+    });
   }
 
   @override
@@ -41,13 +60,7 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
     _searchController.dispose();
   }
 
-  void _handleSortBy(bool sortByUsers) {
-    setState(() {
-      if (sortByUsers) {
-      } else {}
-    });
-  }
-
+  /// Método que filtra las reservas por el nombre del espacio.
   Future<List<Reserva>> filterReservas(String query) async {
     final reservasProvider =
         Provider.of<ReservasProvider>(context, listen: false);
@@ -61,9 +74,13 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
+    /// El proveedor de autenticación.
     final authProvider = Provider.of<AuthProvider>(context);
+
+    /// El usuario actual.
     final Usuario usuario = authProvider.usuario;
 
     return Column(
@@ -106,68 +123,77 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
                 ),
               ),
               const SizedBox(width: 20),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.person_rounded,
-                          color: theme.colorScheme.onBackground),
-                      Switch(
-                        focusColor: theme.colorScheme.secondary,
-                        activeColor: theme.colorScheme.secondary,
-                        inactiveTrackColor:
-                            theme.colorScheme.onBackground.withOpacity(0.2),
-                        inactiveThumbColor: theme.colorScheme.onBackground,
-                        value: _sortBySpaces,
-                        onChanged: (value) {
-                          setState(() {
-                            _sortBySpaces = value;
-                            _handleSortBy(_sortBySpaces);
-                          });
-                        },
-                      ),
-                      Icon(Icons.calendar_today,
-                          color: theme.colorScheme.secondary),
-                    ],
+              ElevatedButton.icon(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NuevaReservaBODialog(usuario: usuario);
+                      });
+                },
+                icon: Icon(Icons.add_rounded,
+                    color: theme.colorScheme.onSecondary),
+                label: Text(
+                  'Nuevo',
+                  style: TextStyle(
+                    color: theme.colorScheme.onSecondary,
+                    overflow: TextOverflow.ellipsis,
+                    fontFamily: 'KoHo',
+                    fontSize: 20,
                   ),
-                  const SizedBox(height: 10),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return NuevaReservaBODialog(usuario: usuario);
-                          });
-                    },
-                    icon: Icon(Icons.add_rounded,
-                        color: theme.colorScheme.onSecondary),
-                    label: Text(
-                      'Nuevo',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSecondary,
-                        overflow: TextOverflow.ellipsis,
-                        fontFamily: 'KoHo',
-                        fontSize: 20,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      backgroundColor: theme.colorScheme.secondary,
-                    ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                ],
+                  backgroundColor: theme.colorScheme.secondary,
+                ),
               )
             ],
           ),
         ),
         if (reservasFiltradas.isEmpty)
           Center(
-            child: CircularProgressIndicator.adaptive(
-              valueColor:
-                  AlwaysStoppedAnimation<Color>(theme.colorScheme.secondary),
-            ),
+            child: _showSpinner
+                ? CircularProgressIndicator.adaptive(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        theme.colorScheme.secondary),
+                  )
+                : Center(
+                    child: Container(
+                      margin: const EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.hide_source_rounded,
+                            size: 100,
+                            color: theme.colorScheme.onBackground,
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.background,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: theme.colorScheme.onBackground,
+                                width: 2,
+                              ),
+                            ),
+                            child: const Text(
+                              'No existen reservas disponibles',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'KoHo',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
           ),
         if (reservasFiltradas.isNotEmpty)
           Expanded(

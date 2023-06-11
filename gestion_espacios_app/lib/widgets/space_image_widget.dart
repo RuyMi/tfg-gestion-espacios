@@ -1,6 +1,12 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 
+/// Widget que muestra la imagen de un espacio.
 class MySpaceImageWidget extends StatelessWidget {
+  /// La imagen del espacio.
   final String? image;
 
   const MySpaceImageWidget({
@@ -10,6 +16,7 @@ class MySpaceImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
     try {

@@ -25,6 +25,14 @@ import java.util.*
 
 private const val ENDPOINT = "bookings"
 
+/**
+ * Clase que contiene las rutas de la entidad Booking
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
+
 fun Application.bookingsRoutes() {
     val bookingsRepository : KtorFitBookingsRepository by inject()
     val userRepository : KtorFitUsersRepository by inject()

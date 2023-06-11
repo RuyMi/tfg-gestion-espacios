@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
 import 'package:gestion_espacios_app/providers/espacios_provider.dart';
@@ -10,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/error_widget.dart';
 
+/// Clase que representa el diálogo para editar un espacio.
 class EditarEspacioBODialog extends StatefulWidget {
   final Espacio espacio;
 
@@ -21,14 +26,30 @@ class EditarEspacioBODialog extends StatefulWidget {
   _EditarEspacioBODialog createState() => _EditarEspacioBODialog();
 }
 
+/// Clase que muestra el diálogo para editar un espacio.
 class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
+  /// El controlador del nombre.
   late TextEditingController nameController;
+
+  /// El controlador de la descripción.
   late TextEditingController descriptionController;
+
+  /// El controlador del precio.
   late TextEditingController priceController;
+
+  /// El controlador de la ventana de reserva.
   late TextEditingController bookingWindowController;
+
+  /// El controlador de si es reservable.
   late TextEditingController isReservableController;
+
+  /// El controlador de si requiere autorización.
   late TextEditingController requiresAuthorizationController;
+
+  /// La imagen seleccionada.
   PickedFile? selectedImage;
+
+  /// El picker de imágenes.
   ImagePicker picker = ImagePicker();
 
   @override
@@ -58,6 +79,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
     super.dispose();
   }
 
+  /// Función que intenta parsear un entero.
   int tryParseInt(String value, int lastValue) {
     int result;
     try {
@@ -68,6 +90,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
     return result;
   }
 
+  /// Función que llama al selector de imágenes.
   void pickImage() async {
     PickedFile? pickedFile =
         // ignore: invalid_use_of_visible_for_testing_member
@@ -81,15 +104,34 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
+
+    /// El proveedor de espacios.
     final espaciosProvider = Provider.of<EspaciosProvider>(context);
+
+    /// El proveedor de imágenes.
     final storageProvider = Provider.of<StorageProvider>(context);
+
+    /// El espacio a editar.
     final Espacio espacio = widget.espacio;
+
+    /// El nombre del espacio.
     String name = espacio.name;
-    String description = espacio.description;
+
+    /// La descripción del espacio.
+    String? description = espacio.description;
+
+    /// La imagen del espacio.
     String? image = espacio.image;
+
+    /// El precio del espacio.
     int price = espacio.price;
+
+    /// Los roles autorizados para reservar el espacio.
     List<String> authorizedRoles = espacio.authorizedRoles;
+
+    /// La ventana de reserva del espacio.
     int bookingWindow = espacio.bookingWindow;
 
     return AlertDialog(

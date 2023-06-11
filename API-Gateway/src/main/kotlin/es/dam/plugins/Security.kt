@@ -11,6 +11,13 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.get
 import org.koin.ktor.ext.inject
 
+/**
+ * Función que configura la seguridad de la aplicación. Permite que se pueda acceder a la API con un token.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 fun Application.configureSecurity() {
     val tokenConfigParams = mapOf(
         "audience" to environment.config.property("jwt.audience").getString(),

@@ -14,6 +14,13 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import java.io.IOException
 
+/**
+ * Filtro de autorización JWT. Se encarga de autorizar a los usuarios que intentan acceder a la API REST.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 class JWTAuthorizationFilter(
     private val jwtUtil: JWTUtils,
     private val service: UserService,

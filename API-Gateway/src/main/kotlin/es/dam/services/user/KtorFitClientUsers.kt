@@ -12,7 +12,13 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
 
-
+/**
+ * Objeto que contiene la configuración del cliente Ktorfit para el microservicio de usuarios.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 object KtorFitClientUsers {
     private const val API_URL = "http://api-users:8383/"
 

@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/usuario.dart';
 import 'package:gestion_espacios_app/providers/storage_provider.dart';
@@ -8,6 +12,7 @@ import 'package:gestion_espacios_app/widgets/picked_image_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+/// Widget que muestra la imagen seleccionada.
 class NuevoUsuarioBODialog extends StatefulWidget {
   const NuevoUsuarioBODialog({Key? key}) : super(key: key);
 
@@ -16,19 +21,42 @@ class NuevoUsuarioBODialog extends StatefulWidget {
   _NuevoUsuarioBODialog createState() => _NuevoUsuarioBODialog();
 }
 
+/// Clase que muestra la pantalla de inicio de sesión.
 class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
+  /// El nombre de usuario.
   String name = '';
+
+  /// El nombre de usuario.
   String username = '';
+
+  /// La contraseña.
   String password = '';
+
+  /// La contraseña.
   String password2 = '';
+
+  /// El correo electrónico.
   String email = '';
+
+  /// El rol del usuario.
   List<String> userRole = [];
+
+  /// El avatar del usuario.
   String? avatar = 'placeholder';
-  int credits = 0;
+
+  /// El número de créditos del usuario.
+  int credits = 20;
+
+  /// Indica si el usuario está activo.
   bool isActive = true;
+
+  /// la imagen seleccionada.
   PickedFile? selectedImage;
+
+  /// El picker de imágenes.
   ImagePicker picker = ImagePicker();
 
+  /// Función que intenta parsear un entero.
   int tryParseInt(String value, {int fallbackValue = 0}) {
     int result;
     try {
@@ -39,6 +67,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
     return result;
   }
 
+  /// Función que llama al picker de imágenes.
   void pickImage() async {
     PickedFile? pickedFile =
         // ignore: invalid_use_of_visible_for_testing_member
@@ -52,8 +81,13 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
+
+    /// Se obtiene el provider de usuarios.
     final usuariosProvider = Provider.of<UsuariosProvider>(context);
+
+    /// Se obtiene el provider de imágenes.
     final storageProvider = Provider.of<StorageProvider>(context);
 
     return AlertDialog(
@@ -423,7 +457,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                     email: email,
                     password: password,
                     credits: credits,
-                    avatar: 'placeholder',
+                    avatar: avatar,
                     isActive: isActive,
                     userRole: userRole,
                   );

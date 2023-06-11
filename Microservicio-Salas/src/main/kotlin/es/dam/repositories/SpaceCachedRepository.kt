@@ -8,6 +8,13 @@ import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 import java.util.*
 
+/**
+ * Clase que implementa la caché de espacios. Se encarga de almacenar los espacios en caché y de actualizarlos cada cierto tiempo.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 @Single
 @Named("SpaceCachedRepository")
 class SpaceCachedRepository(
@@ -19,11 +26,17 @@ class SpaceCachedRepository(
 
     private var refreshJob: Job? = null
 
+    /**
+     * Inicializa la caché de espacios. Si la caché no tiene un trabajo de actualización de la caché, se crea uno.
+     */
     init {
         if (cache.hasRefreshAllCacheJob)
             refreshCacheJob()
     }
 
+    /**
+     * Actualiza la caché de espacios.
+     */
     private fun refreshCacheJob() {
         if (refreshJob != null)
             refreshJob?.cancel()
@@ -38,6 +51,11 @@ class SpaceCachedRepository(
         }
     }
 
+    /**
+     * Función que devuelve todos los espacios de la caché. Si la caché no tiene un trabajo de actualización de la caché, busca los espacios en la base de datos.
+     *
+     * @return List<Space>
+     */
     override suspend fun findAll(): List<Space> {
         return if (!cache.hasRefreshAllCacheJob || cache.cache.asMap().isEmpty()) {
             repository.findAll()
@@ -46,6 +64,12 @@ class SpaceCachedRepository(
         }
     }
 
+    /**
+     * Función que devuelve un espacio por su id. Si la caché no tiene un trabajo de actualización de la caché, busca el espacio en la base de datos.
+     *
+     * @param id Id del espacio a buscar.
+     * @return Space
+     */
     override suspend fun findById(id: UUID): Space {
         return cache.cache.get(id) ?: repository.findById(id)
             ?.also { cache.cache.put(id, it) }
@@ -53,14 +77,32 @@ class SpaceCachedRepository(
         ?: throw SpaceException("No se ha encontrado el espacio con uuid $id")
     }
 
+    /**
+     * Función que devuelve un espacio por su nombre
+     *
+     * @param name Nombre del espacio a buscar.
+     * @return Space
+     */
     override suspend fun findByName(name: String): Space {
         return repository.findByName(name)
     }
 
+    /**
+     * Función que devuelve todos los espacios reservables o no reservables
+     *
+     * @param isReservable Booleano que indica si se quieren espacios reservables o no reservables
+     * @return List<Space>
+     */
     override suspend fun findAllReservables(isReservable: Boolean): List<Space> {
         return repository.findAllReservables(isReservable)
     }
 
+    /**
+     * Funcion que guarda un espacio en la base de datos y en la caché
+     *
+     * @param entity Espacio a guardar
+     * @return Space
+     */
     override suspend fun save(entity: Space): Space {
         val scope = CoroutineScope(Dispatchers.IO)
 
@@ -73,6 +115,12 @@ class SpaceCachedRepository(
         return entity
     }
 
+    /**
+     * Funcion que actualiza un espacio en la base de datos y en la caché
+     *
+     * @param entity Espacio a actualizar
+     * @return Space
+     */
     override suspend fun update(entity: Space): Space {
         val scope = CoroutineScope(Dispatchers.IO)
 
@@ -85,6 +133,12 @@ class SpaceCachedRepository(
         return entity
     }
 
+    /**
+     * Funcion que elimina un espacio de la base de datos y de la caché
+     *
+     * @param id Id del espacio a eliminar
+     * @return Boolean
+     */
     override suspend fun delete(id: UUID): Boolean {
         val scope = CoroutineScope(Dispatchers.IO)
 
@@ -104,6 +158,11 @@ class SpaceCachedRepository(
         return result
     }
 
+    /**
+     * Funcion que elimina todos los espacios de la base de datos y de la caché
+     *
+     * @return Boolean
+     */
     override suspend fun deleteAll(): Boolean {
         val scope = CoroutineScope(Dispatchers.IO)
 

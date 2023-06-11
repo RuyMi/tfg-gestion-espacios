@@ -1,19 +1,38 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
-class BOLoginScreen extends StatelessWidget {
+/// Pantalla de inicio de sesión del BackOffice.
+class BOLoginScreen extends StatefulWidget {
+  const BOLoginScreen({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _BOLoginScreen createState() => _BOLoginScreen();
+}
+
+/// Clase que muestra la pantalla de inicio de sesión del BackOffice.
+class _BOLoginScreen extends State<BOLoginScreen> {
+  /// Nombre de usuario.
   String username = '';
+
+  /// Contraseña.
   String password = '';
 
-  BOLoginScreen({super.key});
+  /// Indica si se está cargando la pantalla.
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtieen el tema actual.
     var theme = Theme.of(context);
 
+    /// Se obtiene el provider de autenticación.
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     return GestureDetector(
@@ -113,13 +132,24 @@ class BOLoginScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
+                        setState(() {
+                          isLoading = true;
+                        });
+
                         authProvider.login(username, password).then(
                           (usuario) {
                             final roles = authProvider.usuario.userRole;
-
                             if (roles.contains('ADMINISTRATOR')) {
                               Navigator.pushNamed(context, '/home-bo');
+
+                              setState(() {
+                                isLoading = false;
+                              });
                             } else {
+                              setState(() {
+                                isLoading = false;
+                              });
+
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -132,6 +162,10 @@ class BOLoginScreen extends StatelessWidget {
                             }
                           },
                         ).catchError((error) {
+                          setState(() {
+                            isLoading = false;
+                          });
+
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -154,6 +188,14 @@ class BOLoginScreen extends StatelessWidget {
                               color: theme.colorScheme.onSecondary,
                               fontFamily: 'KoHo')),
                     ),
+                    if (isLoading)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: CircularProgressIndicator.adaptive(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              theme.colorScheme.secondary),
+                        ),
+                      ),
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {

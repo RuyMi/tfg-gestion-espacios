@@ -1,19 +1,39 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
-class LoginScreen extends StatelessWidget {
+/// Widget que muestra la imagen seleccionada.
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _LoginScreen createState() => _LoginScreen();
+}
+
+/// Clase que muestra la pantalla de inicio de sesión.
+class _LoginScreen extends State<LoginScreen> {
+  /// El nombre de usuario.
   String username = '';
+
+  /// La contraseña.
   String password = '';
 
-  LoginScreen({super.key});
+  /// Indica si se está cargando.
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el proveedor de autenticación.
     var authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
     return GestureDetector(
@@ -113,11 +133,23 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
+                        setState(() {
+                          isLoading = true;
+                        });
+
                         authProvider.login(username, password).then(
                           (usuario) {
                             Navigator.pushNamed(context, '/home');
+
+                            setState(() {
+                              isLoading = false;
+                            });
                           },
                         ).catchError((error) {
+                          setState(() {
+                            isLoading = false;
+                          });
+
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -139,6 +171,14 @@ class LoginScreen extends StatelessWidget {
                               color: theme.colorScheme.onSecondary,
                               fontFamily: 'KoHo')),
                     ),
+                    if (isLoading)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: CircularProgressIndicator.adaptive(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              theme.colorScheme.secondary),
+                        ),
+                      ),
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {

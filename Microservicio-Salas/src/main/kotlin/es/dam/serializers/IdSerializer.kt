@@ -9,6 +9,14 @@ import kotlinx.serialization.encoding.Encoder
 import org.litote.kmongo.Id
 import org.litote.kmongo.toId
 
+/**
+ * Clase que implementa la serialización de los identificadores de los espacios.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
+
 object IdSerializer : KSerializer<Id<Space>> {
     override val descriptor = PrimitiveSerialDescriptor("Id", PrimitiveKind.STRING)
 

@@ -4,6 +4,13 @@ import de.jensklingenberg.ktorfit.http.*
 import es.dam.dto.*
 import io.ktor.client.request.forms.*
 
+/**
+ * Interfaz que contiene las funciones que se comunican con el microservicio de usuarios.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 interface KtorFitRestUsers {
     @GET("users")
     suspend fun findAll(
