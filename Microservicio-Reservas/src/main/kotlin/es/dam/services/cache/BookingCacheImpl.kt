@@ -7,6 +7,13 @@ import org.koin.core.annotation.Single
 import java.util.*
 import kotlin.time.Duration.Companion.minutes
 
+/**
+ * Cache de reservas.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @autor Alejandro Sánchez Monzón
+ * @autor Rubén García-Redondo Marín
+ */
 @Single
 @Named("BookingCacheImpl")
 class BookingCacheImpl : BookingCache {

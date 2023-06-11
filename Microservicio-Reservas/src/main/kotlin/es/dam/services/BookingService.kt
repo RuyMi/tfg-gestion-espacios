@@ -2,6 +2,13 @@ package es.dam.services
 
 import es.dam.models.Booking
 
+/**
+ * Interfaz del servicio de reservas.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @autor Alejandro Sánchez Monzón
+ * @autor Rubén García-Redondo Marín
+ */
 interface BookingService {
     suspend fun findAll(): List<Booking>
     suspend fun findAllStatus(status: Booking.Status): List<Booking>

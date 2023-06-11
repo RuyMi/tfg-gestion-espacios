@@ -12,6 +12,13 @@ import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 import org.slf4j.LoggerFactory
 
+/**
+ * Este objeto se encarga de la conexión con la base de datos MongoDB.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 object MongoDbManager {
     private val properties = PropertiesReader("application.properties")
     private lateinit var mongoDbClient: CoroutineClient

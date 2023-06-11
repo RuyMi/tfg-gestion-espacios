@@ -6,7 +6,16 @@ import es.dam.dto.BookingDtoUpdate
 import es.dam.models.Booking
 import java.time.LocalDateTime
 
-
+/**
+ * Mappers de la clase de Bookings contiene los mappers de BookingDtoCreate, BookingDtoUpdate y BookingDto.
+ * BookingDtoCreate.toModel(): Mapper de BookingDtoCreate a Booking.
+ * BookingDtoUpdate.toModel(): Mapper de BookingDtoUpdate a Booking.
+ * BookingDto.toDTO(): Mapper de Booking a BookingDto.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 fun BookingDtoCreate.toModel() = Booking(
     spaceId = this.spaceId,
     spaceName = this.spaceName,

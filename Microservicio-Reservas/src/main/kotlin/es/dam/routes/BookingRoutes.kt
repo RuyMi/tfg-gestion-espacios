@@ -17,6 +17,13 @@ import org.koin.ktor.ext.inject
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
+/**
+ * Rutas del microservicio de reservas.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 fun Application.bookingRoutes(){
     val bookingService: BookingServiceImpl by inject()
 
