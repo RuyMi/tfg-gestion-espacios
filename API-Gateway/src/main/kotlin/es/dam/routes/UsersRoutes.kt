@@ -9,6 +9,7 @@ import es.dam.repositories.booking.KtorFitBookingsRepository
 import es.dam.repositories.user.KtorFitUsersRepository
 import es.dam.services.token.TokensService
 import es.dam.validator.validateCampos
+import es.dam.validator.validateEmail
 import es.dam.validator.validatePassword
 import io.ktor.http.*
 import io.ktor.http.content.*
@@ -90,6 +91,9 @@ fun Application.usersRoutes() {
                     val register = call.receive<UserRegisterDTO>()
                     if (!register.validateCampos()){
                         throw UserBadRequestException("Debes rellenar todos los datos.")
+                    }
+                    if (!register.validateEmail()){
+                        throw UserBadRequestException("El email no es válido.")
                     }
                     if (!register.validatePassword()){
                         throw UserBadRequestException("La contraseña debe tener al menos 8 caracteres")
