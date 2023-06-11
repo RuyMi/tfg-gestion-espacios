@@ -114,9 +114,7 @@ class StorageServiceImpl(
      */
     override suspend fun deleteFile(fileName: String): Unit = withContext(Dispatchers.IO) {
         val file = File("./uploads/$fileName")
-        if (!file.exists()) {
-            throw StorageException.FileNotFound("No se ha encontrado el fichero: $fileName")
-        } else {
+        if (file.exists()) {
             file.delete()
         }
     }
