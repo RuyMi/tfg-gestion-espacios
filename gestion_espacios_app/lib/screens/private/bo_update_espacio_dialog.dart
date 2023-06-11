@@ -86,7 +86,7 @@ class _EditarEspacioBODialog extends State<EditarEspacioBODialog> {
     final storageProvider = Provider.of<StorageProvider>(context);
     final Espacio espacio = widget.espacio;
     String name = espacio.name;
-    String description = espacio.description;
+    String? description = espacio.description;
     String? image = espacio.image;
     int price = espacio.price;
     List<String> authorizedRoles = espacio.authorizedRoles;

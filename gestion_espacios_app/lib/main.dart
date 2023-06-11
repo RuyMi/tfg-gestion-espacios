@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/providers.dart';
-import 'package:gestion_espacios_app/screens/private/bo_add_espacio_dialog.dart';
-import 'package:gestion_espacios_app/screens/private/bo_add_usuario_dialog.dart';
-import 'package:gestion_espacios_app/screens/private/bo_espacios_screen.dart';
-import 'package:gestion_espacios_app/screens/private/bo_reservas_screen.dart';
-import 'package:gestion_espacios_app/screens/private/bo_usuarios_screen.dart';
-import 'package:gestion_espacios_app/screens/public/registro_usuario_screen.dart';
 import 'package:gestion_espacios_app/screens/public/reservar_espacios_screen.dart';
 import 'package:gestion_espacios_app/screens/screens.dart';
 import 'package:gestion_espacios_app/theme/app_theme.dart';
@@ -69,7 +63,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
 
         // Public
-        '/login': (context) => LoginScreen(),
+        '/login': (context) => const LoginScreen(),
         '/user-register': (context) => const RegistroUsuarioScreen(),
         '/home': (context) => const MainScreen(),
         '/espacios': (context) => const EspaciosScreen(),
@@ -80,7 +74,7 @@ class MyApp extends StatelessWidget {
         // '/editar-reserva': (context) => const EditarReservaScreen(),
 
         // Private
-        '/login-bo': (context) => BOLoginScreen(),
+        '/login-bo': (context) => const BOLoginScreen(),
         '/home-bo': (context) => const BOMainScreen(),
         '/espacios-bo': (context) => const EspaciosBOScreen(),
         '/reservas-bo': (context) => const ReservasBOScreen(),

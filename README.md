@@ -12,16 +12,20 @@ La aplicación cuenta con las siguientes funcionalidades:
 
 ### 🔒 Para usuarios finales (*Alumno/a* y *Profesor/a*)
 
-- Crear/Anular/Modificar/Solicitar reservas.
+- Crear, anular, modificar y solicitar reservas.
 - Visualizar las reservas propias.
 - Visualizar la disponibilidad de espacios.
+- Visualizar el perfil propio.
 
 ### 🔑 Para el usuario con rol *Administrador/a*
 
-- Crear/Anular/Modificar/Aceptar reservas de cualquier usuario.
+- Crear, anular, modificar, aceptar reservas de cualquier usuario.
 - Visualizar todas las reservas.
 - Visualizar disponibilidad de cualquier espacio.
-- Crear/Eliminar/Modificar espacios.
+- Crear, eliminar y modificar espacios.
+- Visualizar todos los espacios.
+- Crear, eliminar y modificar usuarios.
+- Visualizar todos los usuarios.
 - Asignar roles.
 
 ## 🧑‍🤝‍🧑 Roles de Usuario
@@ -36,12 +40,39 @@ La aplicación cuenta con los siguientes roles de usuario:
 
 | Característica | Valor |
 | --- | --- |
+| Nombre | Nombre del espacio |
+| Imagen | Imagen del espacio |
+| Descripción | Descripción del espacio |
+| Precio | Cuantía de créditos que debe pagar el usuario para reservar dicho espacio |
 | Reservable | Sí/No |
+| Ventana temporal (antelación con la que se puede reservar el espacio) | En días |
 | Roles que pueden reservar el espacio | Alumno/a, Profesor/a, Administrador/a |
-| Ventana temporal (antelación con la que se puede reservar el espacio) | 1 día, 1 semana, 1 mes |
-| Máximo número de reservas (mensual o semanal) | 1 vez, 2 veces, 3 veces |
 | Requiere autorización | Sí/No |
-| Confirmación o ejecución de la reserva mediante QR o NFC | Opcional |
+
+## ✏️ Reservas
+| Característica | Valor |
+| --- | --- |
+| ID de Usuario | Identificador del usuario que realiza la reserva |
+| Nombre del Usuario | Nombre del usuario que realiza la reserva |
+| ID de Espacio | Identificador del espacio reservado |
+| Nombre del Espacio | Nombre del espacio reservado |
+| Imagen | Imagen del espacio reservado |
+| Fecha de Inicio | Fecha de inicio de la reserva |
+| Fecha de Fin | Fecha de fin de la reserva |
+| Observaciones | Observaciones de la reserva |
+| Estado | Estado de la reserva (pendiente, aceptada, rechazada) |
+
+## 👥 Usuarios
+| Característica | Valor |
+| --- | --- |
+| Nombre | Nombre del usuario |
+| Nombre de usuario | Nombre de usuario del usuario |
+| Email | Email del usuario |
+| Contraseña | Contraseña del usuario |
+| Avatar | Avatar del usuario |
+| Rol | Rol del usuario (Alumno/a, Profesor/a, Administrador/a) |
+| Créditos | Créditos del usuario disponibles para reservar |
+| Activo | Sí/No |
 
 ## 👨‍💻 Autoría
 

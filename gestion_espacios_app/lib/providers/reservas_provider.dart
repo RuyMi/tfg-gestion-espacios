@@ -23,7 +23,7 @@ class ReservasProvider with ChangeNotifier {
   List<Reserva> get reservasByTime => _reservasByTime;
 
   ReservasProvider(this._token, this._userId) {
-    fetchMyReservas();
+    fetchMyReservasNotFinished();
     fetchReservas();
   }
 
@@ -86,6 +86,37 @@ class ReservasProvider with ChangeNotifier {
   Future<void> fetchMyReservas() async {
     final response = await http.get(
       Uri.parse('$baseUrl/bookings/user/$_userId'),
+      headers: {'Authorization': 'Bearer $_token'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final results = data['data'] as List<dynamic>;
+      _misReservas = results
+          .map((reserva) => Reserva(
+                uuid: reserva['uuid'],
+                userId: reserva['userId'],
+                spaceId: reserva['spaceId'],
+                startTime: reserva['startTime'],
+                endTime: reserva['endTime'],
+                observations: reserva['observations'],
+                status: reserva['status'],
+                userName: reserva['userName'],
+                spaceName: reserva['spaceName'],
+                image: reserva['image'],
+              ))
+          .toList();
+
+      notifyListeners();
+    } else {
+      _misReservas = [];
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchMyReservasNotFinished() async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/bookings/not-finished/user/$_userId'),
       headers: {'Authorization': 'Bearer $_token'},
     );
 

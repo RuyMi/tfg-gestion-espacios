@@ -19,7 +19,7 @@ class NuevoEspacioBODialog extends StatefulWidget {
 class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
   String name = '';
   String description = '';
-  String? image;
+  String? image = 'placeholder';
   int price = 0;
   bool isReservable = false;
   bool requiresAuthorization = false;
@@ -382,7 +382,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
                     name: name,
                     description: description,
                     price: price,
-                    image: 'image_placeholder',
+                    image: 'placeholder',
                     isReservable: isReservable,
                     requiresAuthorization: requiresAuthorization,
                     authorizedRoles: authorizedRoles,

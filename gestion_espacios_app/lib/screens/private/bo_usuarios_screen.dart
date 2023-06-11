@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gestion_espacios_app/models/usuario.dart';
@@ -20,6 +22,7 @@ class UsuariosBOScreen extends StatefulWidget {
 class _UsuariosBOScreen extends State<UsuariosBOScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<Usuario> usuariosFiltrados = [];
+  bool _showSpinner = true;
 
   @override
   void initState() {
@@ -30,6 +33,12 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
     usuariosProvider.fetchUsuarios().then((value) => setState(() {
           usuariosFiltrados = usuariosProvider.usuarios;
         }));
+
+    Timer(const Duration(seconds: 3), () {
+      setState(() {
+        _showSpinner = false;
+      });
+    });
   }
 
   @override
@@ -129,10 +138,46 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
       ),
       if (usuariosFiltrados.isEmpty)
         Center(
-          child: CircularProgressIndicator.adaptive(
-            valueColor:
-                AlwaysStoppedAnimation<Color>(theme.colorScheme.secondary),
-          ),
+          child: _showSpinner
+              ? CircularProgressIndicator.adaptive(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      theme.colorScheme.secondary),
+                )
+              : Center(
+                child: Container(
+                  margin: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.hide_source_rounded,
+                        size: 100,
+                        color: theme.colorScheme.onBackground,
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.background,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: theme.colorScheme.onBackground,
+                            width: 2,
+                          ),
+                        ),
+                        child: const Text(
+                          'No existen usuarios disponibles',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'KoHo',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
         ),
       if (usuariosFiltrados.isNotEmpty)
         Expanded(

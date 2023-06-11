@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/colors.dart';
 import 'package:gestion_espacios_app/models/reserva.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
-import 'package:gestion_espacios_app/screens/screens.dart';
+import 'package:gestion_espacios_app/screens/public/editar_reserva_screen.dart';
 import 'package:gestion_espacios_app/widgets/space_image_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +21,7 @@ class MisReservasScreen extends StatefulWidget {
 class _MisReservasScreenState extends State<MisReservasScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<Reserva> misReservasFiltradas = [];
+  bool _showSpinner = true;
 
   @override
   void initState() {
@@ -28,9 +31,15 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
 
     misReservasFiltradas = reservasProvider.misReservas;
 
-    reservasProvider.fetchMyReservas().then((value) => setState(() {
+    reservasProvider.fetchMyReservasNotFinished().then((value) => setState(() {
           misReservasFiltradas = reservasProvider.misReservas;
         }));
+
+    Timer(const Duration(seconds: 3), () {
+      setState(() {
+        _showSpinner = false;
+      });
+    });
   }
 
   Future<List<Reserva>> filterReserva(String query) async {
@@ -85,7 +94,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
             actions: [
               IconButton(
                 onPressed: () async {
-                  await reservasProvider.fetchMyReservas();
+                  await reservasProvider.fetchMyReservasNotFinished();
                   setState(() {
                     misReservasFiltradas = reservasProvider.misReservas;
                   });
@@ -137,42 +146,47 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
               ),
             ),
             if (misReservasFiltradas.isEmpty)
-              Expanded(
-                child: Center(
-                  child: Container(
-                    margin: const EdgeInsets.all(20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.hide_source_rounded,
-                          size: 100,
-                          color: theme.colorScheme.onBackground,
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.background,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
+              Center(
+                child: _showSpinner
+                    ? CircularProgressIndicator.adaptive(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            theme.colorScheme.secondary),
+                      )
+                    : Center(
+                      child: Container(
+                        margin: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.hide_source_rounded,
+                              size: 100,
                               color: theme.colorScheme.onBackground,
-                              width: 2,
                             ),
-                          ),
-                          child: const Text(
-                            'No existen reservas disponibles',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'KoHo',
+                            const SizedBox(height: 20),
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.background,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: theme.colorScheme.onBackground,
+                                  width: 2,
+                                ),
+                              ),
+                              child: const Text(
+                                'No existen reservas disponibles',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'KoHo',
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
               ),
             if (misReservasFiltradas.isNotEmpty)
               Expanded(

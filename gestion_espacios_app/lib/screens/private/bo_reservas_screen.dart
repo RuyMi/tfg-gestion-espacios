@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gestion_espacios_app/models/reserva.dart';
@@ -22,7 +24,7 @@ class ReservasBOScreen extends StatefulWidget {
 class _ReservasBOScreen extends State<ReservasBOScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<Reserva> reservasFiltradas = [];
-  bool _sortBySpaces = true;
+  bool _showSpinner = true;
 
   @override
   void initState() {
@@ -33,19 +35,18 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
     reservasProvider.fetchReservas().then((value) => setState(() {
           reservasFiltradas = reservasProvider.reservas;
         }));
+
+    Timer(const Duration(seconds: 3), () {
+      setState(() {
+        _showSpinner = false;
+      });
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
     _searchController.dispose();
-  }
-
-  void _handleSortBy(bool sortByUsers) {
-    setState(() {
-      if (sortByUsers) {
-      } else {}
-    });
   }
 
   Future<List<Reserva>> filterReservas(String query) async {
@@ -106,68 +107,77 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
                 ),
               ),
               const SizedBox(width: 20),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.person_rounded,
-                          color: theme.colorScheme.onBackground),
-                      Switch(
-                        focusColor: theme.colorScheme.secondary,
-                        activeColor: theme.colorScheme.secondary,
-                        inactiveTrackColor:
-                            theme.colorScheme.onBackground.withOpacity(0.2),
-                        inactiveThumbColor: theme.colorScheme.onBackground,
-                        value: _sortBySpaces,
-                        onChanged: (value) {
-                          setState(() {
-                            _sortBySpaces = value;
-                            _handleSortBy(_sortBySpaces);
-                          });
-                        },
-                      ),
-                      Icon(Icons.calendar_today,
-                          color: theme.colorScheme.secondary),
-                    ],
+              ElevatedButton.icon(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NuevaReservaBODialog(usuario: usuario);
+                      });
+                },
+                icon: Icon(Icons.add_rounded,
+                    color: theme.colorScheme.onSecondary),
+                label: Text(
+                  'Nuevo',
+                  style: TextStyle(
+                    color: theme.colorScheme.onSecondary,
+                    overflow: TextOverflow.ellipsis,
+                    fontFamily: 'KoHo',
+                    fontSize: 20,
                   ),
-                  const SizedBox(height: 10),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return NuevaReservaBODialog(usuario: usuario);
-                          });
-                    },
-                    icon: Icon(Icons.add_rounded,
-                        color: theme.colorScheme.onSecondary),
-                    label: Text(
-                      'Nuevo',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSecondary,
-                        overflow: TextOverflow.ellipsis,
-                        fontFamily: 'KoHo',
-                        fontSize: 20,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      backgroundColor: theme.colorScheme.secondary,
-                    ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                ],
+                  backgroundColor: theme.colorScheme.secondary,
+                ),
               )
             ],
           ),
         ),
         if (reservasFiltradas.isEmpty)
           Center(
-            child: CircularProgressIndicator.adaptive(
-              valueColor:
-                  AlwaysStoppedAnimation<Color>(theme.colorScheme.secondary),
-            ),
+            child: _showSpinner
+                ? CircularProgressIndicator.adaptive(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        theme.colorScheme.secondary),
+                  )
+                : Center(
+                  child: Container(
+                    margin: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.hide_source_rounded,
+                          size: 100,
+                          color: theme.colorScheme.onBackground,
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.background,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: theme.colorScheme.onBackground,
+                              width: 2,
+                            ),
+                          ),
+                          child: const Text(
+                            'No existen reservas disponibles',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'KoHo',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
           ),
         if (reservasFiltradas.isNotEmpty)
           Expanded(
