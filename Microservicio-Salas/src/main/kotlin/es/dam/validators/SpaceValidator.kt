@@ -1,9 +1,15 @@
 package es.dam.validators
 
-
 import es.dam.dto.SpaceCreateDTO
 import io.ktor.server.plugins.requestvalidation.*
 
+/**
+ * Función que valida los datos de un espacio.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 
 fun RequestValidationConfig.spaceValidation(){
     validate<SpaceCreateDTO> {

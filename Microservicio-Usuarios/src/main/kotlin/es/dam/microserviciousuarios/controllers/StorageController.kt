@@ -16,6 +16,14 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 import java.time.LocalDateTime
 
+/**
+ * Controlador de la API REST de almacenamiento. Permite subir y descargar imágenes.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
+
 @RestController
 @RequestMapping("/users/storage")
 class StorageController @Autowired constructor(

@@ -7,6 +7,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
+/**
+ * Objeto que contiene la configuración del cliente Retrofit para el microservicio de espacios.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 object RetroFitClientSpaces {
     private const val BASE_URL = "http://api-spaces:8282/"
 

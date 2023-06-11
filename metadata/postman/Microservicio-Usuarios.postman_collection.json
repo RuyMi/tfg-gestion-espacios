@@ -1,0 +1,496 @@
+{
+	"info": {
+		"_postman_id": "967d7464-63fa-40a4-b184-979565e24831",
+		"name": "Microservicio-Usuarios",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25247269",
+		"_collection_link": "https://galactic-satellite-602844.postman.co/workspace/Team-Workspace~81889f7f-d105-40e2-82ba-f9f3bc8de9d3/collection/25247269-967d7464-63fa-40a4-b184-979565e24831?action=share&creator=25247269&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "REGISTER",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mireya\",\r\n    \"username\": \"mireya\",\r\n    \"email\": \"mireya@correo.com\",\r\n    \"password\": \"mireya1234\",\r\n    \"avatar\": \"placeholder\",\r\n    \"userRole\": [\r\n        \"ADMINISTRATOR\"\r\n    ],\r\n    \"isActive\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/users/register",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxYWNhNzYwNC0wMzUwLTRjODUtOWI3NC0wMjBmNzE4N2E4ZjciLCJyb2xlIjoiW0FETUlOSVNUUkFUT1JdIiwiaXNzIjoibHVpc3ZpdmVzIiwiZXhwIjoxNjgyNDU1MjA2LCJ1c2VybmFtZSI6Im1pcmV5YSJ9.96-zxwVC4D6KF-DDwakYQjUST9_rYj-FL-3vjYqy288z5jyV1N3K3tS_lCqznhDomErEs25kz6cJ7uXQUCpKqQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"manolito\",\r\n    \"password\": \"manolito1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/users/login",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Storage",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "/C:/Users/Rubén/Downloads/ies-luis-vives-leganes.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api}}/spaces/storage",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"spaces",
+						"storage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND ALL",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"mireya\",\r\n    \"password\": \"mireya1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/users",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND BY ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"mireya\",\r\n    \"password\": \"mireya1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/users/{{userId}}",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 FIND BY ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/users/830c8286-21d6-42cc-8262-6a328f8cef1c",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"users",
+						"830c8286-21d6-42cc-8262-6a328f8cef1c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE ME",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ManoloUpdated\",\r\n    \"username\": \"manolito\",\r\n    \"email\": \"manolito@correo.com\",\r\n    \"password\": \"manolito1234\",\r\n    \"avatar\": \"UPDATED\",\r\n    \"userRole\": [\r\n        \"ADMINISTRATOR\"\r\n    ],\r\n    \"credits\" :50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/users/me",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE ANY USER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mireya\",\r\n    \"username\": \"mireya\",\r\n    \"email\": \"mireya@correo.com\",\r\n    \"password\": \"mireya1234\",\r\n    \"avatar\": \"UPDATED\",\r\n    \"userRole\": [\r\n        \"ADMINISTRATOR\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/users/{{userId}}",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 UPDATE ANY USER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mireya\",\r\n    \"username\": \"mireya\",\r\n    \"email\": \"mireya@correo.com\",\r\n    \"password\": \"mireya1234\",\r\n    \"avatar\": \"\",\r\n    \"userRole\": [\r\n        \"ADMINISTRATOR\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/users/{{userId}}",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 UPDATE ANY USER",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mireya\",\r\n    \"username\": \"mireya\",\r\n    \"email\": \"mireya@correo.com\",\r\n    \"password\": \"mireya1234\",\r\n    \"avatar\": \"UPDATED\",\r\n    \"userRole\": [\r\n        \"ADMINISTRATOR\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/users/{{userId}}",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rol\": [\r\n        \"CLIENT\"\r\n    ],\r\n    \"email\": \"jorge@correo.com\",\r\n    \"image\": \"https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png\",\r\n    \"username\": \"jorge\",\r\n    \"password\": \"jorge1234\",\r\n    \"address\": \"Leganés\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/users/5cf4eb15-a5da-4a49-b80c-90b408fd0c03",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"users",
+						"5cf4eb15-a5da-4a49-b80c-90b408fd0c03"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 DELETE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"image\": \"https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png\",\r\n    \"rol\": [\r\n        \"SUPERADMIN\",\r\n        \"ADMIN\"\r\n    ],\r\n    \"email\": \"mireya@correo.com\",\r\n    \"username\": \"mireya\",\r\n    \"password\": \"mireya1234\",\r\n    \"address\": \"Ugena\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/users/{{userId}}",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 DELETE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rol\": [\r\n        \"CLIENT\"\r\n    ],\r\n    \"email\": \"jorge@correo.com\",\r\n    \"image\": \"https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png\",\r\n    \"username\": \"jorge\",\r\n    \"password\": \"jorge1234\",\r\n    \"address\": \"Leganés\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8383/users/64482c9670f1fb59d1b489fe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8383",
+					"path": [
+						"users",
+						"64482c9670f1fb59d1b489fe"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

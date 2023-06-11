@@ -4,6 +4,13 @@ import es.dam.microserviciousuarios.dto.UserRegisterDTO
 import es.dam.microserviciousuarios.dto.UserResponseDTO
 import es.dam.microserviciousuarios.models.User
 
+/**
+ * Clase que mapea los DTOs de User. Utilizados para convertir de User a UserResponseDTO y viceversa.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 fun User.toDTO(): UserResponseDTO {
     return UserResponseDTO(
         id = id.toString(),

@@ -14,6 +14,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
     id("com.google.devtools.ksp") version "1.8.0-1.0.8"
     id("de.jensklingenberg.ktorfit") version "1.0.0"
+    id("org.jetbrains.dokka") version "1.8.10"
 }
 
 group = "es.dam"

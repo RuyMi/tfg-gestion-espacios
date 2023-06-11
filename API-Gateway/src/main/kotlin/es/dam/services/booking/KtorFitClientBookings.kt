@@ -11,6 +11,13 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
 
+/**
+ * Objeto que contiene la configuración del cliente Ktorfit para el microservicio de reservas.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 object KtorFitClientBookings {
     private const val API_URL = "http://api-bookings:8181/"
 

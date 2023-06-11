@@ -17,6 +17,13 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import java.util.*
 
+/**
+ * Filtro de autenticación JWT. Se encarga de autenticar a los usuarios que intentan acceder a la API REST.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 class JWTAuthenticationFilter(
     private val jwtUtils: JWTUtils,
     private val authenticationManager: AuthenticationManager

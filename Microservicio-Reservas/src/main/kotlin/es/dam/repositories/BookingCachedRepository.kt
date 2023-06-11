@@ -9,6 +9,15 @@ import org.koin.core.annotation.Single
 import java.time.LocalDate
 import java.util.*
 
+/**
+    * Repositorio cacheado de reservas.
+    * @param repository: Repositorio de reservas.
+    * @param cache: Cache de reservas.
+    *
+    * @author Mireya Sánchez Pinzón
+    * @author Alejandro Sánchez Monzón
+    * @author Rubén García-Redondo Marín
+ */
 @Single
 @Named("BookingCachedRepository")
 class BookingCachedRepository(
@@ -25,6 +34,9 @@ class BookingCachedRepository(
             refreshCacheJob()
     }
 
+    /**
+     * Refresca la cache de reservas.
+     */
     private fun refreshCacheJob() {
         if (refreshJob != null)
             refreshJob?.cancel()
@@ -39,6 +51,10 @@ class BookingCachedRepository(
         }
     }
 
+    /**
+     * Devuelve todas las reservas.
+     * @return Lista de reservas, vacía si no hay ninguna.
+     */
     override suspend fun findAll(): List<Booking> {
         return if (!cache.hasRefreshAllCacheJob || cache.cache.asMap().isEmpty()) {
             repository.findAll()
@@ -47,6 +63,12 @@ class BookingCachedRepository(
         }
     }
 
+    /**
+     * Devuelve la reserva con el id indicado.
+     * @param id: Id de la reserva.
+     * @return Reserva con el id indicado.
+     * @throws BookingException si no se encuentra la reserva.
+     */
     override suspend fun findById(id: UUID): Booking {
         return cache.cache.get(id) ?: repository.findById(id)
             ?.also { cache.cache.put(id, it) }
@@ -54,6 +76,12 @@ class BookingCachedRepository(
         ?: throw BookingException("No se ha encontrado la reserva con uuid $id")
     }
 
+    /**
+     * Guarda la reserva indicada.
+     * @param entity: Reserva a guardar.
+     * @return Reserva guardada.
+     * @throws BookingException si no se ha podido guardar la reserva.
+     */
     override suspend fun save(entity: Booking): Booking {
         val scope = CoroutineScope(Dispatchers.IO)
 
@@ -66,6 +94,12 @@ class BookingCachedRepository(
         return entity
     }
 
+    /**
+     * Actualiza la reserva indicada.
+     * @param entity: Reserva a actualizar.
+     * @return Reserva actualizada.
+     * @throws BookingException si no se ha encontrado la reserva.
+     */
     override suspend fun update(entity: Booking): Booking {
         val scope = CoroutineScope(Dispatchers.IO)
 
@@ -78,6 +112,12 @@ class BookingCachedRepository(
         return entity
     }
 
+    /**
+     * Elimina la reserva con el id indicado.
+     * @param id: Id de la reserva a eliminar.
+     * @return true si se ha eliminado, false si no.
+     * @throws BookingException si no se ha encontrado la reserva.
+     */
     override suspend fun delete(id: UUID): Boolean {
         val scope = CoroutineScope(Dispatchers.IO)
 
@@ -97,22 +137,47 @@ class BookingCachedRepository(
         return result
     }
 
+    /**
+     * Devuelve todas las reservas de un usuario.
+     * @param uuid: Id del usuario.
+     * @return Lista de reservas del usuario, vacía si no tiene ninguna.
+     */
     override suspend fun findByUserId(uuid: UUID): List<Booking> {
         return repository.findByUserId(uuid)
     }
 
+    /**
+     * Devuelve todas las reservas de un espacio.
+     * @param uuid: Id del espacio.
+     * @return Lista de reservas del espacio, vacía si no tiene ninguna.
+     */
     override suspend fun findBySpaceId(uuid: UUID): List<Booking> {
         return repository.findBySpaceId(uuid)
     }
 
+    /**
+     * Devuelve todas las reservas con el estado indicado.
+     * @param status: Estado de las reservas.
+     * @return Lista de reservas con el estado indicado, vacía si no hay ninguna.
+     */
     override suspend fun findAllStatus(status: Booking.Status): List<Booking> {
         return repository.findAllStatus(status)
     }
 
+    /**
+     * Devuelve todas las reservas de un espacio y fecha indicadas.
+     * @param uuid: Id del espacio.
+     * @param date: Fecha de las reservas.
+     * @return Lista de reservas del espacio y fecha indicadas, vacía si no hay ninguna.
+     */
     override suspend fun findByDate(uuid: UUID, date: LocalDate): List<Booking> {
         return repository.findByDate(uuid, date)
     }
 
+    /**
+     * Elimina todas las reservas.
+     * @return true si se han eliminado, false si no.
+     */
     override suspend fun deleteAll(): Boolean {
         val scope = CoroutineScope(Dispatchers.IO)
 
