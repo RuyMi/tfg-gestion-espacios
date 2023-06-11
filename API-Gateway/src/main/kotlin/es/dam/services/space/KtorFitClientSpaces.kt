@@ -43,7 +43,6 @@ object KtorFitClientSpaces {
                                 }
                             }
                         }
-
                     }
                 }
             }

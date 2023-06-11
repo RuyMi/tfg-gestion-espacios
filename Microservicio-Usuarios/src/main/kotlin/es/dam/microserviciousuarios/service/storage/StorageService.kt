@@ -155,12 +155,11 @@ class StorageService(
 
     override fun deleteFile(fileName: String) {
         try {
-            val file = loadFile(fileName)
-            Files.deleteIfExists(file)
-            if (!Files.exists(file)) {
+            val file = File("./uploads/$fileName")
+            if (file.exists()) {
                 throw StorageNotFoundException("File $fileName not found.")
             } else {
-                Files.delete(file)
+                file.delete()
             }
         } catch (e: IOException) {
             throw StorageBadRequestException("Error deleting: $fileName -> ${e.message}")
