@@ -279,7 +279,7 @@ fun Application.spacesRoutes() {
                         {"Se deben actualizar o eliminar las reservas futuras asociadas a esta sala antes de continuar con la operación."}
 
                         spacesRepository.delete("Bearer $token", id)
-                        spacesRepository.deleteFile("Bearer $token", sala.image!!)
+                        spacesRepository.deleteFile("Bearer $token", sala.image!! + ".png")
 
                         call.respond(HttpStatusCode.NoContent)
 

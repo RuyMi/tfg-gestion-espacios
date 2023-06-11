@@ -298,6 +298,7 @@ fun Application.bookingsRoutes() {
                         val space = spaceRepository.findById("Bearer $token", entity.spaceId)
 
                         if(!userRole.contains("ADMINISTRATOR")){
+                            require(space.authorizedRoles.any { userRole.contains(it) }){"No tienes permisos para reservar este espacio"}
                             require(subject == entity.userId){"No se puede realizar la reserva a nombre de otra persona"}
                             require(user.credits >= space.price) {"No tienes créditos suficientes para realizar la reserva"}
                             userRepository.updateCreditsMe("Bearer $token", subject, space.price)
@@ -307,9 +308,7 @@ fun Application.bookingsRoutes() {
                             require(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(entity.startTime.split("T")[0])) <= space.bookingWindow)
                             {"No se puede reservar con tanta anterioridad."}
                             require(bookingsRepository.findByTime("Bearer $token", entity.spaceId, entity.startTime.split("T")[0])
-                                .data
-                                .filter{it -> it.startTime.split("T")[1].split(":")[0] == entity.startTime.split("T")[1].split(":")[0]}
-                                .isEmpty()
+                                    .data.none { it -> it.startTime.split("T")[1].split(":")[0] == entity.startTime.split("T")[1].split(":")[0] }
                             )
                             {"Franja horaria no disponible."}
 
@@ -478,11 +477,12 @@ fun Application.bookingsRoutes() {
                             require(bookingsRepository.findById("Bearer $token", id!!).userId == subject)
                             {"La reserva que se quiere eliminar no está guardada bajo el mismo usuario."}
 
-                            require(LocalDateTime.parse(bookingsRepository.findById("Bearer $token", id!!).startTime).isAfter(LocalDateTime.now()))
+                            require(LocalDateTime.parse(bookingsRepository.findById("Bearer $token", id).startTime).isAfter(LocalDateTime.now()))
                             {"No se puede eliminar una reserva que ya ha comenzado."}
 
                             val spaceId = bookingsRepository.findById("Bearer $token", id).spaceId
 
+                            bookingsRepository.delete("Bearer $token", id)
                             userRepository.updateCreditsMe(
                                 "Bearer $token",
                                 subject,

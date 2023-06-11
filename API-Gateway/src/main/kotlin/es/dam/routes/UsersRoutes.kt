@@ -503,6 +503,7 @@ fun Application.usersRoutes() {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
                         val userRole = originalToken.payload.getClaim("role").toString()
+                        val subject = originalToken.subject.toString()
 
                         val id = call.parameters["id"]
 
@@ -512,6 +513,7 @@ fun Application.usersRoutes() {
                             call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
                             return@delete
                         }
+                        require(subject != id){"No puedes eliminarte a ti mismo."}
 
                         if(userRole.contains("ADMINISTRATOR")) {
                             require(
@@ -520,7 +522,7 @@ fun Application.usersRoutes() {
                             val user = userRepository.findById("Bearer $token", id)
 
                             userRepository.delete("Bearer $token", id)
-                            userRepository.deleteFile("Bearer $token", user.avatar!!)
+                            userRepository.deleteFile("Bearer $token", user.avatar!! + ".png")
 
                             call.respond(HttpStatusCode.NoContent)
                         }else{

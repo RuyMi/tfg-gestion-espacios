@@ -101,20 +101,17 @@ class StorageService(
      * @return imagen como un recurso
      */
     override fun loadAsResource(filename: String): Resource {
-         try {
-             return try {
-                 val file = File("./uploads/$filename")
-                 UrlResource(file.toURI())
-             } catch (e: Exception) {
-                 val resourceStream = getResourceAsStream("placeholder.png")
-                 val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
-                 val outputFile = Files.createTempFile("temp", "").toFile()
-                 ImageIO.write(imagePlaceHolder, "", outputFile)
-                 UrlResource(outputFile.toURI())
-             }
-        } catch (e: MalformedURLException) {
-            throw StorageNotFoundException("No se puede leer fichero: $filename -> ${e.message}")
+        return try {
+            val file = File("./uploads/$filename")
+            UrlResource(file.toURI())
+        } catch (e: Exception) {
+            val resourceStream = getResourceAsStream("placeholder.png")
+            val imagePlaceHolder: BufferedImage = ImageIO.read(resourceStream)
+            val outputFile = Files.createTempFile("temp", "").toFile()
+            ImageIO.write(imagePlaceHolder, "", outputFile)
+            UrlResource(outputFile.toURI())
         }
+
     }
 
     /**
@@ -152,17 +149,10 @@ class StorageService(
      *
      * @param fileName nombre de la imagen a borrar
      */
-
     override fun deleteFile(fileName: String) {
-        try {
-            val file = File("./uploads/$fileName")
-            if (file.exists()) {
-                throw StorageNotFoundException("File $fileName not found.")
-            } else {
-                file.delete()
-            }
-        } catch (e: IOException) {
-            throw StorageBadRequestException("Error deleting: $fileName -> ${e.message}")
+        val file = File("./uploads/$fileName")
+        if (file.exists()) {
+            file.delete()
         }
     }
 
