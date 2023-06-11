@@ -93,4 +93,10 @@ interface KtorFitRestUsers {
         @Header("Authorization") token: String,
         @Path("id") id: String
     )
+
+    @DELETE("users/storage/{uuid}")
+    suspend fun deleteFile(
+        @Header("Authorization") token: String,
+        @Path("uuid") uuid: String
+    )
 }

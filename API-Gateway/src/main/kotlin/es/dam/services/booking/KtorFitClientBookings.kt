@@ -42,7 +42,6 @@ object KtorFitClientBookings {
                                 }
                             }
                         }
-
                     }
                 }
             }

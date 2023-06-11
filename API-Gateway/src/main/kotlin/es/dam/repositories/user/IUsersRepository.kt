@@ -27,4 +27,5 @@ interface IUsersRepository {
     suspend fun register(entity: UserRegisterDTO): UserTokenDTO
     suspend fun downloadFile(uuid: String): File
     suspend fun uploadFile(token: String, file: MultipartBody.Part): Call<UserPhotoDTO>
+    suspend fun deleteFile(token: String, uuid: String)
 }
