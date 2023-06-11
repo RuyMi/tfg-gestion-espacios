@@ -1,11 +1,17 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+/// Widget que muestra la información de contacto de la aplicación.
 class AcercaDeWidget extends StatelessWidget {
   const AcercaDeWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
     return AlertDialog(

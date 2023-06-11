@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
 import 'package:gestion_espacios_app/models/reserva.dart';
@@ -11,6 +15,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../widgets/error_widget.dart';
 
+/// Lista de horas disponibles.
 final List<Map<String, dynamic>> horas = [
   {'hora': '08:25 - 09:20', 'ocupada': false},
   {'hora': '09:20 - 10:15', 'ocupada': false},
@@ -22,6 +27,7 @@ final List<Map<String, dynamic>> horas = [
   {'hora': '14:20 - 15:15', 'ocupada': false},
 ];
 
+/// Clase que representa el diálogo de añadir reserva.
 class NuevaReservaBODialog extends StatefulWidget {
   final Usuario usuario;
 
@@ -33,22 +39,40 @@ class NuevaReservaBODialog extends StatefulWidget {
   _NuevaReservaBODialog createState() => _NuevaReservaBODialog();
 }
 
+/// Clase que representa el estado del diálogo de añadir reserva.
 class _NuevaReservaBODialog extends State<NuevaReservaBODialog> {
+  /// El día seleccionado.
   DateTime? selectedDay;
+
+  /// La hora seleccionada.
   String? selectedHour;
+
+  /// La imagen del espacio seleccionado.
   String image = '';
+
+  /// El id del espacio seleccionado.
   String spaceId = '';
+
+  /// El nombre del espacio seleccionado.
   String spaceName = '';
+
+  /// Las observaciones de la reserva.
   String observations = '';
+
+  /// Variable que indica si se requiere autorización.
   bool requiresAuthorization = false;
+
+  /// Variable que indica la lista de espacios.
   List<Espacio> espacios = [];
 
+  /// Función que convierte la hora de tipo DateTime a String.
   String convertirHoraLocalDateTime(String localDateTime) {
     DateTime horaDateTime = DateTime.parse(localDateTime);
     String horaInicio = DateFormat('HH:mm').format(horaDateTime);
     return horaInicio;
   }
 
+  /// Función que actualiza las horas ocupadas.
   void actualizarHorasOcupadas(List<String> horasOcupadas) {
     setState(() {
       List<String> horasOcupadasConvertidas = horasOcupadas
@@ -80,12 +104,25 @@ class _NuevaReservaBODialog extends State<NuevaReservaBODialog> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
+
+    /// Se obtiene el provider de reservas.
     final reservasProvider = Provider.of<ReservasProvider>(context);
+
+    /// Se obtiene el usuario actual.
     Usuario usuario = widget.usuario;
+
+    /// Se obtiene el id del usuario actual.
     final userId = usuario.uuid;
+
+    /// Se obtiene el nombre del usuario actual.
     final userName = widget.usuario.name;
+
+    /// Variable que indica la hora de inicio.
     String startTime;
+
+    /// Variable que indica la hora de fin.
     String endTime;
 
     return AlertDialog(

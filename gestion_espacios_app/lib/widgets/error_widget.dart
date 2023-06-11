@@ -1,7 +1,15 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 
+/// Widget que muestra un diálogo de error.
 class MyErrorMessageDialog extends StatelessWidget {
+  /// El título del diálogo.
   final String title;
+
+  /// La descripción del diálogo.
   final String description;
 
   const MyErrorMessageDialog({
@@ -12,6 +20,7 @@ class MyErrorMessageDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
     return AlertDialog(

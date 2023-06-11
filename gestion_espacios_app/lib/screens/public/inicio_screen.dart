@@ -1,6 +1,11 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 
+/// Widget que muestra la pantalla de inicio.
 class InicioScreen extends StatefulWidget {
   const InicioScreen({Key? key}) : super(key: key);
 
@@ -9,9 +14,11 @@ class InicioScreen extends StatefulWidget {
   _InicioScreenState createState() => _InicioScreenState();
 }
 
+/// Clase que muestra la pantalla de inicio.
 class _InicioScreenState extends State<InicioScreen> {
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
     return Scaffold(

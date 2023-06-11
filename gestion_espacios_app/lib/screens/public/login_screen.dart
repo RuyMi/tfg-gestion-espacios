@@ -1,9 +1,14 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
 import 'package:provider/provider.dart';
 
+/// Widget que muestra la imagen seleccionada.
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -12,14 +17,23 @@ class LoginScreen extends StatefulWidget {
   _LoginScreen createState() => _LoginScreen();
 }
 
+/// Clase que muestra la pantalla de inicio de sesión.
 class _LoginScreen extends State<LoginScreen> {
+  /// El nombre de usuario.
   String username = '';
+
+  /// La contraseña.
   String password = '';
+
+  /// Indica si se está cargando.
   bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el proveedor de autenticación.
     var authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
     return GestureDetector(

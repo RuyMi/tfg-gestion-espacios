@@ -1,3 +1,8 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
+/// Clase que representa una reserva.
 class Reserva {
   Reserva({
     this.uuid,
@@ -23,6 +28,7 @@ class Reserva {
   String? status;
   String? image;
 
+  /// Función que devuelve un JSON con los datos de la reserva.
   Map<String, dynamic> toJson() {
     return {
       'uuid': uuid,

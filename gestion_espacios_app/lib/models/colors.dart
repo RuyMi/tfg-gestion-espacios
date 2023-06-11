@@ -1,5 +1,10 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 
+/// Clase que contiene los colores de la aplicación.
 class MyColors extends MaterialColor {
   static const int _whiteAppPrimaryValue = 0xFFF1F8FC;
   static const int _lightBlueAppPrimaryValue = 0xFF266296;
@@ -7,6 +12,7 @@ class MyColors extends MaterialColor {
   static const int _pinkAppPrimaryValue = 0xFFB72B7B;
   static const int _blackAppPrimaryValue = 0xFF000000;
 
+  /// Tonos blancos.
   static const MaterialColor whiteApp =
       MaterialColor(_whiteAppPrimaryValue, <int, Color>{
     50: Color(0xFFFCFDFF),
@@ -21,6 +27,7 @@ class MyColors extends MaterialColor {
     900: Color(0xFF8A939E),
   });
 
+  /// Tonos azules.
   static const MaterialColor lightBlueApp =
       MaterialColor(_lightBlueAppPrimaryValue, <int, Color>{
     50: Color(0xFFE1EEF7),
@@ -35,6 +42,7 @@ class MyColors extends MaterialColor {
     900: Color(0xFF0D1F20),
   });
 
+  /// Tonos azules oscuros.
   static const MaterialColor darkBlueApp =
       MaterialColor(_darkBlueAppPrimaryValue, <int, Color>{
     50: Color(0xFF0A0F1A),
@@ -49,6 +57,7 @@ class MyColors extends MaterialColor {
     900: Color(0xFF071B28),
   });
 
+  /// Tonos rosas.
   static const MaterialColor pinkApp =
       MaterialColor(_pinkAppPrimaryValue, <int, Color>{
     50: Color(0xFFF9E8F1),
@@ -63,6 +72,7 @@ class MyColors extends MaterialColor {
     900: Color(0xFF7F1B3F),
   });
 
+  /// Tonos negrizos.
   static const MaterialColor blackApp =
       MaterialColor(_blackAppPrimaryValue, <int, Color>{
     50: Color(0xFFE6E6E6),

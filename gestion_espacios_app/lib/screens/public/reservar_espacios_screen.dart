@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
 import 'package:gestion_espacios_app/models/reserva.dart';
@@ -10,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+/// Lista de horas disponibles.
 final List<Map<String, dynamic>> horas = [
   {'hora': '08:25 - 09:20', 'ocupada': false},
   {'hora': '09:20 - 10:15', 'ocupada': false},
@@ -21,6 +26,7 @@ final List<Map<String, dynamic>> horas = [
   {'hora': '14:20 - 15:15', 'ocupada': false},
 ];
 
+/// Pantalla de reserva de espacios.
 class ReservaEspacioScreen extends StatefulWidget {
   const ReservaEspacioScreen({super.key});
 
@@ -29,19 +35,31 @@ class ReservaEspacioScreen extends StatefulWidget {
   _ReservaSala createState() => _ReservaSala();
 }
 
+/// Clase que muestra la pantalla de reserva de espacios.
 class _ReservaSala extends State<ReservaEspacioScreen> {
+  /// Variable que indica si se ha seleccionado un día.
   bool _isDaySelected = false;
+
+  /// Variable que indica si se ha seleccionado una hora.
   bool _isHourSelected = false;
+
+  /// Variable que indica si el día seleccionado.
   DateTime? selectedDay;
+
+  /// Variable que indica la hora seleccionada.
   String? selectedHour;
+
+  /// Controlador del scroll.
   final ScrollController _scrollController = ScrollController();
 
+  /// Función que convierte una fecha a un String.
   String convertirHoraLocalDateTime(String localDateTime) {
     DateTime horaDateTime = DateTime.parse(localDateTime);
     String horaInicio = DateFormat('HH:mm').format(horaDateTime);
     return horaInicio;
   }
 
+  /// Función que actualiza las horas ocupadas.
   void actualizarHorasOcupadas(List<String> horasOcupadas) {
     setState(() {
       List<String> horasOcupadasConvertidas = horasOcupadas
@@ -61,18 +79,38 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
+    /// Se obtiene el espacio seleccionado.
     final Espacio espacio =
         ModalRoute.of(context)!.settings.arguments as Espacio;
+
+    /// Se obtiene el provider de reservas.
     final reservasProvider = Provider.of<ReservasProvider>(context);
+
+    /// Se obtiene el provider de autenticación.
     final authProvider = Provider.of<AuthProvider>(context);
+
+    /// Se obtiene el id del usuario actual.
     final userId = authProvider.usuario.uuid;
+
+    /// Se obtiene el nombre del usuario actual.
     final userName = authProvider.usuario.name;
+
+    /// Se obtiene el id del espacio actual.
     final spaceId = espacio.uuid;
+
+    /// Se obtiene el nombre del espacio actual.
     final spaceName = espacio.name;
+
+    /// Variable que indica las observaciones de la reserva.
     String observations = '';
+
+    /// variable que indica la hora de inicio de la reserva.
     String startTime;
+
+    /// variable que indica la hora de fin de la reserva.
     String endTime;
 
     return GestureDetector(
