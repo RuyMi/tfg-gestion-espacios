@@ -20,6 +20,14 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
+/**
+ * Controlador de la API REST de usuarios. Permite realizar operaciones CRUD sobre los usuarios.
+ * También permite realizar el login y el registro de usuarios.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 @RestController
 @RequestMapping("/users")
 class UsersController @Autowired constructor(

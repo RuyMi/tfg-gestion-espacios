@@ -1,5 +1,12 @@
 package es.dam.exceptions
 
+/**
+ * Clase que implementa las excepciones personalizadas de los espacios.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 sealed class BookingExceptions(message: String) : RuntimeException(message)
 
 class BookingNotFoundException(message: String) : SpaceExceptions(message)

@@ -10,6 +10,13 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 
+/**
+ * Configuración de las rutas del microservicio de almacenamiento. Se encarga de la subida y descarga de imágenes.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 fun Application.storageRoutes() {
     val storageService: StorageServiceImpl by inject()
 

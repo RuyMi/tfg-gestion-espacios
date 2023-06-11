@@ -8,6 +8,13 @@ import org.bson.UuidRepresentation
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration
 
+/**
+ * Configuración de la base de datos. Se conecta a la base de datos de MongoDB.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 @Configuration
 class MongoConfig : AbstractMongoClientConfiguration() {
     override fun getDatabaseName(): String {

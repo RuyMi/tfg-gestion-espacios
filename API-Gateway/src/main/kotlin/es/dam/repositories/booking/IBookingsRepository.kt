@@ -5,6 +5,13 @@ import es.dam.dto.BookingDataDTO
 import es.dam.dto.BookingResponseDTO
 import es.dam.dto.BookingUpdateDTO
 
+/**
+ * Interfaz que define las operaciones que se pueden realizar sobre reservas.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 interface IBookingsRepository {
     suspend fun findAll(token: String): BookingDataDTO
     suspend fun findById(token: String, id: String): BookingResponseDTO
