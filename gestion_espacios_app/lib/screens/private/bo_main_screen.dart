@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/theme_provider.dart';
 import 'package:gestion_espacios_app/screens/private/bo_espacios_screen.dart';
@@ -6,6 +10,7 @@ import 'package:gestion_espacios_app/screens/private/bo_usuarios_screen.dart';
 import 'package:gestion_espacios_app/widgets/logout_widget.dart';
 import 'package:provider/provider.dart';
 
+/// Clase que representa la pantalla principal del backoffice.
 class BOMainScreen extends StatefulWidget {
   const BOMainScreen({super.key});
 
@@ -14,8 +19,10 @@ class BOMainScreen extends StatefulWidget {
   _BOMainScreenState createState() => _BOMainScreenState();
 }
 
+/// Clase que muestra la pantalla principal del backoffice.
 class _BOMainScreenState extends State<BOMainScreen>
     with SingleTickerProviderStateMixin {
+  /// El controlador de la pestaña.
   late TabController _tabController;
 
   @override
@@ -26,7 +33,10 @@ class _BOMainScreenState extends State<BOMainScreen>
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
+
+    /// El provider del tema.
     final themeProvider = context.watch<ThemeProvider>();
 
     return DefaultTabController(

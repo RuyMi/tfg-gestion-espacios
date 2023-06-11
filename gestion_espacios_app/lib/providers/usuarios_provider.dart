@@ -1,13 +1,22 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/usuario.dart';
 import 'package:http/http.dart' as http;
 
+/// Clase que gestiona la autenticación de los usuarios.
 class UsuariosProvider with ChangeNotifier {
+  /// Token de autenticación.
   final String? _token;
 
+  /// Lista de usuarios.
   List<Usuario> _usuarios = [];
+
+  /// Usuario actual.
   Usuario _actualUsuario = Usuario(
     uuid: '',
     name: '',
@@ -20,7 +29,10 @@ class UsuariosProvider with ChangeNotifier {
     isActive: false,
   );
 
+  /// Getter de la lista de usuarios.
   List<Usuario> get usuarios => _usuarios;
+
+  /// Getter del usuario actual.
   Usuario get actualUsuario => _actualUsuario;
 
   UsuariosProvider(this._token) {
@@ -28,8 +40,10 @@ class UsuariosProvider with ChangeNotifier {
     fetchActualUsuario();
   }
 
+  /// Url base de la API.
   String baseUrl = 'http://app.iesluisvives.org:1212';
 
+  /// Función que obtiene los usuarios.
   Future<void> fetchUsuarios() async {
     final response = await http.get(Uri.parse('$baseUrl/users'),
         headers: {'Authorization': 'Bearer $_token'});
@@ -58,6 +72,7 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que obtiene el usuario actual.
   Future<Usuario?> fetchActualUsuario() async {
     final response = await http.get(Uri.parse('$baseUrl/users/me'),
         headers: {'Authorization': 'Bearer $_token'});
@@ -83,6 +98,7 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que obtiene un usuario por su uuid.
   Future<Usuario?> fetchUsuario(String uuid) async {
     final response = await http.get(Uri.parse('$baseUrl/users/$uuid'),
         headers: {'Authorization': 'Bearer $_token'});
@@ -108,6 +124,7 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que registra un usuario.
   Future<void> register(Usuario usuario) async {
     final response = await http.post(
       Uri.parse('$baseUrl/users/register'),
@@ -135,6 +152,7 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que actualiza un usuario.
   Future<void> updateUsuario(String uuid, Usuario usuario) async {
     final response = await http.put(
       Uri.parse('$baseUrl/users/$uuid'),
@@ -165,6 +183,7 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que actualiza la actividad de un usuario.
   Future<void> updateUsuarioActividad(String uuid, bool isActive) async {
     final response = await http.put(
       Uri.parse('$baseUrl/users/active/$uuid/$isActive'),
@@ -181,6 +200,7 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que actualiza los créditos de un usuario.
   Future<void> updateUsuarioCreditos(String uuid, String creditos) async {
     final response = await http.put(
       Uri.parse('$baseUrl/users/credits/$uuid/$creditos'),
@@ -197,6 +217,7 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que actualiza a un usuario propio.
   Future<void> updateMe(Usuario usuario) async {
     final response = await http.put(
       Uri.parse('$baseUrl/users/me'),
@@ -227,6 +248,7 @@ class UsuariosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que elimina un usuario.
   Future<void> deleteUsuario(String uuid) async {
     final response = await http.delete(
       Uri.parse('$baseUrl/users/$uuid'),

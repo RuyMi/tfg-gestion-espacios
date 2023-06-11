@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/usuario.dart';
 import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
@@ -7,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../../widgets/alert_widget.dart';
 
+/// Clase que representa la pantalla de registro de usuario.
 class RegistroUsuarioScreen extends StatefulWidget {
   const RegistroUsuarioScreen({Key? key}) : super(key: key);
 
@@ -15,11 +20,21 @@ class RegistroUsuarioScreen extends StatefulWidget {
   _RegistroUsuarioScreenState createState() => _RegistroUsuarioScreenState();
 }
 
+/// Clase que representa el estado de la pantalla de registro de usuario.
 class _RegistroUsuarioScreenState extends State<RegistroUsuarioScreen> {
+  /// El nombre del usuario.
   String name = '';
+
+  /// El email del usuario.
   String email = '';
+
+  /// El username del usuario.
   String username = '';
+
+  /// La contraseña del usuario.
   String password = '';
+
+  /// La contraseña del usuario.
   String password2 = '';
 
   @override
@@ -32,7 +47,10 @@ class _RegistroUsuarioScreenState extends State<RegistroUsuarioScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /// El provider de usuarios.
     final usuarioProvider = Provider.of<UsuariosProvider>(context);
+
+    /// El usuario actual.
     var theme = Theme.of(context);
 
     return GestureDetector(

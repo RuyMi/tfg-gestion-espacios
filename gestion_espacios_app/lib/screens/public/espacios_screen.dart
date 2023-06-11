@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -10,6 +14,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../models/colors.dart';
 
+/// Widget que muestra la pantalla de espacios.
 class EspaciosScreen extends StatefulWidget {
   const EspaciosScreen({Key? key}) : super(key: key);
 
@@ -18,9 +23,15 @@ class EspaciosScreen extends StatefulWidget {
   _EspaciosScreenState createState() => _EspaciosScreenState();
 }
 
+/// Clase que muestra la pantalla de espacios.
 class _EspaciosScreenState extends State<EspaciosScreen> {
+  /// Controlador del campo de búsqueda.
   final TextEditingController _searchController = TextEditingController();
+
+  /// Lista de espacios filtrados.
   List<Espacio> espaciosFiltrados = [];
+
+  /// Variable que indica si se muestra el spinner de carga.
   bool _showSpinner = true;
 
   @override
@@ -44,6 +55,7 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
     });
   }
 
+  /// Método que filtra los espacios por el nombre.
   Future<List<Espacio>> filterEspacios(String query) async {
     final espaciosProvider =
         Provider.of<EspaciosProvider>(context, listen: false);
@@ -63,11 +75,16 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
+    /// Se obtiene el proveedor de autenticación.
     final authProvider = Provider.of<AuthProvider>(context);
+
+    /// Se obtiene el usuario actual.
     final usuario = authProvider.usuario;
 
+    /// Se obtiene el proveedor de espacios.
     final espaciosProvider = Provider.of<EspaciosProvider>(context);
 
     return GestureDetector(
@@ -185,40 +202,40 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                             theme.colorScheme.secondary),
                       )
                     : Center(
-                      child: Container(
-                        margin: const EdgeInsets.all(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.hide_source_rounded,
-                              size: 100,
-                              color: theme.colorScheme.onBackground,
-                            ),
-                            const SizedBox(height: 20),
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.background,
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: theme.colorScheme.onBackground,
-                                  width: 2,
+                        child: Container(
+                          margin: const EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.hide_source_rounded,
+                                size: 100,
+                                color: theme.colorScheme.onBackground,
+                              ),
+                              const SizedBox(height: 20),
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.background,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: theme.colorScheme.onBackground,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: const Text(
+                                  'No existen espacios disponibles',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'KoHo',
+                                  ),
                                 ),
                               ),
-                              child: const Text(
-                                'No existen espacios disponibles',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'KoHo',
-                                ),
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
               ),
             if (espaciosFiltrados.isNotEmpty)
               Expanded(
@@ -295,7 +312,8 @@ class _EspaciosScreenState extends State<EspaciosScreen> {
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
-                                                  Text(espacio.description ?? '',
+                                                  Text(
+                                                      espacio.description ?? '',
                                                       style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.normal,

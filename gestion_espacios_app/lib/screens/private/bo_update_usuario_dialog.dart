@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/usuario.dart';
 import 'package:gestion_espacios_app/providers/storage_provider.dart';
@@ -11,6 +15,7 @@ import 'package:gestion_espacios_app/widgets/user_image_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+/// Clase que representa el diálogo para editar un usuario.
 class EditarUsuarioBODialog extends StatefulWidget {
   final Usuario usuario;
 
@@ -22,14 +27,30 @@ class EditarUsuarioBODialog extends StatefulWidget {
   _EditarUsuarioBODialog createState() => _EditarUsuarioBODialog();
 }
 
+/// Clase que muestra el diálogo para editar un usuario.
 class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
+  /// El controlador del campo de texto del nombre.
   late TextEditingController nameController;
+
+  /// El controlador del campo de texto del nombre de usuario.
   late TextEditingController usernameController;
+
+  /// El controlador del campo de texto de la contraseña.
   late TextEditingController passwordController;
+
+  /// El controlador del campo de texto del email.
   late TextEditingController emailController;
+
+  /// El controlador del campo de texto de los créditos.
   late TextEditingController creditsController;
+
+  /// El controlador del campo de texto de si está activo.
   late TextEditingController isActiveController;
+
+  /// La imagen seleccionada.
   PickedFile? selectedImage;
+
+  /// El picker de imágenes.
   ImagePicker picker = ImagePicker();
 
   @override
@@ -56,6 +77,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
     super.dispose();
   }
 
+  /// Función que intenta parsear un entero.
   int tryParseInt(String value, int lastValue) {
     int result;
     try {
@@ -66,6 +88,7 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
     return result;
   }
 
+  /// Función que llama al selector de imágenes.
   void pickImage() async {
     PickedFile? pickedFile =
         // ignore: invalid_use_of_visible_for_testing_member
@@ -79,16 +102,37 @@ class _EditarUsuarioBODialog extends State<EditarUsuarioBODialog> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
+
+    /// Se obtiene el provider de usuarios.
     final usuariosProvider = Provider.of<UsuariosProvider>(context);
+
+    /// Se obtiene el provider de imágenes.
     final storageProvider = Provider.of<StorageProvider>(context);
+
+    /// Se obtiene el usuario actual.
     final Usuario usuario = widget.usuario;
+
+    /// El nombre del usuario.
     String name = usuario.name;
+
+    /// El nombre de usuario.
     String username = usuario.username;
+
+    /// La contraseña del usuario.
     String password = usuario.password;
+
+    /// El email del usuario.
     String email = usuario.email;
+
+    /// El avatar del usuario.
     String? avatar = usuario.avatar;
+
+    /// Los roles del usuario.
     List<String> userRole = usuario.userRole;
+
+    /// Los créditos del usuario.
     int credits = usuario.credits;
 
     return AlertDialog(

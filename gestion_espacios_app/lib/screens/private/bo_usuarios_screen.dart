@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -11,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/colors.dart';
 
+/// Clase que representa la pantalla de usuarios del backoffice.
 class UsuariosBOScreen extends StatefulWidget {
   const UsuariosBOScreen({Key? key}) : super(key: key);
 
@@ -19,9 +24,15 @@ class UsuariosBOScreen extends StatefulWidget {
   _UsuariosBOScreen createState() => _UsuariosBOScreen();
 }
 
+/// Clase que muestra la pantalla de usuarios del backoffice.
 class _UsuariosBOScreen extends State<UsuariosBOScreen> {
+  /// El controlador del campo de búsqueda.
   final TextEditingController _searchController = TextEditingController();
+  
+  /// La lista de usuarios filtrados.
   List<Usuario> usuariosFiltrados = [];
+
+  /// Variable que indica si se muestra el spinner.
   bool _showSpinner = true;
 
   @override
@@ -47,6 +58,7 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
     _searchController.dispose();
   }
 
+  /// Método que filtra los usuarios.
   Future<List<Usuario>> filterUsuarios(String query) async {
     final usuariosProvider =
         Provider.of<UsuariosProvider>(context, listen: false);
@@ -60,6 +72,7 @@ class _UsuariosBOScreen extends State<UsuariosBOScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
     return Column(children: [

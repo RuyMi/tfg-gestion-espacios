@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
 import 'package:gestion_espacios_app/providers/espacios_provider.dart';
@@ -8,6 +12,7 @@ import 'package:gestion_espacios_app/widgets/picked_image_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+/// Widget que muestra un alert dialog para añadir un nuevo espacio.
 class NuevoEspacioBODialog extends StatefulWidget {
   const NuevoEspacioBODialog({Key? key}) : super(key: key);
 
@@ -16,18 +21,39 @@ class NuevoEspacioBODialog extends StatefulWidget {
   _NuevoEspacioBODialogState createState() => _NuevoEspacioBODialogState();
 }
 
+/// Clase que muestra un alert dialog para añadir un nuevo espacio.
 class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
+  /// Nombre del espacio.
   String name = '';
+
+  /// Descripción del espacio.
   String description = '';
+
+  /// Imagen del espacio.
   String? image = 'placeholder';
+
+  /// Precio del espacio.
   int price = 0;
+
+  /// Capacidad del espacio.
   bool isReservable = false;
+
+  /// Indica si el espacio requiere autorización.
   bool requiresAuthorization = false;
+
+  /// Lista de roles autorizados.
   List<String> authorizedRoles = [];
+
+  /// Ventana de tiempo para reservar el espacio.
   int bookingWindow = 0;
+
+  /// Imagen seleccionada.
   PickedFile? selectedImage;
+
+  /// Selector de imágenes.
   ImagePicker picker = ImagePicker();
 
+  /// Función que comprueba si el valor es un entero.
   int tryParseInt(String value, {int fallbackValue = 0}) {
     int result;
     try {
@@ -38,6 +64,7 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
     return result;
   }
 
+  /// Función que llama al selector de imágenes.
   void pickImage() async {
     PickedFile? pickedFile =
         // ignore: invalid_use_of_visible_for_testing_member
@@ -51,8 +78,13 @@ class _NuevoEspacioBODialogState extends State<NuevoEspacioBODialog> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
+
+    /// Se obtiene el provider de espacios.
     final espaciosProvider = Provider.of<EspaciosProvider>(context);
+
+    /// Se obtiene el provider de las imágenes.
     final storageProvider = Provider.of<StorageProvider>(context);
 
     return AlertDialog(

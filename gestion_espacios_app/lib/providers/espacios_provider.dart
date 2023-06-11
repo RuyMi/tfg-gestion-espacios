@@ -1,15 +1,28 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/espacio.dart';
 import 'package:http/http.dart' as http;
 
+/// Clase que gestiona los espacios.
 class EspaciosProvider with ChangeNotifier {
+  /// Lista de espacios.
   List<Espacio> _espacios = [];
+
+  /// Lista de espacios reservables.
   List<Espacio> _espaciosReservables = [];
+
+  /// Token de autenticación.
   final String? _token;
 
+  /// Getter de la lista de espacios.
   List<Espacio> get espacios => _espacios;
+
+  /// Getter de la lista de espacios reservables.
   List<Espacio> get espaciosReservables => _espaciosReservables;
 
   EspaciosProvider(this._token) {
@@ -17,8 +30,10 @@ class EspaciosProvider with ChangeNotifier {
     fetchEspaciosByReservable(true);
   }
 
+  /// Url base de la API.
   String baseUrl = 'http://app.iesluisvives.org:1212';
 
+  /// Función que obtiene los espacios.
   Future<void> fetchEspacios() async {
     final response = await http.get(Uri.parse('$baseUrl/spaces'),
         headers: {'Authorization': 'Bearer $_token'});
@@ -47,6 +62,7 @@ class EspaciosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que obtiene los espacios reservables.
   Future<void> fetchEspaciosByReservable(bool isReservable) async {
     final response = await http.get(
       Uri.parse('$baseUrl/spaces/reservables/$isReservable'),
@@ -76,6 +92,7 @@ class EspaciosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que obtiene un espacio por su uuid.
   Future<Espacio?> fetchEspacioByUuid(String uuid) async {
     final response = await http.get(
       Uri.parse('$baseUrl/spaces/$uuid'),
@@ -100,6 +117,7 @@ class EspaciosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que obtiene un espacio por su nombre.
   Future<Espacio?> fetchEspacioByName(String name) async {
     final response = await http.get(
       Uri.parse('$baseUrl/spaces/nombre/$name'),
@@ -124,6 +142,7 @@ class EspaciosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que añade un espacio.
   Future<void> addEspacio(Espacio espacio) async {
     final response = await http.post(
       Uri.parse('$baseUrl/spaces'),
@@ -153,6 +172,7 @@ class EspaciosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que actualiza un espacio.
   Future<void> updateEspacio(Espacio espacio) async {
     final response = await http.put(
       Uri.parse('$baseUrl/spaces/${espacio.uuid}'),
@@ -183,6 +203,7 @@ class EspaciosProvider with ChangeNotifier {
     }
   }
 
+  /// Función que elimina un espacio.
   Future<void> deleteEspacio(String uuid) async {
     final response = await http.delete(
       Uri.parse('$baseUrl/spaces/$uuid'),

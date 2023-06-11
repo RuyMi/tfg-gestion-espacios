@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/models/reserva.dart';
 import 'package:gestion_espacios_app/providers/reservas_provider.dart';
@@ -9,6 +13,8 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../widgets/error_widget.dart';
 
+/// Las listas de horas y de estados se utilizan para mostrar los datos en los
+/// dropdowns de la interfaz.
 final List<Map<String, dynamic>> horas = [
   {'hora': '08:25 - 09:20', 'ocupada': false},
   {'hora': '09:20 - 10:15', 'ocupada': false},
@@ -20,24 +26,32 @@ final List<Map<String, dynamic>> horas = [
   {'hora': '14:20 - 15:15', 'ocupada': false},
 ];
 
+/// Los estados de las reservas.
 final List<String> statusOptions = [
   'PENDING',
   'APPROVED',
   'REJECTED',
 ];
 
+/// Devuelve la hora de inicio de una reserva a partir de una fecha y hora
+/// en formato localDateTime.
 String startTimeFromLocalDateTime(String localDateTimeString) {
   return '${localDateTimeString.split('T')[1].split(':')[0]}:${localDateTimeString.split('T')[1].split(':')[1]}';
 }
 
+/// Devuelve la hora de fin de una reserva a partir de una fecha y hora
+/// en formato localDateTime.
 String endTimeFromLocalDateTime(String localDateTimeString) {
   return '${localDateTimeString.split('T')[1].split(':')[0]}:${localDateTimeString.split('T')[1].split(':')[1]}';
 }
 
+/// Devuelve la fecha de una reserva a partir de una fecha y hora
+/// en formato localDateTime.
 String dateFromLocalDateTime(String localDateTimeString) {
   return '${localDateTimeString.split('T')[0].split('-')[2]}/${localDateTimeString.split('T')[0].split('-')[1]}/${localDateTimeString.split('T')[0].split('-')[0].replaceAll('-', '/')}';
 }
 
+/// Pantalla de edición de una reserva del BackOffice.
 class EditarReservaBODialog extends StatefulWidget {
   final Reserva reserva;
 
@@ -49,9 +63,15 @@ class EditarReservaBODialog extends StatefulWidget {
   _EditarReservaBODialog createState() => _EditarReservaBODialog();
 }
 
+/// Estado de la pantalla de edición de una reserva del BackOffice.
 class _EditarReservaBODialog extends State<EditarReservaBODialog> {
+  /// Controlador del campo de observaciones.
   late TextEditingController observationsController;
+
+  /// Día seleccionado en el calendario.
   DateTime? selectedDay;
+
+  /// Hora seleccionada en el dropdown.
   String? selectedHour;
 
   @override
@@ -67,12 +87,14 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
     super.dispose();
   }
 
+  /// Convierte una hora en formato localDateTime a un String.
   String convertirHoraLocalDateTime(String localDateTime) {
     DateTime horaDateTime = DateTime.parse(localDateTime);
     String horaInicio = DateFormat('HH:mm').format(horaDateTime);
     return horaInicio;
   }
 
+  /// Actualiza las horas ocupadas de la reserva.
   void actualizarHorasOcupadas(List<String> horasOcupadas) {
     setState(() {
       List<String> horasOcupadasConvertidas = horasOcupadas
@@ -92,18 +114,38 @@ class _EditarReservaBODialog extends State<EditarReservaBODialog> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
+
+    /// Se obtiene el provider de reservas.
     final reservasProvider = Provider.of<ReservasProvider>(context);
+
+    /// Se obtiene la reserva.
     final Reserva reserva = widget.reserva;
+
+    /// El nombre del espacio.
     String spaceName = reserva.spaceName;
+
+    /// El nombre del usuario.
     String userName = reserva.userName;
+
+    /// Las observaciones de la reserva.
     String observations = reserva.observations ?? '';
+
+    /// La imagen del espacio asociado a dicha reserva.
     String? image = reserva.image;
+
+    /// La fecha de inicio de la reserva.
     String startTime = reserva.startTime;
+
+    /// La fecha de fin de la reserva.
     String endTime = reserva.endTime;
 
+    /// La hora de la reserva.
     String myHour =
         '${startTimeFromLocalDateTime(startTime)} - ${endTimeFromLocalDateTime(endTime)}';
+
+    /// La fecha de la reserva.
     String myDate = dateFromLocalDateTime(startTime);
 
     return AlertDialog(
