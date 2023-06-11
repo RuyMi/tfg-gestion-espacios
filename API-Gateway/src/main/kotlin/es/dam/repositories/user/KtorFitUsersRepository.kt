@@ -91,6 +91,15 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    override suspend fun deleteFile(token: String, uuid: String) = withContext(Dispatchers.IO) {
+        val call = async { client.deleteFile(token, uuid) }
+        try {
+            return@withContext call.await()
+        } catch (e: Exception) {
+            throw Exception("Error deleting file with uuid $uuid: ${e.message}")
+        }
+    }
+
     /**
      * Funcion que te devuelve todos los usuarios
      *
@@ -253,4 +262,6 @@ class KtorFitUsersRepository: IUsersRepository {
             throw Exception("Error updating user: ${e.message}")
         }
     }
+
+
 }

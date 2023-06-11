@@ -61,6 +61,12 @@ interface KtorFitRestSpaces {
         @Path("id") id: String
     )
 
+    @DELETE("spaces/storage/{uuid}")
+    suspend fun deleteFile(
+        @Header("Authorization") token: String,
+        @Path("uuid") uuid: String
+    )
+
     @GET("spaces/storage/{uuid}")
     suspend fun downloadFile(
         @Path("uuid") uuid: String

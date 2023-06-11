@@ -23,6 +23,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.ktor.ext.inject
 import retrofit2.await
+import java.time.LocalDateTime
 import java.util.*
 
 private const val ENDPOINT = "spaces"
@@ -267,12 +268,18 @@ fun Application.spacesRoutes() {
                     try {
                         val token = tokenService.generateToken(call.principal()!!)
                         val id = call.parameters["id"]
-                        val uuid = UUID.fromString(id)
+                        try {
+                            UUID.fromString(id)
+                        } catch (e: IllegalArgumentException) {
+                            throw SpaceBadRequestException("El id debe ser un UUID válido")
+                        }
+                        val sala = spacesRepository.findById("Bearer $token", id!!)
 
-                        require(bookingsRepository.findBySpace("Bearer $token", id!!).data.isEmpty())
-                        {"Se deben actualizar o eliminar las reservas asociadas a esta sala antes de continuar con la operación."}
+                        require(bookingsRepository.findBySpace("Bearer $token", id).data.none { LocalDateTime.parse(it.startTime).isAfter(LocalDateTime.now()) })
+                        {"Se deben actualizar o eliminar las reservas futuras asociadas a esta sala antes de continuar con la operación."}
 
                         spacesRepository.delete("Bearer $token", id)
+                        spacesRepository.deleteFile("Bearer $token", sala.image!!)
 
                         call.respond(HttpStatusCode.NoContent)
 
@@ -283,7 +290,7 @@ fun Application.spacesRoutes() {
                     } catch (e: SpaceInternalErrorException) {
                         call.respond(HttpStatusCode.InternalServerError, "${e.message}")
                     } catch (e: IllegalArgumentException) {
-                        call.respond(HttpStatusCode.BadRequest, "El id debe ser un id válido")
+                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
                     }
                 }
             }

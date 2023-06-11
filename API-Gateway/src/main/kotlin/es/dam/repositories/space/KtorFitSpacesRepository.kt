@@ -170,4 +170,15 @@ class KtorFitSpacesRepository: ISpacesRepository {
             throw Exception("Error deleting space with id $id: ${e.message}")
         }
     }
+
+    override suspend fun deleteFile(token: String, uuid: String) = withContext(Dispatchers.IO) {
+        val call = async { client.deleteFile(token, uuid) }
+        try {
+            return@withContext call.await()
+        } catch (e: Exception) {
+            throw Exception("Error deleting file with uuid $uuid: ${e.message}")
+        }
+    }
+
+
 }
