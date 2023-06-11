@@ -6,6 +6,13 @@ import es.dam.dto.BookingDataDTO
 import es.dam.dto.BookingResponseDTO
 import es.dam.dto.BookingUpdateDTO
 
+/**
+ * Interfaz que contiene las funciones que se comunican con el microservicio de reservas.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 interface KtorFitRestBookings {
     @GET("bookings")
     suspend fun findAll(

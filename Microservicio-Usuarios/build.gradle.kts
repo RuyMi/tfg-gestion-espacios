@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.8.10"
     kotlin("plugin.spring") version "1.8.10"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+    id("org.jetbrains.dokka") version "1.8.10"
 }
 
 group = "es.dam"

@@ -5,6 +5,10 @@ import okhttp3.MultipartBody
 import retrofit2.Call
 import java.io.File
 
+/**
+ * Interfaz que define las operaciones que se pueden realizar sobre espacios.
+ *
+ */
 interface ISpacesRepository {
     suspend fun findAll(token: String): SpaceDataDTO
     suspend fun findById(token: String, id: String): SpaceResponseDTO

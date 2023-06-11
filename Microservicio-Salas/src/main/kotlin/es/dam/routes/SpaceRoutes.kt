@@ -14,6 +14,13 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 
+/**
+ * Configuración de las rutas del microservicio de espacios.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 
 fun Application.spaceRoutes() {
     val spaceService: SpaceServiceImpl by inject()

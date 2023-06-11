@@ -27,6 +27,13 @@ import java.util.*
 
 private const val ENDPOINT = "spaces"
 
+/**
+ * Clase que contiene las rutas de la entidad Space
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 fun Application.spacesRoutes() {
     val bookingsRepository : KtorFitBookingsRepository by inject()
     val spacesRepository : KtorFitSpacesRepository by inject()

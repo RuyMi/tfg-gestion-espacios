@@ -23,17 +23,31 @@ import java.util.*
 import java.util.stream.Stream
 import javax.imageio.ImageIO
 
+/**
+ * Clase que implementa el servicio de almacenamiento. Implementa la interfaz [IStorageService]. Se encarga de gestionar el almacenamiento de imágenes.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 @Service
 class StorageService(
     @Value("\${upload.root-location}") path: String,
 ) : IStorageService {
     private val ruta: Path
 
+    /**
+     * Inicializa el servicio de almacenamiento.
+     */
     init {
         ruta = Paths.get(path)
         this.initStorageService()
     }
 
+    /**
+     * Inicializa el servicio de almacenamiento.
+     *
+     */
     override fun initStorageService() {
         try {
             if (!Files.exists(ruta))
@@ -43,12 +57,23 @@ class StorageService(
         }
     }
 
+    /**
+     * Devuelve la url de la imagen.
+     *
+     * @param filename nombre de la imagen
+     * @return url de la imagen
+     */
     override fun getUrl(filename: String): String {
         return MvcUriComponentsBuilder
             .fromMethodName(StorageController::class.java, "serveFile", filename, null)
             .build().toUriString()
     }
 
+    /**
+     * Devuelve la ruta de todas las imagenes.
+     *
+     * @return ruta de todas las imagenes
+     */
     override fun loadAll(): Stream<Path> {
         return try {
             Files.walk(ruta, 1)
@@ -59,10 +84,22 @@ class StorageService(
         }
     }
 
+    /**
+     * Devuelve la ruta de una imagen.
+     *
+     * @param fileName nombre de la imagen
+     * @return ruta de una imagen
+     */
     override fun loadFile(fileName: String): Path {
         return ruta.resolve(fileName)
     }
 
+    /**
+     * Devuelve la imagen como un recurso.
+     *
+     * @param filename nombre de la imagen
+     * @return imagen como un recurso
+     */
     override fun loadAsResource(filename: String): Resource {
          try {
              return try {
@@ -80,6 +117,12 @@ class StorageService(
         }
     }
 
+    /**
+     * Guarda una imagen.
+     *
+     * @param file imagen a guardar
+     * @return nombre de la imagen guardada
+     */
     override fun storeFile(file: MultipartFile): String {
         val fileName = StringUtils.cleanPath(file.originalFilename.toString())
         val extension = StringUtils.getFilenameExtension(fileName).toString()
@@ -104,6 +147,12 @@ class StorageService(
         }
     }
 
+    /**
+     * Borra una imagen.
+     *
+     * @param fileName nombre de la imagen a borrar
+     */
+
     override fun deleteFile(fileName: String) {
         try {
             val file = loadFile(fileName)
@@ -118,6 +167,12 @@ class StorageService(
         }
     }
 
+    /**
+     * Devuelve un recurso como un stream.
+     *
+     * @param resourceName nombre del recurso
+     * @return recurso como un stream
+     */
     fun getResourceAsStream(resourceName: String): InputStream? {
         val classLoader = Thread.currentThread().contextClassLoader
         return classLoader.getResourceAsStream(resourceName)?: null

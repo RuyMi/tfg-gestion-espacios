@@ -3,6 +3,14 @@ package es.dam.microserviciousuarios.dto
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
+/**
+ * DTOs de la clase User.
+ * Contiene los DTOs de User, UserRegister, UserUpdate, UserLogin, UserToken, UserResponse y UserData
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 @Serializable
 data class UserDTO(
     val id: String? = null,
