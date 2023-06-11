@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -10,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 
+/// Pantalla que muestra las reservas del usuario.
 class MisReservasScreen extends StatefulWidget {
   const MisReservasScreen({Key? key}) : super(key: key);
 
@@ -18,9 +23,15 @@ class MisReservasScreen extends StatefulWidget {
   _MisReservasScreenState createState() => _MisReservasScreenState();
 }
 
+/// Clase que muestra la pantalla de las reservas del usuario.
 class _MisReservasScreenState extends State<MisReservasScreen> {
+  /// Controlador del campo de búsqueda.
   final TextEditingController _searchController = TextEditingController();
+
+  /// Lista de reservas del usuario.
   List<Reserva> misReservasFiltradas = [];
+
+  /// Variable que indica si se muestra el spinner de carga.
   bool _showSpinner = true;
 
   @override
@@ -42,6 +53,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
     });
   }
 
+  /// Función que filtra las reservas del usuario.
   Future<List<Reserva>> filterReserva(String query) async {
     final espaciosProvider =
         Provider.of<ReservasProvider>(context, listen: false);
@@ -61,8 +73,10 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
+    /// Se obtiene el provider de las reservas.
     final reservasProvider = Provider.of<ReservasProvider>(context);
 
     return GestureDetector(
@@ -153,40 +167,40 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                             theme.colorScheme.secondary),
                       )
                     : Center(
-                      child: Container(
-                        margin: const EdgeInsets.all(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.hide_source_rounded,
-                              size: 100,
-                              color: theme.colorScheme.onBackground,
-                            ),
-                            const SizedBox(height: 20),
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.background,
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: theme.colorScheme.onBackground,
-                                  width: 2,
+                        child: Container(
+                          margin: const EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.hide_source_rounded,
+                                size: 100,
+                                color: theme.colorScheme.onBackground,
+                              ),
+                              const SizedBox(height: 20),
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.background,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: theme.colorScheme.onBackground,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: const Text(
+                                  'No existen reservas disponibles',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'KoHo',
+                                  ),
                                 ),
                               ),
-                              child: const Text(
-                                'No existen reservas disponibles',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'KoHo',
-                                ),
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
               ),
             if (misReservasFiltradas.isNotEmpty)
               Expanded(

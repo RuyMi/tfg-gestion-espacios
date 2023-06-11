@@ -1,6 +1,11 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/widgets/acercade_widget.dart';
 
+/// Widget que muestra el tablón de anuncios.
 class BuzonScreen extends StatefulWidget {
   const BuzonScreen({Key? key}) : super(key: key);
 
@@ -9,9 +14,11 @@ class BuzonScreen extends StatefulWidget {
   _BuzonScreenState createState() => _BuzonScreenState();
 }
 
+/// Clase que muestra el tablón de anuncios.
 class _BuzonScreenState extends State<BuzonScreen> {
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
     return Scaffold(
@@ -44,7 +51,7 @@ class _BuzonScreenState extends State<BuzonScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-             Icon(
+            Icon(
               Icons.developer_mode,
               size: 100,
               color: theme.colorScheme.onBackground,

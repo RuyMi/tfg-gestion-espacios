@@ -1,17 +1,29 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/providers/theme_provider.dart';
 import 'package:gestion_espacios_app/widgets/user_image_widget.dart';
 import 'package:provider/provider.dart';
 
+/// Widget que muestra el menú lateral de la aplicación.
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    /// El provider de autenticación.
     final authProvider = Provider.of<AuthProvider>(context);
+
+    /// El usuario autenticado.
     final usuario = authProvider.usuario;
+
+    /// El provider de temas.
     var themeProvider = context.watch<ThemeProvider>();
+
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
     return Drawer(

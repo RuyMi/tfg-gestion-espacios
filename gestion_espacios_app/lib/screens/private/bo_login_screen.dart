@@ -1,8 +1,13 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/auth_provider.dart';
 import 'package:gestion_espacios_app/widgets/error_widget.dart';
 import 'package:provider/provider.dart';
 
+/// Pantalla de inicio de sesión del BackOffice.
 class BOLoginScreen extends StatefulWidget {
   const BOLoginScreen({super.key});
 
@@ -11,15 +16,23 @@ class BOLoginScreen extends StatefulWidget {
   _BOLoginScreen createState() => _BOLoginScreen();
 }
 
+/// Clase que muestra la pantalla de inicio de sesión del BackOffice.
 class _BOLoginScreen extends State<BOLoginScreen> {
+  /// Nombre de usuario.
   String username = '';
+
+  /// Contraseña.
   String password = '';
+
+  /// Indica si se está cargando la pantalla.
   bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtieen el tema actual.
     var theme = Theme.of(context);
 
+    /// Se obtiene el provider de autenticación.
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     return GestureDetector(

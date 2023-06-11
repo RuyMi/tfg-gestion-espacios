@@ -1,9 +1,14 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'package:flutter/material.dart';
 import 'package:gestion_espacios_app/providers/usuarios_provider.dart';
 import 'package:gestion_espacios_app/widgets/logout_widget.dart';
 import 'package:gestion_espacios_app/widgets/user_image_widget.dart';
 import 'package:provider/provider.dart';
 
+/// Clase que representa la pantalla de perfil.
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({Key? key}) : super(key: key);
 
@@ -12,6 +17,7 @@ class PerfilScreen extends StatefulWidget {
   _PerfilScreenState createState() => _PerfilScreenState();
 }
 
+/// Clase que representa el estado de la pantalla de perfil.
 class _PerfilScreenState extends State<PerfilScreen> {
   @override
   void initState() {
@@ -23,8 +29,13 @@ class _PerfilScreenState extends State<PerfilScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /// El provider de usuarios.
     final usuarioProvider = Provider.of<UsuariosProvider>(context);
+
+    /// El usuario actual.
     final usuario = usuarioProvider.actualUsuario;
+
+    /// El tema actual.
     var theme = Theme.of(context);
 
     return Scaffold(

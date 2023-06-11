@@ -1,3 +1,8 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
+/// Clase que representa un espacio.
 class Espacio {
   Espacio({
     this.uuid,
@@ -21,6 +26,7 @@ class Espacio {
   List<String> authorizedRoles;
   int bookingWindow;
 
+  /// Función que devuelve un JSON con los datos del espacio.
   Map<String, dynamic> toJson() {
     return {
       'uuid': uuid,

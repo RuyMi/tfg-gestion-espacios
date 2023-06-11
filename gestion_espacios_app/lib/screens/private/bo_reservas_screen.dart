@@ -1,3 +1,7 @@
+/// Alejandro Sánchez Monzón
+/// Mireya Sánchez Pinzón
+/// Rubén García-Redondo Marín
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -13,6 +17,7 @@ import '../../models/colors.dart';
 import '../../providers/auth_provider.dart';
 import 'bo_add_reserva_dialog.dart';
 
+/// Clase que representa la pantalla de reservas del backoffice.
 class ReservasBOScreen extends StatefulWidget {
   const ReservasBOScreen({Key? key}) : super(key: key);
 
@@ -21,9 +26,15 @@ class ReservasBOScreen extends StatefulWidget {
   _ReservasBOScreen createState() => _ReservasBOScreen();
 }
 
+/// Clase que muestra la pantalla de reservas del backoffice.
 class _ReservasBOScreen extends State<ReservasBOScreen> {
+  /// El controlador del campo de búsqueda.
   final TextEditingController _searchController = TextEditingController();
+
+  /// La lista de reservas filtradas.
   List<Reserva> reservasFiltradas = [];
+
+  /// Variable que indica si se muestra el spinner.
   bool _showSpinner = true;
 
   @override
@@ -49,6 +60,7 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
     _searchController.dispose();
   }
 
+  /// Método que filtra las reservas por el nombre del espacio.
   Future<List<Reserva>> filterReservas(String query) async {
     final reservasProvider =
         Provider.of<ReservasProvider>(context, listen: false);
@@ -62,9 +74,13 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /// Se obtiene el tema actual.
     var theme = Theme.of(context);
 
+    /// El proveedor de autenticación.
     final authProvider = Provider.of<AuthProvider>(context);
+
+    /// El usuario actual.
     final Usuario usuario = authProvider.usuario;
 
     return Column(
@@ -144,40 +160,40 @@ class _ReservasBOScreen extends State<ReservasBOScreen> {
                         theme.colorScheme.secondary),
                   )
                 : Center(
-                  child: Container(
-                    margin: const EdgeInsets.all(20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.hide_source_rounded,
-                          size: 100,
-                          color: theme.colorScheme.onBackground,
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.background,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: theme.colorScheme.onBackground,
-                              width: 2,
+                    child: Container(
+                      margin: const EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.hide_source_rounded,
+                            size: 100,
+                            color: theme.colorScheme.onBackground,
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.background,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: theme.colorScheme.onBackground,
+                                width: 2,
+                              ),
+                            ),
+                            child: const Text(
+                              'No existen reservas disponibles',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'KoHo',
+                              ),
                             ),
                           ),
-                          child: const Text(
-                            'No existen reservas disponibles',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'KoHo',
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
           ),
         if (reservasFiltradas.isNotEmpty)
           Expanded(
