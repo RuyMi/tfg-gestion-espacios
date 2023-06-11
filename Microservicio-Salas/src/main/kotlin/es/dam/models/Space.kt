@@ -7,6 +7,24 @@ import org.litote.kmongo.Id
 import org.litote.kmongo.newId
 import java.util.*
 
+/**
+ * Clase Space. Representa un espacio de la aplicación.
+ *
+ * @property id Identificador del espacio en la base de datos
+ * @property uuid  Identificador único del espacio en la aplicación
+ * @property name Nombre del espacio
+ * @property description Descripción del espacio (opcional)
+ * @property image Imagen del espacio (opcional)
+ * @property price Precio del espacio
+ * @property isReservable Indica si el espacio es reservable o no
+ * @property requiresAuthorization Indica si el espacio requiere autorización para ser reservado
+ * @property authorizedRoles Roles autorizados para reservar el espacio
+ * @property bookingWindow Ventana de reserva del espacio (en días)
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 @Serializable
 data class Space(
     @BsonId

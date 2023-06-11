@@ -1,5 +1,12 @@
 package es.dam.exceptions
 
+/**
+ * Clase que implementa las excepciones personalizadas de los usuarios.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 sealed class UserExceptions(message: String) : RuntimeException(message)
 
 class UserNotFoundException(message: String) : UserExceptions(message)

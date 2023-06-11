@@ -4,6 +4,13 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.cors.routing.*
 
+/**
+ * Función que configura el CORS. Permite que se puedan hacer peticiones desde cualquier origen.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 fun Application.configureCors() {
     install(CORS) {
         anyHost()

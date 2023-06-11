@@ -16,6 +16,13 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
 
+/**
+ * Clase de servicio de usuarios. Se encarga de gestionar las operaciones de los usuarios.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 @Service
 class UserService
 @Autowired constructor(
@@ -23,15 +30,29 @@ class UserService
     private val passwordEncoder: PasswordEncoder
 ) : UserDetailsService {
 
+    /**
+     * Funcion que se encarga de cargar un usuario por su nombre de usuario.
+     *
+     * @param username Nombre de usuario del usuario a cargar.
+     * @return UserDetails
+     */
     override fun loadUserByUsername(username: String?): UserDetails = runBlocking {
         return@runBlocking usersRepository.findUserByUsername(username!!).firstOrNull()
             ?: throw UserNotFoundException("User not found with username: $username")
     }
 
+    /**
+     * Funcion que devuelve todos los usuarios.
+     *
+     * @return List<User>
+     */
     suspend fun findAll(): List<User> = withContext(Dispatchers.IO) {
         return@withContext usersRepository.findAll()
     }
 
+    /**
+     * Funcion que se encarga de poner 20 creditos a todos los usuarios.
+     */
     fun poner20creditosAllUsers() {
         val users = usersRepository.findAll()
         users.forEach {
@@ -43,6 +64,12 @@ class UserService
         }
     }
 
+    /**
+     * Funcion que se encarga de buscar un usuario por su id.
+     *
+     * @param id Id del usuario a buscar.
+     * @return User
+     */
     suspend fun findUserById(id: String): User = withContext(Dispatchers.IO) {
         if (usersRepository.findById(ObjectId(id)).isPresent) {
             return@withContext usersRepository.findById(ObjectId(id)).get()
@@ -51,6 +78,12 @@ class UserService
         }
     }
 
+    /**
+     * Funcion que se encarga de buscar un usuario por su nombre de usuario y devolver si esta activo o no.
+     *
+     * @param username Nombre de usuario del usuario a buscar.
+     * @return User
+     */
     suspend fun isActive(username: String): Boolean = withContext(Dispatchers.IO) {
         if (usersRepository.findUserByUsername(username).isNotEmpty()) {
             return@withContext usersRepository.findUserByUsername(username).first().isActive
@@ -59,6 +92,12 @@ class UserService
         }
     }
 
+    /**
+     * Funcion que se encarga de buscar un usuario por su UUID.
+     *
+     * @param uuid UUID del usuario a buscar.
+     * @return User
+     */
     suspend fun findByUuid(uuid: String): User = withContext(Dispatchers.IO) {
         try {
             UUID.fromString(uuid)
@@ -72,6 +111,12 @@ class UserService
         }
     }
 
+    /**
+     * Funcion que se encarga de guardar un usuario.
+     *
+     * @param user Usuario a guardar.
+     * @return User
+     */
     suspend fun save(user: User): User = withContext(Dispatchers.IO) {
         if (usersRepository.findUserByUsername(user.username)
                 .firstOrNull() != null
@@ -98,6 +143,12 @@ class UserService
         }
     }
 
+    /**
+     * Funcion que se encarga de actualizar un usuario.
+     *
+     * @param user Usuario a actualizar.
+     * @return User
+     */
     suspend fun update(user: User): User? = withContext(Dispatchers.IO) {
         val saved = user.copy(
             updatedAt = LocalDateTime.now()
@@ -110,6 +161,12 @@ class UserService
         }
     }
 
+    /**
+     * Funcion que se encarga de eliminar un usuario por su UUID.
+     *
+     * @param id UUID del usuario a eliminar.
+     * @return Int
+     */
     suspend fun deleteByUuid(uuid: String): Int = withContext(Dispatchers.IO) {
         try {
             UUID.fromString(uuid)

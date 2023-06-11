@@ -2,6 +2,14 @@ package es.dam.dto
 
 import kotlinx.serialization.Serializable
 
+/**
+ * DTOs de la clase User.
+ * Contiene los DTOs de User, UserCreate, UserUpdate, UserLogin, UserToken, UserData, UserResponse y UserPhoto
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 @Serializable
 data class UserRegisterDTO(
     val name: String,

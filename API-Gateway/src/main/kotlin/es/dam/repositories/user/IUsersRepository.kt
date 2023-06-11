@@ -5,6 +5,13 @@ import okhttp3.MultipartBody
 import retrofit2.Call
 import java.io.File
 
+/**
+ * Interfaz que define las operaciones que se pueden realizar sobre usuarios.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 interface IUsersRepository {
     suspend fun findAll(token: String): UserDataDTO
     suspend fun findById(token: String, id: String): UserResponseDTO

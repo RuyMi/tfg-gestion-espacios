@@ -3,6 +3,15 @@ package es.dam.dto
 import es.dam.models.Space
 import kotlinx.serialization.Serializable
 
+/**
+ * DTOs de la clase Space.
+ * Contiene los DTOs de Space, SpaceCreate, SpaceUpdate, SpaceData, SpaceResponse y SpacePhoto
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
+
 @Serializable
 data class SpaceDTO(
     val id: String,

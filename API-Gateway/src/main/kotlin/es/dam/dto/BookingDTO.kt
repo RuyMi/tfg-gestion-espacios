@@ -2,6 +2,14 @@ package es.dam.dto
 
 import kotlinx.serialization.Serializable
 
+/**
+ * DTOs de la clase Booking.
+ * Contiene los DTOs de Booking, BookingCreate, BookingData y BookingUpdate
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 @Serializable
 data class BookingResponseDTO(
     val uuid: String,

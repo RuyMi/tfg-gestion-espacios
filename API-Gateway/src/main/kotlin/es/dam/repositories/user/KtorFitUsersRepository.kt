@@ -12,13 +12,25 @@ import retrofit2.Call
 import java.io.File
 import java.nio.file.Files
 
-//TODO Quitar mensajes excepciones kotlin
+/**
+ * Clase que implementa las operaciones que se pueden realizar sobre usuarios. Se comunica con el servicio de usuarios mediante Ktorfit y Retrofit.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 @Single
 class KtorFitUsersRepository: IUsersRepository {
 
     private val client by lazy { KtorFitClientUsers.instance }
     private val retrofit by lazy { RetroFitClientUsers.retrofit}
 
+    /**
+     * Funcion que te loguea en la aplicacion
+     *
+     * @param entity UserLoginDTO
+     * @return UserTokenDTO
+     */
     override suspend fun login(entity: UserLoginDTO): UserTokenDTO = withContext(Dispatchers.IO) {
         val call = async { client.login(entity) }
         try {
@@ -28,6 +40,12 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    /**
+     * Funcion que te registra en la aplicacion
+     *
+     * @param entity UserRegisterDTO
+     * @return UserTokenDTO
+     */
     override suspend fun register(entity: UserRegisterDTO): UserTokenDTO = withContext(Dispatchers.IO) {
         val call = async { client.register(entity) }
         try {
@@ -37,6 +55,13 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    /**
+     * Funcion que te descarga una imagen del microservicio
+     *
+     * @param token Token de autenticacion
+     * @param entity UUID de la imagen
+     * @return UserResponseDTO
+     */
     override suspend fun downloadFile(uuid: String): File = withContext(Dispatchers.IO){
         val call = runCatching { client.downloadFile(uuid) }
         try {
@@ -49,6 +74,13 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    /**
+     * Funcion que te sube una imagen al microservicio
+     *
+     * @param token Token de autenticacion
+     * @param file Imagen a subir
+     * @return UserPhotoDTO
+     */
     override suspend fun uploadFile(token: String, file: MultipartBody.Part): Call<UserPhotoDTO> = withContext(Dispatchers.IO) {
         val call = async { retrofit.uploadFile(file) }
         try {
@@ -59,6 +91,12 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    /**
+     * Funcion que te devuelve todos los usuarios
+     *
+     * @param token Token de autenticacion
+     * @return UserDataDTO
+     */
     override suspend fun findAll(token: String): UserDataDTO = withContext(Dispatchers.IO)  {
         val call = async { client.findAll(token) }
         try {
@@ -68,6 +106,13 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    /**
+     * Funcion que te devuelve un usuario por su id
+     *
+     * @param token Token de autenticacion
+     * @param id Id del usuario
+     * @return UserResponseDTO
+     */
     override suspend fun findById(token: String, id: String): UserResponseDTO = withContext(Dispatchers.IO)  {
         val call = async { client.findById(token, id) }
         try {
@@ -77,6 +122,13 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    /**
+     * Funcion que te devuelve el usuario que esta logueado
+     *
+     * @param token Token de autenticacion
+     * @param id Id del usuario
+     * @return UserResponseDTO
+     */
     override suspend fun findMe(token: String, id: String): UserResponseDTO = withContext(Dispatchers.IO)  {
         val call = async { client.findMe(token, id) }
         try {
@@ -86,6 +138,13 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    /**
+     * Funcion que te devuelve si un usuario está activo
+     *
+     * @param token Token de autenticacion
+     * @param username Username del usuario
+     * @return UserResponseDTO
+     */
     override suspend fun isActive(username: String): Boolean = withContext(Dispatchers.IO)  {
         val call = async { client.isActive(username) }
         try {
@@ -95,6 +154,14 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    /**
+     * Funcion que te actualiza un usuario
+     *
+     * @param token Token de autenticacion
+     * @param id Id del usuario
+     * @param entity UserUpdateDTO
+     * @return UserResponseDTO
+     */
     override suspend fun update(token: String, id: String, entity: UserUpdateDTO): UserResponseDTO = withContext(Dispatchers.IO)  {
         val call = async { client.update(token, id, entity) }
         try {
@@ -104,6 +171,14 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    /**
+     * Funcion que te actualiza un usuario
+     *
+     * @param token Token de autenticacion
+     * @param id Id del usuario
+     * @param creditsAmount Cantidad de creditos
+     * @return UserResponseDTO
+     */
     override suspend fun updateCredits(token: String, id: String, creditsAmount: Int): UserResponseDTO = withContext(Dispatchers.IO)  {
         val call = async { client.updateCredits(token, id, creditsAmount) }
         try {
@@ -113,6 +188,14 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    /**
+     * Funcion que te actualiza un usuario
+     *
+     * @param token Token de autenticacion
+     * @param id Id del usuario
+     * @param creditsAmount Cantidad de creditos
+     * @return UserResponseDTO
+     */
     override suspend fun updateCreditsMe(token: String, id: String, creditsAmount: Int): UserResponseDTO = withContext(Dispatchers.IO)  {
         val call = async { client.updateCreditsMe(token, id, creditsAmount) }
         try {
@@ -122,6 +205,14 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    /**
+     * Funcion que te actualiza un usuario el estado de activo
+     *
+     * @param token Token de autenticacion
+     * @param id Id del usuario
+     * @param active Estado de activo
+     * @return UserResponseDTO
+     */
     override suspend fun updateActive(token: String, id: String, active: Boolean): UserResponseDTO = withContext(Dispatchers.IO)  {
         val call = async { client.updateActive(token, id, active) }
         try {
@@ -131,6 +222,13 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    /**
+     * Funcion que te elimina un usuario
+     *
+     * @param token Token de autenticacion
+     * @param id Id del usuario
+     * @return UserResponseDTO
+     */
     override suspend fun delete(token: String, id: String) = withContext(Dispatchers.IO)  {
         val call = async { client.delete(token, id) }
         try {
@@ -140,6 +238,13 @@ class KtorFitUsersRepository: IUsersRepository {
         }
     }
 
+    /**
+     * Funcion que te actualiza el usuario que esta logueado
+     *
+     * @param token Token de autenticacion
+     * @param entity UserUpdateDTO
+     * @return UserResponseDTO
+     */
     override suspend fun me(token: String, entity: UserUpdateDTO): UserResponseDTO = withContext(Dispatchers.IO) {
         val call = async { client.me(token, entity) }
         try{

@@ -11,6 +11,13 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
 
+/**
+ * Objeto que contiene la configuración del cliente Ktorfit para el microservicio de espacios.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 object KtorFitClientSpaces {
     private const val API_URL = "http://api-spaces:8282/"
 

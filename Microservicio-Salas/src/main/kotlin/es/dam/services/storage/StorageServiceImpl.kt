@@ -15,6 +15,13 @@ import java.nio.file.Files
 import java.time.LocalDateTime
 import javax.imageio.ImageIO
 
+/**
+ * Clase que implementa el servicio de almacenamiento. Implementa la interfaz [StorageService]. Se encarga de gestionar el almacenamiento de imágenes.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 @Single
 class StorageServiceImpl(
     @InjectedParam private val storageConfig: StorageConfig
@@ -22,16 +29,26 @@ class StorageServiceImpl(
     override fun getConfig(): StorageConfig {
         return storageConfig
     }
-    private val resourcePath = this::class.java.classLoader.getResource("uploads").file
-    private val uploadsPath = resourcePath
+
     private val uploadsDir = File("./uploads")
 
+    /**
+     * Inicializa el servicio de almacenamiento.
+     *
+     */
     override fun initStorageDirectory() {
         if (!uploadsDir.exists()) {
             uploadsDir.mkdirs()
         }
     }
 
+    /**
+     * Guarda una imagen en el directorio de almacenamiento.
+     *
+     * @param fileName Nombre del fichero.
+     * @param fileBytes Bytes del fichero.
+     * @return Mapa con los datos del fichero.
+     */
     override suspend fun saveFile(fileName: String, fileBytes: ByteArray): Map<String, String> =
         withContext(Dispatchers.IO) {
             try {
@@ -48,6 +65,13 @@ class StorageServiceImpl(
             }
         }
 
+    /**
+     * Guarda una imagen en el directorio de almacenamiento.
+     *
+     * @param fileName Nombre del fichero.
+     * @param fileBytes Bytes del fichero.
+     * @return Mapa con los datos del fichero.
+     */
     override suspend fun saveFile(fileName: String, fileBytes: ByteReadChannel): Map<String, String> =
         withContext(Dispatchers.IO) {
             try {
@@ -64,6 +88,12 @@ class StorageServiceImpl(
             }
         }
 
+    /**
+     * Obtiene una imagen del directorio de almacenamiento.
+     *
+     * @param fileName Nombre del fichero.
+     * @return Fichero.
+     */
     override suspend fun getFile(fileName: String): File = withContext(Dispatchers.IO) {
         try {
             val file = File("./uploads/$fileName")
@@ -77,6 +107,11 @@ class StorageServiceImpl(
         }
     }
 
+    /**
+     * Elimina una imagen del directorio de almacenamiento.
+     *
+     * @param fileName Nombre del fichero.
+     */
     override suspend fun deleteFile(fileName: String): Unit = withContext(Dispatchers.IO) {
         val file = File("./uploads/$fileName")
         if (!file.exists()) {
@@ -86,6 +121,12 @@ class StorageServiceImpl(
         }
     }
 
+    /**
+     * Obtiene un recurso como un stream.
+     *
+     * @param resourceName Nombre del recurso.
+     * @return Stream del recurso.
+     */
     private fun getResourceAsStream(resourceName: String): InputStream? {
         val classLoader = Thread.currentThread().contextClassLoader
         return classLoader.getResourceAsStream(resourceName)?: null

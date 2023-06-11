@@ -7,6 +7,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
+/**
+ * Objeto que contiene la configuración del cliente Retrofit para el microservicio de usuarios.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 object RetroFitClientUsers {
     private const val BASE_URL = "http://api-users:8383/"
 

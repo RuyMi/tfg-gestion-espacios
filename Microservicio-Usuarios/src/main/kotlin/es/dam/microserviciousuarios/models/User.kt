@@ -13,6 +13,27 @@ import org.springframework.security.core.userdetails.UserDetails
 import java.time.LocalDateTime
 import java.util.*
 
+/**
+ * Clase User.
+ *
+ * @property id Identificador del usuario en la base de datos.
+ * @property uuid Identificador único del usuario en la aplicación.
+ * @property name Nombre del usuario.
+ * @property username Nombre de usuario del usuario (único).
+ * @property email Email del usuario (único).
+ * @property password Contraseña del usuario.
+ * @property avatar Imagen de perfil del usuario.
+ * @property userRole Rol del usuario (USER, TEACHER, ADMINISTRATOR).
+ * @property credits Créditos del usuario.
+ * @property isActive Indica si el usuario está activo o no.
+ * @property createdAt Fecha de creación del usuario.
+ * @property updatedAt Fecha de actualización del usuario.
+ * @property lastPasswordChangeAt Fecha de la última actualización de la contraseña del usuario.
+ *
+ * @author Mireya Sánchez Pinzón
+ * @author Alejandro Sánchez Monzón
+ * @author Rubén García-Redondo Marín
+ */
 @Serializable
 data class User(
     @Id @Contextual
