@@ -251,9 +251,9 @@ fun Application.spacesRoutes() {
                                 it.userName,
                                 it.spaceId,
                                 space.name,
+                                space.image!!,
                                 it.startTime,
                                 it.endTime,
-                                space.image!!,
                                 it.observations,
                                 it.status,
                             )

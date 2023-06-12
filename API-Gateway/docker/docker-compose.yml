@@ -11,6 +11,8 @@ services:
       MONGODB_PASSWORD: admin
       MONGODB_HOST_NAME: localhost
       MONGODB_PORT: 27017
+    volumes:
+      - datadir:/data/db
   api-users:
     build:
       context: ../../Microservicio-Usuarios
@@ -57,3 +59,5 @@ services:
       - "2121:80"
     depends_on:
       - gateway
+volumes:
+  datadir:
