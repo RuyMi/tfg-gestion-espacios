@@ -1,5 +1,6 @@
 package es.dam.routes
 
+import es.dam.dto.BookingUpdateDTO
 import es.dam.dto.SpaceCreateDTO
 import es.dam.dto.SpacePhotoDTO
 import es.dam.dto.SpaceUpdateDTO
@@ -244,6 +245,20 @@ fun Application.spacesRoutes() {
                             spacesRepository.update("Bearer $token", id!!, space)
                         }
 
+                        bookingsRepository.findBySpace("Bearer $token", id!!).data.forEach{
+                            val bookingUpdate = BookingUpdateDTO(
+                                it.userId,
+                                it.userName,
+                                it.spaceId,
+                                space.name,
+                                space.image!!,
+                                it.startTime,
+                                it.endTime,
+                                it.observations,
+                                it.status,
+                            )
+                            bookingsRepository.update("Bearer $token", it.uuid, bookingUpdate)
+                        }
                         if (res.isSuccess) {
                             call.respond(HttpStatusCode.OK, res.getOrNull()!!)
                         } else {
@@ -279,7 +294,7 @@ fun Application.spacesRoutes() {
                         {"Se deben actualizar o eliminar las reservas futuras asociadas a esta sala antes de continuar con la operación."}
 
                         spacesRepository.delete("Bearer $token", id)
-                        spacesRepository.deleteFile("Bearer $token", sala.image!!)
+                        spacesRepository.deleteFile("Bearer $token", sala.image!! + ".png")
 
                         call.respond(HttpStatusCode.NoContent)
 
