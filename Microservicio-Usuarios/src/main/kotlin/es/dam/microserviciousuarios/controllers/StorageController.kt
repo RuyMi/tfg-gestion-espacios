@@ -76,16 +76,15 @@ class StorageController @Autowired constructor(
         }
     }
 
-    @DeleteMapping(value = ["{filename:.+}"])
+    @DeleteMapping("/{uuid}")
     @ResponseBody
     fun deleteFile(
-        @PathVariable filename: String?,
-        request: HttpServletRequest
+        @PathVariable uuid: String
     ): ResponseEntity<Resource> = runBlocking {
         try {
             val myScope = CoroutineScope(Dispatchers.IO)
-            myScope.launch { storageService.deleteFile(filename.toString()) }.join()
-            return@runBlocking ResponseEntity.ok().build()
+            myScope.launch { storageService.deleteFile(uuid) }.join()
+            return@runBlocking ResponseEntity.noContent().build()
         } catch (e: StorageException) {
             throw StorageBadRequestException(e.message.toString())
         }

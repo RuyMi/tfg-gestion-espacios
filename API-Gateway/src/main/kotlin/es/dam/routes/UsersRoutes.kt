@@ -8,6 +8,9 @@ import es.dam.exceptions.*
 import es.dam.repositories.booking.KtorFitBookingsRepository
 import es.dam.repositories.user.KtorFitUsersRepository
 import es.dam.services.token.TokensService
+import es.dam.validator.validateCampos
+import es.dam.validator.validateEmail
+import es.dam.validator.validatePassword
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -23,6 +26,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.ktor.ext.inject
 import retrofit2.await
 import java.net.ConnectException
+import java.time.LocalDateTime
 import java.util.*
 
 private const val ENDPOINT = "users"
@@ -85,7 +89,15 @@ fun Application.usersRoutes() {
             post("/register") {
                 try {
                     val register = call.receive<UserRegisterDTO>()
-
+                    if (!register.validateCampos()){
+                        throw UserBadRequestException("Debes rellenar todos los datos.")
+                    }
+                    if (!register.validateEmail()){
+                        throw UserBadRequestException("El email no es válido.")
+                    }
+                    if (!register.validatePassword()){
+                        throw UserBadRequestException("La contraseña debe tener al menos 8 caracteres")
+                    }
                     val user = runCatching {
                         userRepository.register(register)
                     }
@@ -315,6 +327,14 @@ fun Application.usersRoutes() {
                         val updatedUser = runCatching {
                             userRepository.update("Bearer $token", user.uuid, userDTO)
                         }
+                        val reservas = bookingsRepository.findByUser("Bearer $token", user.uuid).data.filter{
+                            LocalDateTime.parse(it.startTime).isAfter(LocalDateTime.now())
+                        }
+                        if (!userDTO.isActive && reservas.isNotEmpty()) {
+                            reservas.forEach {
+                                bookingsRepository.delete("Bearer $token", it.uuid)
+                            }
+                        }
 
                         if (updatedUser.isSuccess) {
                             call.respond(HttpStatusCode.OK, updatedUser.getOrNull()!!)
@@ -448,6 +468,14 @@ fun Application.usersRoutes() {
                         val updatedUser = runCatching {
                             userRepository.updateActive("Bearer $token", user.uuid, active.toBooleanStrict())
                         }
+                        val reservas = bookingsRepository.findByUser("Bearer $token", user.uuid).data.filter{
+                            LocalDateTime.parse(it.startTime).isAfter(LocalDateTime.now())
+                        }
+                        if (!active.toBooleanStrict() && reservas.isNotEmpty()) {
+                            reservas.forEach {
+                                bookingsRepository.delete("Bearer $token", it.uuid)
+                            }
+                        }
 
                         if (updatedUser.isSuccess) {
                             call.respond(HttpStatusCode.OK, updatedUser.getOrNull()!!)
@@ -475,6 +503,7 @@ fun Application.usersRoutes() {
                         val originalToken = call.principal<JWTPrincipal>()!!
                         val token = tokenService.generateToken(originalToken)
                         val userRole = originalToken.payload.getClaim("role").toString()
+                        val subject = originalToken.subject.toString()
 
                         val id = call.parameters["id"]
 
@@ -484,13 +513,16 @@ fun Application.usersRoutes() {
                             call.respond(HttpStatusCode.BadRequest, "El id introducido no es válido: ${e.message}")
                             return@delete
                         }
+                        require(subject != id){"No puedes eliminarte a ti mismo."}
 
                         if(userRole.contains("ADMINISTRATOR")) {
-                            require(bookingsRepository.findByUser(token, id!!).data.isEmpty())
-                            { "Se deben actualizar o eliminar las reservas asociadas a este usuario antes de continuar con la operación." }
-                            userRepository.findById("Bearer $token", id)
+                            require(
+                                bookingsRepository.findByUser(token, id!!).data.none { LocalDateTime.parse(it.startTime).isAfter(LocalDateTime.now()) })
+                            { "Se deben actualizar o eliminar las futuras reservas asociadas a este usuario antes de continuar con la operación." }
+                            val user = userRepository.findById("Bearer $token", id)
 
                             userRepository.delete("Bearer $token", id)
+                            userRepository.deleteFile("Bearer $token", user.avatar!! + ".png")
 
                             call.respond(HttpStatusCode.NoContent)
                         }else{

@@ -19,4 +19,5 @@ interface ISpacesRepository {
     suspend fun downloadFile(uuid: String): File
     suspend fun update(token: String, id: String, entity: SpaceUpdateDTO): SpaceResponseDTO
     suspend fun delete(token: String, id: String)
+    suspend fun deleteFile(token: String, uuid: String)
 }
