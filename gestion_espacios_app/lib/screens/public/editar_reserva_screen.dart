@@ -250,7 +250,6 @@ class _ReservaSala extends State<EditarReservaScreen> {
                       style: TextStyle(
                           color: theme.colorScheme.secondary,
                           fontFamily: 'KoHo'),
-                      textAlign: TextAlign.center,
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),

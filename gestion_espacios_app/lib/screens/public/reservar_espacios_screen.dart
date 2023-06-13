@@ -49,6 +49,9 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
   /// Variable que indica la hora seleccionada.
   String? selectedHour;
 
+  /// Variable que indica las observaciones de la reserva.
+  String observations = '';
+
   /// Controlador del scroll.
   final ScrollController _scrollController = ScrollController();
 
@@ -103,9 +106,6 @@ class _ReservaSala extends State<ReservaEspacioScreen> {
 
     /// Se obtiene el nombre del espacio actual.
     final spaceName = espacio.name;
-
-    /// Variable que indica las observaciones de la reserva.
-    String observations = '';
 
     /// variable que indica la hora de inicio de la reserva.
     String startTime;
