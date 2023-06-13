@@ -468,7 +468,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                         .then((imageUrl) {
                       usuario.avatar = imageUrl;
 
-                      usuariosProvider.register(usuario).then((_) {
+                      usuariosProvider.registerPrivate(usuario).then((_) {
                         Navigator.pushNamed(context, '/home-bo');
                         showDialog(
                           context: context,
@@ -505,7 +505,7 @@ class _NuevoUsuarioBODialog extends State<NuevoUsuarioBODialog> {
                       );
                     });
                   } else {
-                    usuariosProvider.register(usuario).then((_) {
+                    usuariosProvider.registerPrivate(usuario).then((_) {
                       Navigator.pushNamed(context, '/home-bo');
                       showDialog(
                         context: context,
