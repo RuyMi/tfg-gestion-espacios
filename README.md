@@ -84,8 +84,8 @@ Este proyecto ha sido desarrollado por:
 
 ## 📚 Documentación
 
-- [Anteproyecto]()
-- [Documentación del proyecto]()
+- [Anteproyecto](https://github.com/RuyMi/tfg-gestion-espacios/blob/main/metadata/Anteproyecto.pdf)
+- [Documentación del proyecto](https://github.com/RuyMi/tfg-gestion-espacios/blob/main/Proyecto%20Desarrolo%20de%20aplicaciones_IES%20Luis%20Vives.pdf)
 
 
 ## 📄 Licencia
