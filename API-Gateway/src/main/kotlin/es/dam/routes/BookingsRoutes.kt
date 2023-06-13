@@ -267,7 +267,8 @@ fun Application.bookingsRoutes() {
                         }
 
                         if (res.isSuccess) {
-                            call.respond(HttpStatusCode.OK, res.getOrNull()!!)
+                            val bookings = BookingDataDTO(data = res.getOrNull()!!.data.filter { it.status != "REJECTED" })
+                            call.respond(HttpStatusCode.OK, bookings)
                         } else {
                             throw res.exceptionOrNull()!!
                         }
@@ -308,7 +309,7 @@ fun Application.bookingsRoutes() {
                             require(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(entity.startTime.split("T")[0])) <= space.bookingWindow)
                             {"No se puede reservar con tanta anterioridad."}
                             require(bookingsRepository.findByTime("Bearer $token", entity.spaceId, entity.startTime.split("T")[0])
-                                    .data.none { it -> it.startTime.split("T")[1].split(":")[0] == entity.startTime.split("T")[1].split(":")[0] }
+                                    .data.filter { it.status != "REJECTED" }.none { it -> it.startTime.split("T")[1].split(":")[0] == entity.startTime.split("T")[1].split(":")[0] }
                             )
                             {"Franja horaria no disponible."}
 
@@ -334,9 +335,8 @@ fun Application.bookingsRoutes() {
                             require(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(entity.startTime.split("T")[0])) <= space.bookingWindow)
                             {"No se puede reservar con tanta anterioridad."}
                             require(bookingsRepository.findByTime("Bearer $token", entity.spaceId, entity.startTime.split("T")[0])
-                                .data
-                                .filter{it -> it.startTime.split("T")[1].split(":")[0] == entity.startTime.split("T")[1].split(":")[0]}
-                                .isEmpty()
+                                .data.filter { it.status != "REJECTED" }.
+                                none { it -> it.startTime.split("T")[1].split(":")[0] == entity.startTime.split("T")[1].split(":")[0] }
                             )
                             {"Franja horaria no disponible."}
 
@@ -401,7 +401,7 @@ fun Application.bookingsRoutes() {
                                     spaceRepository.findById("Bearer $token", booking.spaceId).bookingWindow.toInt())
                             {"No se puede reservar con tanta anterioridad."}
                             require(bookingsRepository.findByTime("Bearer $token", booking.spaceId, booking.startTime.split("T")[0])
-                                .data
+                                .data.filter { it.status != "REJECTED" }
                                 .filter { it.startTime == booking.startTime }.none { it.uuid != id }
                             )
                             {"Franja horaria no disponible."}
@@ -424,6 +424,7 @@ fun Application.bookingsRoutes() {
                             {"No se puede reservar con tanta anterioridad."}
                             require(bookingsRepository.findByTime("Bearer $token", booking.spaceId, booking.startTime.split("T")[0])
                                 .data
+                                .filter { it.status != "REJECTED" }
                                 .filter{it.startTime == booking.startTime}
                                 .none { it.uuid != id }
                             )
